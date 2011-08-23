@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd" default-lazy-init="true">
+	
+	<bean id="sessionInvalidateFilter" class="com.google.code.lightssh.project.web.filter.SessionInvalidateFilter">
+		<property name="cache" ref="sessionInvalidateUserCache" />
+	</bean>
+	
+	<!-- sequence -->
+	<bean id="sequenceManager" class="com.google.code.lightssh.project.sequence.service.SequenceManagerImpl">
+		<property name="dao" ref="sequenceDao"/>
+	</bean>
+	
+	<!-- scheduler|jobInterval -->
+	<bean id="jobIntervalManager" class="com.google.code.lightssh.project.scheduler.service.JobIntervalManagerImpl">
+		<property name="dao" ref="jobIntervalDao"/>
+	</bean>
+	
+	<!-- security role -->
+	<bean id="roleManager" class="com.google.code.lightssh.project.security.service.RoleManagerImpl">
+		<property name="roleDao" ref="roleDao"/>
+		<property name="navigationManager" ref="navigationManager"/>
+		<property name="permissionManager" ref="permissionManager"/>
+	</bean>
+	
+	<!-- security navigation -->
+	<bean id="navigationManager" class="com.google.code.lightssh.project.security.service.NavigationManagerImpl">
+		<property name="navigationDao" ref="navigationDao" />
+	</bean>
+	
+	<!-- security permission -->
+	<bean id="permissionManager" class="com.google.code.lightssh.common.service.BaseManagerImpl">
+		<property name="dao" ref="permissionDao" />
+	</bean>
+	
+	<!-- security loginAccount -->
+	<bean id="loginAccountManager" class="com.google.code.lightssh.project.security.service.LoginAccountManagerImpl">
+		<property name="dao" ref="loginAccountDao" />
+		<property name="roleManager" ref="roleManager" />
+		<property name="sessionInvalidateUserCache" ref="sessionInvalidateUserCache" />
+	</bean>
+	
+	<!-- party -->
+	<bean id="partyManager" class="com.google.code.lightssh.common.service.BaseManagerImpl">
+		<property name="dao" ref="partyDao" />
+	</bean>
+	
+	<!-- party organization -->
+	<bean id="organizationManager" class="com.google.code.lightssh.project.party.service.OrganizationManagerImpl">
+		<property name="organizationDao" ref="organizationDao" />
+		<property name="sequenceManager" ref="sequenceManager" />
+	</bean>
+	
+	<!-- party person -->
+	<bean id="personManager" class="com.google.code.lightssh.project.party.service.PersonManagerImpl">
+		<property name="dao" ref="personDao" />
+		<property name="sequenceManager" ref="sequenceManager" />
+		<property name="accessManager" ref="accessManager" />
+	</bean>
+	
+	<!-- identity -->
+	<bean id="identityManager" class="com.google.code.lightssh.project.identity.service.IdentityManagerImpl">
+		<property name="identityDao" ref="identityDao"/>
+	</bean>
+	
+	<!-- access -->
+	<bean id="accessManager" class="com.google.code.lightssh.project.log.service.AccessManagerImpl">
+		<property name="dao" ref="accessDao"/>
+		<property name="historyDao" ref="historyDao"/>
+		<property name="identityManager" ref="identityManager"/>
+		<property name="loginAccountManager" ref="loginAccountManager"/>
+	</bean>
+	
+</beans>

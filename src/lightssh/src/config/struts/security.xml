@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+	<package name="security_account" extends="default" namespace="/security/account">
+		<action name="edit" class="loginAccountAction" method="edit">
+			<result name="input">/pages/security/account/profile.jsp</result>	
+			<result name="success">/pages/security/account/profile.jsp</result>	
+			<result name="password">/pages/security/account/password.jsp</result>	
+			<result name="role">/pages/security/account/role.jsp</result>	
+			<result name="error" type="redirectAction">list</result>
+        </action>
+        
+        <action name="save" class="loginAccountAction" method="save">
+        	<interceptor-ref name="crudStack"/>
+			<result name="input" >/pages/security/account/profile.jsp</result>
+			<result name="next" type="redirectAction">edit</result>
+			<result name="success" type="redirectAction">list</result>
+        </action>
+        
+        <action name="password" class="loginAccountAction" method="password">
+			<result name="input" >/pages/security/account/password.jsp</result>
+        </action>
+        
+        <action name="my" class="loginAccountAction" method="myprofile">
+        	<result name="success" >/pages/security/account/view.jsp</result>
+        </action>
+        
+        <action name="list" class="loginAccountAction" method="list">
+			<result name="success" >/pages/security/account/list.jsp</result>
+        </action>
+        
+        <action name="remove" class="loginAccountAction" method="delete">
+			<result name="success" type="redirectAction">list</result>
+			<result name="input" type="redirectAction">list</result>
+        </action>
+        
+        <action name="role" class="loginAccountAction" method="role">
+			<result name="input" >/pages/security/account/role.jsp</result>
+			<result name="success" type="redirectAction">list</result>
+        </action>
+        
+        <action name="report" class="reportLoginAccountAction" method="report">
+			<result name="input" type="redirectAction">list</result>
+			<result name="success" type="stream">
+ 				<param name="inputName">inputStream</param>
+ 				<param name="contentType">${jasperEngine.contentType}</param>
+ 				<param name="contentDisposition">filename="LoginAccountReport"</param>
+ 				<param name="bufferSize">1024</param>
+			</result>
+		</action>
+	</package>
+
+	<package name="security_role" extends="default" namespace="/security/role">
+        <action name="edit" class="roleAction" method="edit">
+			<result name="success">/pages/security/role/profile.jsp</result>	
+        </action>
+        
+        <action name="save" class="roleAction" method="save">
+        	<interceptor-ref name="crudStack"/>
+			<result name="input" >/pages/security/role/profile.jsp</result>
+			<result name="success" type="redirectAction">list</result>
+        </action>
+        
+        <action name="list" class="roleAction" method="list">
+			<result name="success" >/pages/security/role/list.jsp</result>
+        </action>
+        
+        <action name="remove" class="roleAction" method="delete">
+			<result name="success" type="redirectAction">list</result>
+			<result name="input" type="redirectAction">list</result>
+        </action>
+        
+        <action name="permission" class="roleAction" method="permission">
+			<result name="input" type="redirectAction">list</result>
+			<result name="success">/pages/security/role/permission.jsp</result>
+        </action>
+        
+        <action name="addPermission" class="roleAction" method="addPermission">
+			<result name="success" type="redirectAction">list</result>
+			<result name="input">/pages/security/role/permission.jsp</result>
+        </action>
+        
+        <action name="popup" class="roleAction" method="list">
+			<result name="success" type="json">
+				<param name="includeProperties">
+					^page\.list\[\d+\]\.id,
+					^page\.list\[\d+\]\.name,
+					^page\.list\[\d+\]\.description,
+					^page\.list\.size,
+					page\.allSize,
+					page\.size,
+					page\.number
+				</param>
+			</result>
+        </action>
+	</package>
+	
+	<package name="security_navigation" extends="default" namespace="/security/navigation">
+		<action name="list" class="navigationAction" method="list">
+			<result name="success" >/pages/security/navigation/list.jsp</result>
+        </action>
+	</package>
+</struts>

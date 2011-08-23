@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE validators PUBLIC
+        "-//OpenSymphony Group//XWork Validator 1.0.2//EN"
+        "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
+
+<validators>
+	<field name="organization.name" >
+		<field-validator type="requiredstring">
+            <message>“名称”为必填项！</message>
+        </field-validator>
+        
+        <field-validator type="fieldexpression" >
+            <param name="expression">
+				( organization.name.length() &lt; 101)
+            </param>
+            <message>“名称”长度不能大于100字符！</message>
+        </field-validator>
+	</field>
+	
+	<field name="organization.description" >
+		<field-validator type="fieldexpression" >
+            <param name="expression">
+				( organization.description.length() &lt; 201)
+            </param>
+            <message>“描述”长度不能大于200字符！</message>
+        </field-validator>
+	</field>
+</validators>

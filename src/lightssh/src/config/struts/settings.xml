@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+	<package name="settings_log" extends="default" namespace="/settings/log">
+		<action name="list" class="accessAction" method="list">
+			<result name="input">/pages/settings/log/list.jsp</result>	
+			<result name="success">/pages/settings/log/list.jsp</result>	
+        </action>
+        
+		<action name="compare" class="accessAction" method="compare">
+			<result name="input">/pages/settings/log/list.jsp</result>	
+			<result name="success">/pages/settings/log/compare.jsp</result>	
+        </action>
+    </package>
+    
+    <package name="settings_scheduler" extends="default" namespace="/settings/scheduler">
+    	<action name="list" class="schedulerAction" method="listTriggers">
+			<result name="input">/pages/settings/scheduler/list_triggers.jsp</result>	
+			<result name="success">/pages/settings/scheduler/list_triggers.jsp</result>	
+        </action>
+        
+    	<action name="toggle" class="schedulerAction" method="toggle">
+			<result name="success" type="chain">list</result>	
+        </action>
+    </package>
+   
+</struts>
