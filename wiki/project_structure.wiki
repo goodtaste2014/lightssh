@@ -1,6 +1,7 @@
 =lightssh项目结构=
 
-||src||||||||||||||||
+||||||||||||||||||*--light ssh 项目结构--*||
+||src||||||||||||||||||
 ||   ||com||google||code||lightssh||project||xxx||entity||
 ||   ||   ||      ||    ||        ||       ||xxx||service||
 ||   ||   ||      ||    ||        ||       ||xxx||dao||
