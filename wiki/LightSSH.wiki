@@ -1,3 +1,4 @@
+#summary LightSSH
 #labels Featured,Phase-Deploy
 
 ==LightSSH 提供了：
