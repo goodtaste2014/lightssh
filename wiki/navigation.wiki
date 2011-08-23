@@ -1,6 +1,6 @@
 #sidebar TableOfContents
 
-  * light ssh 概述 index
+  * [light ssh 概述 and index]
   * [Articles HOWTO articles]
     * [ArticlesXSS Web security]
     * [ArticlesDom DOM manipulation]
