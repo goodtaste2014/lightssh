@@ -32,6 +32,25 @@
 	</field>
 	-->
 	
+	<field name="person.name" >
+		<field-validator type="requiredstring">
+            <message>“名字”为必填项！</message>
+        </field-validator>
+        
+        <field-validator type="fieldexpression" >
+            <param name="expression">
+				( person.name.length() &lt; 51)
+            </param>
+            <message>“名字”长度不能大于50字符！</message>
+        </field-validator>
+	</field>
+	
+	<field name="person.credentialsType" >
+		<field-validator type="required">
+            <message>“证件类型”为必选项！</message>
+        </field-validator>
+	</field>
+	
 	<field name="person.description" >
 		<field-validator type="fieldexpression" >
             <param name="expression">

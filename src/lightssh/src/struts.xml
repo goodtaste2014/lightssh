@@ -9,7 +9,7 @@
     <constant name="struts.enable.DynamicMethodInvocation" value="false" />
     <constant name="struts.action.extension" value="do"/>
 	<constant name="struts.ognl.allowStaticMethodAccess" value="true"/>
-    <constant name="struts.ui.theme" value="simple"/>
+    <constant name="struts.ui.theme" value="colorful"/>
     <constant name="struts.multipart.maxSize" value="2097152"/>
     <constant name="struts.devMode" value="false"/>
     <constant name="struts.i18n.encoding" value="UTF-8"/>
