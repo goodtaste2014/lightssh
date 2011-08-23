@@ -17,11 +17,13 @@
 	</s:if>
 	
 	<%-- FieldError Messages - usually set by validation rules --%>
+	<%-- 使用theme colorful,这里不需要显示
 	<s:if test="hasFieldErrors()">
 		<s:iterator value="fieldErrors">
 			<div class="warning" id="<s:property  value="key" />"><s:property  value="value[0]" escape="false"/></div>		
 		</s:iterator>
 	</s:if>
+	--%>
 	
 	<%-- Success Messages --%>
 	<c:if test="${not empty success_messages}">

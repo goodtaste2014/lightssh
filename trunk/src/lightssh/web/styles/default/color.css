@@ -94,7 +94,7 @@ div.messages{
 	color: #FF3300;
 }
 
-div.warning,label.error{
+div.warning,label.error,span.error{
 	background-image: url("../../images/background/icon_warning.gif");
 	background-repeat: no-repeat;
 	background-position:0 center;
@@ -102,7 +102,7 @@ div.warning,label.error{
 	margin-left:4px;
 }
 
-label.error{
+label.error,span.error{
 	color: red;
 }
 
