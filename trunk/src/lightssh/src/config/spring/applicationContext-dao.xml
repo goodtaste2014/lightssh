@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	
+	<!-- Hibernate SessionFactory JPA-->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean" lazy-init="true">
+        <property name="dataSource" ref="dataSource" />       
+        <property name="annotatedClasses">
+            <list>
+                <!-- project entity -->
+                <value>com.google.code.lightssh.project.sequence.entity.Sequence</value>
+                <value>com.google.code.lightssh.project.scheduler.entity.JobInterval</value>
+                <value>com.google.code.lightssh.project.identity.entity.Identity</value>
+                <value>com.google.code.lightssh.project.log.entity.Access</value>
+                <value>com.google.code.lightssh.project.log.entity.History</value>
+                <value>com.google.code.lightssh.project.security.entity.Role</value>
+                <value>com.google.code.lightssh.project.security.entity.Permission</value>
+                <value>com.google.code.lightssh.project.security.entity.Navigation</value>
+                <value>com.google.code.lightssh.project.security.entity.LoginAccount</value>
+                <value>com.google.code.lightssh.project.party.entity.Party</value>
+                <value>com.google.code.lightssh.project.party.entity.Person</value>
+                <value>com.google.code.lightssh.project.party.entity.Organization</value>
+                
+            </list>
+        </property>
+       
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.query.substitutions">true 'Y', false 'N'</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+            </props>
+        </property>   
+    </bean>
+    
+    <!-- sequence -->
+	<bean id="sequenceDao" class="com.google.code.lightssh.common.dao.hibernate.HibernateDao">
+		<constructor-arg>
+    		<value>com.google.code.lightssh.project.sequence.entity.Sequence</value>
+    	</constructor-arg>    
+        <property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+    <!-- scheduler|jobInterval -->
+	<bean id="jobIntervalDao" class="com.google.code.lightssh.common.dao.hibernate.HibernateDao">
+		<constructor-arg>
+    		<value>com.google.code.lightssh.project.scheduler.entity.JobInterval</value>
+    	</constructor-arg>    
+        <property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<!-- security role -->
+	<bean id="roleDao" class="com.google.code.lightssh.project.security.dao.RoleDaoHibernate">
+        <property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+
+	<!-- security navigation -->
+	<bean id="navigationDao" class="com.google.code.lightssh.project.security.dao.NavigationDaoHibernate">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<!-- security permission -->
+	<bean id="permissionDao" class="com.google.code.lightssh.common.dao.hibernate.HibernateDao">
+		<constructor-arg>
+    		<value>com.google.code.lightssh.project.security.entity.Permission</value>
+    	</constructor-arg>    
+        <property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<!-- security loginAccount -->
+	<bean id="loginAccountDao" class="com.google.code.lightssh.project.security.dao.LoginAccountDaoHibernate">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<!-- party -->
+	<bean id="partyDao" class="com.google.code.lightssh.project.party.dao.PartyDaoHibernate">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<!-- party organization -->
+	<bean id="organizationDao" class="com.google.code.lightssh.project.party.dao.OrganizationDaoHibernate">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<!-- party person -->
+	<bean id="personDao" class="com.google.code.lightssh.common.dao.hibernate.HibernateDao">
+		<constructor-arg>
+    		<value>com.google.code.lightssh.project.party.entity.Person</value>
+    	</constructor-arg>
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+
+	<!-- identity -->
+	<bean id="identityDao" class="com.google.code.lightssh.project.identity.dao.IdentityDaoHibernate">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<!-- log access -->
+	<bean id="accessDao" class="com.google.code.lightssh.project.log.dao.AccessDaoHibernate">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<!-- log history -->
+	<bean id="historyDao" class="com.google.code.lightssh.project.log.dao.HistoryDaoHibernate">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+</beans>

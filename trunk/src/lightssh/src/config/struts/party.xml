@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+	<package name="party" extends="default" namespace="/party">
+		<action name="popup" class="partyAction" method="list">
+			<result name="success">/pages/party/popup.jsp</result>	
+        </action>
+    </package>
+    
+	<package name="party_organization" extends="default" namespace="/party/organization">
+		<action name="edit" class="organizationAction" method="edit">
+			<result name="input">/pages/party/organization/profile.jsp</result>	
+			<result name="success">/pages/party/organization/profile.jsp</result>	
+        </action>
+        
+        <action name="popup" class="organizationAction" method="popup">
+			<result name="success" >/pages/party/organization/popup.jsp</result>
+        </action>
+        
+        <action name="save" class="organizationAction" method="save">
+        	<interceptor-ref name="crudStack"/>
+			<result name="input" >/pages/party/organization/profile.jsp</result>
+			<result name="success" type="redirectAction">list</result>
+        </action>
+        
+        <action name="list" class="organizationAction" method="list">
+			<result name="success" >/pages/party/organization/list.jsp</result>
+        </action>
+        
+        <action name="remove" class="organizationAction" method="delete">
+			<result name="success" type="redirectAction">list</result>
+			<result name="input" type="redirectAction">list</result>
+        </action>
+        
+        <action name="unique" class="organizationAction" method="unique">
+			<result name="success" type="json">
+				<param name="includeProperties">unique</param>
+			</result>
+        </action>
+	</package>
+	
+	<package name="party_person" extends="default" namespace="/party/person">
+		<action name="edit" class="personAction" method="edit">
+			<result name="input">/pages/party/person/profile.jsp</result>	
+			<result name="success">/pages/party/person/profile.jsp</result>	
+        </action>
+        
+        <action name="save" class="personAction" method="save">
+        	<interceptor-ref name="crudStack"/>
+			<result name="input" >/pages/party/person/profile.jsp</result>
+			<result name="success" type="redirectAction">list</result>
+        </action>
+        
+        <action name="list" class="personAction" method="list">
+			<result name="success" >/pages/party/person/list.jsp</result>
+        </action>
+        
+        <action name="remove" class="personAction" method="delete">
+			<result name="success" type="redirectAction">list</result>
+			<result name="input" type="redirectAction">list</result>
+        </action>
+	</package>
+</struts>

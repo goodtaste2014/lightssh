@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd" default-lazy-init="true">
+		
+	<!-- base action -->
+	<bean id="baseAction" class="com.google.code.lightssh.common.web.action.BaseAction" scope="prototype"/>
+	
+	<!-- security action -->
+	<bean id="securityAction" class="com.google.code.lightssh.project.web.action.SecurityAction" scope="prototype"/>
+	
+	<!-- security login account -->
+	<bean id="loginAccountAction" class="com.google.code.lightssh.project.security.web.LoginAccountAction" scope="prototype">
+		<property name="loginAccountManager" ref="loginAccountManager"/>
+	</bean>
+	
+	<!-- security login account report -->
+	<bean id="reportLoginAccountAction" class="com.google.code.lightssh.project.security.web.ReportLoginAccountAction" scope="prototype">
+		<property name="manager" ref="loginAccountManager"/>
+	</bean>
+	
+	<!-- security role -->
+	<bean id="roleAction" class="com.google.code.lightssh.project.security.web.RoleAction" scope="prototype">
+		<property name="roleManager" ref="roleManager"/>
+		<property name="navigationManager" ref="navigationManager"/>
+	</bean>
+	
+	<!-- security navigation -->
+	<bean id="navigationAction" class="com.google.code.lightssh.project.security.web.NavigationAction" scope="prototype">
+		<property name="navigationManager" ref="navigationManager"/>
+	</bean>
+	
+	<!-- party -->
+	<bean id="partyAction" class="com.google.code.lightssh.project.party.web.PartyAction" scope="prototype">
+		<property name="partyManager" ref="partyManager"/>
+	</bean>
+	
+	<!-- party organization -->
+	<bean id="organizationAction" class="com.google.code.lightssh.project.party.web.OrganizationAction" scope="prototype">
+		<property name="organizationManager" ref="organizationManager"/>
+	</bean>
+	
+	<!-- party person -->
+	<bean id="personAction" class="com.google.code.lightssh.project.party.web.PersonAction" scope="prototype">
+		<property name="personManager" ref="personManager"/>
+	</bean>
+	
+	<!-- log access -->
+	<bean id="accessAction" class="com.google.code.lightssh.project.log.web.AccessAction" scope="prototype">
+		<property name="accessManager" ref="accessManager"/>
+	</bean>
+	
+	<!-- scheduler -->
+	<bean id="schedulerAction" class="com.google.code.lightssh.project.scheduler.web.SchedulerAction" scope="prototype">
+		<property name="schedulerManager" ref="schedulerManager"/>
+	</bean>
+	
+</beans>
