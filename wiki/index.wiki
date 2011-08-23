@@ -1,3 +1,0 @@
-#sidebar navigation
-
-=Light SSH 总揽
