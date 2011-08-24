@@ -53,7 +53,7 @@
 				var select = $("<select></select>");
 				$("<option value=''></option>").appendTo(select);
 				$("<option value='en'>ENGLISH</option>").appendTo(select);
-				$("<option value='cn_ZH'>中文</option>").appendTo(select);
+				$("<option value='zh_CN'>中文</option>").appendTo(select);
 				
 				$(link).hide();
 				select.insertAfter(link);
