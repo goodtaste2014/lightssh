@@ -115,6 +115,22 @@ input.list{
 	background: #f2f2f2 url("../../images/background/icon_list.png") no-repeat left center;
 }
 
+input.pdf{
+	background: #f2f2f2 url("../../images/background/icon_pdf.png") no-repeat left center;
+}
+
+input.xls{
+	background: #f2f2f2 url("../../images/background/icon_excel.png") no-repeat left center;
+}
+
+input.csv{
+	background: #f2f2f2 url("../../images/background/icon_csv.png") no-repeat left center;
+}
+
+input.rtf{
+	background: #f2f2f2 url("../../images/background/icon_word.png") no-repeat left center;
+}
+
 input.login{
 	background: #f2f2f2 url("../../images/background/icon_login.png") no-repeat left center;
 	height:20px;
