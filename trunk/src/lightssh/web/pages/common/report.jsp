@@ -30,16 +30,22 @@
 	<s:set name="queryString" value="#queryString + \"&amp;\" + #PAGE_NUMBER_NAME + \"=\" + #pagination.number"/>
 	
 	<div class="export">
-		<!--  
+		<%-- 
 		<select>
 			<option value="current">当前页</option>
 			<option value="all">全部</option>
 		</select>
-		-->
 		<a class="pdf" href="<s:property value="#queryString+ '&amp;'" escape="false"/>type=PDF">PDF</a>
 		<a class="xls" href="<s:property value="#queryString+ '&amp;'" escape="false"/>type=XLS">XLS</a>
 		<a class="csv" href="<s:property value="#queryString+ '&amp;'" escape="false"/>type=CSV">CSV</a>
 		<a class="word" href="<s:property value="#queryString+ '&amp;'" escape="false"/>type=RTF">RTF</a>
+		--%>  
+		
+		<input type="button" class="action pdf" value="PDF" onclick="location.href='<s:property value="#queryString+ '&amp;'" escape="false"/>type=PDF'"/>
+		<input type="button" class="action xls" value="EXCEL" onclick="location.href='<s:property value="#queryString+ '&amp;'" escape="false"/>type=XLS'"/>
+		<input type="button" class="action csv" value="CSV" onclick="location.href='<s:property value="#queryString+ '&amp;'" escape="false"/>type=CSV'"/>
+		<input type="button" class="action rtf" value="WORD" onclick="location.href='<s:property value="#queryString+ '&amp;'" escape="false"/>type=RTF'"/>
+		
 	</div>
 	
 	<sc
