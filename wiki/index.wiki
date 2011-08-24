@@ -1,6 +1,6 @@
 #sidebar navigation
 
-==关于light ssh==
+==light ssh 概述==
 
 light ssh 是建立在JAVA开源组件之上，快速进行web开发的一套半成品。
 
