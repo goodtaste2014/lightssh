@@ -4,7 +4,7 @@
 <head>
 	<meta name="decorator" content="background"/>
 	
-	<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/ui/i18n/jquery.ui.datepicker-<s:property value="locale"/>.js"></script>
+	<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/ui/i18n/jquery.ui.datepicker_<s:property value="locale"/>.js"></script>
 	
 	<title>编辑用户账号</title>
 	
