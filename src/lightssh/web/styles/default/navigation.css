@@ -166,9 +166,24 @@ ul.vertical-menu li a{
 
 /* mouse over color */
 ul.vertical-menu li a:hover{
-	background-color: #B1D3EC;
+	background: #00CC00;
 	color:#2D4488;
 	/*background-position: 0 center;*/
+	
+	/* Mozilla: */
+    background: -moz-linear-gradient(top, #FFFFFF, #00CC00);
+    
+	/* Chrome, Safari:*/
+    background: -webkit-gradient(linear,
+                left top, left bottom, from(#FFFFFF), to(#00CC00));
+                
+    /* Opera */
+	background: -o-linear-gradient(top, #FFFFFF, #00CC00);
+	
+    /* MSIE */
+    filter: progid:DXImageTransform.Microsoft.Gradient(
+                StartColorStr='#FFFFFF', EndColorStr='#00CC00', GradientType=0);
+	
 }
 
 /* current selected */
