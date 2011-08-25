@@ -19,7 +19,7 @@ import javax.persistence.TemporalType;
 @Entity
 @Table( name="T_PARTY_PERSON" )
 @PrimaryKeyJoinColumn(name="id") 
-public class Person extends Party implements java.lang.Cloneable{
+public class Person extends Party{
 	
 	private static final long serialVersionUID = 1L;
 
@@ -47,7 +47,7 @@ public class Person extends Party implements java.lang.Cloneable{
 	
 	@Override
 	public String getSequenceKey() {
-		return "PERSON";
+		return "SSH-";
 	}
 	
 	/**
@@ -232,10 +232,6 @@ public class Person extends Party implements java.lang.Cloneable{
 	}	
 	
 	 public Person clone(){
-		 try{
-			 return (Person)super.clone();
-		 }catch( CloneNotSupportedException e ){
-			 return null;
-		 }
+		 return (Person)super.clone();
 	}
 }

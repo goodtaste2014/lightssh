@@ -12,31 +12,31 @@
     </package>
     
 	<package name="party_organization" extends="default" namespace="/party/organization">
-		<action name="edit" class="organizationAction" method="edit">
+		<action name="edit" class="partyAction" method="edit">
 			<result name="input">/pages/party/organization/profile.jsp</result>	
 			<result name="success">/pages/party/organization/profile.jsp</result>	
         </action>
         
-        <action name="popup" class="organizationAction" method="popup">
+        <action name="popup" class="partyAction" method="popup">
 			<result name="success" >/pages/party/organization/popup.jsp</result>
         </action>
         
-        <action name="save" class="organizationAction" method="save">
+        <action name="save" class="partyAction" method="save">
         	<interceptor-ref name="crudStack"/>
 			<result name="input" >/pages/party/organization/profile.jsp</result>
 			<result name="success" type="redirectAction">list</result>
         </action>
         
-        <action name="list" class="organizationAction" method="list">
+        <action name="list" class="partyAction" method="list">
 			<result name="success" >/pages/party/organization/list.jsp</result>
         </action>
         
-        <action name="remove" class="organizationAction" method="delete">
+        <action name="remove" class="partyAction" method="delete">
 			<result name="success" type="redirectAction">list</result>
 			<result name="input" type="redirectAction">list</result>
         </action>
         
-        <action name="unique" class="organizationAction" method="unique">
+        <action name="unique" class="partyAction" method="unique">
 			<result name="success" type="json">
 				<param name="includeProperties">unique</param>
 			</result>
@@ -44,22 +44,22 @@
 	</package>
 	
 	<package name="party_person" extends="default" namespace="/party/person">
-		<action name="edit" class="personAction" method="edit">
+		<action name="edit" class="partyAction" method="edit">
 			<result name="input">/pages/party/person/profile.jsp</result>	
 			<result name="success">/pages/party/person/profile.jsp</result>	
         </action>
         
-        <action name="save" class="personAction" method="save">
+        <action name="save" class="partyAction" method="save">
         	<interceptor-ref name="crudStack"/>
 			<result name="input" >/pages/party/person/profile.jsp</result>
 			<result name="success" type="redirectAction">list</result>
         </action>
         
-        <action name="list" class="personAction" method="list">
+        <action name="list" class="partyAction" method="list">
 			<result name="success" >/pages/party/person/list.jsp</result>
         </action>
         
-        <action name="remove" class="personAction" method="delete">
+        <action name="remove" class="partyAction" method="delete">
 			<result name="success" type="redirectAction">list</result>
 			<result name="input" type="redirectAction">list</result>
         </action>

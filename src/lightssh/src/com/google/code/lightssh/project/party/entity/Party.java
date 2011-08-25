@@ -17,7 +17,7 @@ import com.google.code.lightssh.common.model.Sequenceable;
 //@MappedSuperclass
 @Entity
 @Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
-public abstract class Party implements Persistence<String>,Sequenceable{
+public abstract class Party implements Persistence<String>,Sequenceable,Cloneable{
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -31,7 +31,7 @@ public abstract class Party implements Persistence<String>,Sequenceable{
 	/**
 	 * 名称
 	 */
-	@Column( name="NAME",unique=true,length=100 )
+	@Column( name="NAME",unique=false,length=100 )
 	private String name;
 	
 	/**
@@ -64,6 +64,14 @@ public abstract class Party implements Persistence<String>,Sequenceable{
 	@Override
 	public int getSequenceStep() {
 		return 1;
+	}
+	
+	public Party clone(){
+		 try{
+			 return (Party)super.clone();
+		 }catch( CloneNotSupportedException e ){
+			 return null;
+		 }
 	}
 	
 	/**

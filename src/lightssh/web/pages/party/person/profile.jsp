@@ -24,7 +24,7 @@
 					}
 				});
 				
-				$("input[type='text'][name='person.birthday']").datepicker({dateFormat: 'yy-mm-dd',changeYear:true,yearRange:'-60,60'});
+				$("input[type='text'][name='party.birthday']").datepicker({dateFormat: 'yy-mm-dd',changeYear:true,yearRange:'-60,60'});
 			});
 			
 		</script>
@@ -42,7 +42,8 @@
 	<s:form id="profile_form" action="save" namespace="/party/person" method="post">
 		<table class="profile">
 			<tbody>
-				<s:hidden name="person.id"/>
+				<input type="hidden" name="party" value="person"/>
+				<s:hidden name="party.id"/>
 				<%-- 
 				<tr>
 					<th><label for="lastName" class="required">姓</label></th>
@@ -64,14 +65,14 @@
 				<tr>
 					<th><label for="name" class="required">姓名</label></th>
 					<td>
-						<s:textfield id="name" name="person.name" size="20"/>
+						<s:textfield id="name" name="party.name" size="20"/>
 					</td>
 				</tr>
 				
 				<tr>
 					<th><label for="gendar">性别</label></th>
 					<td>
-						<s:select name="person.gender" value="%{person.gender.name()}" listKey="name()" 
+						<s:select name="party.gender" value="%{party.gender.name()}" listKey="name()" 
 							list="@com.google.code.lightssh.project.party.entity.Person$Gender@values()"></s:select>
 					</td>
 				</tr>
@@ -79,7 +80,7 @@
 				<tr>
 					<th><label for="enabled">是否有效</label></th>
 					<td>
-						<s:select name="person.enabled" list="#{true:'是',false:'否'}"></s:select>
+						<s:select name="party.enabled" list="#{true:'是',false:'否'}"></s:select>
 					</td>
 				</tr>
 				
@@ -87,28 +88,28 @@
 					<th><label for="credentialsType">证件类型</label></th>
 					<td>
 						<s:select list="@com.google.code.lightssh.project.party.entity.CredentialsType@values()" 
-							name="person.credentialsType" listKey="name()" headerKey="" headerValue=""
-							value="person.credentialsType.name()"/>
+							name="party.credentialsType" listKey="name()" headerKey="" headerValue=""
+							value="party.credentialsType.name()"/>
 					</td>
 				</tr>
 				
 				<tr>
 					<th><label for="identityCardNumber">证件号码</label></th>
 					<td>
-						<s:textfield name="person.identityCardNumber" size="30"/>
+						<s:textfield name="party.identityCardNumber" size="30"/>
 					</td>
 				</tr>
 				
 				<tr>
 					<th><label for="birthday">生日</label></th>
 					<td>
-						<s:textfield name="person.birthday" id="person_birthday" size="10"/>
+						<s:textfield name="party.birthday" id="person_birthday" size="10"/>
 					</td>
 				</tr>
 				
 				<tr>
 					<th><label for="desc">描述</label></th>
-					<td><s:textarea id="desc" name="person.description" cols="60" rows="5"/></td>
+					<td><s:textarea id="desc" name="party.description" cols="60" rows="5"/></td>
 				</tr>
 			</tbody>
 		</table>
@@ -116,6 +117,7 @@
 		<s:token/>
 	
 		<p class="submit">
+			<s:set name="isInsert" value="%{(party==null||party.id==null)}"/>
 			<input type="submit" class="action save" name="Submit" 
 				value="<s:property value="%{#isInsert?\"新增会员\":\"修改会员\"}"/>"/>
 		</p>

@@ -18,13 +18,12 @@
 				 */
 				$("#profile_form").validate({
 					rules:{
-						"organization.name":{required:true,maxlength:100}
-						,"organization.sequence":{digits:true}
-						,"organization.description":{maxlength:200}
+						"party.name":{required:true,maxlength:100}
+						,"party.description":{maxlength:200}
 					}
 					,submitHandler: function(form) {
-						if( !ajaxCheck( ) )
-							this.showErrors({"organization.name": "菜单名称已存在,请改用其它名称！"});
+						if( flase && !ajaxCheck( ) ) //TODO AJAX 提交存在问题！！！
+							this.showErrors({"party.name": "名称已存在,请改用其它名称！"});
 						else
 							form.submit();
 					}
@@ -41,15 +40,15 @@
 					url: "<s:url value="/party/organization/unique.do"/>"
 					,dataType: "json" 
 					,type:"post"
-					,async: false
+					,async: true
 					,data: {
-			        	"organization.id": function(){
-							return $("input[name='organization.id']").val()
+						"party":"organization"
+			        	,"party.id": function(){
+							return $("input[name='party.id']").val()
 				        }
-				        ,"organization.name": function(){
-							return $.trim( $("input[name='organization.name']").val() );
-				        },
-				        
+				        ,"party.name": function(){
+							return $.trim( $("input[name='party.name']").val() );
+				        }
 			        }
 			        ,error: function(){ alert("检查重名出现异常!") }
 			        ,success: function(json){
@@ -104,30 +103,17 @@
 				<tr>
 					<th><label for="name" class="required">名称</label></th>
 					<td>
-						<s:set name="isInsert" value="%{(organization==null||organization.id==null)}"/>
-						<s:hidden name="organization.id"/>
-						<s:hidden name="organization.enabled" value="%{#isInsert?true:organization.enabled}"/>
+						<s:set name="isInsert" value="%{(party==null||party.id==null)}"/>
+						<input type="hidden" name="party" value="organization"/>
+						<s:hidden name="party.id"/>
+						<s:hidden name="party.enabled" value="%{#isInsert?true:party.enabled}"/>
 						
-						<s:textfield id="name" name="organization.name" size="40" maxlength="300"/>
-					</td>
-				</tr>
-				<tr>
-					<th><label for="sequence">显示顺序</label></th>
-					<td>
-						<s:textfield id="sequence" name="organization.sequence"/>
-					</td>
-				</tr>
-				<tr>
-					<th><label for="parent">上级组织</label></th>
-					<td>
-						<span class="popup" onclick="popup();">&nbsp;</span>
-						<s:hidden name="organization.parent.id" id="parent_id"/>
-						<span id="span_parent_name"><s:property value="organization.parent.name"/></span>
+						<s:textfield id="name" name="party.name" size="40" maxlength="300"/>
 					</td>
 				</tr>
 				<tr>
 					<th><label for="desc">描述</label></th>
-					<td><s:textarea id="desc" name="organization.description" cols="60" rows="5"/></td>
+					<td><s:textarea id="desc" name="party.description" cols="60" rows="5"/></td>
 				</tr>
 			</tbody>
 		</table>

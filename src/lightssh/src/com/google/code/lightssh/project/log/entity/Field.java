@@ -1,7 +1,12 @@
 package com.google.code.lightssh.project.log.entity;
 
-
+/**
+ * 
+ * @author YangXiaojin
+ *
+ */
 public class Field{
+	
 	/**
 	 * 属性名
 	 */

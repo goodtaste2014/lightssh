@@ -83,19 +83,6 @@
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 	
-	<!-- party organization -->
-	<bean id="organizationDao" class="com.google.code.lightssh.project.party.dao.OrganizationDaoHibernate">
-		<property name="sessionFactory" ref="sessionFactory"/>
-	</bean>
-	
-	<!-- party person -->
-	<bean id="personDao" class="com.google.code.lightssh.common.dao.hibernate.HibernateDao">
-		<constructor-arg>
-    		<value>com.google.code.lightssh.project.party.entity.Person</value>
-    	</constructor-arg>
-		<property name="sessionFactory" ref="sessionFactory"/>
-	</bean>
-
 	<!-- identity -->
 	<bean id="identityDao" class="com.google.code.lightssh.project.identity.dao.IdentityDaoHibernate">
 		<property name="sessionFactory" ref="sessionFactory"/>
