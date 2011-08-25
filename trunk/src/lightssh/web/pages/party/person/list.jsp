@@ -8,7 +8,7 @@
 		
 		<script type="text/javascript">
 			function doRemove( id,name ){
-				var url = '<s:url value="/party/person/remove.do?person.id="/>' + id ;
+				var url = '<s:url value="/party/person/remove.do"/>?party=person&party.id=' + id ;
 				if( confirm('确认删除人员[' + name + ']'))
 					location.href=url;
 			}
@@ -68,7 +68,7 @@
 			<tr class="<s:property value="#loop.odd?\"odd\":\"even\""/>">
 				<td><s:property value="#loop.index+1"/></td>
 				<td><s:property value="%{id}"/></td>
-				<td><a href="<s:url value="/party/person/edit.do?person.id=%{id}"/>"><s:property value="%{name}"/></a></td>
+				<td><a href="<s:url value="/party/person/edit.do?party=person&party.id=%{id}"/>"><s:property value="%{name}"/></a></td>
 				<td><s:property value="%{credentialsType}"/></td>
 				<td><s:property value="%{identityCardNumber}"/></td>
 				<td><s:property value="%{gender}"/></td>

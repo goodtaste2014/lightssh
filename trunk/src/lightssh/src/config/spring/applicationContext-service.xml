@@ -46,19 +46,8 @@
 	</bean>
 	
 	<!-- party -->
-	<bean id="partyManager" class="com.google.code.lightssh.common.service.BaseManagerImpl">
+	<bean id="partyManager" class="com.google.code.lightssh.project.party.service.PartyManagerImpl">
 		<property name="dao" ref="partyDao" />
-	</bean>
-	
-	<!-- party organization -->
-	<bean id="organizationManager" class="com.google.code.lightssh.project.party.service.OrganizationManagerImpl">
-		<property name="organizationDao" ref="organizationDao" />
-		<property name="sequenceManager" ref="sequenceManager" />
-	</bean>
-	
-	<!-- party person -->
-	<bean id="personManager" class="com.google.code.lightssh.project.party.service.PersonManagerImpl">
-		<property name="dao" ref="personDao" />
 		<property name="sequenceManager" ref="sequenceManager" />
 		<property name="accessManager" ref="accessManager" />
 	</bean>
