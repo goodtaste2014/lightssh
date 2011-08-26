@@ -25,6 +25,8 @@
                 <value>com.google.code.lightssh.project.party.entity.Party</value>
                 <value>com.google.code.lightssh.project.party.entity.Person</value>
                 <value>com.google.code.lightssh.project.party.entity.Organization</value>
+                <value>com.google.code.lightssh.project.party.entity.PartyRole</value>
+                <value>com.google.code.lightssh.project.party.entity.PartyRelationship</value>
                 
             </list>
         </property>
@@ -78,11 +80,6 @@
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 	
-	<!-- party -->
-	<bean id="partyDao" class="com.google.code.lightssh.project.party.dao.PartyDaoHibernate">
-		<property name="sessionFactory" ref="sessionFactory"/>
-	</bean>
-	
 	<!-- identity -->
 	<bean id="identityDao" class="com.google.code.lightssh.project.identity.dao.IdentityDaoHibernate">
 		<property name="sessionFactory" ref="sessionFactory"/>
@@ -95,6 +92,21 @@
 	
 	<!-- log history -->
 	<bean id="historyDao" class="com.google.code.lightssh.project.log.dao.HistoryDaoHibernate">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<!-- party -->
+	<bean id="partyDao" class="com.google.code.lightssh.project.party.dao.PartyDaoHibernate">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<!-- party role-->
+	<bean id="partyRoleDao" class="com.google.code.lightssh.project.party.dao.PartyRoleDaoHibernate">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<!-- party relationship-->
+	<bean id="partyRelationshipDao" class="com.google.code.lightssh.project.party.dao.PartyRelationshipDaoHibernate">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 </beans>

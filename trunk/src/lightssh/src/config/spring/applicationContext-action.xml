@@ -34,11 +34,6 @@
 		<property name="navigationManager" ref="navigationManager"/>
 	</bean>
 	
-	<!-- party -->
-	<bean id="partyAction" class="com.google.code.lightssh.project.party.web.PartyAction" scope="prototype">
-		<property name="partyManager" ref="partyManager"/>
-	</bean>
-	
 	<!-- log access -->
 	<bean id="accessAction" class="com.google.code.lightssh.project.log.web.AccessAction" scope="prototype">
 		<property name="accessManager" ref="accessManager"/>
@@ -47,6 +42,17 @@
 	<!-- scheduler -->
 	<bean id="schedulerAction" class="com.google.code.lightssh.project.scheduler.web.SchedulerAction" scope="prototype">
 		<property name="schedulerManager" ref="schedulerManager"/>
+	</bean>
+		
+	<!-- party -->
+	<bean id="partyAction" class="com.google.code.lightssh.project.party.web.PartyAction" scope="prototype">
+		<property name="partyManager" ref="partyManager"/>
+	</bean>
+		
+	<!-- organization -->
+	<bean id="organizationAction" class="com.google.code.lightssh.project.party.web.OrganizationAction" scope="prototype">
+		<property name="partyRelationshipManager" ref="partyRelationshipManager"/>
+		<property name="partyManager" ref="partyManager"/>
 	</bean>
 	
 </beans>

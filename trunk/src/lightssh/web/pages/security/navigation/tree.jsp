@@ -1,7 +1,7 @@
-<%@ page language="java" pageEncoding="GBK"%>
+<%@ page language="java" pageEncoding="utf-8"%>
 <%@ include file="/pages/common/taglibs.jsp" %>
 
-	<ul id="mytree">
+	<ul id="mytree" style="width:200px;clear: none;float:left;height: 100%;">
 		<li><input type="checkbox" /><a href="?1">Item 1</a>
 			<ul>
 				<li><input type="checkbox" /><a href="?1.0">Item 1.0 </a>

@@ -1,7 +1,12 @@
 package com.google.code.lightssh.project.party.service;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import org.apache.commons.collections.CollectionUtils;
 
 import com.google.code.lightssh.common.ApplicationException;
 import com.google.code.lightssh.common.model.page.ListPage;
@@ -13,7 +18,11 @@ import com.google.code.lightssh.project.log.service.AccessManager;
 import com.google.code.lightssh.project.party.dao.PartyDao;
 import com.google.code.lightssh.project.party.entity.Organization;
 import com.google.code.lightssh.project.party.entity.Party;
+import com.google.code.lightssh.project.party.entity.PartyRelationship;
+import com.google.code.lightssh.project.party.entity.PartyRole;
 import com.google.code.lightssh.project.party.entity.Person;
+import com.google.code.lightssh.project.party.entity.PartyRelationship.RelationshipType;
+import com.google.code.lightssh.project.party.entity.PartyRole.RoleType;
 import com.google.code.lightssh.project.sequence.service.SequenceManager;
 
 /**
@@ -26,6 +35,10 @@ public class PartyManagerImpl extends BaseManagerImpl<Party> implements PartyMan
 	private SequenceManager sequenceManager;
 	
 	private AccessManager accessManager;
+	
+	private PartyRoleManager partyRoleManager;
+	
+	private PartyRelationshipManager partyRelationshipManager;
 	
 	public void setDao( PartyDao dao ){
 		super.dao = dao;
@@ -41,6 +54,15 @@ public class PartyManagerImpl extends BaseManagerImpl<Party> implements PartyMan
 	
 	public void setAccessManager(AccessManager accessManager) {
 		this.accessManager = accessManager;
+	}
+
+	public void setPartyRoleManager(PartyRoleManager partyRoleManager) {
+		this.partyRoleManager = partyRoleManager;
+	}
+
+	public void setPartyRelationshipManager(
+			PartyRelationshipManager partyRelationshipManager) {
+		this.partyRelationshipManager = partyRelationshipManager;
 	}
 
 	public void remove(Party t, Access access) {
@@ -118,6 +140,67 @@ public class PartyManagerImpl extends BaseManagerImpl<Party> implements PartyMan
 			?null:page.getList().get(0);
 		
 		return exists == null || exists.getIdentity().equals( party.getIdentity() );
+	}
+
+	@Override
+	public Party getParentCorporation() {
+		List<PartyRole> list = partyRoleManager.list(RoleType.PARENT_ORG);
+		if( list == null || list.isEmpty() )
+			throw new ApplicationException("总公司/最上级组织 未设定！");
+		
+		return list.get(0).getParty();
+	}
+
+	@Override
+	public void save(Organization party,Collection<RoleType> types, Access access) {
+		if( party == null )
+			throw new IllegalArgumentException("内部组织为空！");
+			
+		if( types == null || types.isEmpty() )
+			throw new IllegalArgumentException("内部组织("+party.getName()+")角色类型为空！");
+		
+		Set<RoleType> roleTypes = new HashSet<RoleType>( types );
+		roleTypes.add( RoleType.INTERNAL_ORG );
+		
+		List<PartyRole> partyRoles = partyRoleManager.list(RoleType.INTERNAL_ORG);
+		if( partyRoles == null || partyRoles.isEmpty() ) 
+			roleTypes.add( RoleType.PARENT_ORG ); //第一个保存的组织设定为'最高上级'
+		
+		this.save(party, access);
+		
+		PartyRole fromRole = null ; //下级隶属关系
+		Set<RoleType> interalOrgSet = new HashSet<RoleType>( );
+		CollectionUtils.addAll(interalOrgSet, RoleType.valuesOfInternalOrg());
+		
+		partyRoles = new ArrayList<PartyRole>( roleTypes.size() );
+		for( RoleType type:roleTypes ){
+			PartyRole newRole = new PartyRole(party,type);
+			partyRoles.add( newRole );
+			
+			if( interalOrgSet.contains( type ) )
+				fromRole = newRole;
+		}
+		//partyRoleManager.save(party, roleTypes);
+		partyRoleManager.save( partyRoles );
+		
+		if( party.getParent() == null && party.getParent().getId() == null )
+			return;
+		
+		PartyRole toRole = null; //上级隶属关系
+		List<PartyRole> toRoles = partyRoleManager.list( party.getParent() );
+		for( PartyRole role:toRoles ){
+			if( RoleType.PARENT_ORG.equals( role.getType() ) ){
+				toRole = role;
+				break;
+			}
+				
+			if( interalOrgSet.contains( role.getType() ) )
+				toRole = role;
+		}
+		
+		PartyRelationship pr = new PartyRelationship( 
+				RelationshipType.ORG_ROLLUP,fromRole,toRole );
+		partyRelationshipManager.save( pr );
 	}
 	
 }

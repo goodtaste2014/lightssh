@@ -1,10 +1,12 @@
 package com.google.code.lightssh.project.party.service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 
 import com.google.code.lightssh.common.service.BaseManagerImpl;
+import com.google.code.lightssh.project.party.dao.PartyRoleDao;
 import com.google.code.lightssh.project.party.entity.Party;
 import com.google.code.lightssh.project.party.entity.PartyRole;
 import com.google.code.lightssh.project.party.entity.PartyRole.RoleType;
@@ -15,10 +17,28 @@ import com.google.code.lightssh.project.party.entity.PartyRole.RoleType;
  */
 public class PartyRoleManagerImpl extends BaseManagerImpl<PartyRole> implements PartyRoleManager{
 
+	public void setDao( PartyRoleDao dao ){
+		super.dao = dao;
+	}
+	
+	public PartyRoleDao getDao(){
+		return (PartyRoleDao)super.dao;
+	}
+	
 	@Override
 	public List<PartyRole> list(RoleType type) {
-		// TODO Auto-generated method stub
-		return null;
+		return getDao().list(type);
+	}
+	
+	public void save( PartyRole role ){
+		if( role == null )
+			return;
+		
+		if( role.getCreatedTime() == null ){
+			role.setCreatedTime(Calendar.getInstance());
+			super.create(role);
+		}else 
+			super.update(role);
 	}
 
 	@Override
@@ -34,6 +54,16 @@ public class PartyRoleManagerImpl extends BaseManagerImpl<PartyRole> implements 
 		}
 		
 		super.dao.create(entities);
+	}
+
+	@Override
+	public List<Party> listParty(RoleType type) {
+		return getDao().listParty(type);
+	}
+
+	@Override
+	public List<PartyRole> list(Party party) {
+		return getDao().list(party);
 	}
 
 }

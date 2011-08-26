@@ -58,6 +58,11 @@ ul.path li{
 	cursor: pointer;
 }
 
+a.group{
+	padding-left:16px;
+	background: url("../../images/background/icon_group.png") no-repeat;
+}
+
 /** EXPORT **/
 .export a{
 	padding: 2px 4px 0 0;

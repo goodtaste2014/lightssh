@@ -44,6 +44,7 @@
 				<col class="element" width="100px"/>
 				<col class="element" width="200px"/>
 				<col class="element" width="50px"/>
+				<col class="element" width="50px"/>
 				<col class="element" />
 				<col class="element" width="100px"/>
 			</colgroup>
@@ -52,6 +53,7 @@
 					<th>&nbsp;</th>
 					<th>编号</th>
 					<th>名称</th>
+					<th>序号</th>
 					<th>有效</th>
 					<th>描述</th>
 					<th>操作</th>
@@ -63,6 +65,7 @@
 				<td><s:property value="#loop.index+1"/></td>
 				<td><s:property value="%{id}"/></td>
 				<td><a href="<s:url value="/party/organization/edit.do?party=organization&party.id=%{id}"/>"><s:property value="%{name}"/></a></td>
+				<td><s:property value="sequence"/></td>
 				<td><s:property value="%{enabled?'是':'否'}"/></td>
 				<td><s:property value="%{description}"/></td>
 				<td>

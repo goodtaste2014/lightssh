@@ -1,6 +1,6 @@
 package com.google.code.lightssh.project.party.entity;
 
-import java.util.Date;
+import java.util.Calendar;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -21,7 +21,7 @@ import com.google.code.lightssh.common.model.Period;
  *
  */
 @Entity
-@Table( name="T_PARTY_PERSON" )
+@Table( name="T_PARTY_ROLE" )
 public class PartyRole extends UUIDModel{
 	
 	private static final long serialVersionUID = 2352810614613495760L;
@@ -41,6 +41,11 @@ public class PartyRole extends UUIDModel{
 		,OTHER_ORG_UNIT("其它组织单元")
 		;
 		
+		public static RoleType[] valuesOfInternalOrg( ){
+			return new RoleType[]{CORPORATION_GROUP,CORPORATION
+					,SUBSIDIARY,DIVISION,DEPARTMENT,TEAM,OTHER_ORG_UNIT};
+		}
+		
 		private String value;
 		
 		RoleType( String value ){
@@ -54,12 +59,13 @@ public class PartyRole extends UUIDModel{
 		public String toString(){
 			return this.value;
 		}
+		
 	}
 	
 	/**
 	 * Party
 	 */
-	@ManyToOne( fetch=FetchType.LAZY )
+	@ManyToOne( fetch=FetchType.EAGER )
 	@JoinColumn( name="PARTY_ID")
 	private Party party;
 	
@@ -84,7 +90,8 @@ public class PartyRole extends UUIDModel{
 		super();
 		this.party = party;
 		this.type = type;
-		this.period = new Period(new Date(),null); 
+		Calendar calendar = Calendar.getInstance();
+		this.period = new Period(calendar.getTime(),null); 
 	}
 
 	public Party getParty() {
