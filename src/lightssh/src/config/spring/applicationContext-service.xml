@@ -45,13 +45,6 @@
 		<property name="sessionInvalidateUserCache" ref="sessionInvalidateUserCache" />
 	</bean>
 	
-	<!-- party -->
-	<bean id="partyManager" class="com.google.code.lightssh.project.party.service.PartyManagerImpl">
-		<property name="dao" ref="partyDao" />
-		<property name="sequenceManager" ref="sequenceManager" />
-		<property name="accessManager" ref="accessManager" />
-	</bean>
-	
 	<!-- identity -->
 	<bean id="identityManager" class="com.google.code.lightssh.project.identity.service.IdentityManagerImpl">
 		<property name="identityDao" ref="identityDao"/>
@@ -63,6 +56,26 @@
 		<property name="historyDao" ref="historyDao"/>
 		<property name="identityManager" ref="identityManager"/>
 		<property name="loginAccountManager" ref="loginAccountManager"/>
+	</bean>
+	
+	<!-- party -->
+	<bean id="partyManager" class="com.google.code.lightssh.project.party.service.PartyManagerImpl">
+		<property name="dao" ref="partyDao" />
+		<property name="sequenceManager" ref="sequenceManager" />
+		<property name="accessManager" ref="accessManager" />
+		<property name="partyRoleManager" ref="partyRoleManager" />
+		<property name="partyRelationshipManager" ref="partyRelationshipManager" />
+	</bean>
+	
+	<!-- party relationship-->
+	<bean id="partyRoleManager" class="com.google.code.lightssh.project.party.service.PartyRoleManagerImpl">
+		<property name="dao" ref="partyRoleDao" />
+	</bean>
+	
+	<!-- party relationship-->
+	<bean id="partyRelationshipManager" class="com.google.code.lightssh.project.party.service.PartyRelationshipManagerImpl">
+		<property name="dao" ref="partyRelationshipDao" />
+		<property name="partyRoleManager" ref="partyRoleManager" />
 	</bean>
 	
 </beans>

@@ -17,11 +17,11 @@
 			<result name="success">/pages/party/organization/profile.jsp</result>	
         </action>
         
-        <action name="popup" class="partyAction" method="popup">
+        <action name="popup" class="organizationAction" method="popup">
 			<result name="success" >/pages/party/organization/popup.jsp</result>
         </action>
         
-        <action name="save" class="partyAction" method="save">
+        <action name="save" class="organizationAction" method="save">
         	<interceptor-ref name="crudStack"/>
 			<result name="input" >/pages/party/organization/profile.jsp</result>
 			<result name="success" type="redirectAction">list</result>
@@ -37,6 +37,12 @@
         </action>
         
         <action name="unique" class="partyAction" method="unique">
+			<result name="success" type="json">
+				<param name="includeProperties">unique</param>
+			</result>
+        </action>
+        
+        <action name="tree" class="partyAction" method="tree">
 			<result name="success" type="json">
 				<param name="includeProperties">unique</param>
 			</result>

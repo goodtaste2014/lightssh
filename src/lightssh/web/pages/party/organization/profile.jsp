@@ -6,6 +6,8 @@
 		
 		<script language="javascript" src="<%= request.getContextPath() %>/scripts/jquery/jquery.cookie.js"></script>
 		<script language="javascript" src="<%= request.getContextPath() %>/scripts/jquery/plugins/treeview/jquery.treeview.js"></script>
+		<script language="javascript" src="<%= request.getContextPath() %>/scripts/jquery/plugins/treeview/jquery.treeview.edit.js"></script>
+		<script language="javascript" src="<%= request.getContextPath() %>/scripts/jquery/plugins/treeview/jquery.treeview.async.js"></script>
 		<link rel="stylesheet" href="<%= request.getContextPath() %>/scripts/jquery/plugins/treeview/jquery.treeview.css" type="text/css">
 		
 		
@@ -13,12 +15,16 @@
 		
 		<script type="text/javascript">
 			$(document).ready(function(){
+				//$("#mytree").treeview();
+				
 				/**
 				 * 数据校验
 				 */
 				$("#profile_form").validate({
 					rules:{
 						"party.name":{required:true,maxlength:100}
+						//,"party_role_type":{required:true}
+						,"party.sequence":{digits:true}
 						,"party.description":{maxlength:200}
 					}
 					,submitHandler: function(form) {
@@ -82,8 +88,18 @@
 			 */		
 			function callbackSelectOrganization( org ){
 				$("#span_parent_name").html( org.name );
+				$("#parent_name").val( org.name );
 				$("#parent_id").val( org.id );
 				$("#popup").dialog('destroy');
+			}
+			
+			function treeview_add( node ){
+				alert( $(node).html() );
+				var branches = $("<li><a href='#' onclick='treeview_add(this)'>"
+					+$("#treeview_input").val()+"</a></li>");
+
+				branches.appendTo( node );
+				$("#mytree").treeview({add:branches});
 			}
 		</script>
 	</head>
@@ -97,8 +113,30 @@
 		
 	<%@ include file="/pages/common/messages.jsp" %>
 	
+	<div style="width:100%;height: 100%;">
+		<%-- 
+		<div style="width:28%;clear: none;float:left;margin-right:2%;">
+			<table class="profile">
+				<tr>
+					<td style="padding:0;">
+						&nbsp;<input type="button" class="action new" value="新加" onclick="treeview_add( $('#mytree') )"/> 
+						<input type="text" id="treeview_input" />
+						<br/>
+						<ul id="mytree">
+						</ul>
+					</td>
+				</tr>
+			</table>
+		</div>
+		--%>
+		
+		<div style="width:70%;clear: none;float:left;">
+			
+		</div>
+	</div>
+	
 	<s:form id="profile_form" action="save" namespace="/party/organization" method="post">
-		<table class="profile">
+		<table class="profile" style="clear: none;">
 			<tbody>
 				<tr>
 					<th><label for="name" class="required">名称</label></th>
@@ -109,6 +147,28 @@
 						<s:hidden name="party.enabled" value="%{#isInsert?true:party.enabled}"/>
 						
 						<s:textfield id="name" name="party.name" size="40" maxlength="300"/>
+					</td>
+				</tr>
+				<tr>
+					<th><label for="sequence">显示顺序</label></th>
+					<td>
+						<s:textfield id="sequence" name="party.sequence"/>
+					</td>
+				</tr>
+				<tr>
+					<th><label for="role_type">类型</label></th>
+					<td>
+						<s:radio list="@com.google.code.lightssh.project.party.entity.PartyRole$RoleType@valuesOfInternalOrg()"
+							listKey="name()" name="party_role_type"/>
+					</td>
+				</tr>
+				<tr>
+					<th><label for="parent">上级组织</label></th>
+					<td>
+						<span class="popup" onclick="popup();">&nbsp;</span>
+						<s:hidden name="party.parent.id" id="parent_id"/>
+						<s:hidden name="party.parent.name" id="parent_name"/>
+						<span id="span_parent_name"><s:property value="party.parent.name"/></span>
 					</td>
 				</tr>
 				<tr>
