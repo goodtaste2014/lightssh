@@ -37,6 +37,14 @@ public class JobInterval implements Persistence<String>{
 	@Column( name="ENABLED" )
 	private Boolean enabled;
 	
+	public void preInsert( ){
+		//do nothing
+	}
+	
+	public boolean isInsert( ){
+		return triggerName == null;
+	}
+	
 	public boolean isEnabled(){
 		return Boolean.TRUE.equals( this.enabled );
 	}

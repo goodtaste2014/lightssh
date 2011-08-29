@@ -71,6 +71,14 @@ public class Sequence implements Persistence<String>{
 		DecimalFormat df = new DecimalFormat( pattern );
 		return df.format( getLastNumber());
 	}
+	
+	public void preInsert( ){
+		//do nothing
+	}
+	
+	public boolean isInsert( ){
+		return this.key == null;
+	}
 
 	public String getKey() {
 		return key;

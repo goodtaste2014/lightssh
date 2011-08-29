@@ -49,6 +49,14 @@ public class Permission implements Persistence<String>,GrantedAuthority{
 		return this.token;
 	}
 	
+	public void preInsert( ){
+		//do nothing
+	}
+	
+	public boolean isInsert( ){
+		return this.token == null;
+	}
+	
 	//-- getters and setters ---------------------------------------------------
 
 	public String getToken() {

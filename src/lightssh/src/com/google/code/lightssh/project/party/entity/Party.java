@@ -66,6 +66,10 @@ public abstract class Party implements Persistence<String>,Sequenceable,Cloneabl
 		return 1;
 	}
 	
+	public boolean isInsert( ){
+		return this.id == null;
+	}
+	
 	public Party clone(){
 		 try{
 			 return (Party)super.clone();

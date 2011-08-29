@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.google.code.lightssh.common.dao.hibernate.HibernateDao;
 import com.google.code.lightssh.project.party.entity.PartyRelationship;
+import com.google.code.lightssh.project.party.entity.PartyRole;
 import com.google.code.lightssh.project.party.entity.PartyRelationship.RelationshipType;
 
 /**
@@ -26,6 +27,12 @@ implements PartyRelationshipDao{
 		return getHibernateTemplate().find(hql,new Object[]{type,new Date()} );
 	}
 	
-	
+	@Override
+	public void remove( PartyRole partyRole ){
+		String hql = " DELETE m FROM " + entityClass.getName()
+			+ " AS m WHERE m.from = ? ";
+		
+		getHibernateTemplate().delete(hql,partyRole);
+	}
 
 }

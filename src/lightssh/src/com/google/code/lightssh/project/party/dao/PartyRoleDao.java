@@ -28,5 +28,10 @@ public interface PartyRoleDao extends Dao<PartyRole>{
 	 * list by RoleType
 	 */
 	public List<Party> listParty( RoleType type );
+	
+	/**
+	 * delete PartyRole by party
+	 */
+	public void remove( Party party );
 
 }

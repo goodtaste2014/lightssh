@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.google.code.lightssh.common.model.page.ListPage;
+import com.google.code.lightssh.common.util.StringUtil;
 import com.google.code.lightssh.common.web.action.CrudAction;
 import com.google.code.lightssh.project.log.entity.Access;
 import com.google.code.lightssh.project.party.entity.Organization;
@@ -35,6 +36,7 @@ public class OrganizationAction extends CrudAction<Organization>{
 	}
 
 	public void setPartyManager(PartyManager partyManager) {
+		super.manager = this.manager;
 		this.partyManager = partyManager;
 	}
 
@@ -100,15 +102,28 @@ public class OrganizationAction extends CrudAction<Organization>{
         }
 	}
 
-	public String tree( ){
-		party = new Organization("XXX 集团");
-		Organization company1 = new Organization("XXX 公司");
-		Organization company2 = new Organization("YYY 公司");
-		
-		party.addChild(company1);
-		party.addChild(company2);
-		
-		return SUCCESS;
-	}
+	
+    /**
+     * delete
+     * @return
+     */
+     public String delete( ){
+         if( party == null || StringUtil.clean(party.getIdentity()) == null ){
+             return INPUT;
+         }
+        
+         Access access = new Access(  );
+         access.init(request);
+         
+         try{
+        	 this.getPartyManager().remove( party,access );
+        	 saveSuccessMessage( "成功删除数据(id=" + party.getIdentity() + ")！" );
+         }catch( Exception e ){ //other exception
+             saveErrorMessage( "删除发生异常：" + e.getMessage() );
+             return INPUT;
+         } 
+        
+         return SUCCESS;
+     }
 
 }

@@ -1,6 +1,5 @@
 package com.google.code.lightssh.project.party.service;
 
-import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -10,6 +9,7 @@ import com.google.code.lightssh.project.party.dao.PartyRelationshipDao;
 import com.google.code.lightssh.project.party.entity.Organization;
 import com.google.code.lightssh.project.party.entity.Party;
 import com.google.code.lightssh.project.party.entity.PartyRelationship;
+import com.google.code.lightssh.project.party.entity.PartyRole;
 import com.google.code.lightssh.project.party.entity.PartyRelationship.RelationshipType;
 import com.google.code.lightssh.project.party.entity.PartyRole.RoleType;
 
@@ -35,17 +35,6 @@ implements PartyRelationshipManager{
 		return (PartyRelationshipDao)super.dao;
 	}
 	
-	public void save( PartyRelationship t ){
-		if( t == null )
-			return;
-		
-		if( t.getCreatedTime() == null ){
-			t.setCreatedTime(Calendar.getInstance());
-			super.create(t);
-		}else 
-			super.update(t);
-	}
-
 	@Override
 	public Organization listRollup( ) {
 		List<PartyRelationship> list = getDao().list( RelationshipType.ORG_ROLLUP );
@@ -87,6 +76,11 @@ implements PartyRelationshipManager{
 		}
 		
 		return root;
+	}
+
+	@Override
+	public void remove(PartyRole partyRole) {
+		getDao().remove(partyRole);
 	}
 
 }
