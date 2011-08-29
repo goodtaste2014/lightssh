@@ -48,5 +48,25 @@ public class PartyRoleDaoHibernate extends HibernateDao<PartyRole> implements Pa
 		
 		getHibernateTemplate().update(hql,party);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<PartyRole> list( Party party ,RoleType[] inTypes ){
+		if( inTypes == null || inTypes.length == 0 )
+			return list( party );
+		
+		StringBuffer hql = new StringBuffer( 
+				" SELECT m FROM " + entityClass.getName()
+			+ " AS m WHERE m.party = ? " );
+		
+		for( int i=0;i<inTypes.length;i++ ){
+			if( i== 0 )
+				hql.append(" AND m.type in ( ");
+			hql.append( ((i==0)?"":",") + "'"+ inTypes[i].name() +"'" );
+			if( i==inTypes.length-1 )
+				hql.append(" )");
+		}
+
+		return getHibernateTemplate().find(hql.toString(),party );
+	}
 
 }

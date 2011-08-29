@@ -25,6 +25,11 @@ public interface PartyRoleDao extends Dao<PartyRole>{
 	public List<PartyRole> list( Party party );
 	
 	/**
+	 * list by Party
+	 */
+	public List<PartyRole> list( Party party ,RoleType[] inTypes );
+	
+	/**
 	 * list by RoleType
 	 */
 	public List<Party> listParty( RoleType type );

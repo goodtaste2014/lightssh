@@ -1,12 +1,11 @@
 package com.google.code.lightssh.project.party.service;
 
-import java.util.Collection;
-
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.service.BaseManager;
 import com.google.code.lightssh.project.log.entity.Access;
 import com.google.code.lightssh.project.party.entity.Organization;
 import com.google.code.lightssh.project.party.entity.Party;
+import com.google.code.lightssh.project.party.entity.Person;
 import com.google.code.lightssh.project.party.entity.PartyRole.RoleType;
 
 /**
@@ -27,6 +26,21 @@ public interface PartyManager extends BaseManager<Party>{
 	public ListPage<Party> listOrganization(ListPage<Party> page,Party party );
 	
 	/**
+	 * 查询 Organization
+	 */
+	public Organization getOrganization( Party party );
+	
+	/**
+	 * 查询 Organization
+	 */
+	public Organization getOrganizationWithParent( Party party );
+
+	/**
+	 * 查询 Person
+	 */
+	public Person getPerson( Party party );
+	
+	/**
 	 * 保存时记录日志
 	 */
 	public void save( Party party ,Access access );
@@ -37,7 +51,7 @@ public interface PartyManager extends BaseManager<Party>{
 	 * @param types 角色类型
 	 * @param access 日志记录
 	 */
-	public void save( Organization party,Collection<RoleType> types,Access access );
+	public void save( Organization party,RoleType type,Access access );
 	
 	/**
 	 * 带日志的删除

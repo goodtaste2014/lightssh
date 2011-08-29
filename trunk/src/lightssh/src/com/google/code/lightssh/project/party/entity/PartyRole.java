@@ -2,6 +2,7 @@ package com.google.code.lightssh.project.party.entity;
 
 import java.util.Calendar;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -65,7 +66,7 @@ public class PartyRole extends UUIDModel{
 	/**
 	 * Party
 	 */
-	@ManyToOne( fetch=FetchType.EAGER )
+	@ManyToOne( fetch=FetchType.EAGER,cascade=CascadeType.PERSIST )
 	@JoinColumn( name="PARTY_ID")
 	private Party party;
 	
