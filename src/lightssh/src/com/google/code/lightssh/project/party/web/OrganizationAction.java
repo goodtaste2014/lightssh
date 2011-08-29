@@ -1,22 +1,25 @@
 package com.google.code.lightssh.project.party.web;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.util.StringUtil;
 import com.google.code.lightssh.common.web.action.CrudAction;
 import com.google.code.lightssh.project.log.entity.Access;
 import com.google.code.lightssh.project.party.entity.Organization;
+import com.google.code.lightssh.project.party.entity.PartyRole;
 import com.google.code.lightssh.project.party.entity.PartyRole.RoleType;
 import com.google.code.lightssh.project.party.service.PartyManager;
 import com.google.code.lightssh.project.party.service.PartyRelationshipManager;
+import com.google.code.lightssh.project.party.service.PartyRoleManager;
 
 public class OrganizationAction extends CrudAction<Organization>{
 
 	private static final long serialVersionUID = 1L;
 	
 	private PartyRelationshipManager partyRelationshipManager;
+	
+	private PartyRoleManager partyRoleManager;
 	
 	private PartyManager partyManager;
 	
@@ -29,6 +32,10 @@ public class OrganizationAction extends CrudAction<Organization>{
 	public void setPartyRelationshipManager(
 			PartyRelationshipManager partyRelationshipManager) {
 		this.partyRelationshipManager = partyRelationshipManager;
+	}
+
+	public void setPartyRoleManager(PartyRoleManager partyRoleManager) {
+		this.partyRoleManager = partyRoleManager;
 	}
 
 	public PartyManager getPartyManager() {
@@ -74,19 +81,35 @@ public class OrganizationAction extends CrudAction<Organization>{
 		return SUCCESS;
 	}
 	
+	public String list( ){
+		party = partyRelationshipManager.listRollup();
+		return SUCCESS;
+	}
+	
+    public String edit( ){
+        if( party != null && party.getIdentity() != null ){
+        	party = partyManager.getOrganizationWithParent(party);
+        	if( party == null )
+            	this.addActionError("找不到(id="+party.getId()+")的相关数据！");
+        	List<PartyRole> partyRoles = partyRoleManager.list(
+        			party, RoleType.valuesOfInternalOrg() );
+        	if( partyRoles != null && !partyRoles.isEmpty() )
+        		this.party_role_type = partyRoles.get(0).getType().name();
+        }
+        
+        return SUCCESS;
+    }
+	
 	public String save( ){
 		if( party == null )
 			return INPUT;
-		
-		Set<RoleType> types = new HashSet<RoleType>( );
-		types.add(RoleType.valueOf( this.party_role_type ) );
 		
         Access access = new Access(  );
         access.init(request);
         //access.setOperator( SecurityUtil.getPrincipal() );
         
         try{
-        	partyManager.save(party, types, access);
+        	partyManager.save(party, RoleType.valueOf( this.party_role_type ), access);
         }catch( Exception e ){ //other exception
             addActionError( e.getMessage() );
             return INPUT;

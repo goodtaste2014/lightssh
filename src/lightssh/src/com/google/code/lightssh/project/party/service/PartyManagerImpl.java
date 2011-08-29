@@ -1,7 +1,6 @@
 package com.google.code.lightssh.project.party.service;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -81,24 +80,36 @@ public class PartyManagerImpl extends BaseManagerImpl<Party> implements PartyMan
 	}
 	
 	public void remove(Organization t, Access access) {
-		Party party = getDao().read(Organization.class,t);
+		Organization party = this.getOrganizationWithChildren( t );
 		if( party == null )
 			return;
+		
+		if( party.getChildren() != null && !party.getChildren().isEmpty() )
+			throw new ApplicationException("组织机构("
+					+party.getId()+")存在下级组织，不允许删除！");
 		
 		dao.delete(party);
 		
 		if( access != null && isDoLog(party))
 			accessManager.log(access, party, null);
 		
-		List<PartyRole> partyRoles = partyRoleManager.list(party);
+		RoleType[] internalOrgs = RoleType.valuesOfInternalOrg();
+		RoleType[] aboutRollups = new RoleType[internalOrgs.length+2]; 
+		for( int i=0;i<internalOrgs.length;i++ )
+			aboutRollups[i] = internalOrgs[i];
+		aboutRollups[internalOrgs.length] = RoleType.INTERNAL_ORG;
+		aboutRollups[internalOrgs.length+1] = RoleType.PARENT_ORG;
+		List<PartyRole> partyRoles = partyRoleManager.list(party,aboutRollups);
 		
-		//TODO
-		Set<RoleType> interalOrgSet = new HashSet<RoleType>( );
-		CollectionUtils.addAll(interalOrgSet, RoleType.valuesOfInternalOrg());
+		//TODO partyRelationshipManager.removeByFromRole(partyRole);
+		PartyRelationship pr = partyRelationshipManager.getRollupByFromParty( party );
+		if( pr != null )
+			partyRelationshipManager.remove( pr );
 		
-		for( PartyRole partyRole:partyRoles )
-			partyRelationshipManager.remove( partyRole );
-		partyRoleManager.remove( partyRoles );
+		//TODO ERROR !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!??????????????
+		for( PartyRole partyRole:partyRoles ){
+			partyRoleManager.remove( partyRole );
+		}
 	}
 
 	@Override
@@ -173,57 +184,139 @@ public class PartyManagerImpl extends BaseManagerImpl<Party> implements PartyMan
 	}
 
 	@Override
-	public void save(Organization party,Collection<RoleType> types, Access access) {
+	public void save(Organization party,RoleType type, Access access) {
 		if( party == null )
 			throw new IllegalArgumentException("内部组织为空！");
 			
-		if( types == null || types.isEmpty() )
+		if( type == null )
 			throw new IllegalArgumentException("内部组织("+party.getName()+")角色类型为空！");
 		
-		Set<RoleType> roleTypes = new HashSet<RoleType>( types );
+		Set<RoleType> roleTypes = new HashSet<RoleType>( );
+		roleTypes.add( type );
 		roleTypes.add( RoleType.INTERNAL_ORG );
 		
 		List<PartyRole> partyRoles = partyRoleManager.list(RoleType.INTERNAL_ORG);
 		if( partyRoles == null || partyRoles.isEmpty() ) 
 			roleTypes.add( RoleType.PARENT_ORG ); //第一个保存的组织设定为'最高上级'
 		
+		boolean isInsert = party.isInsert();
 		this.save(party, access);
 		
 		PartyRole fromRole = null ; //下级隶属关系
 		Set<RoleType> interalOrgSet = new HashSet<RoleType>( );
 		CollectionUtils.addAll(interalOrgSet, RoleType.valuesOfInternalOrg());
 		
-		partyRoles = new ArrayList<PartyRole>( roleTypes.size() );
-		for( RoleType type:roleTypes ){
-			PartyRole newRole = new PartyRole(party,type);
-			partyRoles.add( newRole );
-			
-			if( interalOrgSet.contains( type ) )
-				fromRole = newRole;
-		}
-		//partyRoleManager.save(party, roleTypes);
-		partyRoleManager.save( partyRoles );
-		
-		if( party.getParent() == null && party.getParent().getId() == null )
-			return;
-		
-		PartyRole toRole = null; //上级隶属关系
-		List<PartyRole> toRoles = partyRoleManager.list( party.getParent() );
-		for( PartyRole role:toRoles ){
-			if( RoleType.PARENT_ORG.equals( role.getType() ) ){
-				toRole = role;
-				break;
-			}
+		if( isInsert ){ //新增数据
+			partyRoles = new ArrayList<PartyRole>( roleTypes.size() );
+			for( RoleType item:roleTypes ){
+				PartyRole newRole = new PartyRole(party,item);
+				partyRoles.add( newRole );
 				
-			if( interalOrgSet.contains( role.getType() ) )
-				toRole = role;
-		}
-		
-		if( fromRole != null && toRole != null ){
-			PartyRelationship pr = new PartyRelationship( 
-					RelationshipType.ORG_ROLLUP,fromRole,toRole );
-			partyRelationshipManager.save( pr );
+				if( interalOrgSet.contains( item ) )
+					fromRole = newRole;
+			}
+			//partyRoleManager.save(party, roleTypes);
+			partyRoleManager.save( partyRoles );
+			
+			if( party.getParent() == null && party.getParent().getId() == null )
+				return;
+			
+			PartyRole toRole = null; //上级隶属关系
+			List<PartyRole> toRoles = partyRoleManager.list( party.getParent() );
+			for( PartyRole role:toRoles ){
+				if( RoleType.PARENT_ORG.equals( role.getType() ) ){
+					toRole = role;
+					break;
+				}
+					
+				if( interalOrgSet.contains( role.getType() ) )
+					toRole = role;
+			}
+			
+			if( fromRole != null && toRole != null ){
+				PartyRelationship pr = new PartyRelationship( 
+						RelationshipType.ORG_ROLLUP,fromRole,toRole );
+				partyRelationshipManager.save( pr );
+			}
+		}else{ //修改数据
+			if( !interalOrgSet.contains( type ) )
+				throw new ApplicationException("非法角色类型("+type+")");
+			
+			PartyRole newFromRole = null;
+			List<PartyRole> savedPartyRoles = partyRoleManager.list(
+        			party, RoleType.valuesOfInternalOrg() );
+			if( savedPartyRoles != null && !savedPartyRoles.isEmpty()){
+				//savedPartyRoles.size()>1 数据有问题
+				newFromRole = savedPartyRoles.get(0);
+				savedPartyRoles.get(0).setType( type );
+			}else{
+				//用于数据容错，正常情况不会执行
+				newFromRole = new PartyRole(party,type);
+				savedPartyRoles.add( newFromRole );
+			}
+			partyRoleManager.save(savedPartyRoles);
+			
+			if( party.getParent() != null ){
+				PartyRole newToRole = null;
+				List<PartyRole> newToRoles = partyRoleManager.list(
+	        			party.getParent(), RoleType.valuesOfInternalOrg() );
+				if( newToRoles != null && !newToRoles.isEmpty() )
+					newToRole = newToRoles.get(0);
+				else 
+					throw new ApplicationException("("+ party.getParent().getName()+")缺失["
+							+RoleType.valuesOfInternalOrg()+"]中的一种角色！");
+				
+				PartyRelationship pr = partyRelationshipManager.getRollupByFromParty( party );
+				if( pr != null ){
+					pr.setTo( newToRole );
+					//pr.setFrom(newFromRole);
+				}else{
+					pr = new PartyRelationship(RelationshipType.ORG_ROLLUP
+							,newFromRole,newToRole );
+				}
+				partyRelationshipManager.save( pr );
+			}
 		}
 	}
+
+	@Override
+	public Organization getOrganization(Party party) {
+		return (Organization)getDao().read(Organization.class, party);
+	}
+
+	@Override
+	public Person getPerson(Party party) {
+		return (Person)getDao().read(Person.class, party);
+	}
+
+	@Override
+	public Organization getOrganizationWithParent(Party party) {
+		Organization org = this.getOrganization(party);
+		if( org != null ){
+			PartyRelationship relationship = partyRelationshipManager
+				.getRollupByFromParty(org);
+			if( relationship != null && relationship.getTo() != null 
+					&& relationship.getTo() != null 
+					&& relationship.getTo().getParty() instanceof Organization)
+				org.setParent( (Organization)relationship.getTo().getParty() );
+		}
+		
+		return org;
+	}
 	
+	public Organization getOrganizationWithChildren(Party party){
+		Organization org = this.getOrganization(party);
+		if( org != null ){
+			List<PartyRelationship> relationships = partyRelationshipManager
+				.listRollupByToParty(org);
+			if( relationships != null && !relationships.isEmpty() )
+				for( PartyRelationship item:relationships ){
+					if( item.getTo() != null && 
+							item.getFrom().getParty() instanceof Organization)
+						org.addChild((Organization)item.getFrom().getParty() );
+				}//end for
+		}
+		
+		return org;
+	}
 }

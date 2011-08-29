@@ -59,4 +59,9 @@ public class PartyRoleManagerImpl extends BaseManagerImpl<PartyRole> implements 
 		 getDao().remove(party);
 	}
 
+	@Override
+	public List<PartyRole> list(Party party, RoleType[] inTypes) {
+		return getDao().list(party, inTypes);
+	}
+
 }

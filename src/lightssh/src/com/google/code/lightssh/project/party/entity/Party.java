@@ -8,6 +8,7 @@ import javax.persistence.InheritanceType;
 
 import com.google.code.lightssh.common.entity.Persistence;
 import com.google.code.lightssh.common.model.Sequenceable;
+import com.google.code.lightssh.common.util.StringUtil;
 
 /**
  * 社体
@@ -67,7 +68,7 @@ public abstract class Party implements Persistence<String>,Sequenceable,Cloneabl
 	}
 	
 	public boolean isInsert( ){
-		return this.id == null;
+		return StringUtil.clean(this.id) == null;
 	}
 	
 	public Party clone(){

@@ -12,7 +12,7 @@
     </package>
     
 	<package name="party_organization" extends="default" namespace="/party/organization">
-		<action name="edit" class="partyAction" method="edit">
+		<action name="edit" class="organizationAction" method="edit">
 			<result name="input">/pages/party/organization/profile.jsp</result>	
 			<result name="success">/pages/party/organization/profile.jsp</result>	
         </action>
@@ -28,7 +28,7 @@
 			<result name="next" type="redirectAction">edit</result>
         </action>
         
-        <action name="list" class="partyAction" method="list">
+        <action name="list" class="organizationAction" method="list">
 			<result name="success" >/pages/party/organization/list.jsp</result>
         </action>
         

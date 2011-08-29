@@ -79,8 +79,21 @@ implements PartyRelationshipManager{
 	}
 
 	@Override
-	public void remove(PartyRole partyRole) {
-		getDao().remove(partyRole);
+	public void removeByFromRole(PartyRole partyRole) {
+		getDao().removeByFromRole(partyRole);
 	}
 
+	@Override
+	public PartyRelationship getRollupByFromParty(Party from) {
+		List<PartyRelationship> results = getDao().list(
+				RelationshipType.ORG_ROLLUP, from, null);
+		return (results==null||results.isEmpty())?null:results.get(0);
+	}
+
+	@Override
+	public List<PartyRelationship> listRollupByToParty(Party to) {
+		return getDao().list( RelationshipType.ORG_ROLLUP, null, to);
+	}
+
+	
 }

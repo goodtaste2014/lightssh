@@ -26,6 +26,11 @@ public interface PartyRoleManager extends BaseManager<PartyRole>{
 	public List<PartyRole> list( Party party );
 	
 	/**
+	 * list by Party
+	 */
+	public List<PartyRole> list( Party party ,RoleType[] inTypes );
+	
+	/**
 	 * list Party by RoleType
 	 */
 	public List<Party> listParty( RoleType type );
