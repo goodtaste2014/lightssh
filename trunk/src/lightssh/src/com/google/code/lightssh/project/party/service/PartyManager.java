@@ -45,6 +45,11 @@ public interface PartyManager extends BaseManager<Party>{
 	public void remove(Party party, Access access);
 	
 	/**
+	 * 带日志的删除
+	 */
+	public void remove(Organization party, Access access);
+	
+	/**
 	 * 名称是否唯一
 	 */
 	public boolean isUniqneName( Party party );

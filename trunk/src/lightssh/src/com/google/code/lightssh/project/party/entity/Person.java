@@ -50,6 +50,10 @@ public class Person extends Party{
 		return "SSH-";
 	}
 	
+	public void preInsert( ){
+		//do nothing
+	}
+	
 	/**
 	 * 婚姻状况
 	 */

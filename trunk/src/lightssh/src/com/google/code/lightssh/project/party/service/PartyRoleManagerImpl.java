@@ -1,7 +1,6 @@
 package com.google.code.lightssh.project.party.service;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 
@@ -29,17 +28,6 @@ public class PartyRoleManagerImpl extends BaseManagerImpl<PartyRole> implements 
 	public List<PartyRole> list(RoleType type) {
 		return getDao().list(type);
 	}
-	
-	public void save( PartyRole role ){
-		if( role == null )
-			return;
-		
-		if( role.getCreatedTime() == null ){
-			role.setCreatedTime(Calendar.getInstance());
-			super.create(role);
-		}else 
-			super.update(role);
-	}
 
 	@Override
 	public void save(Party party, Collection<RoleType> types) {
@@ -64,6 +52,11 @@ public class PartyRoleManagerImpl extends BaseManagerImpl<PartyRole> implements 
 	@Override
 	public List<PartyRole> list(Party party) {
 		return getDao().list(party);
+	}
+
+	@Override
+	public void remove(Party party) {
+		 getDao().remove(party);
 	}
 
 }

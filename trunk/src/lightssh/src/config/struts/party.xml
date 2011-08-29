@@ -25,13 +25,14 @@
         	<interceptor-ref name="crudStack"/>
 			<result name="input" >/pages/party/organization/profile.jsp</result>
 			<result name="success" type="redirectAction">list</result>
+			<result name="next" type="redirectAction">edit</result>
         </action>
         
         <action name="list" class="partyAction" method="list">
 			<result name="success" >/pages/party/organization/list.jsp</result>
         </action>
         
-        <action name="remove" class="partyAction" method="delete">
+        <action name="remove" class="organizationAction" method="delete">
 			<result name="success" type="redirectAction">list</result>
 			<result name="input" type="redirectAction">list</result>
         </action>

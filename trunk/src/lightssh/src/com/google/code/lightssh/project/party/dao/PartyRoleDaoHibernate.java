@@ -41,6 +41,12 @@ public class PartyRoleDaoHibernate extends HibernateDao<PartyRole> implements Pa
 		return getHibernateTemplate().find(hql,party );
 	}
 	
-	
+	@Override
+	public void remove( Party party ){
+		String hql = " DELETE m FROM " + entityClass.getName()
+			+ " AS m WHERE m.party = ? ";
+		
+		getHibernateTemplate().update(hql,party);
+	}
 
 }

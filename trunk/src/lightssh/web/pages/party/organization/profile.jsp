@@ -80,7 +80,7 @@
 				});
 				
 				var req_url = '<s:url value="/party/organization/popup.do"/>';
-				$.post(req_url,{},function(data){$( popup ).html( data );});
+				$.post(req_url,{"level":4},function(data){$( popup ).html( data );});
 			}
 			
 			/**
@@ -183,6 +183,8 @@
 		<p class="submit">
 			<input type="submit" class="action save" name="Submit" 
 				value="<s:property value="%{#isInsert?\"新增组织机构\":\"修改组织机构\"}"/>"/>
+			
+			<input type="submit" class="action save" name="saveAndNext" value="保存&新增下一个"/>
 		</p>
 	</s:form>
 

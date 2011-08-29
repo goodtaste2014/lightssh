@@ -79,6 +79,27 @@ public class PartyManagerImpl extends BaseManagerImpl<Party> implements PartyMan
 		}
 		
 	}
+	
+	public void remove(Organization t, Access access) {
+		Party party = getDao().read(Organization.class,t);
+		if( party == null )
+			return;
+		
+		dao.delete(party);
+		
+		if( access != null && isDoLog(party))
+			accessManager.log(access, party, null);
+		
+		List<PartyRole> partyRoles = partyRoleManager.list(party);
+		
+		//TODO
+		Set<RoleType> interalOrgSet = new HashSet<RoleType>( );
+		CollectionUtils.addAll(interalOrgSet, RoleType.valuesOfInternalOrg());
+		
+		for( PartyRole partyRole:partyRoles )
+			partyRelationshipManager.remove( partyRole );
+		partyRoleManager.remove( partyRoles );
+	}
 
 	@Override
 	public void save(Party party, Access access) {
@@ -198,9 +219,11 @@ public class PartyManagerImpl extends BaseManagerImpl<Party> implements PartyMan
 				toRole = role;
 		}
 		
-		PartyRelationship pr = new PartyRelationship( 
-				RelationshipType.ORG_ROLLUP,fromRole,toRole );
-		partyRelationshipManager.save( pr );
+		if( fromRole != null && toRole != null ){
+			PartyRelationship pr = new PartyRelationship( 
+					RelationshipType.ORG_ROLLUP,fromRole,toRole );
+			partyRelationshipManager.save( pr );
+		}
 	}
 	
 }

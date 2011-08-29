@@ -50,6 +50,10 @@ public class Organization extends Party {
 	 */
 	@Transient
 	private Set<Organization> children;
+	
+	public void preInsert( ){
+		//do nothing
+	}
 		
 	public Organization( String name ) {
 		setName(name);

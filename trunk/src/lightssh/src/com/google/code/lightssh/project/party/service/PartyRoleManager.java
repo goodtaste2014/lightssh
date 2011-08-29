@@ -34,5 +34,10 @@ public interface PartyRoleManager extends BaseManager<PartyRole>{
 	 * save 
 	 */
 	public void save( Party party,Collection<RoleType> types );
+	
+	/**
+	 * delete PartyRole by party
+	 */
+	public void remove( Party party );
 
 }
