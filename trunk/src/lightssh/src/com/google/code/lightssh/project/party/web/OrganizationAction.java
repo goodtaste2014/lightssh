@@ -25,7 +25,7 @@ public class OrganizationAction extends CrudAction<Organization>{
 	
 	private Organization party;
 	
-	private String party_role_type;
+	private RoleType party_role_type;
 	
 	private ListPage<Organization> page;
 
@@ -55,11 +55,11 @@ public class OrganizationAction extends CrudAction<Organization>{
 		this.party = party;
 	}
 	
-	public String getParty_role_type() {
+	public RoleType getParty_role_type() {
 		return party_role_type;
 	}
 
-	public void setParty_role_type(String partyRoleType) {
+	public void setParty_role_type(RoleType partyRoleType) {
 		party_role_type = partyRoleType;
 	}
 
@@ -86,15 +86,79 @@ public class OrganizationAction extends CrudAction<Organization>{
 		return SUCCESS;
 	}
 	
+	/**
+	 * 查看企业信息
+	 */
+	public String viewparent( ){
+		party = partyManager.getParentOrganization();
+		
+		if( party != null ){
+			//角色类型
+			List<PartyRole> types = partyRoleManager.list(
+					party, RoleType.valuesOfInternalOrg() );
+			if( types != null && !types.isEmpty() )
+				this.party_role_type = types.get(0).getType();
+		}
+		
+		if( "edit".equals(request.getParameter("action")))
+			return INPUT;
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * 初始化设置企业信息
+	 * @return
+	 */
+	public String initparent( ){
+		if( party == null ){
+			return INPUT;
+		}
+		
+		if( party_role_type == null){
+			this.addFieldError("party_role_type", "非法角色类型！");
+			return INPUT;
+		}
+		
+		boolean isInsert = party.isInsert();
+        Access access = new Access(  );
+        access.init(request);
+        //access.setOperator( SecurityUtil.getPrincipal() );
+        
+        try{
+        	partyManager.save(party,access, new RoleType[]{
+        			party_role_type,RoleType.PARENT_ORG});
+        }catch( Exception e ){ //other exception
+        	if( isInsert )
+        		party.postInsertFailure();
+            addActionError( e.getMessage() );
+            return INPUT;
+        } 
+        
+        String hint =  "成功设置企业信息！" ;
+        saveSuccessMessage( hint );
+		
+		return SUCCESS;
+	}
+	
     public String edit( ){
         if( party != null && party.getIdentity() != null ){
         	party = partyManager.getOrganizationWithParent(party);
         	if( party == null )
             	this.addActionError("找不到(id="+party.getId()+")的相关数据！");
-        	List<PartyRole> partyRoles = partyRoleManager.list(
-        			party, RoleType.valuesOfInternalOrg() );
-        	if( partyRoles != null && !partyRoles.isEmpty() )
-        		this.party_role_type = partyRoles.get(0).getType().name();
+        	
+        	RoleType[] allowedSelectTypes = RoleType.valuesOfInternalOrg();
+			RoleType[] paramRoleTypes = new RoleType[allowedSelectTypes.length+1];
+			paramRoleTypes[allowedSelectTypes.length] = RoleType.PARENT_ORG;
+			System.arraycopy( allowedSelectTypes,0, paramRoleTypes, 0,allowedSelectTypes.length);
+
+			List<PartyRole> partyRoles = partyRoleManager.list(party,paramRoleTypes );
+        	if( partyRoles != null && !partyRoles.isEmpty() ){
+        		for( PartyRole role:partyRoles )
+        			if(  RoleType.PARENT_ORG.equals( role.getType() ) )
+        				return "settings";
+        		this.party_role_type = partyRoles.get(0).getType();
+        	}
         }
         
         return SUCCESS;
@@ -109,7 +173,7 @@ public class OrganizationAction extends CrudAction<Organization>{
         //access.setOperator( SecurityUtil.getPrincipal() );
         
         try{
-        	partyManager.save(party, RoleType.valueOf( this.party_role_type ), access);
+        	partyManager.save(party,access,party_role_type);
         }catch( Exception e ){ //other exception
             addActionError( e.getMessage() );
             return INPUT;

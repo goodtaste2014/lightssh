@@ -76,6 +76,10 @@ public class Sequence implements Persistence<String>{
 		//do nothing
 	}
 	
+	public void postInsertFailure( ){
+		//do nothing
+	}
+	
 	public boolean isInsert( ){
 		return this.key == null;
 	}

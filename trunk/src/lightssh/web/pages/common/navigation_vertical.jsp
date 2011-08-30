@@ -143,8 +143,10 @@
 				<%-- 基础管理--%>
 				<a href="#"><s:text name="project.nav.settings"/></a>
 				<ul id="settings_mgr">
+					<li><a href="<s:url value="/settings/organization/viewparent.do"/>" target="main_frame">企业资料</a></li>
 					<%-- 系统日志--%>
 					<li><a href="<s:url value="/settings/log/list.do"/>" target="main_frame"><s:text name="project.nav.syslog"/></a></li>
+					<%-- 定时任务 --%>
 					<li><a href="<s:url value="/settings/scheduler/list.do"/>" target="main_frame">定时任务</a></li>
 				</ul>
 			</li>

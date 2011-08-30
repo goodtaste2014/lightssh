@@ -15,6 +15,7 @@
 		<action name="edit" class="organizationAction" method="edit">
 			<result name="input">/pages/party/organization/profile.jsp</result>	
 			<result name="success">/pages/party/organization/profile.jsp</result>	
+			<result name="settings" type="redirect">/settings/organization/viewparent.do</result>	
         </action>
         
         <action name="popup" class="organizationAction" method="popup">

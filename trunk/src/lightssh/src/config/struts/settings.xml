@@ -26,6 +26,18 @@
     	<action name="toggle" class="schedulerAction" method="toggle">
 			<result name="success" type="chain">list</result>	
         </action>
-    </package>
-   
+	</package>
+	
+    <package name="settings_organization" extends="default" namespace="/settings/organization">
+    	<action name="viewparent" class="organizationAction" method="viewparent">
+			<result name="input">/pages/party/organization/profile_parent_org.jsp</result>	
+			<result name="success">/pages/party/organization/view_parent_org.jsp</result>	
+        </action>
+        
+    	<action name="initparent" class="organizationAction" method="initparent">
+			<result name="input">/pages/party/organization/profile_parent_org.jsp</result>
+			<result name="success" type="chain">viewparent</result>	
+        </action>
+	</package>
+	
 </struts>

@@ -89,7 +89,8 @@ public class Person extends Party{
 		,JUNIOR_COLLEGE("专科")				//专科
 		,UNDERGRADUATE("本科")				//本科
 		,MASTER("研究生")					//研究生
-		,PHD("博士");						//博士
+		,PHD("博士")							//博士
+		,OTHER("其它");						//其它
 		
 		private String value;
 		
@@ -121,6 +122,7 @@ public class Person extends Party{
 	/**
 	 * 证件类型
 	 */
+	@Column( name="CREDENTIALS_TYPE",length=50 )
 	private CredentialsType credentialsType;
 	
 	/**
@@ -128,6 +130,12 @@ public class Person extends Party{
 	 */
 	@Column( name="IDENTITY_CARD_NUMBER" )
 	private String identityCardNumber;
+	
+	/**
+	 * 最高学历
+	 */
+	@Column( name="DEGREE",length=50 )
+	private EducationLevel degree;
 	
 	/**
 	 * 称呼
@@ -224,6 +232,14 @@ public class Person extends Party{
 
 	public void setCredentialsType(CredentialsType credentialsType) {
 		this.credentialsType = credentialsType;
+	}
+
+	public EducationLevel getDegree() {
+		return degree;
+	}
+
+	public void setDegree(EducationLevel degree) {
+		this.degree = degree;
 	}
 
 	@Override

@@ -108,6 +108,15 @@
 				</tr>
 				
 				<tr>
+					<th><label for="degree">最高学历</label></th>
+					<td>
+						<s:select list="@com.google.code.lightssh.project.party.entity.Person$EducationLevel@values()" 
+							name="party.degree" listKey="name()" headerKey="" headerValue=""
+							value="party.degree.name()"/>
+					</td>
+				</tr>
+				
+				<tr>
 					<th><label for="desc">描述</label></th>
 					<td><s:textarea id="desc" name="party.description" cols="60" rows="5"/></td>
 				</tr>

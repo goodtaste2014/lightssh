@@ -31,6 +31,11 @@ public interface PartyManager extends BaseManager<Party>{
 	public Organization getOrganization( Party party );
 	
 	/**
+	 * 查询 最上级组织
+	 */
+	public Organization getParentOrganization( );
+	
+	/**
 	 * 查询 Organization
 	 */
 	public Organization getOrganizationWithParent( Party party );
@@ -51,7 +56,7 @@ public interface PartyManager extends BaseManager<Party>{
 	 * @param types 角色类型
 	 * @param access 日志记录
 	 */
-	public void save( Organization party,RoleType type,Access access );
+	public void save( Organization party,Access access,RoleType...types );
 	
 	/**
 	 * 带日志的删除
@@ -67,10 +72,5 @@ public interface PartyManager extends BaseManager<Party>{
 	 * 名称是否唯一
 	 */
 	public boolean isUniqneName( Party party );
-	
-	/**
-	 * 查询总公司/最上层组织
-	 */
-	public Party getParentCorporation( );
 
 }
