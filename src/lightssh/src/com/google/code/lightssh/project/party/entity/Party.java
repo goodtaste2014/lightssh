@@ -71,6 +71,10 @@ public abstract class Party implements Persistence<String>,Sequenceable,Cloneabl
 		return StringUtil.clean(this.id) == null;
 	}
 	
+	public void postInsertFailure( ){
+		this.id = null;
+	}
+	
 	public Party clone(){
 		 try{
 			 return (Party)super.clone();

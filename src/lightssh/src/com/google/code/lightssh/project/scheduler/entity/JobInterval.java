@@ -41,6 +41,10 @@ public class JobInterval implements Persistence<String>{
 		//do nothing
 	}
 	
+	public void postInsertFailure( ){
+		//do nothing
+	}
+	
 	public boolean isInsert( ){
 		return triggerName == null;
 	}

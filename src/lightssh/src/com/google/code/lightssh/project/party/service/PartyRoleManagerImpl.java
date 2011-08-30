@@ -41,7 +41,7 @@ public class PartyRoleManagerImpl extends BaseManagerImpl<PartyRole> implements 
 			entities.add( new PartyRole(party,type));
 		}
 		
-		super.dao.create(entities);
+		this.save( entities );
 	}
 
 	@Override

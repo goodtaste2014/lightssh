@@ -53,6 +53,10 @@ public class Permission implements Persistence<String>,GrantedAuthority{
 		//do nothing
 	}
 	
+	public void postInsertFailure( ){
+		//do nothing
+	}
+	
 	public boolean isInsert( ){
 		return this.token == null;
 	}

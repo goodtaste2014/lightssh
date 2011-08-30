@@ -10,13 +10,7 @@
             <message/>
         </field-validator>
     </field>
-    
-	<field name="party.parent.id" >
-		<field-validator type="requiredstring">
-            <message>“上级组织”为必选项！</message>
-        </field-validator>
-	</field>
-	
+
 	<field name="party_role_type" >
 		<field-validator type="required">
             <message>“类型”为必选项！</message>

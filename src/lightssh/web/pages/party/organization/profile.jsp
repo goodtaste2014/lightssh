@@ -22,6 +22,7 @@
 					rules:{
 						"party.name":{required:true,maxlength:100}
 						//,"party_role_type":{required:true}
+						,"party.parent.id":{required:true}
 						,"party.sequence":{digits:true}
 						,"party.description":{maxlength:200}
 					}
@@ -157,7 +158,7 @@
 					<th><label for="role_type">类型</label></th>
 					<td>
 						<s:radio list="@com.google.code.lightssh.project.party.entity.PartyRole$RoleType@valuesOfInternalOrg()"
-							listKey="name()" name="party_role_type"/>
+							listKey="name()" name="party_role_type" value="party_role_type.name()"/>
 					</td>
 				</tr>
 				<tr>

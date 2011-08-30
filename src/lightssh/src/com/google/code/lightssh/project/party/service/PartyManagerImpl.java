@@ -175,50 +175,70 @@ public class PartyManagerImpl extends BaseManagerImpl<Party> implements PartyMan
 	}
 
 	@Override
-	public Party getParentCorporation() {
-		List<PartyRole> list = partyRoleManager.list(RoleType.PARENT_ORG);
-		if( list == null || list.isEmpty() )
-			throw new ApplicationException("总公司/最上级组织 未设定！");
+	public Organization getParentOrganization() {
+		List<Party> list = partyRoleManager.listParty( RoleType.PARENT_ORG );
+		if (list==null||list.isEmpty())
+			return null;
 		
-		return list.get(0).getParty();
+		Organization result = null;
+		for( Party party:list )
+			if( party instanceof Organization ){
+				result = (Organization)party;
+				break;
+			}
+		
+		return result;
+	}
+	
+	/**
+	 * 允许的内部组织角色
+	 * @return
+	 */
+	private Set<RoleType> getAllowedRoleTypeOfInternalOrg( ){
+		Set<RoleType> interalOrgSet = new HashSet<RoleType>( );
+		CollectionUtils.addAll(interalOrgSet, RoleType.valuesOfInternalOrg());
+		interalOrgSet.add( RoleType.PARENT_ORG );
+		interalOrgSet.add( RoleType.INTERNAL_ORG );
+		return interalOrgSet;
 	}
 
 	@Override
-	public void save(Organization party,RoleType type, Access access) {
+	public void save(Organization party, Access access,RoleType...types) {
 		if( party == null )
 			throw new IllegalArgumentException("内部组织为空！");
 			
-		if( type == null )
+		if( types == null )
 			throw new IllegalArgumentException("内部组织("+party.getName()+")角色类型为空！");
 		
-		Set<RoleType> roleTypes = new HashSet<RoleType>( );
-		roleTypes.add( type );
-		roleTypes.add( RoleType.INTERNAL_ORG );
+		Set<RoleType> allowedTypes = getAllowedRoleTypeOfInternalOrg();
+		for( RoleType type:types )
+			if( !allowedTypes.contains(type))
+				throw new IllegalArgumentException("非法组织角色["+type+"]！");
 		
-		List<PartyRole> partyRoles = partyRoleManager.list(RoleType.INTERNAL_ORG);
-		if( partyRoles == null || partyRoles.isEmpty() ) 
-			roleTypes.add( RoleType.PARENT_ORG ); //第一个保存的组织设定为'最高上级'
+		Set<RoleType> newRoleTypes = new HashSet<RoleType>( );
+		CollectionUtils.addAll(newRoleTypes, types );
+		newRoleTypes.add( RoleType.INTERNAL_ORG );
 		
 		boolean isInsert = party.isInsert();
 		this.save(party, access);
 		
-		PartyRole fromRole = null ; //下级隶属关系
 		Set<RoleType> interalOrgSet = new HashSet<RoleType>( );
 		CollectionUtils.addAll(interalOrgSet, RoleType.valuesOfInternalOrg());
 		
 		if( isInsert ){ //新增数据
-			partyRoles = new ArrayList<PartyRole>( roleTypes.size() );
-			for( RoleType item:roleTypes ){
+			PartyRole fromRole = null ; //下级隶属关系
+			List<PartyRole> partyRoles = new ArrayList<PartyRole>( newRoleTypes.size() );
+			for( RoleType item:newRoleTypes ){
 				PartyRole newRole = new PartyRole(party,item);
 				partyRoles.add( newRole );
 				
 				if( interalOrgSet.contains( item ) )
 					fromRole = newRole;
 			}
-			//partyRoleManager.save(party, roleTypes);
+			//partyRoleManager.save(party, newRoleTypes );
 			partyRoleManager.save( partyRoles );
 			
-			if( party.getParent() == null && party.getParent().getId() == null )
+			if( party.getParent() == null || party.getParent().getId() == null )
 				return;
 			
 			PartyRole toRole = null; //上级隶属关系
@@ -239,9 +259,12 @@ public class PartyManagerImpl extends BaseManagerImpl<Party> implements PartyMan
 				partyRelationshipManager.save( pr );
 			}
 		}else{ //修改数据
-			if( !interalOrgSet.contains( type ) )
-				throw new ApplicationException("非法角色类型("+type+")");
-			
+			RoleType type = types[0];
+			for( RoleType item:types ){
+				if( !RoleType.PARENT_ORG.equals(item))
+					type = item;
+			}
+				
 			PartyRole newFromRole = null;
 			List<PartyRole> savedPartyRoles = partyRoleManager.list(
         			party, RoleType.valuesOfInternalOrg() );
@@ -258,14 +281,21 @@ public class PartyManagerImpl extends BaseManagerImpl<Party> implements PartyMan
 			
 			if( party.getParent() != null ){
 				PartyRole newToRole = null;
+				RoleType[] allowedSelectTypes = RoleType.valuesOfInternalOrg();
+				RoleType[] paramRoleTypes = new RoleType[allowedSelectTypes.length+1];
+				paramRoleTypes[allowedSelectTypes.length] = RoleType.PARENT_ORG;
+				System.arraycopy( allowedSelectTypes,0, paramRoleTypes, 0,allowedSelectTypes.length);
 				List<PartyRole> newToRoles = partyRoleManager.list(
-	        			party.getParent(), RoleType.valuesOfInternalOrg() );
-				if( newToRoles != null && !newToRoles.isEmpty() )
+	        			party.getParent(), paramRoleTypes );
+				if( newToRoles != null && !newToRoles.isEmpty() ){
 					newToRole = newToRoles.get(0);
-				else 
+					for( PartyRole role:newToRoles )
+						if( RoleType.PARENT_ORG.equals(role.getType()) )
+							newToRole = role;
+				}else{
 					throw new ApplicationException("("+ party.getParent().getName()+")缺失["
 							+RoleType.valuesOfInternalOrg()+"]中的一种角色！");
-				
+				}
 				PartyRelationship pr = partyRelationshipManager.getRollupByFromParty( party );
 				if( pr != null ){
 					pr.setTo( newToRole );
@@ -319,4 +349,5 @@ public class PartyManagerImpl extends BaseManagerImpl<Party> implements PartyMan
 		
 		return org;
 	}
+
 }

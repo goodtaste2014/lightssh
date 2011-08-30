@@ -92,6 +92,7 @@
 							</tr>
 						</thead>
 						
+						<s:if test="party != null">
 						<s:iterator value="new java.lang.Object[]{party}" status="loop1">
 							<s:set name="parent" value="null"/>
 							<s:set name="loop" value="#loop1"/>
@@ -121,6 +122,8 @@
 								</s:iterator>
 							</s:iterator>
 						</s:iterator>
+						
+						</s:if>
 					</table>
 				</div>
 			</div>
