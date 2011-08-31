@@ -1,5 +1,7 @@
 package com.google.code.lightssh.project.party.web;
 
+import org.apache.struts2.json.annotations.JSON;
+
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.util.StringUtil;
 import com.google.code.lightssh.common.web.action.CrudAction;
@@ -28,6 +30,7 @@ public class PartyAction extends CrudAction<Party>{
 		return (PartyManager)this.manager;
 	}
 
+	@JSON(name="unique")
 	public boolean isUnique() {
 		return unique;
 	}

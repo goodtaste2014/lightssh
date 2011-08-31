@@ -27,10 +27,11 @@
 						,"party.description":{maxlength:200}
 					}
 					,submitHandler: function(form) {
-						if( flase && !ajaxCheck( ) ) //TODO AJAX 提交存在问题！！！
+						if( !ajaxCheck( ) ){ 
 							this.showErrors({"party.name": "名称已存在,请改用其它名称！"});
-						else
+						}else{
 							form.submit();
+						}
 					}
 				});
 				
@@ -45,9 +46,8 @@
 					url: "<s:url value="/party/organization/unique.do"/>"
 					,dataType: "json" 
 					,type:"post"
-					,async: true
 					,data: {
-						"party":"organization"
+						"party":'organization'
 			        	,"party.id": function(){
 							return $("input[name='party.id']").val()
 				        }

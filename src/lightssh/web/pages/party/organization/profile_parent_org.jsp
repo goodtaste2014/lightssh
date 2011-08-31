@@ -64,7 +64,7 @@
 		</div>
 		
 		<div id="tabs-2">
-			YYY
+			<%@ include file="../contact/profile.jsp" %>
 		</div>
 	</div>
 </body>

@@ -43,12 +43,6 @@
 				<param name="includeProperties">unique</param>
 			</result>
         </action>
-        
-        <action name="tree" class="partyAction" method="tree">
-			<result name="success" type="json">
-				<param name="includeProperties">unique</param>
-			</result>
-        </action>
 	</package>
 	
 	<package name="party_person" extends="default" namespace="/party/person">
@@ -72,4 +66,18 @@
 			<result name="input" type="redirectAction">list</result>
         </action>
 	</package>
+	
+	<package name="party_contact" extends="default" namespace="/party/contact">
+		<action name="save" class="partyContactAction" method="save">
+			<result name="input" type="json">
+				<param name="includeProperties">result</param>
+			</result>
+			<result name="success" type="json">
+				<param name="includeProperties">
+					result,contact.*
+				</param>
+			</result>
+        </action>
+	</package>
+	
 </struts>
