@@ -78,4 +78,9 @@
 		<property name="partyRoleManager" ref="partyRoleManager" />
 	</bean>
 	
+	<!-- party contact -->
+	<bean id="partyContactManager" class="com.google.code.lightssh.project.party.service.PartyContactManagerImpl">
+		<property name="dao" ref="partyContactDao" />
+	</bean>
+	
 </beans>

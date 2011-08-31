@@ -22,11 +22,15 @@
                 <value>com.google.code.lightssh.project.security.entity.Permission</value>
                 <value>com.google.code.lightssh.project.security.entity.Navigation</value>
                 <value>com.google.code.lightssh.project.security.entity.LoginAccount</value>
+                <value>com.google.code.lightssh.project.contact.entity.ContactMechanism</value>
+                <value>com.google.code.lightssh.project.contact.entity.PostalAddress</value>
+                <value>com.google.code.lightssh.project.contact.entity.TelephoneNumber</value>
                 <value>com.google.code.lightssh.project.party.entity.Party</value>
                 <value>com.google.code.lightssh.project.party.entity.Person</value>
                 <value>com.google.code.lightssh.project.party.entity.Organization</value>
                 <value>com.google.code.lightssh.project.party.entity.PartyRole</value>
                 <value>com.google.code.lightssh.project.party.entity.PartyRelationship</value>
+                <value>com.google.code.lightssh.project.party.entity.PartyContact</value>
                 
             </list>
         </property>
@@ -107,6 +111,11 @@
 	
 	<!-- party relationship-->
 	<bean id="partyRelationshipDao" class="com.google.code.lightssh.project.party.dao.PartyRelationshipDaoHibernate">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<!-- party contact-->
+	<bean id="partyContactDao" class="com.google.code.lightssh.project.party.dao.PartyContactDaoHibernate">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 </beans>

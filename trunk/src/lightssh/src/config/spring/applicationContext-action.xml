@@ -56,4 +56,9 @@
 		<property name="partyManager" ref="partyManager"/>
 	</bean>
 	
+	<!-- party contact -->
+	<bean id="partyContactAction" class="com.google.code.lightssh.project.party.web.PartyContactAction" scope="prototype">
+		<property name="partyContactManager" ref="partyContactManager"/>
+	</bean>
+	
 </beans>
