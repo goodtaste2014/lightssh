@@ -53,6 +53,7 @@
 	<bean id="organizationAction" class="com.google.code.lightssh.project.party.web.OrganizationAction" scope="prototype">
 		<property name="partyRelationshipManager" ref="partyRelationshipManager"/>
 		<property name="partyRoleManager" ref="partyRoleManager"/>
+		<property name="partyContactManager" ref="partyContactManager"/>
 		<property name="partyManager" ref="partyManager"/>
 	</bean>
 	

@@ -11,10 +11,10 @@
 	<constant name="struts.ognl.allowStaticMethodAccess" value="true"/>
     <constant name="struts.ui.theme" value="colorful"/>
     <constant name="struts.multipart.maxSize" value="2097152"/>
-    <constant name="struts.devMode" value="false"/>
+    <constant name="struts.devMode" value="true"/>
     <constant name="struts.i18n.encoding" value="UTF-8"/>
     <constant name="struts.custom.i18n.resources" value="config.i18n.message"/>
-    <constant name="struts.configuration.xml.reload" value="false"/> 
+    <constant name="struts.configuration.xml.reload" value="true"/> 
 	<constant name="struts.multipart.maxSize" value="100000000"/>
 	<constant name="struts.freemarker.templatesCache" value="true"/>
     
@@ -26,6 +26,7 @@
         <interceptors>
         	<interceptor name="trim" class="com.google.code.lightssh.common.web.interceptor.TrimInterceptor"/>
         	<interceptor name="mytoken" class="com.google.code.lightssh.common.web.interceptor.MyTokenInterceptor"/>
+        	<interceptor name="myJsonValidation" class="com.google.code.lightssh.common.web.interceptor.JsonValidationInterceptor"/>
 			
 			<interceptor-stack name="simpleDefaultStack">
                 <interceptor-ref name="exception"/>
@@ -49,6 +50,7 @@
                 <interceptor-ref name="validation">
                     <param name="excludeMethods">input,back,cancel,browse</param>
                 </interceptor-ref>
+                <interceptor-ref name="myJsonValidation"/>
                 <interceptor-ref name="workflow">
                     <param name="excludeMethods">input,back,cancel,browse</param>
                 </interceptor-ref>

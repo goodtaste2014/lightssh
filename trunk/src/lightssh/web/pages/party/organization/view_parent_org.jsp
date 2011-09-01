@@ -12,7 +12,8 @@
 		<li>查看信息</li>
 	</ul>
 	
-	<input type="button" class="action settings" value="设置企业信息" onclick="location.href='<s:url value="viewparent.do?action=edit"/>'"/>
+	<input type="button" class="action settings" value="设置企业信息" 
+		onclick="location.href='<s:url value="viewparent.do?action=edit"/>'"/>
 		
 	<%@ include file="/pages/common/messages.jsp" %>
 	
@@ -40,4 +41,33 @@
 			</tr>
 		</tbody>
 	</table>
+	
+	<table class="list">
+		<colgroup>
+			<col class="element" width="50px"/>
+			<col class="element" width="80px"/>
+			<col class="element" width="400px"/>
+			<col class="element" />
+			<col class="element" width="50px"/>
+		</colgroup>
+		<thead>
+			<tr>
+				<th>&nbsp;</th>
+				<th>类型</th>
+				<th>联系方式</th>
+				<th>描述</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<s:iterator value="#request.party_contacts" status="loop">
+			<tr class="<s:property value="#loop.odd?\"odd\":\"even\""/>">
+				<td><s:property value="#loop.index+1"/></td>
+				<td><s:property value="type"/></td>
+				<td><s:property value="format()"/></td>
+				<td><s:property value="description" escape="true"/></td>
+				<td><a href="<s:url value="/settings/organization/removecontact.do?contact.id=%{id}"/>">删除</a></td>
+			</tr>
+		</s:iterator>
+	</table>
+	
 </body>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE validators PUBLIC 
+        "-//OpenSymphony Group//XWork Validator 1.0.2//EN" 
+        "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
+        
+<validators>
+	<field name="contact.type" >
+		<field-validator type="required">
+            <message>为必选项！</message>
+        </field-validator>
+	</field>
+
+	<field name="contact.description" >
+		<field-validator type="fieldexpression" >
+            <param name="expression">
+				( contact.description.length() &lt; 201)
+            </param>
+            <message>长度不能大于200字符！</message>
+        </field-validator>
+	</field>
+	
+</validators>

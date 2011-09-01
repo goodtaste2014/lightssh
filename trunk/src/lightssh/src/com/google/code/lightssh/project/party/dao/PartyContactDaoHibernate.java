@@ -17,10 +17,11 @@ public class PartyContactDaoHibernate extends HibernateDao<PartyContact> impleme
 
 	@Override
 	public void remove(ContactMechanism contact) {
-		String hql = " DELETE FROM " + entityClass.getName() 
-			+ " AS m WHERE m.contact = ? "; 
-		
-		getHibernateTemplate().delete(hql,contact );
+		String hql = " FROM " + entityClass.getName() 
+			+ " AS m WHERE m.contact.id = ? "; 
+		Collection<?> results = getHibernateTemplate().find(hql,contact.getId() );
+		if( results != null )
+			getHibernateTemplate().deleteAll( results );
 	}
 
 	@SuppressWarnings("unchecked")

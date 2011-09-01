@@ -67,5 +67,15 @@ public class PartyContactAction extends CrudAction<PartyContact>{
 		
 		return SUCCESS;
 	}
+	
+	public String remove( ){
+		try{
+			partyContactManager.remove(contact);
+		}catch( Exception e ){
+			super.saveErrorMessage( e.getMessage() );
+		}
+		
+		return SUCCESS;
+	}
 
 }
