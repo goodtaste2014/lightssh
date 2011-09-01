@@ -31,17 +31,17 @@
 		}else if( 'TELEPHONE' == val || 'FAX' == val ){ //电话
 			var name = ('TELEPHONE' == val)?"电话":"传真";
 			var dom_tel_html = "<tr><th>"+ name +"</th><td>"
-				+"<input type='text' size='2' name='contact.countryCode' value='86'/>"
-				+" - <input type='text' size='2' name='contact.areaCode'/>"
-				+" - <input type='text' size='10' name='contact.contactNumber'/>"
-				+" - <input type='text' size='2' name='contact.extCode'/>"
+				+"<input type='text'  param='ajax' size='2' name='contact.countryCode' value='86'/>"
+				+" - <input type='text'  param='ajax' size='2' name='contact.areaCode'/>"
+				+" - <input type='text'  param='ajax' size='10' name='contact.contactNumber'/>"
+				+" - <input type='text'  param='ajax' size='2' name='contact.extCode'/>"
 				+"&nbsp;[ 国家代码 - 区号 - 号码 - 分机号 ]</td></tr>";
 			$("#contact_prfile_table tr:first").after( dom_tel_html );
 			clazz_val = "telephonenumber";
 		}else if('MOBILE' == val){
 			var dom_tel_html = "<tr><th>手机</th><td>"
-				+"<input type='text' size='2' name='contact.countryCode' value='+86'/>"
-				+" - <input type='text' size='20' name='contact.contactNumber'/>"
+				+"<input type='text'  param='ajax' size='2' name='contact.countryCode' value='+86'/>"
+				+" - <input type='text'  param='ajax' size='20' name='contact.contactNumber'/>"
 				+"&nbsp;[ 国家代码 - 号码  ]</td></tr>";
 			$("#contact_prfile_table tr:first").after( dom_tel_html );
 			clazz_val = "telephonenumber";
@@ -65,7 +65,7 @@
 		var size = ( params.size != null )?params.size:20;
 		var html = "<tr>"
 					+"<th><label class='required' for='"+params.id+"'>"+params.label+"</label></th>"
-					+"<td><input type='text' id='"+params.id+"' size='"+size+"' name='"+params.name+"'/></td>"
+					+"<td><input type='text' param='ajax' id='"+params.id+"' size='"+size+"' name='"+params.name+"'/></td>"
 				  +"</tr>";
 		return html;
 	}
@@ -74,17 +74,73 @@
 		displayElement( val );
 	}
 	
+	/**
+	 * 提交数据
+	 */
 	function dosubmit( ){
 		var url = "<s:url value="/party/contact/save.do"/>";
-		var params = {'contact':$("#clazz_contact").val(),'contact.type':$("#contact_type").val()};
-		$.post( url,params,function(data){alert(data);},"json");
+		var other_param = '';
+		$.each( $("input[param='ajax']"),function(index,ele){
+			other_param += ',"'+$(ele).attr("name")+'":"' +$(ele).val()+'"' ;
+		});
+		//alert( other_param );
+		var params = '{"contact":"' + $("#clazz_contact").val() + '"'
+			+',"party":"organization","party.id":"'+ $("input[name='party.id']").val() + '"'
+			+',"contact.type":"'+ $("#contact_type").val() + '"'
+			+',"contact.description":"'+ $("#contact_description").val() + '"'
+			
+			+ other_param
+			
+			+',"struts.enableJSONValidation":"true","struts.validateOnly":"false"'
+			+'}';
+		$.post( url,$.parseJSON(params),function(data){ajaxResult(data);},"text");
+	}
+	
+	function ajaxResult( data ){
+		var json = $.parseJSON(data);
+		if( json.result != null && json.result ){
+			showMessage('插入成功!');
+			displayElement( $("#contact_type").val() );
+		}
+		if(json.fieldErrors != null ){
+			$("label[name='error']").remove();
+			var errors = json.fieldErrors;
+			if( errors['contact.type'] != null ){ //类型
+				showError( $("select[name='contact.type']"),errors['contact.type'][0] );
+			}
+			if( errors['contact.description'] != null ){ //描述
+				showError( $("textarea[name='contact.description']"),errors['contact.description'][0] );
+			}
+			if( errors['contact.otherTypeName'] != null ){ //其它类型
+				showError( $("input[name='contact.otherTypeName']"),errors['contact.otherTypeName'][0] );
+			}
+		}
+	}
+	
+	function showError( ele ,val){
+		$( ele ).after( $("<label name='error' class='error'>"+val+"</label>") );
+	}
+	
+		
+	/**
+	 * 显示提示信息
+	 */
+	function showMessage( msg ){
+		if( $('.success').html() == null ){
+			$("<div class='success'>"+msg+"</div>").appendTo($("#action_message_hint"));
+		}else{
+			$('.success').text( msg );
+		}
 	}
 	
 	$(document).ready(function(){
 		displayElement();
 	});
 </script>
-	
+
+<div id="action_message_hint" class="messages">
+</div>
+
 <table class="profile" id="contact_prfile_table">
 	<tbody>
 		<tr>
@@ -98,7 +154,7 @@
 		</tr>
 		<tr>
 			<th>描述</th>
-			<td><s:textarea id="desc" name="party.description" cols="60" rows="5"/></td>
+			<td><s:textarea id="contact_description" name="contact.description" cols="60" rows="5"/></td>
 		</tr>
 	</tbody>
 </table>

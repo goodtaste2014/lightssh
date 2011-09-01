@@ -38,6 +38,10 @@
 			<result name="input">/pages/party/organization/profile_parent_org.jsp</result>
 			<result name="success" type="chain">viewparent</result>	
         </action>
+        
+		<action name="removecontact" class="partyContactAction" method="remove">
+			<result name="success" type="chain">viewparent</result>	
+		</action>
 	</package>
 	
 </struts>

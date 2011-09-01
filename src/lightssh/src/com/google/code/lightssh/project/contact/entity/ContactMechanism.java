@@ -76,6 +76,17 @@ public class ContactMechanism extends UUIDModel{
 	@Column( name="TYPE",length=50 )
 	@Enumerated(value=EnumType.STRING)
 	private ContactMechanismType type;
+	
+	public String format( ){
+		switch( this.type ){
+			case OTHER:return "("+this.otherTypeName+")" + this.otherTypeValue;
+			case EMAIL:
+			case QQ:
+			case MSN:
+				return this.otherTypeValue;
+			default: return "["+this.type+"]-" + this.description;
+		}
+	}
 
 	public String getOtherTypeName() {
 		return otherTypeName;

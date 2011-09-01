@@ -33,6 +33,10 @@ public class PostalAddress extends ContactMechanism{
 	 */
 	@Column( name="ADDRESS",length=200 )
 	private String address;
+	
+	public String format( ){
+		return this.address + (postalCode==null?"":"(邮编:"+postalCode+")"); 
+	}
 
 	public String getConsignee() {
 		return consignee;

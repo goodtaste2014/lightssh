@@ -1,14 +1,17 @@
 package com.google.code.lightssh.project.party.web;
 
+import java.util.Collection;
 import java.util.List;
 
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.util.StringUtil;
 import com.google.code.lightssh.common.web.action.CrudAction;
+import com.google.code.lightssh.project.contact.entity.ContactMechanism;
 import com.google.code.lightssh.project.log.entity.Access;
 import com.google.code.lightssh.project.party.entity.Organization;
 import com.google.code.lightssh.project.party.entity.PartyRole;
 import com.google.code.lightssh.project.party.entity.PartyRole.RoleType;
+import com.google.code.lightssh.project.party.service.PartyContactManager;
 import com.google.code.lightssh.project.party.service.PartyManager;
 import com.google.code.lightssh.project.party.service.PartyRelationshipManager;
 import com.google.code.lightssh.project.party.service.PartyRoleManager;
@@ -23,6 +26,8 @@ public class OrganizationAction extends CrudAction<Organization>{
 	
 	private PartyManager partyManager;
 	
+	private PartyContactManager partyContactManager;
+	
 	private Organization party;
 	
 	private RoleType party_role_type;
@@ -36,6 +41,10 @@ public class OrganizationAction extends CrudAction<Organization>{
 
 	public void setPartyRoleManager(PartyRoleManager partyRoleManager) {
 		this.partyRoleManager = partyRoleManager;
+	}
+
+	public void setPartyContactManager(PartyContactManager partyContactManager) {
+		this.partyContactManager = partyContactManager;
 	}
 
 	public PartyManager getPartyManager() {
@@ -98,6 +107,9 @@ public class OrganizationAction extends CrudAction<Organization>{
 					party, RoleType.valuesOfInternalOrg() );
 			if( types != null && !types.isEmpty() )
 				this.party_role_type = types.get(0).getType();
+			
+			Collection<ContactMechanism> contacts = partyContactManager.list(party);
+			request.setAttribute("party_contacts",contacts );
 		}
 		
 		if( "edit".equals(request.getParameter("action")))

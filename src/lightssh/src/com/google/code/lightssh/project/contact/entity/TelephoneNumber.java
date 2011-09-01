@@ -39,7 +39,18 @@ public class TelephoneNumber extends ContactMechanism{
 	 * 寻找人
 	 */
 	private String askForName;
-
+	
+	public String format( ){
+		switch( getType() ){
+			case TELEPHONE:
+			case FAX:return (countryCode==null?"":countryCode+"-")
+				+ (areaCode==null?"":areaCode+"-") + contactNumber 
+				+ (extCode==null?"":"-"+extCode);
+			case MOBILE:return (countryCode==null?"":"("+countryCode+")")+ this.contactNumber;
+			default: return super.format();
+		}
+	}
+	
 	public String getCountryCode() {
 		return countryCode;
 	}

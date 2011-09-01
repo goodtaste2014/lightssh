@@ -43,8 +43,11 @@ implements PartyContactManager{
 
 	@Override
 	public void save(Party party, ContactMechanism contact) {
-		if( party != null && party.getIdentity() != null && contact != null )
+		if( party != null && party.getIdentity() != null && contact != null ){
+			if( contact.isInsert() )
+				contact.preInsert();
 			super.save( new PartyContact(party,contact) );
+		}
 	}
 
 	@Override
