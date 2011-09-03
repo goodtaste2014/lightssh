@@ -28,6 +28,29 @@
         </action>
 	</package>
 	
+    <package name="settings_uom" extends="default" namespace="/settings/uom">
+    	<action name="edit" class="uomAction" method="edit">
+			<result name="input">/pages/settings/uom/profile.jsp</result>	
+			<result name="success">/pages/settings/uom/profile.jsp</result>	
+        </action>
+        
+    	<action name="save" class="uomAction" method="save">
+			<result name="input">/pages/settings/uom/profile.jsp</result>	
+			<result name="success" type="redirectAction">list</result>	
+        </action>
+        
+    	<action name="toggle" class="uomAction" method="toggle">
+			<result name="input" type="redirectAction">list</result>
+			<result name="success" type="redirectAction">list</result>
+        </action>
+        
+    	<action name="list" class="uomAction" method="list">
+			<result name="input">/pages/settings/uom/list.jsp</result>	
+			<result name="success">/pages/settings/uom/list.jsp</result>	
+        </action>
+        
+    </package>
+    
     <package name="settings_organization" extends="default" namespace="/settings/organization">
     	<action name="viewparent" class="organizationAction" method="viewparent">
 			<result name="input">/pages/party/organization/profile_parent_org.jsp</result>	

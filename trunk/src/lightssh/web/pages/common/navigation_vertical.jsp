@@ -148,6 +148,8 @@
 					<li><a href="<s:url value="/settings/log/list.do"/>" target="main_frame"><s:text name="project.nav.syslog"/></a></li>
 					<%-- 定时任务 --%>
 					<li><a href="<s:url value="/settings/scheduler/list.do"/>" target="main_frame">定时任务</a></li>
+					<%-- 计量单位 --%>
+					<li><a href="<s:url value="/settings/uom/list.do"/>" target="main_frame">计量单位</a></li>
 				</ul>
 			</li>
 		</ul>

@@ -43,6 +43,11 @@
 	<bean id="schedulerAction" class="com.google.code.lightssh.project.scheduler.web.SchedulerAction" scope="prototype">
 		<property name="schedulerManager" ref="schedulerManager"/>
 	</bean>
+	
+	<!-- uom -->
+	<bean id="uomAction" class="com.google.code.lightssh.project.uom.web.UnitOfMeasureAction" scope="prototype">
+		<property name="uomManager" ref="uomManager"/>
+	</bean>
 		
 	<!-- party -->
 	<bean id="partyAction" class="com.google.code.lightssh.project.party.web.PartyAction" scope="prototype">
