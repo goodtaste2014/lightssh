@@ -18,6 +18,9 @@ public class PartyAction extends CrudAction<Party>{
 
 	private static final long serialVersionUID = 669140342947692813L;
 	
+	private static final String FAMILY = "family";
+	private static final String CONTACT = "contact";
+	
 	private Party party;
 	
 	private boolean unique;
@@ -47,6 +50,16 @@ public class PartyAction extends CrudAction<Party>{
 	public void setParty(Party party) {
 		this.party = party;
 		super.model = this.party;
+	}
+	
+	public String edit( ){
+		String profile = request.getParameter("profile");
+		if( FAMILY.equalsIgnoreCase( profile ) )
+			return FAMILY;
+		else if(CONTACT.equalsIgnoreCase( profile ) )
+			return CONTACT;
+			
+		return super.edit();
 	}
 	
     /**
@@ -127,7 +140,7 @@ public class PartyAction extends CrudAction<Party>{
           } 
          
           return SUCCESS;
-      }
+     }
       
   	public String unique( ){
 		this.unique = this.getManager().isUniqneName( party );

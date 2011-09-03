@@ -16,6 +16,8 @@
                 <value>com.google.code.lightssh.project.sequence.entity.Sequence</value>
                 <value>com.google.code.lightssh.project.scheduler.entity.JobInterval</value>
                 <value>com.google.code.lightssh.project.identity.entity.Identity</value>
+                <value>com.google.code.lightssh.project.uom.entity.UnitOfMeasure</value>
+                <value>com.google.code.lightssh.project.uom.entity.Currency</value>
                 <value>com.google.code.lightssh.project.log.entity.Access</value>
                 <value>com.google.code.lightssh.project.log.entity.History</value>
                 <value>com.google.code.lightssh.project.security.entity.Role</value>
@@ -39,7 +41,7 @@
             <props>
                 <prop key="hibernate.query.substitutions">true 'Y', false 'N'</prop>
                 <prop key="hibernate.show_sql">true</prop>
-                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.format_sql">false</prop>
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
             </props>
         </property>   
@@ -58,6 +60,11 @@
 		<constructor-arg>
     		<value>com.google.code.lightssh.project.scheduler.entity.JobInterval</value>
     	</constructor-arg>    
+        <property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<!-- uom -->
+	<bean id="uomDao" class="com.google.code.lightssh.project.uom.dao.UnitOfMeasureDaoHibernate">
         <property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 	

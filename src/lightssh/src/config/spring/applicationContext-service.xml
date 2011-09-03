@@ -21,6 +21,11 @@
 		<property name="dao" ref="jobIntervalDao"/>
 	</bean>
 	
+	<!-- uom -->
+	<bean id="uomManager" class="com.google.code.lightssh.project.uom.service.UnitOfMeasureManagerImpl">
+		<property name="dao" ref="uomDao"/>
+	</bean>
+	
 	<!-- security role -->
 	<bean id="roleManager" class="com.google.code.lightssh.project.security.service.RoleManagerImpl">
 		<property name="roleDao" ref="roleDao"/>

@@ -49,6 +49,8 @@
 		<action name="edit" class="partyAction" method="edit">
 			<result name="input">/pages/party/person/profile.jsp</result>	
 			<result name="success">/pages/party/person/profile.jsp</result>	
+			<result name="family">/pages/party/person/profile_family.jsp</result>	
+			<result name="contact">/pages/party/person/profile_contact.jsp</result>	
         </action>
         
         <action name="save" class="partyAction" method="save">

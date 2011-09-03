@@ -64,7 +64,7 @@
 				<li><a href="#tabs-2">关系树</a></li> 	
 			</ul> 
 		
-			<div id="tabs-1" style="padding:5px;">
+			<div id="tabs-1">
 				<div id="live_filter">
 		
 					<label for="name">名称/描述</label>
