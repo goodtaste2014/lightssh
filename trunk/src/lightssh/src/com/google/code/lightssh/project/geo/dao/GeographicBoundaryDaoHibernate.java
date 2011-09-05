@@ -38,9 +38,9 @@ public class GeographicBoundaryDaoHibernate extends HibernateAnnotationDao<Geogr
 			params.add( t.getActive() );
 		}
 		
-		if( StringUtil.clean( t.getNumericCode() ) != null ){
-			hql.append( " AND m.numericCode like ? " );
-			params.add( "" + t.getNumericCode().trim() + "");
+		if( StringUtil.clean( t.getName() ) != null ){
+			hql.append( " AND m.name like ? " );
+			params.add( "%" + t.getName().trim() + "%");
 		}
 		
 		return super.query(page, hql.toString(), params.toArray( ) );
