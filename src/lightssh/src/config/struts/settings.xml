@@ -51,6 +51,28 @@
         
     </package>
     
+    <package name="settings_geo" extends="default" namespace="/settings/geo">
+    	<action name="edit" class="geoAction" method="edit">
+			<result name="input">/pages/settings/geo/profile.jsp</result>	
+			<result name="success">/pages/settings/geo/profile.jsp</result>	
+        </action>
+        
+    	<action name="save" class="geoAction" method="save">
+			<result name="input">/pages/settings/geo/profile.jsp</result>	
+			<result name="success" type="redirectAction">list</result>	
+        </action>
+        
+    	<action name="toggle" class="geoAction" method="toggle">
+			<result name="input" type="redirectAction">list</result>
+			<result name="success" type="redirectAction">list</result>
+        </action>
+        
+    	<action name="list" class="geoAction" method="list">
+			<result name="input">/pages/settings/geo/list.jsp</result>	
+			<result name="success">/pages/settings/geo/list.jsp</result>	
+        </action>
+    </package>
+    
     <package name="settings_organization" extends="default" namespace="/settings/organization">
     	<action name="viewparent" class="organizationAction" method="viewparent">
 			<result name="input">/pages/party/organization/profile_parent_org.jsp</result>	
