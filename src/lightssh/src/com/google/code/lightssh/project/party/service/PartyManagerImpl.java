@@ -5,7 +5,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Resource;
+
 import org.apache.commons.collections.CollectionUtils;
+import org.springframework.stereotype.Component;
 
 import com.google.code.lightssh.common.ApplicationException;
 import com.google.code.lightssh.common.model.page.ListPage;
@@ -29,16 +32,22 @@ import com.google.code.lightssh.project.sequence.service.SequenceManager;
  * @author YangXiaojin
  *
  */
+@Component("partyManager")
 public class PartyManagerImpl extends BaseManagerImpl<Party> implements PartyManager{
 	
+	@Resource(name="sequenceManager")
 	private SequenceManager sequenceManager;
 	
+	@Resource(name="accessManager")
 	private AccessManager accessManager;
 	
+	@Resource(name="partyRoleManager")
 	private PartyRoleManager partyRoleManager;
 	
+	@Resource(name="partyRelationshipManager")
 	private PartyRelationshipManager partyRelationshipManager;
 	
+	@Resource(name="partyDao")
 	public void setDao( PartyDao dao ){
 		super.dao = dao;
 	}

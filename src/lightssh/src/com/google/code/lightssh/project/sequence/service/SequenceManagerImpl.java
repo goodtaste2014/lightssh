@@ -1,5 +1,9 @@
 package com.google.code.lightssh.project.sequence.service;
 
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Component;
+
 import com.google.code.lightssh.common.ApplicationException;
 import com.google.code.lightssh.common.dao.Dao;
 import com.google.code.lightssh.common.model.Sequenceable;
@@ -10,10 +14,12 @@ import com.google.code.lightssh.project.sequence.entity.Sequence;
  * @author YangXiaojin
  *
  */
+@Component( "sequenceManager" )
 public class SequenceManagerImpl implements SequenceManager{
 	
 	private Dao<Sequence> dao;
 
+	@Resource( name="sequenceDao" )
 	public void setDao(Dao<Sequence> dao) {
 		this.dao = dao;
 	}

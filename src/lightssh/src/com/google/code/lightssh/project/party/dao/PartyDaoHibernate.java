@@ -5,14 +5,17 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
-import com.google.code.lightssh.common.dao.hibernate.HibernateDao;
+import org.springframework.stereotype.Repository;
+
+import com.google.code.lightssh.common.dao.hibernate.HibernateAnnotationDao;
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.util.ReflectionUtil;
 import com.google.code.lightssh.project.party.entity.Organization;
 import com.google.code.lightssh.project.party.entity.Party;
 import com.google.code.lightssh.project.party.entity.Person;
 
-public class PartyDaoHibernate extends HibernateDao<Party> implements PartyDao{
+@Repository("partyDao")
+public class PartyDaoHibernate extends HibernateAnnotationDao<Party> implements PartyDao{
 	
 	public ListPage<Party> list(ListPage<Party> page,Party t ){
 		return this.list( super.entityClass, page, t );

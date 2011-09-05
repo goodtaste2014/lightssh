@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.google.code.lightssh.common.dao.hibernate.HibernateDao;
+import org.springframework.stereotype.Repository;
+
+import com.google.code.lightssh.common.dao.hibernate.HibernateAnnotationDao;
 import com.google.code.lightssh.project.party.entity.Party;
 import com.google.code.lightssh.project.party.entity.PartyRelationship;
 import com.google.code.lightssh.project.party.entity.PartyRole;
@@ -15,7 +17,8 @@ import com.google.code.lightssh.project.party.entity.PartyRelationship.Relations
  * @author YangXiaojin
  *
  */
-public class PartyRelationshipDaoHibernate extends HibernateDao<PartyRelationship> 
+@Repository("partyRelationshipDao")
+public class PartyRelationshipDaoHibernate extends HibernateAnnotationDao<PartyRelationship> 
 implements PartyRelationshipDao{
 
 	@SuppressWarnings("unchecked")

@@ -16,6 +16,12 @@
 
 	<context:annotation-config/>
 	
+	<context:component-scan base-package="com.google.code.lightssh">
+	    <context:include-filter type="aspectj" expression="com.google.code.lightssh..*dao"/>
+	    <context:include-filter type="aspectj" expression="com.google.code.lightssh..*service"/>
+	    <context:include-filter type="aspectj" expression="com.google.code.lightssh..*web"/>
+	</context:component-scan>
+	
 	<!-- Enable @Transactional support -->
     <tx:annotation-driven/>
 
@@ -60,5 +66,11 @@
 	<import resource="applicationContext-cache.xml"/>
 	<import resource="applicationContext-shiro.xml"/>
 	-->
+	
+	<!-- 无实现类的bean -->
+	<!-- security permission -->
+	<bean id="permissionManager" class="com.google.code.lightssh.common.service.BaseManagerImpl">
+		<property name="dao" ref="permissionDao" />
+	</bean>
 	
 </beans>

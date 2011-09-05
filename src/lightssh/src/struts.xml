@@ -75,30 +75,30 @@
             <exception-mapping exception="java.lang.Exception" result="unknownException"/>
         </global-exception-mappings>
         
-        <action name="403" class="baseAction">
+        <action name="403" class="securityAction">
             <result name="success">/pages/security/system/403.jsp</result>
         </action>
 
         <!-- HOME PAGE -->
-        <action name="welcome" class="baseAction">
+        <action name="welcome" class="securityAction">
         	<result name="input">/pages/home.jsp</result>
             <result name="success">/pages/home.jsp</result>
         </action>
         
         <!-- HEADER PAGE -->
-        <action name="header" class="baseAction">
+        <action name="header" class="securityAction">
         	<result name="input">/pages/common/header.jsp</result>
         	<result name="success">/pages/common/header.jsp</result>
         </action>
         
         <!-- NAVIGATION PAGE -->
-        <action name="navigation" class="baseAction">
+        <action name="navigation" class="securityAction">
         	<result name="input">/pages/common/navigation_vertical.jsp</result>
         	<result name="success">/pages/common/navigation_vertical.jsp</result>
         </action>
         
         <!-- PANEL PAGE -->
-        <action name="panel" class="baseAction">
+        <action name="panel" class="securityAction">
         	<result name="input">/pages/security/system/panel.jsp</result>
         	<result name="success">/pages/security/system/panel.jsp</result>
         </action>
@@ -115,11 +115,11 @@
         </action>
         
         <!-- 401 ERROR PAGE -->
-        <action name="401" class="baseAction">
+        <action name="401" class="securityAction">
         	<result name="success">/pages/security/system/401.jsp</result>
         </action>
         
-		<action name="index" class="baseAction">
+		<action name="index" class="securityAction">
 			<result name="success">/pages/index.jsp</result>
 		</action>
     </package>

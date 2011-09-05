@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.annotation.Resource;
+
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.web.action.CrudAction;
 import com.google.code.lightssh.project.security.entity.LoginAccount;
@@ -16,6 +21,8 @@ import com.google.code.lightssh.project.security.service.SecurityUtil;
  * @author YangXiaojin
  *
  */
+@Component( "loginAccountAction" )
+@Scope("prototype")
 public class LoginAccountAction extends CrudAction<LoginAccount>{
 	
 	private static final long serialVersionUID = 2391150894472042768L;
@@ -26,6 +33,7 @@ public class LoginAccountAction extends CrudAction<LoginAccount>{
 	
 	private String ids;
 	
+	@Resource( name="loginAccountManager" )
 	public void setLoginAccountManager( LoginAccountManager manager ){
 		super.manager = manager;
 	}

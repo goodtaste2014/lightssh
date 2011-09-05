@@ -3,6 +3,10 @@ package com.google.code.lightssh.project.security.service;
 import java.util.Collection;
 import java.util.Date;
 
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Component;
+
 import com.google.code.lightssh.common.ApplicationException;
 import com.google.code.lightssh.common.dao.DaoException;
 import com.google.code.lightssh.common.model.page.ListPage;
@@ -18,15 +22,19 @@ import com.google.code.lightssh.project.security.entity.Role;
  * @author YangXiaojin
  *
  */
+@Component("roleManager")
 public class RoleManagerImpl extends BaseManagerImpl<Role> implements RoleManager{
 	
 	/** 系统超级管理员角色  */
 	public static final String SUPER_ROLE = "Super Role";
 	
+	@Resource(name="navigationManager")
 	private NavigationManager navigationManager;
 	
+	@Resource(name="permissionManager")
 	private BaseManager<Permission> permissionManager;
 	
+	@Resource(name="roleDao")
 	public void setRoleDao( RoleDao roleDao ){
 		super.dao = roleDao;
 	}

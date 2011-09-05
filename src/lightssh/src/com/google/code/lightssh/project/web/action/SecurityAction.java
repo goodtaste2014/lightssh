@@ -2,10 +2,19 @@ package com.google.code.lightssh.project.web.action;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.struts2.ServletActionContext;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import com.google.code.lightssh.common.web.action.BaseAction;
 import com.google.code.lightssh.project.security.service.SecuirtyFramework;
 
+/**
+ * 
+ * @author YangXiaojin
+ *
+ */
+@Component( "securityAction" )
+@Scope("prototype")
 public class SecurityAction extends BaseAction{
 
 	private static final long serialVersionUID = 1L;

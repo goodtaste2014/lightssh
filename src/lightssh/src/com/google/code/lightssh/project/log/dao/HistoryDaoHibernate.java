@@ -2,11 +2,15 @@ package com.google.code.lightssh.project.log.dao;
 
 import java.util.List;
 
-import com.google.code.lightssh.common.dao.hibernate.HibernateDao;
+import org.springframework.stereotype.Repository;
+
+import com.google.code.lightssh.common.dao.hibernate.HibernateAnnotationDao;
 import com.google.code.lightssh.project.log.entity.Access;
 import com.google.code.lightssh.project.log.entity.History;
 
-public class HistoryDaoHibernate extends HibernateDao<History> implements HistoryDao{
+
+@Repository("historyDao")
+public class HistoryDaoHibernate extends HibernateAnnotationDao<History> implements HistoryDao{
 
 	@SuppressWarnings("unchecked")
 	@Override

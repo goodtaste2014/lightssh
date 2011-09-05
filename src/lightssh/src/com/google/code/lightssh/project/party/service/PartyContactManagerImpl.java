@@ -2,6 +2,10 @@ package com.google.code.lightssh.project.party.service;
 
 import java.util.Collection;
 
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Component;
+
 import com.google.code.lightssh.common.service.BaseManagerImpl;
 import com.google.code.lightssh.project.contact.entity.ContactMechanism;
 import com.google.code.lightssh.project.contact.entity.ContactMechanism.ContactMechanismType;
@@ -14,9 +18,11 @@ import com.google.code.lightssh.project.party.entity.PartyContact;
  * @author YangXiaojin
  *
  */
+@Component("partyContactManager")
 public class PartyContactManagerImpl extends BaseManagerImpl<PartyContact>
 implements PartyContactManager{
 	
+	@Resource( name="partyContactDao")
 	public void setDao( PartyContactDao dao ){
 		this.dao = dao;
 	}

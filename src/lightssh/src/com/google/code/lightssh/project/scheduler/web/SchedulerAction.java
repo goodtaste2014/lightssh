@@ -2,6 +2,11 @@ package com.google.code.lightssh.project.scheduler.web;
 
 import java.util.List;
 
+import javax.annotation.Resource;
+
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import com.google.code.lightssh.common.web.action.BaseAction;
 import com.google.code.lightssh.project.scheduler.entity.TriggerWrap;
 import com.google.code.lightssh.project.scheduler.service.SchedulerManager;
@@ -11,10 +16,13 @@ import com.google.code.lightssh.project.scheduler.service.SchedulerManager;
  * @author YangXiaojin
  *
  */
+@Component( "schedulerAction" )
+@Scope("prototype")
 public class SchedulerAction extends BaseAction{
 
 	private static final long serialVersionUID = 6483507951968694317L;
 	
+	@Resource( name="schedulerManager" )
 	private SchedulerManager schedulerManager;
 
 	public void setSchedulerManager(SchedulerManager schedulerManager) {

@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Resource;
+
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.report.jr.DynamicColumn;
 import com.google.code.lightssh.common.report.jr.ReportParameter;
@@ -11,6 +16,8 @@ import com.google.code.lightssh.common.web.action.NonTemplateReportAction;
 import com.google.code.lightssh.project.security.entity.LoginAccount;
 import com.google.code.lightssh.project.security.service.LoginAccountManager;
 
+@Component( "reportLoginAccountAction" )
+@Scope("prototype")
 public class ReportLoginAccountAction extends NonTemplateReportAction<LoginAccount>{
 	
 	private static final long serialVersionUID = 3862513833381074305L;
@@ -21,6 +28,7 @@ public class ReportLoginAccountAction extends NonTemplateReportAction<LoginAccou
 	
 	private ListPage<LoginAccount> page;
 	
+	@Resource( name="loginAccountManager" )
 	public void setManager(LoginAccountManager manager) {
 		this.manager = manager;
 	}

@@ -1,6 +1,10 @@
 package com.google.code.lightssh.project.party.web;
 
+import javax.annotation.Resource;
+
 import org.apache.struts2.json.annotations.JSON;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import com.google.code.lightssh.common.web.action.CrudAction;
 import com.google.code.lightssh.project.contact.entity.ContactMechanism;
@@ -13,6 +17,8 @@ import com.google.code.lightssh.project.party.service.PartyContactManager;
  * @author YangXiaojin
  *
  */
+@Component( "partyContactAction" )
+@Scope("prototype")
 public class PartyContactAction extends CrudAction<PartyContact>{
 	
 	private static final long serialVersionUID = 1L;
@@ -21,6 +27,7 @@ public class PartyContactAction extends CrudAction<PartyContact>{
 	
 	private Party party;
 	
+	@Resource(name="partyContactManager" )
 	private PartyContactManager partyContactManager;
 	
 	private boolean exe_result;

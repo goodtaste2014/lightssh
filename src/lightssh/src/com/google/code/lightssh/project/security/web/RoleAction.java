@@ -3,7 +3,11 @@ package com.google.code.lightssh.project.security.web;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.apache.struts2.json.annotations.JSON;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.web.action.CrudAction;
@@ -17,6 +21,8 @@ import com.google.code.lightssh.project.security.service.RoleManager;
  * @author YangXiaojin
  *
  */
+@Component( "roleAction" )
+@Scope("prototype")
 public class RoleAction extends CrudAction<Role>{
 
 	private static final long serialVersionUID = 1L;
@@ -27,6 +33,7 @@ public class RoleAction extends CrudAction<Role>{
 	
 	private RoleManager roleManager;
 	
+	@Resource( name="navigationManager" )
 	private NavigationManager navigationManager;
 	
 	@JSON(name="page")
@@ -34,6 +41,7 @@ public class RoleAction extends CrudAction<Role>{
 		return super.getPage();
 	}
 	
+	@Resource( name="roleManager" )
 	public void setRoleManager( RoleManager roleManager ){
 		this.roleManager = roleManager;
 		super.manager = this.roleManager;

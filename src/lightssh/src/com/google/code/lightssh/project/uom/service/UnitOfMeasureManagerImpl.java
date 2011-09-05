@@ -2,6 +2,11 @@ package com.google.code.lightssh.project.uom.service;
 
 import java.util.List;
 
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Component;
+
+import com.google.code.lightssh.common.dao.Dao;
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.service.BaseManagerImpl;
 import com.google.code.lightssh.project.uom.entity.UnitOfMeasure;
@@ -12,8 +17,14 @@ import com.google.code.lightssh.project.uom.entity.UnitOfMeasure.UomType;
  * @author YangXiaojin
  *
  */
+@Component("uomManager")
 public class UnitOfMeasureManagerImpl extends BaseManagerImpl<UnitOfMeasure> implements UnitOfMeasureManager{
 
+	@Resource( name="uomDao" )
+	public void setDao(Dao<UnitOfMeasure> dao) {
+		this.dao = dao;
+	}
+	
 	private List<UnitOfMeasure> list(UomType type,Boolean active) {
 		ListPage<UnitOfMeasure> page = new ListPage<UnitOfMeasure>( Integer.MAX_VALUE );
 		UnitOfMeasure uom = new UnitOfMeasure( );

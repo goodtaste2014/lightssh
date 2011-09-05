@@ -2,6 +2,7 @@ package com.google.code.lightssh.project.web.filter;
 
 import java.io.IOException;
 
+import javax.annotation.Resource;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -11,17 +12,20 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.ehcache.Cache;
 
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
 import com.google.code.lightssh.common.web.SessionKey;
 import com.google.code.lightssh.project.security.service.SecuirtyFramework;
 import com.google.code.lightssh.project.security.service.SecurityUtil;
 
+@Component( "sessionInvalidateFilter" )
 public class SessionInvalidateFilter extends GenericFilterBean{
 	
 	/**
 	 * 用于存放Session强制失效的用户名
 	 */
+	@Resource( name="sessionInvalidateUserCache" )
 	private Cache cache;
 	
 	private String logoutUrl = "/logout.do";

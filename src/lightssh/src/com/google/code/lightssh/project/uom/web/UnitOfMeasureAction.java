@@ -1,5 +1,10 @@
 package com.google.code.lightssh.project.uom.web;
 
+import javax.annotation.Resource;
+
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import com.google.code.lightssh.common.web.action.CrudAction;
 import com.google.code.lightssh.project.uom.entity.UnitOfMeasure;
 import com.google.code.lightssh.project.uom.service.UnitOfMeasureManager;
@@ -9,12 +14,15 @@ import com.google.code.lightssh.project.uom.service.UnitOfMeasureManager;
  * @author YangXiaojin
  *
  */
+@Component( "uomAction" )
+@Scope("prototype")
 public class UnitOfMeasureAction extends CrudAction<UnitOfMeasure>{
 
 	private static final long serialVersionUID = 1L;
 	
 	private UnitOfMeasure uom;
 
+	@Resource( name="uomManager" )
 	public void setUomManager(UnitOfMeasureManager uomManager) {
 		super.manager = uomManager;
 	}

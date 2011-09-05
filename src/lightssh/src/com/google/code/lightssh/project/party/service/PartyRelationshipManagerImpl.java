@@ -4,6 +4,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Component;
+
 import com.google.code.lightssh.common.service.BaseManagerImpl;
 import com.google.code.lightssh.project.party.dao.PartyRelationshipDao;
 import com.google.code.lightssh.project.party.entity.Organization;
@@ -18,15 +22,18 @@ import com.google.code.lightssh.project.party.entity.PartyRole.RoleType;
  * @author YangXiaojin
  *
  */
+@Component("partyRelationshipManager")
 public class PartyRelationshipManagerImpl extends BaseManagerImpl<PartyRelationship> 
 implements PartyRelationshipManager{
 	
+	@Resource(name="partyRoleManager")
 	private PartyRoleManager partyRoleManager;
 	
 	public void setPartyRoleManager(PartyRoleManager partyRoleManager) {
 		this.partyRoleManager = partyRoleManager;
 	}
 
+	@Resource(name="partyRelationshipDao")
 	public void setDao( PartyRelationshipDao dao ){
 		super.dao = dao;
 	}

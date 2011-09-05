@@ -3,6 +3,11 @@ package com.google.code.lightssh.project.party.web;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.Resource;
+
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.util.StringUtil;
 import com.google.code.lightssh.common.web.action.CrudAction;
@@ -16,16 +21,27 @@ import com.google.code.lightssh.project.party.service.PartyManager;
 import com.google.code.lightssh.project.party.service.PartyRelationshipManager;
 import com.google.code.lightssh.project.party.service.PartyRoleManager;
 
+/**
+ * 
+ * @author YangXiaojin
+ *
+ */
+@Component( "organizationAction" )
+@Scope("prototype")
 public class OrganizationAction extends CrudAction<Organization>{
 
 	private static final long serialVersionUID = 1L;
 	
+	@Resource( name="partyRelationshipManager" )
 	private PartyRelationshipManager partyRelationshipManager;
 	
+	@Resource( name="partyRoleManager" )
 	private PartyRoleManager partyRoleManager;
 	
+	@Resource( name="partyManager" )
 	private PartyManager partyManager;
 	
+	@Resource( name="partyContactManager" )
 	private PartyContactManager partyContactManager;
 	
 	private Organization party;

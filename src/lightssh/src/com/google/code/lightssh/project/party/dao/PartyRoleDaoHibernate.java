@@ -2,7 +2,9 @@ package com.google.code.lightssh.project.party.dao;
 
 import java.util.List;
 
-import com.google.code.lightssh.common.dao.hibernate.HibernateDao;
+import org.springframework.stereotype.Repository;
+
+import com.google.code.lightssh.common.dao.hibernate.HibernateAnnotationDao;
 import com.google.code.lightssh.project.party.entity.Party;
 import com.google.code.lightssh.project.party.entity.PartyRole;
 import com.google.code.lightssh.project.party.entity.PartyRole.RoleType;
@@ -12,7 +14,8 @@ import com.google.code.lightssh.project.party.entity.PartyRole.RoleType;
  * @author YangXiaojin
  *
  */
-public class PartyRoleDaoHibernate extends HibernateDao<PartyRole> implements PartyRoleDao{
+@Repository("partyRoleDao")
+public class PartyRoleDaoHibernate extends HibernateAnnotationDao<PartyRole> implements PartyRoleDao{
 
 	@SuppressWarnings("unchecked")
 	@Override
