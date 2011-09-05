@@ -60,17 +60,9 @@
 	
 	<!-- WEBLOGIC NOT ALLOWED -->
 	<!--  
-	<import resource="applicationContext-dao.xml"/>
-	<import resource="applicationContext-service.xml"/>
-	<import resource="applicationContext-action.xml"/>
+	<import resource="applicationContext-no-annotation.xml"/>
 	<import resource="applicationContext-cache.xml"/>
 	<import resource="applicationContext-shiro.xml"/>
 	-->
-	
-	<!-- 无实现类的bean -->
-	<!-- security permission -->
-	<bean id="permissionManager" class="com.google.code.lightssh.common.service.BaseManagerImpl">
-		<property name="dao" ref="permissionDao" />
-	</bean>
 	
 </beans>

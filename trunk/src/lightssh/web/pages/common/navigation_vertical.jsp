@@ -150,6 +150,8 @@
 					<li><a href="<s:url value="/settings/scheduler/list.do"/>" target="main_frame">定时任务</a></li>
 					<%-- 计量单位 --%>
 					<li><a href="<s:url value="/settings/uom/list.do"/>" target="main_frame">计量单位</a></li>
+					<%-- 地理区域--%>
+					<li><a href="<s:url value="/settings/geo/list.do"/>" target="main_frame">地理区域</a></li>
 				</ul>
 			</li>
 		</ul>
