@@ -1,6 +1,10 @@
 package com.google.code.lightssh.project.party.web;
 
+import javax.annotation.Resource;
+
 import org.apache.struts2.json.annotations.JSON;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.util.StringUtil;
@@ -14,6 +18,8 @@ import com.google.code.lightssh.project.party.service.PartyManager;
  * @author YangXiaojin
  *
  */
+@Component( "partyAction" )
+@Scope("prototype")
 public class PartyAction extends CrudAction<Party>{
 
 	private static final long serialVersionUID = 669140342947692813L;
@@ -25,6 +31,7 @@ public class PartyAction extends CrudAction<Party>{
 	
 	private boolean unique;
 	
+	@Resource( name="partyManager" )
 	public void setPartyManager( PartyManager manager ){
 		super.manager = manager;
 	}

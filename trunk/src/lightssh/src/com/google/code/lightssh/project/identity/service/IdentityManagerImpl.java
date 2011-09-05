@@ -1,5 +1,9 @@
 package com.google.code.lightssh.project.identity.service;
 
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Component;
+
 import com.google.code.lightssh.common.entity.Persistence;
 import com.google.code.lightssh.common.service.BaseManagerImpl;
 import com.google.code.lightssh.project.identity.dao.IdentityDao;
@@ -11,8 +15,10 @@ import com.google.code.lightssh.project.identity.entity.IdentityType;
  * @author YangXiaojin
  *
  */
+@Component( "identityManager" )
 public class IdentityManagerImpl extends BaseManagerImpl<Identity> implements IdentityManager{
 	
+	@Resource(name="identityDao")
 	protected IdentityDao dao;
 		
 	public IdentityManagerImpl() {

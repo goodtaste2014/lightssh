@@ -2,11 +2,14 @@ package com.google.code.lightssh.project.identity.dao;
 
 import java.util.List;
 
-import com.google.code.lightssh.common.dao.hibernate.HibernateDao;
+import org.springframework.stereotype.Repository;
+
+import com.google.code.lightssh.common.dao.hibernate.HibernateAnnotationDao;
 import com.google.code.lightssh.project.identity.entity.Identity;
 import com.google.code.lightssh.project.identity.entity.IdentityType;
 
-public class IdentityDaoHibernate extends HibernateDao<Identity> implements IdentityDao{
+@Repository("identityDao")
+public class IdentityDaoHibernate extends HibernateAnnotationDao<Identity> implements IdentityDao{
 	
 	public IdentityDaoHibernate() {
 		super();

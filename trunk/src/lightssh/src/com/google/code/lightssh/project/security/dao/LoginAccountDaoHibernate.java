@@ -6,8 +6,9 @@ import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.stereotype.Repository;
 
-import com.google.code.lightssh.common.dao.hibernate.HibernateDao;
+import com.google.code.lightssh.common.dao.hibernate.HibernateAnnotationDao;
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.project.security.entity.LoginAccount;
 
@@ -16,7 +17,8 @@ import com.google.code.lightssh.project.security.entity.LoginAccount;
  * @author YangXiaojin
  *
  */
-public class LoginAccountDaoHibernate extends HibernateDao<LoginAccount> 
+@Repository("loginAccountDao")
+public class LoginAccountDaoHibernate extends HibernateAnnotationDao<LoginAccount> 
 	implements LoginAccountDao{
 
 	@SuppressWarnings("unchecked")

@@ -6,7 +6,8 @@
 	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 	http://www.springframework.org/schema/context
 	http://www.springframework.org/schema/context/spring-context-3.0.xsd">
-	
+
+
 	<!-- Hibernate SessionFactory JPA-->
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean" lazy-init="true">
         <property name="dataSource" ref="dataSource" />       
@@ -46,8 +47,10 @@
             </props>
         </property>   
     </bean>
-    
-    <!-- sequence -->
+	
+	<!-- 无实现类的bean -->
+	
+	<!-- DAO|sequence -->
 	<bean id="sequenceDao" class="com.google.code.lightssh.common.dao.hibernate.HibernateDao">
 		<constructor-arg>
     		<value>com.google.code.lightssh.project.sequence.entity.Sequence</value>
@@ -55,7 +58,7 @@
         <property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 	
-    <!-- scheduler|jobInterval -->
+    <!-- DAO|jobInterval -->
 	<bean id="jobIntervalDao" class="com.google.code.lightssh.common.dao.hibernate.HibernateDao">
 		<constructor-arg>
     		<value>com.google.code.lightssh.project.scheduler.entity.JobInterval</value>
@@ -63,22 +66,7 @@
         <property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 	
-	<!-- uom -->
-	<bean id="uomDao" class="com.google.code.lightssh.project.uom.dao.UnitOfMeasureDaoHibernate">
-        <property name="sessionFactory" ref="sessionFactory"/>
-	</bean>
-	
-	<!-- security role -->
-	<bean id="roleDao" class="com.google.code.lightssh.project.security.dao.RoleDaoHibernate">
-        <property name="sessionFactory" ref="sessionFactory"/>
-	</bean>
-
-	<!-- security navigation -->
-	<bean id="navigationDao" class="com.google.code.lightssh.project.security.dao.NavigationDaoHibernate">
-		<property name="sessionFactory" ref="sessionFactory"/>
-	</bean>
-	
-	<!-- security permission -->
+	<!-- DAO|security permission -->
 	<bean id="permissionDao" class="com.google.code.lightssh.common.dao.hibernate.HibernateDao">
 		<constructor-arg>
     		<value>com.google.code.lightssh.project.security.entity.Permission</value>
@@ -86,43 +74,10 @@
         <property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 	
-	<!-- security loginAccount -->
-	<bean id="loginAccountDao" class="com.google.code.lightssh.project.security.dao.LoginAccountDaoHibernate">
-		<property name="sessionFactory" ref="sessionFactory"/>
+	
+	<!-- SERVICE|security permission -->
+	<bean id="permissionManager" class="com.google.code.lightssh.common.service.BaseManagerImpl">
+		<property name="dao" ref="permissionDao" />
 	</bean>
 	
-	<!-- identity -->
-	<bean id="identityDao" class="com.google.code.lightssh.project.identity.dao.IdentityDaoHibernate">
-		<property name="sessionFactory" ref="sessionFactory"/>
-	</bean>
-	
-	<!-- log access -->
-	<bean id="accessDao" class="com.google.code.lightssh.project.log.dao.AccessDaoHibernate">
-		<property name="sessionFactory" ref="sessionFactory"/>
-	</bean>
-	
-	<!-- log history -->
-	<bean id="historyDao" class="com.google.code.lightssh.project.log.dao.HistoryDaoHibernate">
-		<property name="sessionFactory" ref="sessionFactory"/>
-	</bean>
-	
-	<!-- party -->
-	<bean id="partyDao" class="com.google.code.lightssh.project.party.dao.PartyDaoHibernate">
-		<property name="sessionFactory" ref="sessionFactory"/>
-	</bean>
-	
-	<!-- party role-->
-	<bean id="partyRoleDao" class="com.google.code.lightssh.project.party.dao.PartyRoleDaoHibernate">
-		<property name="sessionFactory" ref="sessionFactory"/>
-	</bean>
-	
-	<!-- party relationship-->
-	<bean id="partyRelationshipDao" class="com.google.code.lightssh.project.party.dao.PartyRelationshipDaoHibernate">
-		<property name="sessionFactory" ref="sessionFactory"/>
-	</bean>
-	
-	<!-- party contact-->
-	<bean id="partyContactDao" class="com.google.code.lightssh.project.party.dao.PartyContactDaoHibernate">
-		<property name="sessionFactory" ref="sessionFactory"/>
-	</bean>
 </beans>

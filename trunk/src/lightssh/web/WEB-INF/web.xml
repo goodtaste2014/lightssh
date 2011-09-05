@@ -18,9 +18,7 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
 			classpath:config/spring/applicationContext.xml
-			,classpath:config/spring/applicationContext-dao.xml
-			,classpath:config/spring/applicationContext-service.xml
-			,classpath:config/spring/applicationContext-action.xml
+			,classpath:config/spring/applicationContext-no-annotation.xml
 			,classpath:config/spring/applicationContext-cache.xml
 			,classpath:config/spring/applicationContext-scheduler.xml
 			,classpath:config/spring/applicationContext-shiro.xml

@@ -3,11 +3,14 @@ package com.google.code.lightssh.project.security.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.code.lightssh.common.dao.hibernate.HibernateDao;
+import org.springframework.stereotype.Repository;
+
+import com.google.code.lightssh.common.dao.hibernate.HibernateAnnotationDao;
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.project.security.entity.Role;
 
-public class RoleDaoHibernate extends HibernateDao<Role> implements RoleDao{
+@Repository("roleDao")
+public class RoleDaoHibernate extends HibernateAnnotationDao<Role> implements RoleDao{
 	
 	public ListPage<Role> list(ListPage<Role> page,Role t ){
 		if( t == null )

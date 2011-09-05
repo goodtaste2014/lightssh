@@ -3,7 +3,9 @@ package com.google.code.lightssh.project.uom.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.code.lightssh.common.dao.hibernate.HibernateDao;
+import org.springframework.stereotype.Repository;
+
+import com.google.code.lightssh.common.dao.hibernate.HibernateAnnotationDao;
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.util.StringUtil;
 import com.google.code.lightssh.project.uom.entity.UnitOfMeasure;
@@ -13,7 +15,8 @@ import com.google.code.lightssh.project.uom.entity.UnitOfMeasure;
  * @author YangXiaojin
  *
  */
-public class UnitOfMeasureDaoHibernate extends HibernateDao<UnitOfMeasure>{
+@Repository("uomDao")
+public class UnitOfMeasureDaoHibernate extends HibernateAnnotationDao<UnitOfMeasure>{
 	
 	public ListPage<UnitOfMeasure> list(ListPage<UnitOfMeasure> page,UnitOfMeasure t ){
 		if( t == null )

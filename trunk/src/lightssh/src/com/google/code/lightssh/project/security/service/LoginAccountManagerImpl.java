@@ -3,6 +3,8 @@ package com.google.code.lightssh.project.security.service;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.annotation.Resource;
+
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
 
@@ -11,8 +13,10 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Component;
 
 import com.google.code.lightssh.common.ApplicationException;
+import com.google.code.lightssh.common.dao.Dao;
 import com.google.code.lightssh.common.dao.DaoException;
 import com.google.code.lightssh.common.service.BaseManagerImpl;
 import com.google.code.lightssh.common.util.CryptographyUtil;
@@ -25,6 +29,7 @@ import com.google.code.lightssh.project.security.entity.Role;
  * @author YangXiaojin
  *
  */
+@Component("loginAccountManager")
 public class LoginAccountManagerImpl extends BaseManagerImpl<LoginAccount>
 	implements LoginAccountManager,UserDetailsService{
 	
@@ -35,12 +40,19 @@ public class LoginAccountManagerImpl extends BaseManagerImpl<LoginAccount>
 	
 	public static final String DEFAULT_PASSWORD = "123456";
 	
+	@Resource(name="roleManager")
 	private RoleManager roleManager;
 	
 	/**
 	 * 存放已删除用户名，用于强制退出在线用户
 	 */
+	@Resource(name="sessionInvalidateUserCache")
 	private Cache sessionInvalidateUserCache;
+	
+	@Resource(name="loginAccountDao")
+	public void setDao(Dao<LoginAccount> dao) {
+		this.dao = dao;
+	}
 	
 	public void setSessionInvalidateUserCache(Cache sessionInvalidateUserCache) {
 		this.sessionInvalidateUserCache = sessionInvalidateUserCache;

@@ -2,6 +2,10 @@ package com.google.code.lightssh.project.log.service;
 
 import java.util.Date;
 
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Component;
+
 import com.google.code.lightssh.common.ApplicationException;
 import com.google.code.lightssh.common.dao.Dao;
 import com.google.code.lightssh.common.entity.Persistence;
@@ -20,14 +24,18 @@ import com.google.code.lightssh.project.security.service.LoginAccountManager;
  * @author YangXiaojin
  *
  */
+@Component("accessManager")
 public class AccessManagerImpl extends BaseManagerImpl<Access> implements AccessManager{
 	
 	protected Dao<Access> dao;
 	
+	@Resource(name="historyDao")
 	protected HistoryDao historyDao;
 	
+	@Resource(name="identityManager")
 	private IdentityManager identityManager;
 	
+	@Resource(name="loginAccountManager")
 	private LoginAccountManager loginAccountManager;
 	
 	public AccessManagerImpl() {
@@ -38,6 +46,7 @@ public class AccessManagerImpl extends BaseManagerImpl<Access> implements Access
 		this.loginAccountManager = loginAccountManager;
 	}
 
+	@Resource(name="accessDao")
 	public void setDao(Dao<Access> dao) {
 		this.dao = dao;
 		super.dao = this.dao;

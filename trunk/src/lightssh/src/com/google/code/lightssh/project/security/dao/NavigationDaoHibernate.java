@@ -3,7 +3,9 @@ package com.google.code.lightssh.project.security.dao;
 import java.util.Collection;
 import java.util.List;
 
-import com.google.code.lightssh.common.dao.hibernate.HibernateDao;
+import org.springframework.stereotype.Repository;
+
+import com.google.code.lightssh.common.dao.hibernate.HibernateAnnotationDao;
 import com.google.code.lightssh.project.security.entity.Navigation;
 import com.google.code.lightssh.project.security.entity.Permission;
 
@@ -12,7 +14,8 @@ import com.google.code.lightssh.project.security.entity.Permission;
  * @author YangXiaojin
  *
  */
-public class NavigationDaoHibernate extends HibernateDao<Navigation> implements NavigationDao{
+@Repository("navigationDao")
+public class NavigationDaoHibernate extends HibernateAnnotationDao<Navigation> implements NavigationDao{
 
 	@SuppressWarnings("unchecked")
 	@Override

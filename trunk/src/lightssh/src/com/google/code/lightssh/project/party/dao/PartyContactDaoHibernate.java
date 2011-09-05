@@ -2,7 +2,9 @@ package com.google.code.lightssh.project.party.dao;
 
 import java.util.Collection;
 
-import com.google.code.lightssh.common.dao.hibernate.HibernateDao;
+import org.springframework.stereotype.Repository;
+
+import com.google.code.lightssh.common.dao.hibernate.HibernateAnnotationDao;
 import com.google.code.lightssh.project.contact.entity.ContactMechanism;
 import com.google.code.lightssh.project.contact.entity.ContactMechanism.ContactMechanismType;
 import com.google.code.lightssh.project.party.entity.Party;
@@ -13,7 +15,8 @@ import com.google.code.lightssh.project.party.entity.PartyContact;
  * @author YangXiaojin
  *
  */
-public class PartyContactDaoHibernate extends HibernateDao<PartyContact> implements PartyContactDao{
+@Repository("partyContactDao")
+public class PartyContactDaoHibernate extends HibernateAnnotationDao<PartyContact> implements PartyContactDao{
 
 	@Override
 	public void remove(ContactMechanism contact) {
