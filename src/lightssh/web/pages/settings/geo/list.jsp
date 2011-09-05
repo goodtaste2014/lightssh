@@ -32,9 +32,9 @@
 						 listKey="name()" headerKey="" headerValue="" value="geo.type.name()" name="geo.type"/>
 					</td>
 					
-					<th><label for="numericCode">数字编码</label></th>
+					<th><label for="name">名称</label></th>
 					<td>
-						<s:textfield id="numericCode" name="geo.numericCode" />
+						<s:textfield id="name" name="geo.name" />
 					</td>
 					
 					<th><label for="active">状态</label></th>
@@ -55,7 +55,7 @@
 			<col class="element" width="80px"/>
 			<col class="element" width="120px"/>
 			<col class="element" width="80px"/>
-			<col class="element" width="150px"/>
+			<col class="element" width="180px"/>
 			<col class="element" width="100px"/>
 			<col class="element" width="50px"/>
 			<col class="element" />
