@@ -6,6 +6,9 @@
 		<prefer-web-inf-classes>true</prefer-web-inf-classes>
 	</container-descriptor>
 	
-	<context-root>/ssh</context-root>
+	<context-root>/lightssh</context-root>
 	
+	<session-descriptor>
+		<cookie-path>/lightssh</cookie-path>
+	</session-descriptor>
 </weblogic-web-app>
