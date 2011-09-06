@@ -218,3 +218,90 @@ public class PartyManagerImpl extends BaseManagerImpl<Party> implements PartyMan
 
 
 }}}
+
+====== 4. ACTION|创建action ======
+
+{{{
+
+@Component( "partyAction" )
+@Scope("prototype")
+public class PartyAction extends CrudAction<Party>{
+
+	private static final long serialVersionUID = 669140342947692813L;
+	
+	private static final String FAMILY = "family";
+	private static final String CONTACT = "contact";
+	
+	private Party party;
+	
+	private boolean unique;
+	
+	@Resource( name="partyManager" )
+	public void setPartyManager( PartyManager manager ){
+		super.manager = manager;
+	}
+	
+	public PartyManager getManager( ){
+		return (PartyManager)this.manager;
+	}
+
+	@JSON(name="unique")
+	public boolean isUnique() {
+		return unique;
+	}
+
+	public void setUnique(boolean unique) {
+		this.unique = unique;
+	}
+
+	public Party getParty() {
+		this.party = super.model;
+		return party;
+	}
+
+	public void setParty(Party party) {
+		this.party = party;
+		super.model = this.party;
+	}
+	
+	public String edit( ){
+		//...
+         
+	}
+	
+    /**
+    * list
+    * @return
+    */
+    public String list( ){       
+        //...
+         
+    }
+    
+    /**
+     * save
+     * @return
+     */
+     public String save( ){    	
+         //...
+         
+     }
+     
+     /**
+      * delete
+      * @return
+      */
+      public String delete( ){
+          //...
+         
+          return SUCCESS;
+     }
+      
+  	public String unique( ){
+		this.unique = this.getManager().isUniqneName( party );
+		return SUCCESS;
+	}
+
+}
+
+}}}
