@@ -1,5 +1,10 @@
 package com.google.code.lightssh.project.party.entity;
 
+/**
+ * 证件类型
+ * @author YangXiaojin
+ *
+ */
 public enum CredentialsType {
 	C01("营业执照","工商行政管理机关")
 	,C04("临时营业执照","工商行政管理机关")
@@ -27,11 +32,16 @@ public enum CredentialsType {
 	,P24("暂住证","公安机关")
 	,P31("护照","公安机关")
 	,P99("个人其它证件","公安机关");
-	
 
 	CredentialsType( String name,String org ){
 		this.name = name;
 		this.org = org;
+	}
+	
+	public static final CredentialsType[] frequentlyUsed( ){
+		return new CredentialsType[]{
+			P01,P03,P04,P08,P16,P31,P99
+		};
 	}
 	
 	private String name;

@@ -1,5 +1,6 @@
 package com.google.code.lightssh.project.party.entity;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -22,6 +23,8 @@ import javax.persistence.TemporalType;
 public class Person extends Party{
 	
 	private static final long serialVersionUID = 1L;
+	
+	private static final SimpleDateFormat SEQUENCE_SDF = new SimpleDateFormat("yyMM");
 
 	/**
 	 * gender enum
@@ -47,7 +50,11 @@ public class Person extends Party{
 	
 	@Override
 	public String getSequenceKey() {
-		return "SSH-";
+		return SEQUENCE_SDF.format( new Date() );
+	}
+	
+	public int getSequenceLength() {
+		return 3;
 	}
 	
 	public void preInsert( ){
@@ -111,57 +118,64 @@ public class Person extends Party{
 	 * first name
 	 */
 	@Column( name="FIRST_NAME" )
-	private String firstName;
+	protected String firstName;
 	
 	/**
 	 * last name
 	 */
 	@Column( name="LAST_NAME" )
-	private String lastName;
+	protected String lastName;
 	
 	/**
 	 * 证件类型
 	 */
 	@Column( name="CREDENTIALS_TYPE",length=50 )
-	private CredentialsType credentialsType;
+	protected CredentialsType credentialsType;
 	
 	/**
 	 * 证件号
 	 */
 	@Column( name="IDENTITY_CARD_NUMBER" )
-	private String identityCardNumber;
+	protected String identityCardNumber;
 	
 	/**
 	 * 最高学历
 	 */
 	@Column( name="DEGREE",length=50 )
-	private EducationLevel degree;
+	protected EducationLevel degree;
 	
 	/**
 	 * 称呼
 	 */
 	@Column( name="TITLE",length=20 )
-	private String title;
+	protected String title;
 	
 	/**
 	 * 别名
 	 */
 	@Column( name="NICKNAME",length=100 )
-	private String nickname;
+	protected String nickname;
 	
 	/**
 	 * 性别
 	 */
 	@Column( name="GENDER",length=20 )
 	@Enumerated(value=EnumType.STRING)
-	private Gender gender;
+	protected Gender gender;
 	
 	/**
 	 * 生日
 	 */
 	@Column( name="BIRTHDAY" )
 	@Temporal(TemporalType.DATE)
-	private Date birthday;
+	protected Date birthday;
+	
+	/**
+	 * 婚姻状况
+	 */
+	@Column( name="MARITAL_STATUS",length=20 )
+	@Enumerated(value=EnumType.STRING)
+	protected MaritalStatus maritalStatus;
 	
 	/**
 	 * 全名
@@ -240,6 +254,14 @@ public class Person extends Party{
 
 	public void setDegree(EducationLevel degree) {
 		this.degree = degree;
+	}
+
+	public MaritalStatus getMaritalStatus() {
+		return maritalStatus;
+	}
+
+	public void setMaritalStatus(MaritalStatus maritalStatus) {
+		this.maritalStatus = maritalStatus;
 	}
 
 	@Override

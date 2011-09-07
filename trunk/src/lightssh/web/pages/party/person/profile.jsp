@@ -16,6 +16,9 @@
 		<script type="text/javascript">
 			$(document).ready(function(){
 				$( "#tabs" ).tabs({ ajaxOptions: { async: false },cache: true });
+				$( "#tabs" ).bind( "tabsload", function(event, ui) {
+					showDatepicker();
+				});
 				
 				/**
 				 * 数据校验
@@ -26,9 +29,29 @@
 					}
 				});
 				
-				$("input[type='text'][name='party.birthday']").datepicker({dateFormat: 'yy-mm-dd',changeYear:true,yearRange:'-60,60'});
+				showDatepicker();
 			});
 			
+			function showDatepicker( ){
+				$("input[type='text'][name='party.birthday']").datepicker(
+					{dateFormat: 'yy-mm-dd',changeYear:true,yearRange:'-60,60'});
+			}
+			
+			/**
+			 * 自动填值
+			 */
+			function autofill( ele ){
+				var p_identity = $("input[name='party.identityCardNumber']");
+				if( $(ele).attr("name") == "party.identityCardNumber" 
+					|| $(ele).attr("name") == "party.credentialsType"){
+					if( $(p_identity).val().length == 18 
+						&& 'P01' == $("select[name='party.credentialsType']").val() ){
+						var ymd = $(p_identity).val().substring(6,14);
+						ymd = ymd.substring(0,4)+'-'+ymd.substring(4,6)+'-'+ymd.substring(6,8)
+						$("input[name='party.birthday']").val( ymd )
+					}
+				}
+			}
 		</script>
 	</head>
 	
@@ -48,8 +71,8 @@
 				<%-- 
 				<li><a href="<s:url value="?profile=family"/>">人事信息</a></li>
 				<li><a href="<s:url value="?profile=family"/>">工作经历</a></li>
-				<li><a href="<s:url value="?profile=family"/>">家庭成员</a></li>
 				--%>
+				<li><a href="<s:url value="?profile=family"/>">家庭成员</a></li>
 			</ul> 
 		
 			<div id="tabs-1">

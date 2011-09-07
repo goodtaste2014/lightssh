@@ -40,11 +40,33 @@ public class PartyRole extends UUIDModel{
 		,DEPARTMENT("部门")
 		,TEAM("小组")
 		,OTHER_ORG_UNIT("其它组织单元")
+		
+		,EMPLOYEE("职员")
+		,EMPLOYER("雇主")
+		,EMERGENCY_CONTACT("紧急联系人")
+		
+		,PARENT("父母")
+		,COUPLE("夫妻")
+		,BROTHERS("兄弟")
+		,SISTERS("姐妹")
+		,CHILD("孩子")
 		;
 		
-		public static RoleType[] valuesOfInternalOrg( ){
+		/**
+		 * 内部组织角色
+		 */
+		public static RoleType[] internalOrg( ){
 			return new RoleType[]{CORPORATION_GROUP,CORPORATION
 					,SUBSIDIARY,DIVISION,DEPARTMENT,TEAM,OTHER_ORG_UNIT};
+		}
+		
+		/**
+		 * 家庭成员角色
+		 */
+		public static RoleType[] familyMember( ){
+			return new RoleType[]{
+				PARENT,COUPLE,BROTHERS,SISTERS,CHILD
+			};
 		}
 		
 		private String value;

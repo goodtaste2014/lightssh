@@ -110,6 +110,8 @@ public class PartyRelationship extends UUIDModel{
 		,EMPLOYMENT("雇佣关系")
 		,AGENT("代理关系")
 		,DISTRIBUTION_CHANNEL("分销渠道关系")
+		,EMERGENCY_CONTACT("紧急联系人关系")
+		,FAMILY("家庭成员关系")
 		;
 		private String value;
 		

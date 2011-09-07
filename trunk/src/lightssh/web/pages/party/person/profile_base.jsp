@@ -49,16 +49,16 @@
 			<tr>
 				<th><label for="credentialsType">证件类型</label></th>
 				<td>
-					<s:select list="@com.google.code.lightssh.project.party.entity.CredentialsType@values()" 
+					<s:select list="@com.google.code.lightssh.project.party.entity.CredentialsType@frequentlyUsed()" 
 						name="party.credentialsType" listKey="name()" headerKey="" headerValue=""
-						value="party.credentialsType==null?party.credentialsType.name()"/>
+						value="party.credentialsType==null?party.credentialsType.name()" onchange="autofill(this)"/>
 				</td>
 			</tr>
 			
 			<tr>
 				<th><label for="identityCardNumber">证件号码</label></th>
 				<td>
-					<s:textfield name="party.identityCardNumber" size="30"/>
+					<s:textfield name="party.identityCardNumber" size="30" onchange="autofill(this)"/>
 				</td>
 			</tr>
 			
@@ -70,11 +70,20 @@
 			</tr>
 			
 			<tr>
+				<th><label for="maritalstatus">婚姻状况</label></th>
+				<td>
+					<s:select list="@com.google.code.lightssh.project.party.entity.Person$MaritalStatus@values()" 
+						name="party.maritalStatus" listKey="name()" headerKey="" headerValue=""
+						value="party.maritalStatus.name()" id="maritalstatus"/>
+				</td>
+			</tr>
+			
+			<tr>
 				<th><label for="degree">最高学历</label></th>
 				<td>
 					<s:select list="@com.google.code.lightssh.project.party.entity.Person$EducationLevel@values()" 
 						name="party.degree" listKey="name()" headerKey="" headerValue=""
-						value="party.degree.name()"/>
+						value="party.degree.name()" id="degree"/>
 				</td>
 			</tr>
 			
@@ -90,6 +99,6 @@
 	<p class="submit">
 		<s:set name="isInsert" value="%{(party==null||party.id==null)}"/>
 		<input type="submit" class="action save" name="Submit" 
-			value="<s:property value="%{#isInsert?\"新增会员\":\"修改会员\"}"/>"/>
+			value="<s:property value="%{#isInsert?\"新增人员\":\"修改人员\"}"/>"/>
 	</p>
 </s:form>
