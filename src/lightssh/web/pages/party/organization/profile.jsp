@@ -157,7 +157,7 @@
 				<tr>
 					<th><label for="role_type">类型</label></th>
 					<td>
-						<s:radio list="@com.google.code.lightssh.project.party.entity.PartyRole$RoleType@valuesOfInternalOrg()"
+						<s:radio list="@com.google.code.lightssh.project.party.entity.PartyRole$RoleType@internalOrg()"
 							listKey="name()" name="party_role_type" value="party_role_type==null?null:party_role_type.name()"/>
 					</td>
 				</tr>

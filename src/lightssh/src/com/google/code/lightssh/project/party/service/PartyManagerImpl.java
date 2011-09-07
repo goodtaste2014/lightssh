@@ -102,7 +102,7 @@ public class PartyManagerImpl extends BaseManagerImpl<Party> implements PartyMan
 		if( access != null && isDoLog(party))
 			accessManager.log(access, party, null);
 		
-		RoleType[] internalOrgs = RoleType.valuesOfInternalOrg();
+		RoleType[] internalOrgs = RoleType.internalOrg();
 		RoleType[] aboutRollups = new RoleType[internalOrgs.length+2]; 
 		for( int i=0;i<internalOrgs.length;i++ )
 			aboutRollups[i] = internalOrgs[i];
@@ -205,7 +205,7 @@ public class PartyManagerImpl extends BaseManagerImpl<Party> implements PartyMan
 	 */
 	private Set<RoleType> getAllowedRoleTypeOfInternalOrg( ){
 		Set<RoleType> interalOrgSet = new HashSet<RoleType>( );
-		CollectionUtils.addAll(interalOrgSet, RoleType.valuesOfInternalOrg());
+		CollectionUtils.addAll(interalOrgSet, RoleType.internalOrg());
 		interalOrgSet.add( RoleType.PARENT_ORG );
 		interalOrgSet.add( RoleType.INTERNAL_ORG );
 		return interalOrgSet;
@@ -232,7 +232,7 @@ public class PartyManagerImpl extends BaseManagerImpl<Party> implements PartyMan
 		this.save(party, access);
 		
 		Set<RoleType> interalOrgSet = new HashSet<RoleType>( );
-		CollectionUtils.addAll(interalOrgSet, RoleType.valuesOfInternalOrg());
+		CollectionUtils.addAll(interalOrgSet, RoleType.internalOrg());
 		
 		if( isInsert ){ //新增数据
 			PartyRole fromRole = null ; //下级隶属关系
@@ -276,7 +276,7 @@ public class PartyManagerImpl extends BaseManagerImpl<Party> implements PartyMan
 				
 			PartyRole newFromRole = null;
 			List<PartyRole> savedPartyRoles = partyRoleManager.list(
-        			party, RoleType.valuesOfInternalOrg() );
+        			party, RoleType.internalOrg() );
 			if( savedPartyRoles != null && !savedPartyRoles.isEmpty()){
 				//savedPartyRoles.size()>1 数据有问题
 				newFromRole = savedPartyRoles.get(0);
@@ -290,7 +290,7 @@ public class PartyManagerImpl extends BaseManagerImpl<Party> implements PartyMan
 			
 			if( party.getParent() != null ){
 				PartyRole newToRole = null;
-				RoleType[] allowedSelectTypes = RoleType.valuesOfInternalOrg();
+				RoleType[] allowedSelectTypes = RoleType.internalOrg();
 				RoleType[] paramRoleTypes = new RoleType[allowedSelectTypes.length+1];
 				paramRoleTypes[allowedSelectTypes.length] = RoleType.PARENT_ORG;
 				System.arraycopy( allowedSelectTypes,0, paramRoleTypes, 0,allowedSelectTypes.length);
@@ -303,7 +303,7 @@ public class PartyManagerImpl extends BaseManagerImpl<Party> implements PartyMan
 							newToRole = role;
 				}else{
 					throw new ApplicationException("("+ party.getParent().getName()+")缺失["
-							+RoleType.valuesOfInternalOrg()+"]中的一种角色！");
+							+RoleType.internalOrg()+"]中的一种角色！");
 				}
 				PartyRelationship pr = partyRelationshipManager.getRollupByFromParty( party );
 				if( pr != null ){

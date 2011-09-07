@@ -120,7 +120,7 @@ public class OrganizationAction extends CrudAction<Organization>{
 		if( party != null ){
 			//角色类型
 			List<PartyRole> types = partyRoleManager.list(
-					party, RoleType.valuesOfInternalOrg() );
+					party, RoleType.internalOrg() );
 			if( types != null && !types.isEmpty() )
 				this.party_role_type = types.get(0).getType();
 			
@@ -175,7 +175,7 @@ public class OrganizationAction extends CrudAction<Organization>{
         	if( party == null )
             	this.addActionError("找不到(id="+party.getId()+")的相关数据！");
         	
-        	RoleType[] allowedSelectTypes = RoleType.valuesOfInternalOrg();
+        	RoleType[] allowedSelectTypes = RoleType.internalOrg();
 			RoleType[] paramRoleTypes = new RoleType[allowedSelectTypes.length+1];
 			paramRoleTypes[allowedSelectTypes.length] = RoleType.PARENT_ORG;
 			System.arraycopy( allowedSelectTypes,0, paramRoleTypes, 0,allowedSelectTypes.length);
