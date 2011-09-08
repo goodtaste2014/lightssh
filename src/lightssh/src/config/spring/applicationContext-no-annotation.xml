@@ -23,6 +23,8 @@
                 <value>com.google.code.lightssh.project.geo.entity.GeoAssociation</value>
                 <value>com.google.code.lightssh.project.log.entity.Access</value>
                 <value>com.google.code.lightssh.project.log.entity.History</value>
+                <value>com.google.code.lightssh.project.tree.entity.Tree</value>
+                <value>com.google.code.lightssh.project.tree.entity.Node</value>
                 <value>com.google.code.lightssh.project.security.entity.Role</value>
                 <value>com.google.code.lightssh.project.security.entity.Permission</value>
                 <value>com.google.code.lightssh.project.security.entity.Navigation</value>

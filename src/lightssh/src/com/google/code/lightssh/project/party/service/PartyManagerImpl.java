@@ -129,7 +129,7 @@ public class PartyManagerImpl extends BaseManagerImpl<Party> implements PartyMan
 		Party original = null;
 		boolean inserted = StringUtil.clean( party.getIdentity() ) == null;
 		
-		if( party instanceof Organization && !isUniqneName( party ) )
+		if( party instanceof Organization && !isUniqueName( party ) )
 			throw new ApplicationException("名称["+party.getName()+"]已经存在！");
 		
 		if( inserted ){
@@ -168,19 +168,11 @@ public class PartyManagerImpl extends BaseManagerImpl<Party> implements PartyMan
 	}
 	
 	@Override
-	public boolean isUniqneName(Party party) {
+	public boolean isUniqueName(Party party) {
 		if( party == null )
 			return true;
 		
-		ListPage<Party> page = new ListPage<Party>(1);
-		List<String> properties = new ArrayList<String>(1);
-		properties.add("name");
-		page = getDao().list(page,party,properties);
-		
-		Party exists = (page.getList()==null||page.getList().isEmpty())
-			?null:page.getList().get(0);
-		
-		return exists == null || exists.getIdentity().equals( party.getIdentity() );
+		return this.isUniqueProperty("name",party);
 	}
 
 	@Override
