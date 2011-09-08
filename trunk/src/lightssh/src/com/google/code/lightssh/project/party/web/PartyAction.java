@@ -29,8 +29,6 @@ public class PartyAction extends CrudAction<Party>{
 	
 	private Party party;
 	
-	private boolean unique;
-	
 	@Resource( name="partyManager" )
 	public void setPartyManager( PartyManager manager ){
 		super.manager = manager;
@@ -38,15 +36,6 @@ public class PartyAction extends CrudAction<Party>{
 	
 	public PartyManager getManager( ){
 		return (PartyManager)this.manager;
-	}
-
-	@JSON(name="unique")
-	public boolean isUnique() {
-		return unique;
-	}
-
-	public void setUnique(boolean unique) {
-		this.unique = unique;
 	}
 
 	public Party getParty() {
@@ -57,6 +46,11 @@ public class PartyAction extends CrudAction<Party>{
 	public void setParty(Party party) {
 		this.party = party;
 		super.model = this.party;
+	}
+	
+	@JSON(name="unique")
+	public boolean isUnique() {
+		return unique;
 	}
 	
 	public String edit( ){
@@ -150,7 +144,7 @@ public class PartyAction extends CrudAction<Party>{
      }
       
   	public String unique( ){
-		this.unique = this.getManager().isUniqneName( party );
+		this.unique = this.getManager().isUniqueName(party );
 		return SUCCESS;
 	}
 

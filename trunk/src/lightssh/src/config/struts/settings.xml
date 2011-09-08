@@ -51,6 +51,29 @@
         
     </package>
     
+    <package name="settings_tree" extends="default" namespace="/settings/tree">
+    	<action name="edit" class="treeAction" method="edit">
+			<result name="input">/pages/settings/tree/profile.jsp</result>	
+			<result name="success">/pages/settings/tree/profile.jsp</result>	
+        </action>
+        
+    	<action name="save" class="treeAction" method="save">
+			<result name="input">/pages/settings/tree/profile.jsp</result>	
+			<result name="success" type="redirectAction">list</result>	
+        </action>
+        
+    	<action name="list" class="treeAction" method="list">
+			<result name="input">/pages/settings/tree/list.jsp</result>	
+			<result name="success">/pages/settings/tree/list.jsp</result>	
+        </action>
+        
+        <action name="unique" class="treeAction" method="unique">
+			<result name="success" type="json">
+				<param name="includeProperties">unique</param>
+			</result>
+        </action>
+    </package>
+    
     <package name="settings_geo" extends="default" namespace="/settings/geo">
     	<action name="edit" class="geoAction" method="edit">
 			<result name="input">/pages/settings/geo/profile.jsp</result>	

@@ -71,6 +71,6 @@ public interface PartyManager extends BaseManager<Party>{
 	/**
 	 * 名称是否唯一
 	 */
-	public boolean isUniqneName( Party party );
+	public boolean isUniqueName( Party party );
 
 }

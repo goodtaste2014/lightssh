@@ -152,6 +152,8 @@
 					<li><a href="<s:url value="/settings/uom/list.do"/>" target="main_frame">计量单位</a></li>
 					<%-- 地理区域--%>
 					<li><a href="<s:url value="/settings/geo/list.do"/>" target="main_frame">地理区域</a></li>
+					<%-- 分类树--%>
+					<li><a href="<s:url value="/settings/tree/list.do"/>" target="main_frame">分类树</a></li>
 				</ul>
 			</li>
 		</ul>

@@ -46,6 +46,7 @@
 					url: "<s:url value="/party/organization/unique.do"/>"
 					,dataType: "json" 
 					,type:"post"
+					,async:false
 					,data: {
 						"party":'organization'
 			        	,"party.id": function(){
