@@ -70,6 +70,12 @@ public class History extends BaseModel{
 	public History(Access access,Persistence<?> originalModel,Persistence<?> newModel) {
 		this(access,IoSerialUtil.serialize(originalModel),IoSerialUtil.serialize(newModel));
 	}
+	
+	public void preInsert( ){
+		super.preInsert();
+		if( access != null )
+			access.preInsert();
+	}
 
 
 	/**
