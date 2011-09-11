@@ -67,10 +67,24 @@
 			<result name="success">/pages/settings/tree/list.jsp</result>	
         </action>
         
+        <action name="popup" class="treeAction" method="popup">
+			<result name="success" >/pages/settings/tree/popup.jsp</result>
+        </action>
+        
         <action name="unique" class="treeAction" method="unique">
 			<result name="success" type="json">
 				<param name="includeProperties">unique</param>
 			</result>
+        </action>
+        
+        <action name="editnode" class="treeAction" method="editnode">
+			<result name="success" >/pages/settings/tree/profile_node.jsp</result>
+        </action>
+        
+        <action name="savenode" class="treeAction" method="savenode">
+			<result name="input" >/pages/settings/tree/profile_node.jsp</result>
+			<result name="success" type="redirectAction">list</result>
+			<result name="next" type="chain">editnode</result>
         </action>
     </package>
     

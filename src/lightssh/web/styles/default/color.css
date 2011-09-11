@@ -187,3 +187,9 @@ span.refresh{
 	padding-left:18px;
 	background:url("../../images/background/icon_refresh.png") no-repeat left;
 }
+
+span.view{
+	cursor:pointer;
+	padding-left:18px;
+	background:url("../../images/background/icon_search.png") no-repeat left;
+}

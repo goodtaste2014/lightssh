@@ -50,6 +50,21 @@ public class Node extends UUIDModel{
 	@OneToMany( mappedBy="parent")
 	protected Set<Node> children;
 	
+	public Node(){
+		
+	}
+	
+	public Node( String name,String description ){
+		this.name = name;
+		this.description = description;
+	}
+	
+	/**
+	 * 描述
+	 */
+	@Column( name="DESCRIPTION",length=200)
+	protected String description;
+	
 	//-- util methods ----------------------------------------------------------
 	
 	/**
@@ -138,6 +153,14 @@ public class Node extends UUIDModel{
 
 	public void setChildren(Set<Node> children) {
 		this.children = children;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 		
 }
