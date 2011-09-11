@@ -1,5 +1,8 @@
 package com.google.code.lightssh.project.tree.entity;
 
+import java.util.UUID;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -35,8 +38,8 @@ public class Tree extends UUIDModel{
 	/**
 	 * 所对应结点
 	 */
-	@OneToOne
-	@JoinColumn( name="NODE_ID" )
+	@OneToOne( cascade=CascadeType.ALL )
+	@JoinColumn( name="NODE_ID",nullable=false )
 	protected Node root;
 	
 	/**
@@ -50,6 +53,11 @@ public class Tree extends UUIDModel{
 	 */
 	@Column( name="MAX_CHILDREN")
 	private Integer maxChildren;
+	
+	public void preInsert( ){
+		super.preInsert();
+		this.root.setId( UUID.randomUUID().toString() );
+	}
 	
 	/**
 	 * get tree layer 

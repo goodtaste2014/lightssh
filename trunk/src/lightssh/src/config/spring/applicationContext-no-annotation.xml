@@ -78,6 +78,14 @@
         <property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 	
+	<!-- DAO|tree node -->
+	<bean id="nodeDao" class="com.google.code.lightssh.common.dao.hibernate.HibernateDao">
+		<constructor-arg>
+    		<value>com.google.code.lightssh.project.tree.entity.Node</value>
+    	</constructor-arg>    
+        <property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
 	
 	<!-- SERVICE|security permission -->
 	<bean id="permissionManager" class="com.google.code.lightssh.common.service.BaseManagerImpl">
