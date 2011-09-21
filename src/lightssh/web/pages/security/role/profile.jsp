@@ -52,6 +52,7 @@
 		<p class="submit">
 			<input type="submit" class="action save" name="Submit" 
 				value="<s:property value="%{(role==null||role.id==null)?\"新增角色\":\"修改角色\"}"/>"/>
+			<input type="submit" class="action save" name="saveAndAuthorize" value="保存并设置权限"/>
 		</p>
 	</s:form>
 

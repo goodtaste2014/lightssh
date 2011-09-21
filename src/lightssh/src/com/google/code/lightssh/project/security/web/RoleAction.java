@@ -75,7 +75,11 @@ public class RoleAction extends CrudAction<Role>{
 			role.setCreateDate( new Date() );
 		}
 		
-		return super.save();
+		String result = super.save();
+		if( request.getParameter("saveAndAuthorize") != null )
+			result = "authorize";
+		
+		return result;
 	}
 	
 	public String list( ){
