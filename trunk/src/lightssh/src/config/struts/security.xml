@@ -63,6 +63,10 @@
         	<interceptor-ref name="crudStack"/>
 			<result name="input" >/pages/security/role/profile.jsp</result>
 			<result name="success" type="redirectAction">list</result>
+			<result name="authorize" type="redirectAction">
+				<param name="actionName">permission</param>
+				<param name="role.id">${role.id}</param>
+			</result>
         </action>
         
         <action name="list" class="roleAction" method="list">

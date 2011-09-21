@@ -25,9 +25,9 @@
 	<s:set name="isview" value="#parameters['view'][0]=='true'"/>
 	
 	<s:if test="!#isview">
-		<span id="<s:property value="%{#parent.id}"/>" name="<s:property value="%{#parent.name}"/>" 
+		<span id="<s:property value="%{#parent.id}"/>" name="根节点" 
 			 onclick="select(this);" style="cursor: pointer;margin: 4px;width: 100px;">
-			<b>空节点</b>（选择该结点将作为最上级组织）
+			<b>根节点</b>（选择该结点将作为最上级组织）
 		</span>
 	</s:if>
 	
