@@ -13,6 +13,7 @@
 	<%@ include file="/pages/common/messages.jsp" %>
 	
 	System Panel!
-				|<mys:theme />|
+	<br/>
+	Hello, <shiro:principal/>, how are you today?
 	
 </body>

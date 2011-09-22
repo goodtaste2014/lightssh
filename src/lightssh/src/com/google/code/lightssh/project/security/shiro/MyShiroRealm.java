@@ -1,5 +1,7 @@
 package com.google.code.lightssh.project.security.shiro;
 
+import java.util.Collection;
+
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -41,8 +43,11 @@ public class MyShiroRealm extends AuthorizingRealm{
 			if( la != null && la.getRoles() != null ){
 				SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 				for( Role each:la.getRoles() ){
-					info.addRole(each.getName());
-					info.addStringPermissions( each.getPermissionsAsString() );
+					if( each.getName() != null )
+						info.addRole(each.getName());
+					Collection<String> pers = each.getPermissionsAsString();
+					if( pers != null )
+						info.addStringPermissions( pers );
 				}
 				
 				return info;
