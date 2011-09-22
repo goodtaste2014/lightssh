@@ -1,5 +1,4 @@
-<%@ page language="java" pageEncoding="UTF-8" contentType="text/html;charset=utf-8" %>
-<%@ page import="org.springframework.security.authentication.*"%>
+<%@ page language="java" pageEncoding="UTF-8" contentType="text/html;charset=utf-8"%>
 <%@ include file="/pages/common/taglibs.jsp" %>
 
 <head>	
@@ -10,6 +9,10 @@
 </head>
 
 <body style="text-align: center;">
-	<h3>403,您没有权限访问该资源！</h3>
+	<br/>
+	<br/>
+	<br/>
+	<br/>
+	<h1>403,您没有权限访问该资源！</h1>
 </body>
 

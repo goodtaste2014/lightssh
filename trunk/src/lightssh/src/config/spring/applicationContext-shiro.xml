@@ -11,7 +11,7 @@
 	    <property name="securityManager" ref="securityManager"/>
 	    <property name="loginUrl" value="/login.do"/>
 	    <property name="successUrl" value="/welcome.do"/>
-	    <property name="unauthorizedUrl" value="/pages/security/system/403.jsp"/>
+	    <property name="unauthorizedUrl" value="/403.do"/>
 	    <property name="filters">
 			<util:map>
 				<entry key="authc" value-ref="captchaFormAuthenticationFilter"/>
@@ -32,11 +32,13 @@
 	        	/index.jsp=anon
 	        	/index.do*=anon
 	        	
-	            # some example chain definitions:
-	            #/admin/** = authc, roles[admin]
-	            #/docs/** = authc, perms[document:read]
+	            #权限配置
+	           
+	            /security/account/edit.do=authc,perms[SECURITY_ACCOUNT_EDIT]
+	            /security/account/save.do=authc,perms[SECURITY_ACCOUNT_EDIT]
+	            
+	            #last
 	            /** = authc,mysi
-	            # more URL-to-FilterChain definitions here
 	        </value>
 	    </property>
 	</bean>
@@ -50,6 +52,11 @@
 
 	<bean id="myShiroRealm" class="com.google.code.lightssh.project.security.shiro.MyShiroRealm">
 		<property name="accountManager" ref="loginAccountManager"/>
+		<property name="cacheManager" ref="shiroCacheManager"/>
+	</bean>
+	
+	<bean id="shiroCacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+		<property name="cacheManager" ref="cacheManager"/>
 	</bean>
 	
 	<bean id="captchaFormAuthenticationFilter" class="com.google.code.lightssh.project.security.shiro.CaptchaFormAuthenticationFilter">
