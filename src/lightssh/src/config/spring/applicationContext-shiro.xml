@@ -34,7 +34,7 @@
 	        	
 	            #权限配置
 	           
-	            /security/account/edit.do=authc,perms[SECURITY_ACCOUNT_EDIT]
+	            #/security/account/edit.do=authc,perms[SECURITY_ACCOUNT_EDIT]
 	            /security/account/save.do=authc,perms[SECURITY_ACCOUNT_EDIT]
 	            
 	            #last
