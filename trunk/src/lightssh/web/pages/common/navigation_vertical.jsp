@@ -93,7 +93,9 @@
 							<%-- 修改密码--%>
 							<li><a href="<s:url value="/security/account/edit.do?password=update"/>" target="main_frame"><s:text name="project.nav.changepassword"/></a></li>
 							<%-- 新增用户--%>
+							<shiro:hasPermission name="SECURITY_ACCOUNT_EDIT">
 							<li><a href="<s:url value="/security/account/edit.do"/>" target="main_frame"><s:text name="project.nav.newaccount"/></a></li>
+							</shiro:hasPermission>
 							<%-- 用户列表--%>
 							<li><a href="<s:url value="/security/account/list.do"/>" target="main_frame"><s:text name="project.nav.listaccount"/></a></li>
 						</ul>
