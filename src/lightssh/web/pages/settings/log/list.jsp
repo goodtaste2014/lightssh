@@ -4,7 +4,7 @@
 <html>
 	<head>
 		<meta name="decorator" content="background"/>
-		<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/ui/i18n/jquery.ui.datepicker-zh-CN.js"></script>
+		<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/ui/i18n/jquery.ui.datepicker_zh_CN.js"></script>
 	
 		<title>系统日志</title>
 		
