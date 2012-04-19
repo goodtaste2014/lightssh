@@ -39,8 +39,8 @@
 		<table class="list">
 			<colgroup>
 				<col class="element" width="50px"/>
-				<col class="element" width="200px"/>
-				<col class="element" width="100px"/>
+				<col class="element" width="260px"/>
+				<col class="element" width="160px"/>
 				<col class="element" />
 				<col class="element" width="100px"/>
 			</colgroup>
@@ -58,7 +58,7 @@
 			<tr class="<s:property value="#loop.odd?\"odd\":\"even\""/>">
 				<td><s:property value="#loop.index+1"/></td>
 				<td><a href="<s:url value="/security/role/edit.do?role.id=%{id}"/>"><s:property value="%{name}"/></a></td>
-				<td><s:property value="%{createDate}"/></td>
+				<td><s:property value="%{createdTime}"/></td>
 				<td><s:property value="%{description}"/></td>
 				<td>
 					<a href="<s:url value="/security/role/permission.do?role.id=%{id}"/>">权限</a>

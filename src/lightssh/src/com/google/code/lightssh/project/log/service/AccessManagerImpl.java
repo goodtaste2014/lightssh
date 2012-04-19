@@ -97,8 +97,10 @@ public class AccessManagerImpl extends BaseManagerImpl<Access> implements Access
 		if(p==null) 
 			p = newModel;
 		Identity classIdentity = identityManager.getClassIdentity( p );
-		if( classIdentity == null )
+		if( classIdentity == null ){
 			classIdentity = new Identity( p );
+			this.identityManager.create(classIdentity);
+		}
 		access.setClassIdentity(classIdentity);
 		if( access.getDescription()==null )
 			access.setDescription( p.getClass().getCanonicalName() );

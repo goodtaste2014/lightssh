@@ -12,6 +12,16 @@ import com.google.code.lightssh.project.sequence.entity.Sequence;
 public interface SequenceManager extends Manager{
 	
 	/**
+	 * 下一个数据库序列号
+	 */
+	public long nextDatabaseSerialNumber( String seqName );
+	
+	/**
+	 * 下一个数据库序列号
+	 */
+	public String nextDatabaseSequenceNumber( Sequenceable sa,String seqName );
+	
+	/**
 	 * 下一个序列号码
 	 */
 	public String nextSequenceNumber( Sequenceable sa );

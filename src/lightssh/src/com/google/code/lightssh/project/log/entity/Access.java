@@ -2,7 +2,6 @@ package com.google.code.lightssh.project.log.entity;
 
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -18,6 +17,7 @@ import com.google.code.lightssh.common.entity.base.UUIDModel;
 import com.google.code.lightssh.common.model.Period;
 import com.google.code.lightssh.project.identity.entity.Identity;
 import com.google.code.lightssh.project.identity.entity.IdentityType;
+import com.google.code.lightssh.project.util.RequestUtil;
 
 /**
  * 访问日志
@@ -33,8 +33,8 @@ public class Access extends UUIDModel{
 	/**
 	 * Identity type == class
 	 */
-	@ManyToOne( fetch=FetchType.LAZY,cascade=CascadeType.ALL )
-	@JoinColumn( name="IDENTITY_ID",nullable=false )
+	@ManyToOne( fetch=FetchType.LAZY )
+	@JoinColumn( name="IDENTITY_ID" )
 	private Identity classIdentity;
 	
 	/**
@@ -95,7 +95,7 @@ public class Access extends UUIDModel{
 	
 	public void init( HttpServletRequest request ){
 		setTime( new Date() );
-        setIp( request.getRemoteAddr() );
+        setIp( RequestUtil.getIpAddr(request) );
         setOperator( request.getRemoteUser() );
         setAction( request.getRequestURI() );
 	}

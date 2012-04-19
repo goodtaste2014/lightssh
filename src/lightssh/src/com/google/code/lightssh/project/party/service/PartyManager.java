@@ -31,6 +31,11 @@ public interface PartyManager extends BaseManager<Party>{
 	public Organization getOrganization( Party party );
 	
 	/**
+	 * 查询 Organization
+	 */
+	public Organization getOrganization(String partyid);
+	
+	/**
 	 * 查询 最上级组织
 	 */
 	public Organization getParentOrganization( );
@@ -39,6 +44,11 @@ public interface PartyManager extends BaseManager<Party>{
 	 * 查询 Organization
 	 */
 	public Organization getOrganizationWithParent( Party party );
+	
+	/**
+	 * 查询所有隶属关系
+	 */
+	public Organization listRollup( );
 
 	/**
 	 * 查询 Person

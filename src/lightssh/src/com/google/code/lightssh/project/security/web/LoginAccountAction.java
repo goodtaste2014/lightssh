@@ -138,7 +138,7 @@ public class LoginAccountAction extends CrudAction<LoginAccount>{
 			if( ids != null ){
 				for( String id:ids.split(",") ){
 					Role role = new Role();
-					role.setId( Long.valueOf(id) );
+					role.setId( id );
 					account.addRole( role );
 				}//end for
 			}

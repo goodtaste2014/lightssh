@@ -1,7 +1,6 @@
 package com.google.code.lightssh.project.security.service;
 
 import java.util.Collection;
-import java.util.Date;
 
 import javax.annotation.Resource;
 
@@ -12,6 +11,7 @@ import com.google.code.lightssh.common.dao.DaoException;
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.service.BaseManager;
 import com.google.code.lightssh.common.service.BaseManagerImpl;
+import com.google.code.lightssh.project.log.entity.Access;
 import com.google.code.lightssh.project.security.dao.RoleDao;
 import com.google.code.lightssh.project.security.entity.Navigation;
 import com.google.code.lightssh.project.security.entity.Permission;
@@ -55,12 +55,12 @@ public class RoleManagerImpl extends BaseManagerImpl<Role> implements RoleManage
 	 * 只针对名称及描述进行修改
 	 */
 	public void save( Role role ){
-		boolean update = (role != null && role.getId() != null);
+		boolean update = !role.isInsert();
 		
-		Role exist = getRoleDao().get( role.getName() );
+		/*Role exist = getRoleDao().get( role.getName() );
 		if( exist != null && !exist.getIdentity().equals( role.getIdentity()))
 			throw new SecurityException( "该角色名称'"+role.getName()+"'已经存在！" );
-		
+		*/
 		if( update ){
 			Role db_role = get( role );
 			if( db_role == null )
@@ -95,12 +95,15 @@ public class RoleManagerImpl extends BaseManagerImpl<Role> implements RoleManage
 
 	@Override
 	public Role initRole( boolean forceUpdatePermission ) {
-		Role role = getRoleDao().get(SUPER_ROLE);
+		//super role init
+		Role role = getRoleDao().read(SUPER_ROLE);
+		boolean no_role = false;
 		if( role == null ){
+			no_role = true;
 			role = new Role();
-			role.setCreateDate( new Date() );
-			role.setDescription("系统初始化创建.");
-			role.setName(SUPER_ROLE);
+			role.setId(SUPER_ROLE);
+			role.setDescription("系统初始化创建超级用户.");
+			role.setName("超级管理角色");
 			role.setReadonly( Boolean.TRUE );
 		}
 		//是否更新角色权限
@@ -108,7 +111,7 @@ public class RoleManagerImpl extends BaseManagerImpl<Role> implements RoleManage
 		//list all permission
 		ListPage<Permission> page = new ListPage<Permission>(Integer.MAX_VALUE);
 		page = permissionManager.list(page);
-		if( role.getId() == null || forceUpdatePermission ){
+		if( no_role || forceUpdatePermission ){
 			role.addPermission( page.getList() );
 		}
 		
@@ -117,5 +120,12 @@ public class RoleManagerImpl extends BaseManagerImpl<Role> implements RoleManage
 		return role;
 	}
 
+	public void addPermission(Role role, Collection<Navigation> colls,Access log){
+		this.addPermission(role, colls);
+		
+		if( log != null ){
+			//accessManager.save(log);
+		}
+	}
 
 }

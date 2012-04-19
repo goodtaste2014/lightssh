@@ -2,7 +2,6 @@ package com.google.code.lightssh.project.security.entity;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,7 +14,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import com.google.code.lightssh.common.entity.base.BaseModel;
+import com.google.code.lightssh.common.entity.base.UUIDModel;
 
 /**
  * 系统角色
@@ -24,7 +23,7 @@ import com.google.code.lightssh.common.entity.base.BaseModel;
  */
 @Entity
 @Table( name="T_SECURITY_ROLE")
-public class Role extends BaseModel{
+public class Role extends UUIDModel{
 
 	private static final long serialVersionUID = -2118356457067244665L;
 
@@ -37,7 +36,7 @@ public class Role extends BaseModel{
 	/**
 	 * 角色名称
 	 */
-	@Column( name="NAME",length=100,unique=true )
+	@Column( name="NAME",length=100 )
 	private String name;
 	
 	/**
@@ -45,12 +44,6 @@ public class Role extends BaseModel{
 	 */
 	@Column( name="DESCRIPTION",length=200  )
 	private String description;
-	
-	/**
-	 * 创建日期
-	 */
-	@Column( name="CREATE_DATE")
-	private Date createDate;
 	
 	/**
 	 * 角色对应权限
@@ -123,14 +116,6 @@ public class Role extends BaseModel{
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public Date getCreateDate() {
-		return createDate;
-	}
-
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
 	}
 
 	public Set<Permission> getPermissions() {

@@ -82,7 +82,8 @@ public class Field{
 	public enum FieldType{
 		ADD_FIELD("添加属性")
 		,NO_CHANGE("无变化")
-		,REMOVE_FIELD("删除属性");
+		,REMOVE_FIELD("删除属性")
+		,CHANGED("更改属性");
 		
 		private String value;
 		

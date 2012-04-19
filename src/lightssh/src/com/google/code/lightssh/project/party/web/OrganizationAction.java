@@ -18,7 +18,6 @@ import com.google.code.lightssh.project.party.entity.PartyRole;
 import com.google.code.lightssh.project.party.entity.PartyRole.RoleType;
 import com.google.code.lightssh.project.party.service.PartyContactManager;
 import com.google.code.lightssh.project.party.service.PartyManager;
-import com.google.code.lightssh.project.party.service.PartyRelationshipManager;
 import com.google.code.lightssh.project.party.service.PartyRoleManager;
 
 /**
@@ -31,9 +30,6 @@ import com.google.code.lightssh.project.party.service.PartyRoleManager;
 public class OrganizationAction extends CrudAction<Organization>{
 
 	private static final long serialVersionUID = 1L;
-	
-	@Resource( name="partyRelationshipManager" )
-	private PartyRelationshipManager partyRelationshipManager;
 	
 	@Resource( name="partyRoleManager" )
 	private PartyRoleManager partyRoleManager;
@@ -49,11 +45,6 @@ public class OrganizationAction extends CrudAction<Organization>{
 	private RoleType party_role_type;
 	
 	private ListPage<Organization> page;
-
-	public void setPartyRelationshipManager(
-			PartyRelationshipManager partyRelationshipManager) {
-		this.partyRelationshipManager = partyRelationshipManager;
-	}
 
 	public void setPartyRoleManager(PartyRoleManager partyRoleManager) {
 		this.partyRoleManager = partyRoleManager;
@@ -100,14 +91,14 @@ public class OrganizationAction extends CrudAction<Organization>{
 	 * popup
 	 */
 	public String popup( ){
-		Organization root = partyRelationshipManager.listRollup();
+		Organization root = partyManager.listRollup();
 		request.setAttribute("popup_org_rollup", root );
 		
 		return SUCCESS;
 	}
 	
 	public String list( ){
-		party = partyRelationshipManager.listRollup();
+		party = partyManager.listRollup();
 		return SUCCESS;
 	}
 	
@@ -160,6 +151,7 @@ public class OrganizationAction extends CrudAction<Organization>{
         	if( isInsert )
         		party.postInsertFailure();
             addActionError( e.getMessage() );
+            e.printStackTrace();
             return INPUT;
         } 
         

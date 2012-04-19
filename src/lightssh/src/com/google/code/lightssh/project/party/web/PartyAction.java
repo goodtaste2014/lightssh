@@ -84,6 +84,21 @@ public class PartyAction extends CrudAction<Party>{
         return SUCCESS;
     }
     
+    public String popup(){
+    	String type = request.getParameter("party_type");
+    	if( "person".equalsIgnoreCase(type) ){
+        	page = getManager().listPerson(page , party );
+        }else if( "org".equalsIgnoreCase(type)  ){
+        	page = getManager().listOrganization( page , party );
+        }else{
+        	page = getManager().list( page , party );
+        }
+    	
+        request.setAttribute( "list", page );
+        request.setAttribute("party_type", type);
+    	return SUCCESS;
+    }
+    
     /**
      * save
      * @return

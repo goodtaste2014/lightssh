@@ -211,6 +211,10 @@ public class PartyManagerImpl extends BaseManagerImpl<Party> implements PartyMan
 		if( types == null )
 			throw new IllegalArgumentException("内部组织("+party.getName()+")角色类型为空！");
 		
+		if( party.getParent() != null && StringUtil.clean(party.getParent().getIdentity()) != null 
+				&& party.getParent().getIdentity().equals(party.getIdentity()) )
+			throw new IllegalArgumentException("上级组织不能选自己！");
+		
 		Set<RoleType> allowedTypes = getAllowedRoleTypeOfInternalOrg();
 		for( RoleType type:types )
 			if( !allowedTypes.contains(type))
@@ -314,6 +318,17 @@ public class PartyManagerImpl extends BaseManagerImpl<Party> implements PartyMan
 	public Organization getOrganization(Party party) {
 		return (Organization)getDao().read(Organization.class, party);
 	}
+	
+	@Override
+	public Organization getOrganization(String partyid) {
+		if( partyid == null )
+			return null;
+		
+		Organization org = new Organization();
+		org.setId( partyid );
+		
+		return getOrganization( org );
+	}
 
 	@Override
 	public Person getPerson(Party party) {
@@ -327,9 +342,12 @@ public class PartyManagerImpl extends BaseManagerImpl<Party> implements PartyMan
 			PartyRelationship relationship = partyRelationshipManager
 				.getRollupByFromParty(org);
 			if( relationship != null && relationship.getTo() != null 
-					&& relationship.getTo() != null 
-					&& relationship.getTo().getParty() instanceof Organization)
-				org.setParent( (Organization)relationship.getTo().getParty() );
+					&& relationship.getTo() != null ){
+
+				Organization parent = this.getOrganization(relationship.getTo().getParty() );
+				//&& relationship.getTo().getParty() instanceof Organization
+				org.setParent( parent );
+			}
 		}
 		
 		return org;
@@ -349,6 +367,51 @@ public class PartyManagerImpl extends BaseManagerImpl<Party> implements PartyMan
 		}
 		
 		return org;
+	}
+	
+	@Override
+	public Organization listRollup( ) {
+		List<PartyRelationship> list = partyRelationshipManager.list( RelationshipType.ORG_ROLLUP );
+		if( list == null || list.isEmpty() ){
+			List<Party> parties = partyRoleManager.listParty( RoleType.PARENT_ORG );
+			if( parties == null || parties.isEmpty() )
+				return null;
+			
+			for( Party party:parties)
+				if( party instanceof Organization )
+					return (Organization)party;
+			
+			return null;
+		}
+		
+		Organization root = null;
+		Set<Party> set = new HashSet<Party>( );
+		for( PartyRelationship pr:list ){
+			Organization to = getOrganization(pr.getTo().getParty());
+			Organization from = getOrganization(pr.getFrom().getParty());
+			if( to !=null && from != null ){
+				pr.getTo().setParty(to);
+				pr.getFrom().setParty(from);
+				set.add( to );
+				set.add( from );
+				if( RoleType.PARENT_ORG.equals( pr.getTo().getType() ) ){
+					//if( root != null )
+					//	throw new ApplicationException("数据异常，存在多个'最上级组织'！");
+					root = to;
+				}
+			}
+		}
+		
+		if( root != null ){
+			for( PartyRelationship pr:list ){
+				Party to = pr.getTo().getParty();
+				Party from = pr.getFrom().getParty();
+				if( set.contains( to ) ) //构造树
+					((Organization)to).addChild( (Organization)from );
+			}
+		}
+		
+		return root;
 	}
 
 }

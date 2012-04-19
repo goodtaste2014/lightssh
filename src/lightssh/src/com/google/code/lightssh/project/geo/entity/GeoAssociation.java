@@ -2,6 +2,7 @@ package com.google.code.lightssh.project.geo.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -22,14 +23,14 @@ public class GeoAssociation extends UUIDModel{
 	/**
 	 * 地理边界(整体)
 	 */
-	@ManyToOne
+	@ManyToOne( fetch=FetchType.LAZY )
 	@JoinColumn( name="TO_GEO_ID")
 	private GeographicBoundary toGeo;
 	
 	/**
 	 * 地理边界(部分)
 	 */
-	@ManyToOne
+	@ManyToOne( fetch=FetchType.LAZY )
 	@JoinColumn( name="FROM_GEO_ID")
 	private GeographicBoundary fromGeo;
 	

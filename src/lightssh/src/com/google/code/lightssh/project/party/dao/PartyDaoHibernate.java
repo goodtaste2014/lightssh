@@ -52,7 +52,7 @@ public class PartyDaoHibernate extends HibernateAnnotationDao<Party> implements 
 			return null;
 		
 		List<Object> params = new ArrayList<Object>( set.size() );
-		StringBuffer sb = new StringBuffer( " FROM " + clazz + " AS m WHERE 1 = 1 " );
+		StringBuffer sb = new StringBuffer( " FROM " + clazz.getName() + " AS m WHERE 1 = 1 " );
 		for( String property:set ){
 			Object value = ReflectionUtil.reflectGetValue(t, property);
 			sb.append( " and m." + property + " = ? ");

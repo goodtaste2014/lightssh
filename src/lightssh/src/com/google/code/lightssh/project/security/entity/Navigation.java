@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -15,8 +17,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.google.code.lightssh.common.entity.base.BaseModel;
+
 
 /**
  * 导航
@@ -66,6 +70,80 @@ public class Navigation extends BaseModel{
 	 */
 	@OneToMany( mappedBy="parent" )
 	private Set<Navigation> children;
+	
+	/**
+	 * 是否存在，用于过滤导航树
+	 */
+	@Transient
+	private boolean exists;
+	
+	/**
+	 * 标记存在
+	 */
+	protected void markExists( ){
+		this.exists = true;
+		if( parent != null && !parent.exists ) //!parent.exists 为性能优化
+			parent.markExists();
+	}
+	
+	/**
+	 * 标记存在
+	 * 如果当前Permission在集合pers中 
+	 */
+	protected void markExistsByPermission( Map<String,Permission> pers ){
+		if( pers == null || pers.isEmpty() )
+			return;
+		
+		if( permission != null && permission.getIdentity() != null ){
+			Permission tmp = pers.get( permission.getIdentity() );
+			if( tmp != null && permission.getIdentity().equals(tmp.getIdentity()))
+				markExists();
+		}
+		
+		if( this.children != null && !this.children.isEmpty() )
+			for( Navigation item:this.children )
+				item.markExistsByPermission( pers );
+	}
+	
+	/**
+	 * 移除不存在的导航结点
+	 */
+	protected Navigation trimNotExists( ){
+		if( !this.exists )
+			return null;
+		
+		if( this.children != null && !this.children.isEmpty() ){
+			Set<Navigation> removed = new HashSet<Navigation>();
+			for( Navigation item:this.children)
+				if( !item.isExists() )
+					removed.add(item);
+			
+			if( !removed.isEmpty() )
+				this.children.removeAll(removed); //移除
+			
+			if( this.children != null && !this.children.isEmpty() ) //递归
+				for( Navigation item:this.children )
+					item.trimNotExists();
+		}
+		
+		return this;
+	}
+	
+	/**
+	 * 过滤导航树
+	 */
+	public Navigation trimByPermission( Set<Permission> pers ){
+		if( pers == null || pers.isEmpty() )
+			return null;
+		
+		Map<String,Permission> map = new HashMap<String,Permission>();
+		for( Permission item:pers )
+			map.put(item.getIdentity(),item);
+		
+		markExistsByPermission( map ); //标记是否存在
+		
+		return trimNotExists();
+	}
 	
 	/**
 	 * sort by sequence
@@ -171,6 +249,14 @@ public class Navigation extends BaseModel{
 
 	public void setPermission(Permission permission) {
 		this.permission = permission;
+	}
+
+	public boolean isExists() {
+		return exists;
+	}
+
+	public void setExists(boolean exists) {
+		this.exists = exists;
 	}
 
 }

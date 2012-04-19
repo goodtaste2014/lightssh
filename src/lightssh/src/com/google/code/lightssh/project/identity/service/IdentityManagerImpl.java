@@ -18,13 +18,13 @@ import com.google.code.lightssh.project.identity.entity.IdentityType;
 @Component( "identityManager" )
 public class IdentityManagerImpl extends BaseManagerImpl<Identity> implements IdentityManager{
 	
-	@Resource(name="identityDao")
 	protected IdentityDao dao;
 		
 	public IdentityManagerImpl() {
 		super();
 	}
 
+	@Resource(name="identityDao")
 	public void setIdentityDao(IdentityDao dao) {
 		super.dao = dao;
 		this.dao = dao;

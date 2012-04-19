@@ -8,6 +8,8 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -32,6 +34,28 @@ import com.google.code.lightssh.project.party.entity.Party;
 public class LoginAccount extends BaseModel implements UserDetails{
 
 	private static final long serialVersionUID = 8280727772996743600L;
+	
+	/**
+	 * 登录帐户类型
+	 */
+	public enum LoginAccountType{
+		ADMIN("交易所")
+		,MEMBER("会员");
+		
+		private String value;
+		
+		LoginAccountType( String value ){
+			this.value = value;
+		}
+
+		public String getValue() {
+			return value;
+		}
+		
+		public String toString(){
+			return this.value;
+		}
+	}
 
 	/**
 	 * 登录名
@@ -86,6 +110,28 @@ public class LoginAccount extends BaseModel implements UserDetails{
 	private Party party;
 	
 	/**
+	 * 登录账号类型
+	 */
+	@Column( name="TYPE",length=20 )
+	@Enumerated(value=EnumType.STRING)
+	private LoginAccountType type;
+	
+	/**
+	 * 是否使用CA登录
+	 */
+	@Column( name="USE_CA" )
+	private Boolean useCa;
+	
+	public LoginAccount() {
+		super();
+	}
+	
+	public LoginAccount(Long id,String name) {
+		this.loginName = name;
+		this.id = id;
+	}
+
+	/**
 	 * 是否过期
 	 * @return 过期返回false
 	 */
@@ -110,6 +156,13 @@ public class LoginAccount extends BaseModel implements UserDetails{
 	}
 	
 	/**
+	 * 是否会员
+	 */
+	public boolean isMember(){
+		return LoginAccountType.MEMBER.equals( this.type );
+	}
+	
+	/**
 	 * 添加角色
 	 */
 	public void addRole( Role role ){
@@ -120,6 +173,32 @@ public class LoginAccount extends BaseModel implements UserDetails{
 			roles = new HashSet<Role>();
 		
 		roles.add(role);
+	}
+	
+	public String getSubjectMessage(){
+		StringBuilder sb = new StringBuilder("");
+		if( this.party != null){
+			sb.append( party.getName() );
+			if( !LoginAccountType.ADMIN.equals(this.type) )
+				sb.append( "(" + party.getIdentity() + ")" );
+		}
+		
+		return sb.toString();
+	}
+	/**
+	 * 是否拥有某个角色
+	 */
+	public boolean hasRole( String roleName ){
+		if( roleName == null || this.getRoles() == null 
+				|| this.getRoles().isEmpty() )
+			return false;
+		
+		for( Role role:this.roles ){
+			if( role.getName().equals( roleName ) )
+				return true;
+		}
+		
+		return false;
 	}
 	
 	@Override
@@ -152,6 +231,13 @@ public class LoginAccount extends BaseModel implements UserDetails{
 	@Override
 	public boolean isCredentialsNonExpired() {
 		return true;
+	}
+	
+	/**
+	 * 是否需要CA登录
+	 */
+	public boolean isUseCa( ){
+		return Boolean.TRUE.equals(this.useCa);
 	}
 
 	//-- getters and setters --------------------------------------------------
@@ -220,4 +306,19 @@ public class LoginAccount extends BaseModel implements UserDetails{
 		this.party = party;
 	}
 
+	public LoginAccountType getType() {
+		return type;
+	}
+
+	public void setType(LoginAccountType type) {
+		this.type = type;
+	}
+
+	public Boolean getUseCa() {
+		return useCa;
+	}
+
+	public void setUseCa(Boolean useCa) {
+		this.useCa = useCa;
+	}
 }

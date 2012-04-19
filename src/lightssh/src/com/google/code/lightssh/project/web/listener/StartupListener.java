@@ -2,8 +2,8 @@ package com.google.code.lightssh.project.web.listener;
 
 import javax.servlet.ServletContextEvent;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -17,10 +17,8 @@ import com.google.code.lightssh.project.security.service.LoginAccountManager;
  */
 public class StartupListener extends ContextLoaderListener{
 	
-	private static Log log = LogFactory.getLog(StartupListener.class);
+	private static Logger log = LoggerFactory.getLogger(StartupListener.class);
 	
-	public static final String APP_REAL_PATH = "appRealPath";
-
 	public void contextDestroyed(ServletContextEvent sce) {
 		super.contextDestroyed(sce); //Spring
 	}
@@ -30,6 +28,8 @@ public class StartupListener extends ContextLoaderListener{
 	 */
 	public void contextInitialized(ServletContextEvent sce) {
 		super.contextInitialized(sce); //Spring 
+		
+		chooseFreemarkLoger();
 		
         ApplicationContext ctx = WebApplicationContextUtils
         	.getRequiredWebApplicationContext(sce.getServletContext());
@@ -69,4 +69,16 @@ public class StartupListener extends ContextLoaderListener{
 		
 	}
 	
+	
+	/**
+	 * FreeMarker调试日志
+	 */
+	public void chooseFreemarkLoger( ){
+		try{
+			//freemarker.log.Logger.selectLoggerLibrary( freemarker.log.Logger.LIBRARY_NONE );
+			freemarker.log.Logger.selectLoggerLibrary( freemarker.log.Logger.LIBRARY_SLF4J );
+		}catch( Exception e ){
+			log.warn("选择Freemarker日志框架出错:" + e.getMessage() );
+		}
+	}
 }

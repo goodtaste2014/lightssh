@@ -1,6 +1,5 @@
 package com.google.code.lightssh.project.security.web;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -72,7 +71,6 @@ public class RoleAction extends CrudAction<Role>{
 	public String save( ){
 		if( role != null ){
 			role.setReadonly( Boolean.FALSE );
-			role.setCreateDate( new Date() );
 		}
 		
 		String result = super.save();
@@ -85,7 +83,7 @@ public class RoleAction extends CrudAction<Role>{
 	public String list( ){
 		if( page == null )
 			page = new ListPage<Role>( );
-		page.addAscending("createDate");
+		page.addAscending("createdTime");
 		
 		return super.list();
 	}
