@@ -73,7 +73,7 @@ public class History extends BaseModel{
 	
 	public void preInsert( ){
 		super.preInsert();
-		if( access != null )
+		if( access != null && access.getId()==null)
 			access.preInsert();
 	}
 
@@ -139,6 +139,9 @@ public class History extends BaseModel{
 					type = FieldType.ADD_FIELD;
 				if( npMap.get(p) == null )
 					type = FieldType.REMOVE_FIELD;
+				if(!ov.equals(nv)){
+					type = FieldType.CHANGED;
+				}
 			}
 			
 			Field field = new Field(type,p,null,ov,nv);

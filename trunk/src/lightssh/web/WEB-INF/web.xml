@@ -11,10 +11,6 @@
 
 	<!-- spring context -->
 	<context-param>
-		<param-name>log4jConfigLocation</param-name>
-		<param-value>/WEB-INF/classes/log4j.properties</param-value>
-	</context-param>
-	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
 			classpath:config/spring/applicationContext.xml
@@ -153,9 +149,11 @@
 	</servlet-mapping>
 	
 	<!-- log4j listener -->
+	<!--  
 	<listener>
 		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
 	</listener>
+	-->
 	
 	<!-- startup listener -->
 	<listener>

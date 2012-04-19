@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 import com.google.code.lightssh.common.entity.Persistence;
 
@@ -32,6 +33,13 @@ public class Sequence implements Persistence<String>{
 	 */
 	@Column( name="LAST_NUMBER" )
 	private Integer lastNumber;
+	
+	/**
+	 * 版本号
+	 */
+	@Version
+	@Column( name="VERSION" )
+	private Integer version;
 	
 	public Sequence( ){
 		
@@ -103,6 +111,14 @@ public class Sequence implements Persistence<String>{
 	@Override
 	public String getIdentity() {
 		return this.key;
+	}
+
+	public Integer getVersion() {
+		return version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
 	}
 
 }

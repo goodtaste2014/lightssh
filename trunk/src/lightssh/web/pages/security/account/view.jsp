@@ -20,7 +20,7 @@
 	<table class="profile">
 		<tbody>
 			<tr>
-				<th><label for="name" class="required">登录账号</label></th>
+				<th><label for="name" >登录账号</label></th>
 				<td>
 					<s:property value="account.loginName"/>
 				</td>
@@ -40,13 +40,44 @@
 			<tr>
 				<th><label for="account_start_date">有效期</label></th>
 				<td>
-					<s:property value="account.period.start"/> -
-					<s:property value="account.period.end"/>
+					<s:if test="account.period == null ">
+						永不过期
+					</s:if>
+					<s:else>
+						<s:property value="account.period.start"/> -
+						<s:property value="account.period.end"/>
+					</s:else>
 				</td>
 			</tr>
 			<tr>
+				<th><label>拥有的角色</label></th>
+				<td>
+					<s:iterator value="%{account.roles}" status="loop">
+						<span style="white-space:nowrap;"><s:property value="name"/></span><br/>
+					</s:iterator>
+				</td>
+			</tr>
+			
+			<tr>
+				<th><label >密码保护问题</label></th>
+				<td>
+					<s:property value="account.passwordQuestion"/>
+				</td>
+			</tr>
+			
+			<tr>
 				<th><label for="desc">描述</label></th>
-				<td><s:property value="account.description"/></td>
+				<td>
+					<s:property value="account.description"/>
+					<br/>
+				</td>
+			</tr>
+			
+			<tr>
+				<th><label for="desc">创建时间</label></th>
+				<td>
+					<s:property value="account.createDate"/>
+				</td>
 			</tr>
 		</tbody>
 	</table>

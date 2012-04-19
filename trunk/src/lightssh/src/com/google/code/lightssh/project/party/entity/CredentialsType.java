@@ -31,6 +31,7 @@ public enum CredentialsType {
 	,P23("居住证","公安机关")
 	,P24("暂住证","公安机关")
 	,P31("护照","公安机关")
+	,P41("港澳台居民来往内地通行证", "公安机关")
 	,P99("个人其它证件","公安机关");
 
 	CredentialsType( String name,String org ){
@@ -41,6 +42,12 @@ public enum CredentialsType {
 	public static final CredentialsType[] frequentlyUsed( ){
 		return new CredentialsType[]{
 			P01,P03,P04,P08,P16,P31,P99
+		};
+	}
+	
+	public static final CredentialsType[] simpleUsed( ){
+		return new CredentialsType[]{
+				P01, P04, P08,  P31, P41
 		};
 	}
 	

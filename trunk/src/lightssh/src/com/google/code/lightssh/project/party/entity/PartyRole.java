@@ -88,7 +88,7 @@ public class PartyRole extends UUIDModel{
 	/**
 	 * Party
 	 */
-	@ManyToOne( fetch=FetchType.EAGER,cascade=CascadeType.PERSIST )
+	@ManyToOne( fetch=FetchType.LAZY,cascade=CascadeType.PERSIST )
 	@JoinColumn( name="PARTY_ID")
 	private Party party;
 	

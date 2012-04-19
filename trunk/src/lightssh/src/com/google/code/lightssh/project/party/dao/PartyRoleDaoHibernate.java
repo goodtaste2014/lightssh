@@ -39,9 +39,9 @@ public class PartyRoleDaoHibernate extends HibernateAnnotationDao<PartyRole> imp
 	@Override
 	public List<PartyRole> list(Party party) {
 		String hql = " SELECT m FROM " + entityClass.getName()
-			+ " AS m WHERE m.party = ? ";
-
-		return getHibernateTemplate().find(hql,party );
+			+ " AS m WHERE m.party.id = ? ";
+		
+		return getHibernateTemplate().find(hql,party.getIdentity() );
 	}
 	
 	@Override

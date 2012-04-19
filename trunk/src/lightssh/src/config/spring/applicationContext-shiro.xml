@@ -63,7 +63,9 @@
 		<property name="usernameParam" value="j_username"/>
 		<property name="passwordParam" value="j_password"/>
 		<property name="captchaParam" value="j_captcha"/>
-		<property name="accessManager" ref="accessManager"/>
+		<property name="accountManager" ref="loginAccountManager"/>
+		<property name="loginLogManager" ref="loginLogManager"/>
+		<property name="systemConfig" ref="systemConfig"/>
 	</bean>
 	
 </beans>

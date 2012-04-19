@@ -23,6 +23,7 @@
                 <value>com.google.code.lightssh.project.geo.entity.GeoAssociation</value>
                 <value>com.google.code.lightssh.project.log.entity.Access</value>
                 <value>com.google.code.lightssh.project.log.entity.History</value>
+                <value>com.google.code.lightssh.project.log.entity.LoginLog</value>
                 <value>com.google.code.lightssh.project.tree.entity.Tree</value>
                 <value>com.google.code.lightssh.project.tree.entity.Node</value>
                 <value>com.google.code.lightssh.project.security.entity.Role</value>
@@ -45,22 +46,15 @@
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.query.substitutions">true 'Y', false 'N'</prop>
-                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.show_sql">false</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</prop>
                 <prop key="hibernate.format_sql">false</prop>
-                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.hbm2ddl.auto">create</prop>
             </props>
         </property>   
     </bean>
 	
 	<!-- 无实现类的bean -->
-	
-	<!-- DAO|sequence -->
-	<bean id="sequenceDao" class="com.google.code.lightssh.common.dao.hibernate.HibernateDao">
-		<constructor-arg>
-    		<value>com.google.code.lightssh.project.sequence.entity.Sequence</value>
-    	</constructor-arg>    
-        <property name="sessionFactory" ref="sessionFactory"/>
-	</bean>
 	
     <!-- DAO|jobInterval -->
 	<bean id="jobIntervalDao" class="com.google.code.lightssh.common.dao.hibernate.HibernateDao">
@@ -86,6 +80,13 @@
         <property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 	
+	<!-- LOG|loginlog -->
+	<bean id="loginLogDao" class="com.google.code.lightssh.common.dao.hibernate.HibernateDao">
+		<constructor-arg>
+			<value>com.google.code.lightssh.project.log.entity.LoginLog</value>
+    	</constructor-arg>
+        <property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
 	
 	<!-- SERVICE|security permission -->
 	<bean id="permissionManager" class="com.google.code.lightssh.common.service.BaseManagerImpl">
