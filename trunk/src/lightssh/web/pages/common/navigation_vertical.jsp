@@ -17,24 +17,6 @@
 			#navigation{
 			}
 			
-			.toggle{
-				text-decoration: none;
-				font-size: 24px;
-				color: black;
-				text-align: right;
-				vertical-align:middle;
-				margin-left:1px;
-				background-color: #F7F7F7;
-			}
-			
-			.toggle a{
-				line-height:24px;
-			}
-			
-			.toggle:hover {
-				color: red;
-			}
-			
 			ul#vertical_navigation{
 				margin:0;/* fixed IE bug*/
 				padding:0;/* fixed IE bug*/
@@ -53,41 +35,18 @@
 			$(document).ready(function(){
 				initVerticalMenu( "vertical_navigation" );
 			})
-			
-			var MIN_MENU_COL = "20px";
-			var MAX_MENU_COL = "20%";
-			function toggleMenu(){
-				var main_frameset = $('#main_frameset',window.parent.document);
-				var cols_arr =  $(main_frameset).attr('cols').split(',');
-				
-				if( cols_arr[0] != MIN_MENU_COL && cols_arr[0] != MAX_MENU_COL)
-					cols_arr[0] = MAX_MENU_COL;
-					
-				var isHidden = (cols_arr[0]==MAX_MENU_COL);
-				var disply_cols = isHidden?MIN_MENU_COL:MAX_MENU_COL;
-				$('div.toggle>a').html( !isHidden?'&laquo;':'&raquo;');
-				
-				disply_cols += ",*";
-				//alert( disply_cols );
-				$("#vertical_navigation").css("display",isHidden?"none":"block");
-				$(main_frameset).attr('cols',disply_cols );
-			}
 		</script>
 	</head>
 	
 	<body>
 	<div id="navigation">
-		<%-- 
-		<div class="toggle">
-			<a href="#" onclick="javascript:toggleMenu();">&laquo;</a>
-		</div>
-		--%>
 		
 		<ul id="vertical_navigation" class="menu vertical-menu">
 			<li>
 				<%-- 系统管理--%>
 				<a href="#"><s:text name="project.nav.sysmgr"/></a>
 				<ul id="system_mgr">
+					<li><a href="<s:url value="/settings/organization/viewparent.do"/>" target="main_frame">企业资料</a></li>
 					<li>
 						<%-- 登录账号--%>
 						<a href="#"><s:text name="project.nav.loginaccount"/></a>

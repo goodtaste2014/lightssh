@@ -35,7 +35,7 @@ function initVerticalMenu( menu_id ){
  */
 function addLevelClass( menu_id ){
 	addOneLevelClass( $('#'+menu_id + ' > li > a'),1);//一级菜单
-	addOneLevelClass( $('#'+menu_id + ' > li > ul > li > a'),2,3);//二级菜单
+	addOneLevelClass( $('#'+menu_id + ' > li > ul > li > a'),2);//二级菜单
 	addOneLevelClass( $('#'+menu_id + ' > li > ul > li > ul > li > a'),3);//三级菜单
 }
 
@@ -44,8 +44,9 @@ function addLevelClass( menu_id ){
  */
 function addOneLevelClass( elements,level,last_level ){
 	$.each( elements , function(index,ul_menu ){
-		$(ul_menu).html("<span>&nbsp;</span>" + $(ul_menu).html() );
 		var no_child = ($(ul_menu).parent().has("ul").length ==0);
+		$(ul_menu).html("<span></span>" + $(ul_menu).html() );
+		
 		if( last_level ==3 && no_child){
 			$(ul_menu).addClass("level"+last_level);
 		}else{
