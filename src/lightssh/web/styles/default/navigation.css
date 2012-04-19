@@ -218,6 +218,7 @@ ul.vertical-menu .level1{
 ul.vertical-menu .level2{
 	line-height:22px;
 	height:22px;
+	padding:0 0 0 20px;
 	/*background:white url("images/bg_menu_level2.gif") repeat-x center right;*/
 	
 	background: #E8E9E5;
@@ -240,8 +241,12 @@ ul.vertical-menu .level2{
 ul.vertical-menu .level3{
 	line-height:22px;
 	height:22px;
+	padding:0 0 0 20px;
 	background-color: #F6F7F5;
 	/*background-image:url("images/bg_menu_level3.gif");*/
+}
+
+ul.vertical-menu .level3{
 }
 
 ul.vertical-menu li a span{
