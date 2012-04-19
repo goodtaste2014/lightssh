@@ -10,7 +10,7 @@
 		<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/my/layout/vertical_menu.js"></script>
 		<style type="text/css">
 			body{
-				padding:0 4px 0 2px;
+				padding:0;
 				background-color: #FCFFEF;
 			}
 			
@@ -77,9 +77,11 @@
 	
 	<body>
 	<div id="navigation">
+		<%-- 
 		<div class="toggle">
 			<a href="#" onclick="javascript:toggleMenu();">&laquo;</a>
 		</div>
+		--%>
 		
 		<ul id="vertical_navigation" class="menu vertical-menu">
 			<li>

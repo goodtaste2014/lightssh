@@ -11,12 +11,13 @@
 	<constant name="struts.ognl.allowStaticMethodAccess" value="true"/>
     <constant name="struts.ui.theme" value="colorful"/>
     <constant name="struts.multipart.maxSize" value="2097152"/>
-    <constant name="struts.devMode" value="false"/>
+    <constant name="struts.devMode" value="true"/>
     <constant name="struts.i18n.encoding" value="UTF-8"/>
     <constant name="struts.custom.i18n.resources" value="config.i18n.message"/>
     <constant name="struts.configuration.xml.reload" value="false"/> 
-	<constant name="struts.multipart.maxSize" value="100000000"/>
-	<constant name="struts.freemarker.templatesCache" value="true"/>
+    <!-- this option will use a internal ConcurrentHashMap in FreemarkerTemplateEngine but not freemarker native cache -->
+	<constant name="struts.freemarker.templatesCache" value="false"/>
+	<constant name="struts.multipart.saveDir" value="../temp"/> 
     
     <include file="config/struts/security.xml"/>
     <include file="config/struts/party.xml"/>
@@ -24,12 +25,18 @@
 
     <package name="default" extends="json-default" namespace="/">
         <interceptors>
+        	<interceptor name="runningTime" class="com.google.code.lightssh.project.web.interceptor.RunningTimeInterceptor"/>
         	<interceptor name="trim" class="com.google.code.lightssh.common.web.interceptor.TrimInterceptor"/>
         	<interceptor name="mytoken" class="com.google.code.lightssh.common.web.interceptor.MyTokenInterceptor"/>
         	<interceptor name="myJsonValidation" class="com.google.code.lightssh.common.web.interceptor.JsonValidationInterceptor"/>
 			
 			<interceptor-stack name="simpleDefaultStack">
-                <interceptor-ref name="exception"/>
+				<interceptor-ref name="runningTime" />
+				<interceptor-ref name="trim" />
+                <interceptor-ref name="exception">
+                	<param name="logEnabled">true</param>
+                	<param name="logLevel">ERROR</param>
+                </interceptor-ref>
                 <!--<interceptor-ref name="alias"/>-->
                 <interceptor-ref name="servletConfig"/>
                 <interceptor-ref name="i18n"/>
@@ -58,7 +65,6 @@
 			
 			<interceptor-stack name="crudStack">
 				<interceptor-ref name="mytoken"/>
-				<interceptor-ref name="trim" />
 				<interceptor-ref name="simpleDefaultStack" />
             </interceptor-stack>
             
@@ -69,6 +75,7 @@
         <global-results>
             <result name="login" type="redirectAction">login</result>
             <result name="unknownException">/pages/security/system/error.jsp</result>
+            <result name="invalid.token">/pages/security/system/invalid_token.jsp</result>
         </global-results>
 
         <global-exception-mappings>
@@ -91,6 +98,16 @@
         	<result name="success">/pages/common/header.jsp</result>
         </action>
         
+        <!-- BOTTOM PAGE -->
+        <action name="footer" class="securityAction">
+        	<result name="success">/pages/common/footer.jsp</result>
+        </action>
+        
+        <!-- SWITCH PAGE -->
+        <action name="switch" class="securityAction">
+        	<result name="success">/pages/common/switch.jsp</result>
+        </action>
+        
         <!-- NAVIGATION PAGE -->
         <action name="navigation" class="securityAction">
         	<result name="input">/pages/common/navigation_vertical.jsp</result>
@@ -109,6 +126,7 @@
         	<result name="success" type="redirectAction">welcome</result>
         </action>
         
+        <!-- LOGOUT  -->
         <action name="logout" class="securityAction" method="logout">
         	<!--<result name="success">/pages/security/system/logout.jsp</result>-->
         	<result name="success" type="redirectAction">login</result>
