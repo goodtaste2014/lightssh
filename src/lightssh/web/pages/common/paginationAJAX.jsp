@@ -8,6 +8,10 @@
 	<s:if test="#PAGE_NUMBER_NAME == null">
 		<s:set name="PAGE_NUMBER_NAME" value="\"page.number\""/>
 	</s:if>
+	
+	<s:if test="#PAGE_JS_QUERY == null">
+		<s:set name="PAGE_JS_QUERY" value="\"query\""/>
+	</s:if>
     
     <!-- query string -->    
     <s:url var="root_url"/> 
@@ -39,17 +43,17 @@
 	</s:if>
 
 	<s:if test="#pagination.number > 1">
-		<a class="previous"  href="javascript:query('<s:property value="#queryString+ '&amp;'" escape="false"/><s:property value="#PAGE_NUMBER_NAME"/>=<s:property value="#pagination.number-1"/>');">
+		<a class="previous"  href="javascript:<s:property value="#PAGE_JS_QUERY"/>('<s:property value="#queryString+ '&amp;'" escape="false"/><s:property value="#PAGE_NUMBER_NAME"/>=<s:property value="#pagination.number-1"/>');">
 			&laquo; 上一页
 		</a> 
 	</s:if>
 	
 	<s:if test="#start_page > 1">
-		<a class="number" href="javascript:query('<s:property value="#queryString + '&amp;'" escape="false"/><s:property value="#PAGE_NUMBER_NAME"/>=1');">
+		<a class="number" href="javascript:<s:property value="#PAGE_JS_QUERY"/>('<s:property value="#queryString + '&amp;'" escape="false"/><s:property value="#PAGE_NUMBER_NAME"/>=1');">
 			1
 		</a>
 		<s:if test="#start_page == 3">
-			<a class="number"  href="javascript:query('<s:property value="#queryString+ '&amp;'" escape="false"/><s:property value="#PAGE_NUMBER_NAME"/>=2');">
+			<a class="number"  href="javascript:<s:property value="#PAGE_JS_QUERY"/>('<s:property value="#queryString+ '&amp;'" escape="false"/><s:property value="#PAGE_NUMBER_NAME"/>=2');">
 				2
 			</a>
 		</s:if>
@@ -65,27 +69,27 @@
 				<span class="number current" title="Page <s:property value="#page_index"/>"><s:property value="#page_index"/></span>
 			</s:if>
 			<s:else>
-				<a class="number" href="javascript:query('<s:property value="#queryString+ '&amp;'" escape="false"/><s:property value="#PAGE_NUMBER_NAME"/>=<s:property value="#page_index"/>');"><s:property value="#page_index"/></a>
+				<a class="number" href="javascript:<s:property value="#PAGE_JS_QUERY"/>('<s:property value="#queryString+ '&amp;'" escape="false"/><s:property value="#PAGE_NUMBER_NAME"/>=<s:property value="#page_index"/>');"><s:property value="#page_index"/></a>
 			</s:else>	
 		</s:if>	
 	</s:iterator>
 	
 	<s:if test="#end_page != #pagination.allPage">
 		<s:if test="#end_page == #pagination.allPage-2">
-			<a class="number" href="javascript:query('<s:property value="#queryString+ '&amp;'" escape="false"/><s:property value="#PAGE_NUMBER_NAME"/>=<s:property value="#pagination.allPage-1"/>');">
+			<a class="number" href="javascript:<s:property value="#PAGE_JS_QUERY"/>('<s:property value="#queryString+ '&amp;'" escape="false"/><s:property value="#PAGE_NUMBER_NAME"/>=<s:property value="#pagination.allPage-1"/>');">
 				<s:property value="#pagination.allPage-1"/> 
 			</a>
 		</s:if>
 		<s:elseif test="#end_page <#pagination.allPage-1">
 			<span class="number dots">...</span> 
 		</s:elseif>
-		<a class="number" href="javascript:query('<s:property value="#queryString+ '&amp;'" escape="false"/><s:property value="#PAGE_NUMBER_NAME"/>=<s:property value="#pagination.allPage"/>');">
+		<a class="number" href="javascript:<s:property value="#PAGE_JS_QUERY"/>('<s:property value="#queryString+ '&amp;'" escape="false"/><s:property value="#PAGE_NUMBER_NAME"/>=<s:property value="#pagination.allPage"/>');">
 			<s:property value="#pagination.allPage"/> 
 		</a>
 	</s:if>
 	
 	<s:if test="#pagination.number < #pagination.allPage">
-		<a class="next"  href="javascript:query('<s:property value="#queryString+ '&amp;'" escape="false"/><s:property value="#PAGE_NUMBER_NAME"/>=<s:property value="#pagination.number+1"/>');">
+		<a class="next"  href="javascript:<s:property value="#PAGE_JS_QUERY"/>('<s:property value="#queryString+ '&amp;'" escape="false"/><s:property value="#PAGE_NUMBER_NAME"/>=<s:property value="#pagination.number+1"/>');">
 			下一页 &raquo;
 		</a> 
 	</s:if>

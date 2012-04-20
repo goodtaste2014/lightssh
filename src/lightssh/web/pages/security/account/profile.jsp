@@ -28,8 +28,8 @@
 				}
 			});
 			
-			$("#account_start_date").datepicker({dateFormat: 'yy-mm-dd',changeYear:true});
-			$("#account_end_date").datepicker({dateFormat: 'yy-mm-dd',changeYear:true});
+			$("#account_start_date").datepicker( );
+			$("#account_end_date").datepicker( );
 		});
 		
 		/**
@@ -63,6 +63,7 @@
 			$("#party_id").val( party.id );
 			$("#party_clazz").val( party.clazz );
 			$("#party_popup").dialog('destroy').html('');
+			$("label[for='party_id']").remove(); //移除样式
 		}
 	</script>
 </head>
