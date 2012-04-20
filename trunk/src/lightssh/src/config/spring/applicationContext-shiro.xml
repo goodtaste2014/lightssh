@@ -32,6 +32,8 @@
 	        	/index.jsp=anon
 	        	/index.do*=anon
 	        	
+	        	/webservices/**=anon
+	        	
 	            #权限配置
 	           
 	            #/security/account/edit.do=authc,perms[SECURITY_ACCOUNT_EDIT]

@@ -17,6 +17,7 @@
 			,classpath:config/spring/applicationContext-no-annotation.xml
 			,classpath:config/spring/applicationContext-cache.xml
 			,classpath:config/spring/applicationContext-scheduler.xml
+			,classpath:config/spring/applicationContext-webservice.xml
 			,classpath:config/spring/applicationContext-shiro.xml
 		</param-value>
 	</context-param>
@@ -148,6 +149,16 @@
 		<url-pattern>/images/kaptcha.jpg</url-pattern>
 	</servlet-mapping>
 	
+	<servlet>
+		<servlet-name>cxfservlet</servlet-name>
+		<servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>cxfservlet</servlet-name>
+		<url-pattern>/webservices/*</url-pattern>
+	</servlet-mapping>
 	<!-- log4j listener -->
 	<!--  
 	<listener>
@@ -155,6 +166,16 @@
 	</listener>
 	-->
 	
+	<!-- logback config -->
+	<servlet>
+		<servlet-name>ViewStatusMessages</servlet-name>
+		<servlet-class>ch.qos.logback.classic.ViewStatusMessagesServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>ViewStatusMessages</servlet-name>
+		<url-pattern>/lbClassicStatus</url-pattern>
+	</servlet-mapping>
 	<!-- startup listener -->
 	<listener>
 		<listener-class>com.google.code.lightssh.project.web.listener.StartupListener</listener-class>
