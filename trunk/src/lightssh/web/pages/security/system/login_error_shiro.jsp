@@ -1,4 +1,4 @@
-<%@page language="java"pageEncoding="UTF-8"contentType="text/html;charset=utf-8"%>
+<%@page language="java" pageEncoding ="UTF-8" contentType="text/html;charset=utf-8"%>
 
 <%@page import="com.google.code.lightssh.project.security.service.BadCaptchaException"%>
 <%@page import="org.apache.shiro.SecurityUtils"%>
