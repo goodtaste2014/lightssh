@@ -1,13 +1,19 @@
 package com.google.code.lightssh.project.geo.entity;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.google.code.lightssh.common.entity.Persistence;
+import com.google.code.lightssh.common.model.Sequenceable;
 import com.google.code.lightssh.common.util.StringUtil;
 
 /**
@@ -16,7 +22,7 @@ import com.google.code.lightssh.common.util.StringUtil;
  */
 @Entity
 @Table( name="T_GEO" )
-public class GeographicBoundary implements Persistence<String>{
+public class GeographicBoundary implements Persistence<String>,Sequenceable{
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -71,6 +77,49 @@ public class GeographicBoundary implements Persistence<String>{
 	protected Boolean active;
 	
 	/**
+	 * 上级
+	 */
+	@Transient
+	private GeographicBoundary parent;
+	
+	/**
+	 * 下级
+	 */
+	@Transient
+	private List<GeographicBoundary> children;
+	
+	/**
+	 * 显示顺序
+	 */
+	@Transient
+	private int sequence;
+	
+	/**
+	 * 添加孩子结点
+	 */
+	public void addChild( GeographicBoundary child ){
+		List<GeographicBoundary> list =new ArrayList<GeographicBoundary>();
+		list.add( child );
+		addChild( list );
+	}
+	
+	/**
+	 * 添加孩子结点
+	 */
+	public void addChild( Collection<GeographicBoundary> children ){
+		if( children == null || children.isEmpty() )
+			return;
+		
+		if( this.children == null )
+			this.children = new ArrayList<GeographicBoundary>( );
+		
+		for( GeographicBoundary child:children ){
+			child.parent = this;
+			this.children.add(child);
+		}
+	}
+	
+	/**
 	 * 是否活动的
 	 */
 	public boolean isActive(){
@@ -97,6 +146,20 @@ public class GeographicBoundary implements Persistence<String>{
 		//do nothing
 	}	
 
+	@Override
+	public String getSequenceKey() {
+		return "GEO-" + this.type.name();
+	}
+
+	@Override
+	public int getSequenceLength() {
+		return 3;
+	}
+
+	@Override
+	public int getSequenceStep() {
+		return 1;
+	}
 
 	public String getName() {
 		return name;
@@ -162,12 +225,28 @@ public class GeographicBoundary implements Persistence<String>{
 		this.code = code;
 	}
 
-	@Override
-	public String toString() {
-		return "GeographicBoundary [abbreviation=" + abbreviation + ", active="
-				+ active + ", code=" + code + ", description=" + description
-				+ ", localname=" + localname + ", name=" + name
-				+ ", numericCode=" + numericCode + ", type=" + type + "]";
+	public GeographicBoundary getParent() {
+		return parent;
+	}
+
+	public void setParent(GeographicBoundary parent) {
+		this.parent = parent;
+	}
+
+	public List<GeographicBoundary> getChildren() {
+		return children;
+	}
+
+	public void setChildren(List<GeographicBoundary> children) {
+		this.children = children;
+	}
+	
+	public int getSequence() {
+		return sequence;
+	}
+	
+	public void setSequence(int sequence) {
+		this.sequence = sequence;
 	}
 
 }

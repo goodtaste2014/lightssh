@@ -14,14 +14,12 @@
     <constant name="struts.devMode" value="true"/>
     <constant name="struts.i18n.encoding" value="UTF-8"/>
     <constant name="struts.custom.i18n.resources" value="config.i18n.message"/>
-    <constant name="struts.configuration.xml.reload" value="false"/> 
+    <constant name="struts.configuration.xml.reload" value="true"/> 
     <!-- this option will use a internal ConcurrentHashMap in FreemarkerTemplateEngine but not freemarker native cache -->
 	<constant name="struts.freemarker.templatesCache" value="false"/>
 	<constant name="struts.multipart.saveDir" value="../temp"/> 
     
-    <include file="config/struts/security.xml"/>
-    <include file="config/struts/party.xml"/>
-    <include file="config/struts/settings.xml"/>
+    <include file="config/struts/*.xml"/>
 
     <package name="default" extends="json-default" namespace="/">
         <interceptors>

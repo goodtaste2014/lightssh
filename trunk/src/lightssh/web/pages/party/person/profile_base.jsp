@@ -88,6 +88,17 @@
 			</tr>
 			
 			<tr>
+				<th><label for="geo">出生地</label></th>
+				<td>
+					<select name="party.country.code">
+						<option value="<s:property value="%{party.country.code}"/>">
+							<s:property value="%{party.countryGeo.name}"/>
+						</option>
+					</select>
+				</td>
+			</tr>
+			
+			<tr>
 				<th><label for="desc">描述</label></th>
 				<td><s:textarea id="desc" name="party.description" cols="60" rows="5"/></td>
 			</tr>

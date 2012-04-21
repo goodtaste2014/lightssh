@@ -108,6 +108,28 @@
 			<result name="input">/pages/settings/geo/list.jsp</result>	
 			<result name="success">/pages/settings/geo/list.jsp</result>	
         </action>
+        
+        <action name="listcountry" class="geoAction" method="listcountry">
+			<result name="success" type="json">
+				<param name="includeProperties">
+					list\[\d+\]\.code,
+					list\[\d+\]\.name,
+					list\[\d+\]\.active,
+					list\[\d+\]\.description
+				</param>
+			</result>
+        </action>
+        
+        <action name="listchildren" class="geoAction" method="listchildren">
+			<result name="success" type="json">
+				<param name="includeProperties">
+					list\[\d+\]\.code,
+					list\[\d+\]\.name,
+					list\[\d+\]\.active,
+					list\[\d+\]\.description
+				</param>
+			</result>
+        </action>
     </package>
     
     <package name="settings_organization" extends="default" namespace="/settings/organization">
