@@ -14,6 +14,13 @@ import com.google.code.lightssh.project.geo.entity.GeographicBoundary;
 public interface GeographicBoundaryManager extends BaseManager<GeographicBoundary>{
 	
 	/**
+	 * 查询地理区域 
+	 * @param type 地理区域类型
+	 * @param active 是否活动的
+	 */
+	public List<GeographicBoundary> list(GeoType type,Boolean active);
+	
+	/**
 	 * 根据类型查询GEO
 	 * @param type 地理边界类型
 	 */

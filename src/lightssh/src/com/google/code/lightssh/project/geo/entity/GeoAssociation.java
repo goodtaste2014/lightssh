@@ -2,6 +2,8 @@ package com.google.code.lightssh.project.geo.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -19,6 +21,27 @@ import com.google.code.lightssh.common.entity.base.UUIDModel;
 public class GeoAssociation extends UUIDModel{
 	
 	private static final long serialVersionUID = 1L;
+	
+	/** GEO关系类型 */
+	public enum GeoAssoType {
+		ADMINISTRATIVE("行政划分")
+		,CUSTOMIZED("自定义划分");
+		
+		GeoAssoType( String value ){
+			this.value = value;
+		}
+		
+		private String value;
+		
+		public String getValue(){
+			return this.value;
+		}
+		
+		public String toString(){
+			return this.value;
+		}
+		
+	}
 
 	/**
 	 * 地理边界(整体)
@@ -35,10 +58,28 @@ public class GeoAssociation extends UUIDModel{
 	private GeographicBoundary fromGeo;
 	
 	/**
+	 * 地理类型
+	 */
+	@Column( name="GEO_ASSO_TYPE")
+	@Enumerated( EnumType.STRING )
+	private GeoAssoType type;
+	
+	/**
 	 * 序号
 	 */
 	@Column( name="SEQUENCE")
 	private Integer sequence;
+	
+	public GeoAssociation(){
+		
+	}
+
+	public GeoAssociation(GeographicBoundary toGeo, GeographicBoundary fromGeo) {
+		super();
+		this.toGeo = toGeo;
+		this.fromGeo = fromGeo;
+	}
+
 
 	public GeographicBoundary getToGeo() {
 		return toGeo;
@@ -62,6 +103,14 @@ public class GeoAssociation extends UUIDModel{
 
 	public void setSequence(Integer sequence) {
 		this.sequence = sequence;
+	}
+
+	public GeoAssoType getType() {
+		return type;
+	}
+
+	public void setType(GeoAssoType type) {
+		this.type = type;
 	}
 
 }

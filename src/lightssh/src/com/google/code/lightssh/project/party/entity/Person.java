@@ -7,10 +7,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.google.code.lightssh.project.geo.entity.GeographicBoundary;
 
 /**
  * person
@@ -178,6 +182,34 @@ public class Person extends Party{
 	protected MaritalStatus maritalStatus;
 	
 	/**
+	 * 所属国家
+	 */
+	@ManyToOne
+	@JoinColumn( name="COUNTRY_ID" )
+	protected GeographicBoundary country;
+	
+	/**
+	 * 所属二级地理区域
+	 */
+	@ManyToOne
+	@JoinColumn( name="SECONDARY_GEO_ID" )
+	protected GeographicBoundary secondaryGeo;
+	
+	/**
+	 * 所属三级地理区域
+	 */
+	@ManyToOne
+	@JoinColumn( name="THIRD_GEO_ID" )
+	protected GeographicBoundary thirdGeo;
+	
+	/**
+	 * 所属四级地理区域
+	 */
+	@ManyToOne
+	@JoinColumn( name="FOURTH_GEO_ID" )
+	protected GeographicBoundary fourthGeo;
+	
+	/**
 	 * 全名
 	 */
 	public String getFullName( ){
@@ -264,6 +296,38 @@ public class Person extends Party{
 		this.maritalStatus = maritalStatus;
 	}
 
+	public GeographicBoundary getCountry() {
+		return country;
+	}
+
+	public void setCountry(GeographicBoundary country) {
+		this.country = country;
+	}
+
+	public GeographicBoundary getSecondaryGeo() {
+		return secondaryGeo;
+	}
+
+	public void setSecondaryGeo(GeographicBoundary secondaryGeo) {
+		this.secondaryGeo = secondaryGeo;
+	}
+
+	public GeographicBoundary getThirdGeo() {
+		return thirdGeo;
+	}
+
+	public void setThirdGeo(GeographicBoundary thirdGeo) {
+		this.thirdGeo = thirdGeo;
+	}
+
+	public GeographicBoundary getFourthGeo() {
+		return fourthGeo;
+	}
+
+	public void setFourthGeo(GeographicBoundary fourthGeo) {
+		this.fourthGeo = fourthGeo;
+	}
+
 	@Override
 	public String toString() {
 		return "Person [id=" + getIdentity() +  ", birthday=" 
@@ -273,7 +337,8 @@ public class Person extends Party{
 				+ nickname + ", title=" + title + "]";
 	}	
 	
-	 public Person clone(){
+	public Person clone(){
 		 return (Person)super.clone();
 	}
+	 
 }

@@ -9,6 +9,7 @@
 		<link rel="stylesheet" href="<%= request.getContextPath() %>/scripts/jquery/plugins/treeview/jquery.treeview.css" type="text/css">
 		
 		<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/ui/i18n/jquery.ui.datepicker_zh_CN.js"></script>
+		<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/my/geo.js"></script>
 	
 		
 		<title>编辑人员</title>
@@ -30,8 +31,21 @@
 				});
 				
 				showDatepicker();
+
+				initGeo({'geo_parent_url':'<s:url value="/settings/geo/listcountry.do"/>',
+					'geo_children_url':'<s:url value="/settings/geo/listchildren.do"/>',
+					'geo_active':'true',
+					'geo_selectors':[
+						{'name':'party.country.code','value':'<s:property value="%{party.country.code}"/>'},
+						{'name':'party.secondaryGeo.code','value':'<s:property value="%{party.secondaryGeo.code}"/>'},
+						{'name':'party.thirdGeo.code','value':'<s:property value="%{party.thirdGeo.code}"/>'},
+						{'name':'party.fourthGeo.code','value':'<s:property value="%{party.fourthGeo.code}"/>'}]
+				});
 			});
-			
+
+			/**
+			 * 显示日历
+			 */
 			function showDatepicker( ){
 				$("input[type='text'][name='party.birthday']").datepicker(
 					{dateFormat: 'yy-mm-dd',changeYear:true,yearRange:'-60,60'});
@@ -52,6 +66,7 @@
 					}
 				}
 			}
+
 		</script>
 	</head>
 	

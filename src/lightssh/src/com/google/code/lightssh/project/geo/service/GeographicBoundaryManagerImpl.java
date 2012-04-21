@@ -34,7 +34,7 @@ implements GeographicBoundaryManager{
 		this.geoAssociationDao = geoAssociationDao;
 	}
 	
-	private List<GeographicBoundary> list(GeoType type,Boolean active) {
+	public List<GeographicBoundary> list(GeoType type,Boolean active) {
 		ListPage<GeographicBoundary> page = new ListPage<GeographicBoundary>( Integer.MAX_VALUE );
 		GeographicBoundary geo = new GeographicBoundary( );
 		geo.setType(type);
