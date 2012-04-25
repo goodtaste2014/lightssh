@@ -204,7 +204,7 @@ public class CaptchaFormAuthenticationFilter extends FormAuthenticationFilter{
 	 */
     public String getLoginUrl() {
     	if( systemConfig == null || !"true".equalsIgnoreCase(
-    			systemConfig.getProperty( ConfigConstants.CAS_RUNNING_KEY, "false")) )
+    			systemConfig.getProperty( ConfigConstants.CAS_ENABLED_KEY, "false")) )
     		return super.getLoginUrl();
     		
         return systemConfig.getProperty( ConfigConstants.CAS_SERVER_URL_PREFIX_KEY )

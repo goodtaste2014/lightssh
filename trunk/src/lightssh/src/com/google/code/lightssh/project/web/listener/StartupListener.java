@@ -8,8 +8,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import com.google.code.lightssh.project.config.ProjectConfig;
 import com.google.code.lightssh.project.scheduler.service.SchedulerManager;
 import com.google.code.lightssh.project.security.service.LoginAccountManager;
+import com.google.code.lightssh.project.security.shiro.ConfigConstants;
 
 /**
  * container startup listener
@@ -37,6 +39,7 @@ public class StartupListener extends ContextLoaderListener{
 		log.debug( "系统初始化..." );
 		initScheduler( ctx );
 		initRootUser( ctx );
+		initSystemProperty( ctx );
 	}
 
 	/**
@@ -80,5 +83,23 @@ public class StartupListener extends ContextLoaderListener{
 		}catch( Exception e ){
 			log.warn("选择Freemarker日志框架出错:" + e.getMessage() );
 		}
+	}
+	
+	/**
+	 * CAS启动设置keystore
+	 */
+	public void initSystemProperty( ApplicationContext ctx ){
+		try{
+			ProjectConfig systemConfig = (ProjectConfig)ctx.getBean("systemConfig");
+			
+			if( systemConfig != null && "true".equalsIgnoreCase(
+	    			systemConfig.getProperty( ConfigConstants.CAS_ENABLED_KEY, "false")) ){
+				String keystore = systemConfig.getProperty(ConfigConstants.CAS_SERVER_KEYSTORE_KEY);
+				log.info("设置系统属性javax.net.ssl.trustStore:[{}]",keystore);
+				System.setProperty("javax.net.ssl.trustStore",keystore);
+			}
+		}catch( Exception e ){
+        	log.error( e.getMessage() );
+        }
 	}
 }
