@@ -15,14 +15,16 @@
 	    <property name="filters">
 			<util:map>
 				<entry key="authc" value-ref="captchaFormAuthenticationFilter"/>
-				<entry key="mysi" value-ref="sessionInvalidateFilter"/>
+				<entry key="cas" value-ref="casFilter"/>
 			</util:map>
 		</property>
 	    <property name="filterChainDefinitions">
 	        <value>
 	        	/=anon
+	        	/shiro-cas*=cas
 	        	/login.do*=authc
 	        	/logout.do*=anon
+	        	/casticketerror.do*=anon
 	        	
 	        	/styles/**=anon
 	        	/scripts/**=anon
@@ -40,22 +42,34 @@
 	            /security/account/save.do=authc,perms[SECURITY_ACCOUNT_EDIT]
 	            
 	            #last
-	            /** = authc,mysi
+	            /** = authc
 	        </value>
 	    </property>
 	</bean>
 		
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
 	    <property name="realm" ref="myShiroRealm"/>
-	    <!--<property name="sessionMode" value="native"/>-->
+	    <!-- CAS Subject Factory -->
+	    <!--<property name="subjectFactory" ref="casSubjectFactory"/>-->
 	</bean>
 	
 	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
 
+	<!--  
+	-->
 	<bean id="myShiroRealm" class="com.google.code.lightssh.project.security.shiro.MyShiroRealm">
 		<property name="accountManager" ref="loginAccountManager"/>
 		<property name="cacheManager" ref="shiroCacheManager"/>
 	</bean>
+	
+	<!-- CAS Realm -->
+	<!--  
+	<bean id="myShiroRealm" class="com.google.code.lightssh.project.security.shiro.MyCasRealm">
+		<property name="accountManager" ref="loginAccountManager"/>
+		<property name="cacheManager" ref="shiroCacheManager"/>
+		<property name="systemConfig" ref="systemConfig"/>
+	</bean>
+	-->
 	
 	<bean id="shiroCacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
 		<property name="cacheManager" ref="cacheManager"/>
@@ -70,4 +84,8 @@
 		<property name="systemConfig" ref="systemConfig"/>
 	</bean>
 	
+	<!-- CAS filter -->
+	<bean id="casFilter" class="org.apache.shiro.cas.CasFilter">
+		<property name="failureUrl" value="casticketerror.do"/>
+	</bean>
 </beans>

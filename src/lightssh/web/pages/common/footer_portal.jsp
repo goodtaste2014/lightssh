@@ -13,10 +13,8 @@
 		|
 		<a href="">ICP备XXX-XXX</a>
 		<br/>
-		<s:set name="year" value="%{@com.ylink.common.util.TextFormater@format(new java.util.Date(),'yyyy')}"/>
-		&copy;<s:property value="%{(#year!=\"2011\")?(\"2011-\"+#year):\"2011\"}"/> 重庆金融资产交易所  
-		电话：(028)xxxxxxx 传真：(028)xxxxxxx 
+		&copy;2011-<%= new java.text.SimpleDateFormat("yyyy").format( new java.util.Date() ) %> COMPANY  
+		TEL:(028)8888-8888 FAX:(028)8888-8888 
 		<br/>
-		技术支持：深圳市雁联计算系统有限公司
 	</p>
 </div>

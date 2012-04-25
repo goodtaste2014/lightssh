@@ -130,6 +130,11 @@
         	<result name="success" type="redirectAction">login</result>
         </action>
         
+        <!-- CAS TICKET ERROR -->
+        <action name="casticketerror" class="securityAction">
+        	<result name="success">/pages/security/system/cas_ticket_error.jsp</result>
+        </action>
+        
         <!-- 401 ERROR PAGE -->
         <action name="401" class="securityAction">
         	<result name="success">/pages/security/system/401.jsp</result>
