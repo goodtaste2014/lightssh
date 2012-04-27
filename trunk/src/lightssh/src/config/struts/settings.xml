@@ -11,6 +11,11 @@
 			<result name="success">/pages/settings/log/list.jsp</result>	
         </action>
         
+        <action name="loginlist" class="loginLogAction" method="list">
+			<result name="input">/pages/settings/log/login_list.jsp</result>	
+			<result name="success">/pages/settings/log/login_list.jsp</result>	
+        </action>
+        
 		<action name="compare" class="accessAction" method="compare">
 			<result name="input">/pages/settings/log/list.jsp</result>	
 			<result name="success">/pages/settings/log/compare.jsp</result>	

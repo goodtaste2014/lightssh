@@ -2,9 +2,7 @@ package com.google.code.lightssh.project.log.entity;
 
 
 public enum AccessType {		
-	 LOGIN("登录")
-	//,LOGOUT("登出")
-	,CREATE("创建")
+	CREATE("创建")
 	,UPDATE("更新")
 	,DELETE("删除")
 	//,STARTUP("系统启动")
