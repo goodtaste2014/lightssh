@@ -1,7 +1,5 @@
 package com.google.code.lightssh.project.log.service;
 
-import java.util.Date;
-
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
@@ -16,8 +14,6 @@ import com.google.code.lightssh.project.log.dao.HistoryDao;
 import com.google.code.lightssh.project.log.entity.Access;
 import com.google.code.lightssh.project.log.entity.AccessType;
 import com.google.code.lightssh.project.log.entity.History;
-import com.google.code.lightssh.project.security.entity.LoginAccount;
-import com.google.code.lightssh.project.security.service.LoginAccountManager;
 
 /**
  * 
@@ -35,17 +31,10 @@ public class AccessManagerImpl extends BaseManagerImpl<Access> implements Access
 	@Resource(name="identityManager")
 	private IdentityManager identityManager;
 	
-	@Resource(name="loginAccountManager")
-	private LoginAccountManager loginAccountManager;
-	
 	public AccessManagerImpl() {
 		super();
 	}
 		
-	public void setLoginAccountManager(LoginAccountManager loginAccountManager) {
-		this.loginAccountManager = loginAccountManager;
-	}
-
 	@Resource(name="accessDao")
 	public void setDao(Dao<Access> dao) {
 		this.dao = dao;
@@ -58,24 +47,6 @@ public class AccessManagerImpl extends BaseManagerImpl<Access> implements Access
 
 	public void setIdentityManager(IdentityManager identityManager) {
 		this.identityManager = identityManager;
-	}
-
-	public void logLogin(Date date,String ip, String loginName ) {
-		LoginAccount la = loginAccountManager.get( loginName );
-		if( la == null )
-			return;
-		
-		Access access = new Access();
-		Identity classIdentity = identityManager.getClassIdentity( la );
-		if( classIdentity == null )
-			classIdentity = new Identity( la );
-		
-		access.setOperator(loginName);
-		access.setClassIdentity(classIdentity);
-		access.setIp(ip);
-		access.setTime(date);
-		access.setType( AccessType.LOGIN );
-		dao.create(access);		
 	}
 
 	public void log(Access access, Persistence<?> originalModel,
