@@ -30,6 +30,7 @@
                 <value>com.google.code.lightssh.project.security.entity.Permission</value>
                 <value>com.google.code.lightssh.project.security.entity.Navigation</value>
                 <value>com.google.code.lightssh.project.security.entity.LoginAccount</value>
+                <value>com.google.code.lightssh.project.security.entity.SecurityPartyRole</value>
                 <value>com.google.code.lightssh.project.contact.entity.ContactMechanism</value>
                 <value>com.google.code.lightssh.project.contact.entity.PostalAddress</value>
                 <value>com.google.code.lightssh.project.contact.entity.TelephoneNumber</value>

@@ -53,9 +53,21 @@
     <!-- system config -->
     <bean id="systemConfig" class="com.google.code.lightssh.project.config.ProjectConfig" scope="singleton" init-method="init"/>
     
-    <!-- data source -->
-    <bean id="dataSource" class="com.google.code.lightssh.common.config.ConfigurableDataSource" destroy-method="close" init-method="init">
+    <!-- data source spied-->
+    <bean id="dataSourceSpied" class="com.google.code.lightssh.common.config.ConfigurableDataSource" destroy-method="close" init-method="init">
 		<property name="systemConfig" ref="systemConfig"/>
+	</bean>
+	
+	<!-- data source -->
+	<bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+    	<constructor-arg ref="dataSourceSpied" />
+		<property name="logFormatter">
+			<bean class="com.google.code.lightssh.common.config.JdbcLogCustomFormatter">
+				<property name="systemConfig" ref="systemConfig" />
+				<property name="loggingType" value="MULTI_LINE" />
+				<property name="sqlPrefix" value="SQL: " />
+			</bean>
+		</property> 
 	</bean>
 	
 	<!-- WEBLOGIC NOT ALLOWED -->
