@@ -19,22 +19,32 @@ public class RunningTimeInterceptor extends AbstractInterceptor{
 	
 	private static final long serialVersionUID = 1L;
 	
-	public static final long MAX_EXE_MILLIS = 2000;
+	private long timingMillis = 0;
 	
-	private long runningTime = 0;
+	public static final String LOG_ACTION_TIMING_LOGGER = "log.action.timing";
 	
-	private static Logger log = LoggerFactory.getLogger(RunningTimeInterceptor.class);
+	public static final String LOG_ACTION_TIMING_MILLIS_KEY = "log.action.timing.millis";
 	
-	public static final String RUNNING_TIME_KEY = "log.running.time";
+	public static final String LOG_ACTION_TIMING_ENABLED_KEY = "log.action.timing.enabled";
+	
+	private static Logger log = LoggerFactory.getLogger( LOG_ACTION_TIMING_LOGGER );
 	
 	@Resource( name="systemConfig" )
 	private SystemConfig systemConfig;
 	
+	/**
+	 * 是否输出SQL耗时日志
+	 */
+	protected boolean isTimingLogEnabled( ){
+		return systemConfig != null && "true".equals(systemConfig.getProperty( 
+				LOG_ACTION_TIMING_ENABLED_KEY ,"false"));
+	}
+	
     public void init() {
-    	if( systemConfig != null && systemConfig.getProperty(RUNNING_TIME_KEY) != null ){
-    		String conf = systemConfig.getProperty(RUNNING_TIME_KEY);
+    	if( isTimingLogEnabled() ){
+    		String conf = systemConfig.getProperty( LOG_ACTION_TIMING_MILLIS_KEY );
     		try{
-    			runningTime = Long.valueOf( conf );
+    			timingMillis = Long.valueOf( conf );
     		}catch( NumberFormatException e ){
     			log.warn("设置执行时间日志参数[{}]异常：{}",conf,e.getMessage());
     		}
@@ -46,27 +56,25 @@ public class RunningTimeInterceptor extends AbstractInterceptor{
 		String result = invocation.invoke();
 		long executionTime = System.currentTimeMillis() - startTime; //执行时间
 		
-        StringBuffer message = new StringBuffer(100);
-        message.append("执行的Action[");
-        String namespace = invocation.getProxy().getNamespace();
-        if ( StringUtil.clean(namespace) != null ) {
-            message.append(namespace);
-            if( !namespace.equals("/"))
-            	message.append("/");
-        }
-        message.append(invocation.getProxy().getActionName());
-        message.append("!");
-        message.append(invocation.getProxy().getMethod());
-        message.append("] 耗时 ").append(executionTime).append(" 毫秒.");
-        
-        if( executionTime > getMaxExeMillis() )
-        	log.info( message.toString() );
+		if( isTimingLogEnabled() && timingMillis > 0 ){
+	        StringBuffer message = new StringBuffer(100);
+	        message.append("执行的Action[");
+	        String namespace = invocation.getProxy().getNamespace();
+	        if ( StringUtil.clean(namespace) != null ) {
+	            message.append(namespace);
+	            if( !namespace.equals("/"))
+	            	message.append("/");
+	        }
+	        message.append(invocation.getProxy().getActionName());
+	        message.append("!");
+	        message.append(invocation.getProxy().getMethod());
+	        message.append("] 耗时 ").append(executionTime).append(" 毫秒.");
+	        
+	        if( executionTime > timingMillis )
+	        	log.info( message.toString() );
+		}
         
 		return result;
 	}
 	
-	protected long getMaxExeMillis( ){
-		return Math.max(this.runningTime,MAX_EXE_MILLIS);
-	}
-
 }
