@@ -217,6 +217,34 @@ table.list thead {
     background-position:bottom;
 }
 
+table.list thead .sortable:hover {
+	background-color: #F7F7F7;
+	cursor: pointer;
+}
+
+table.list thead .active{
+	color:white;
+}
+
+table.list thead .active:hover {
+	background-color: #BBB;
+}
+
+table.list thead .ascending,table.list thead .descending {
+	background-color:#BBB;
+	background-repeat:no-repeat;
+	background-position:100% 50%;;
+	padding-right: 20px;
+}
+
+table.list thead .ascending,table.list thead .descending:hover{
+	background-image:url("../../images/background/icon_ascending.png");
+}
+
+table.list thead .descending,table.list thead .ascending:hover{
+	background-image:url("../../images/background/icon_descending.png");
+}
+
 table.list td,table.list th {
     border-bottom: 1px solid #ccc;
     font-size: 12px;
@@ -225,17 +253,17 @@ table.list td,table.list th {
 }
 
 table.list th {
-    padding-bottom: 4px;
-    padding-top: 8px;
     text-align: left;
     word-break:keep-all;
     white-space:nowrap;
     color: #4C7899;
     font-weight: normal;
+    vertical-align: middle;
+    height: 18px;
 }
 
 table.list td {
-   border: #CCC solid 1px;
+   /*border: #CCC solid 1px;*/
    padding:4px;
 }
 

@@ -49,6 +49,31 @@
 		</table>
 	</s:form>
 
+	<mys:pagination value="page"/>
+	
+	<mys:table cssClass="list" value="page" status="loop">
+		<mys:column title="序号" width="50px">
+			<s:property value="#loop.index + 1"/>
+		</mys:column>
+		<mys:column title="类型" value="type" sortable="true" sortKey="type" width="80px"/>
+		<mys:column title="系统编号" value="code" sortable="true" width="120px"/>
+		<mys:column title="缩写" value="abbreviation" sortable="false" width="80px"/>
+		<mys:column title="名称" value="name" sortable="true" width="180px"/>
+		<mys:column title="数字编码" value="numericCode" sortable="true" width="100px"/>
+		<mys:column title="状态" width="50px" sortable="true" sortKey="active">
+			<s:property value="%{active?'活动的':'已冻结'}"/>
+		</mys:column>
+		<mys:column title="描述" value="description"/>
+		<mys:column title="操作" width="50px">
+			<a href="<s:url value="/settings/geo/toggle.do?geo.code=%{code}"/>">
+				<s:property value="%{active?'冻结':'激活'}"/>
+			</a>
+		</mys:column>
+	</mys:table>
+	
+	<mys:pagination value="page" pageSizeArray="15,50,100,500"/>
+	
+	<%-- 
 	<table class="list">
 		<colgroup>
 			<col class="element" width="50px"/>
@@ -65,11 +90,11 @@
 			<tr>
 				<th>序号</th>
 				<th>类型</th>
-				<th>系统编号</th>
+				<th class="sortable descending active">系统编号</th>
 				<th>缩写</th>
 				<th>名称</th>
 				<th>数字编码</th>
-				<th>状态</th>
+				<th class="sortable ascending active">状态</th>
 				<th>描述</th>
 				<th>操作</th>
 			</tr>
@@ -96,4 +121,5 @@
 		
 		<s:set name="pagination" value="%{page}"/>
 		<jsp:include page="/pages/common/pagination.jsp"/>
+		--%>
 </body>

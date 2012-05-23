@@ -46,7 +46,7 @@ ul.path li{
     border-style: solid;
     background-color: #328ab2;
     border-color: #328ab2;
-    color: #fff;
+    color: #FFF;
 }
 
 .pagination .number.dots{
@@ -56,6 +56,10 @@ ul.path li{
 
 .pagination .previous,.pagination .next{
 	cursor: pointer;
+}
+
+.pagination .number.current,.pagination select{
+	vertical-align:baseline;
 }
 
 a.group{
