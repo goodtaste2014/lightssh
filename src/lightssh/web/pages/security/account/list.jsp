@@ -37,59 +37,44 @@
 				</tbody>
 			</table>
 		</s:form>
+		
+		<mys:table cssClass="list" value="page" status="loop">
+			<mys:column title="序号" width="50px">
+				<s:property value="#loop.index + 1"/>
+			</mys:column>
+			<mys:column title="登录账号" value="loginName" sortable="true" width="150px"/>
+			<mys:column title="会员" value="party.name" sortable="false" width="150px"/>
+			<mys:column title="有效" sortable="true" width="50px">
+				<s:property value="%{enabled?'是':'否'}"/>
+			</mys:column>
+			<mys:column title="创建日期" value="createDate" sortable="true" width="90px"/>
+			<mys:column title="有效期(起)" value="period.start" sortable="true" width="90px" />
+			<mys:column title="有效期(止)" value="period.end" sortable="true" width="90px"/>
+			<mys:column title="描述" value="description"/>
+			<mys:column title="操作" width="40px" cssClass="action">
+				<span>&nbsp;</span>
+				<div class="popup-menu-layer box-shadow">
+					<div class="popup-menu-list" style="white-space: nowrap; width: auto; ">
+						<ul class="section">
+							<li>
+								<a href="<s:url value="/security/account/edit.do?account.id=%{id}&role=update"/>">编辑角色</a>
+							</li>
+							<li>
+								<s:if test="loginName != @com.google.code.lightssh.project.security.service.LoginAccountManagerImpl@ROOT_LOGIN_NAME">
+									<a href="#" onclick="javascript:doRemove('<s:property value="%{id}"/>','<s:property value="%{loginName}"/>')">删除</a>
+								</s:if>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</mys:column>
+		</mys:table>
 	
-		<table class="list">
-			<colgroup>
-				<col class="element" width="50px"/>
-				<col class="element" width="150px"/>
-				<col class="element" width="150px"/>
-				<col class="element" width="50px"/>
-				<col class="element" width="90px"/>
-				<col class="element" width="90px"/>
-				<col class="element" width="90px"/>
-				<col class="element" />
-				<col class="element" width="100px"/>
-			</colgroup>
-			<thead>
-				<tr>
-					<th>序号</th>
-					<th>登录账号</th>
-					<th>会员</th>
-					<th>有效</th>
-					<th>创建日期</th>
-					<th>有效期(起)</th>
-					<th>有效期(止)</th>
-					<th>描述</th>
-					<th>操作</th>
-				</tr>
-			</thead>
-			
-			<s:iterator value="page.list" status="loop">
-			<tr class="<s:property value="#loop.odd?\"odd\":\"even\""/>">
-				<td><s:property value="#loop.index+1"/></td>
-				<td><a href="<s:url value="/security/account/edit.do?account.id=%{id}"/>"><s:property value="%{loginName}"/></a></td>
-				<td><s:property value="%{party.name}"/></td>
-				<td><s:property value="%{enabled?'是':'否'}"/></td>
-				<td><s:property value="%{createDate}"/></td>
-				<td><s:property value="%{period.start}"/></td>
-				<td><s:property value="%{period.end}"/></td>
-				<td><s:property value="%{description}"/></td>
-				<td>
-					<a href="<s:url value="/security/account/edit.do?account.id=%{id}&role=update"/>">角色</a>
-					<s:if test="loginName != @com.google.code.lightssh.project.security.service.LoginAccountManagerImpl@ROOT_LOGIN_NAME">
-						<a href="#" onclick="javascript:doRemove('<s:property value="%{id}"/>','<s:property value="%{loginName}"/>')">删除</a>
-					</s:if>
-				</td>
-			</tr>
-			</s:iterator>
-			</table>
-			
-			<s:set name="pagination" value="%{page}"/>
-			<jsp:include page="/pages/common/pagination.jsp"/>
-			
-			<s:url var="report_url_param" value="/security/account/report.do"/>
-			<s:set name="REPORT_URL" value="%{report_url_param}"/>
-			<jsp:include page="/pages/common/report.jsp"/>
+		<mys:pagination value="page" />
+	
+		<s:url var="report_url_param" value="/security/account/report.do"/>
+		<s:set name="REPORT_URL" value="%{report_url_param}"/>
+		<jsp:include page="/pages/common/report.jsp"/>
 			
 	</body>
 </html>

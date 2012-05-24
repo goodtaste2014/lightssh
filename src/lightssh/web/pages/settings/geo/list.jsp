@@ -6,11 +6,6 @@
 
 	<title>地理区域列表</title>
 	
-	<script type="text/javascript">
-		$(document).ready(function(){
-		});
-	</script>
-	
 </head>
 	
 <body>
@@ -49,7 +44,9 @@
 		</table>
 	</s:form>
 
+	<%-- 
 	<mys:pagination value="page"/>
+	--%>
 	
 	<mys:table cssClass="list" value="page" status="loop">
 		<mys:column title="序号" width="50px">
@@ -64,10 +61,26 @@
 			<s:property value="%{active?'活动的':'已冻结'}"/>
 		</mys:column>
 		<mys:column title="描述" value="description"/>
-		<mys:column title="操作" width="50px">
-			<a href="<s:url value="/settings/geo/toggle.do?geo.code=%{code}"/>">
-				<s:property value="%{active?'冻结':'激活'}"/>
-			</a>
+		<mys:column title="操作" width="40px" cssClass="action">
+			<span>&nbsp;</span>
+			<div class="popup-menu-layer box-shadow">
+				<div class="popup-menu-list" style="white-space: nowrap; width: auto; ">
+					<ul class="section">
+						<li>
+							<a href="<s:url value="/settings/geo/toggle.do?geo.code=%{code}"/>">
+								<s:property value="%{active?'冻结':'激活'}"/>
+							</a>
+						</li>
+						<li><a href="#">编辑数据</a></li>
+						<li><a href="#">删除数据</a></li>
+					</ul>
+					
+					<ul class="section">
+						<li><a href="#">... ...</a></li>
+					</ul>
+					
+				</div>
+			</div>
 		</mys:column>
 	</mys:table>
 	
@@ -101,7 +114,7 @@
 		</thead>
 		
 		<s:iterator value="page.list" status="loop">
-		<tr class="<s:property value="#loop.odd?\"odd\":\"even\""/>">
+		<tr class="<s:property value="#loop.odd?\"odd\":\"even\""/> <s:property value="#loop.index!=1?'':'focused'"/>">
 			<td><s:property value="#loop.index+1"/></td>
 			<td><s:property value="%{type}"/></td>
 			<td><s:property value="%{code}"/></td>
@@ -110,7 +123,7 @@
 			<td><s:property value="%{numericCode}"/></td>
 			<td><s:property value="%{active?'活动的':'已冻结'}"/></td>
 			<td><s:property value="%{description}"/></td>
-			<td>
+			<td class="action">
 				<a href="<s:url value="/settings/geo/toggle.do?geo.code=%{code}"/>">
 					<s:property value="%{active?'冻结':'激活'}"/>
 				</a>

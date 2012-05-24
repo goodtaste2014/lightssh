@@ -262,6 +262,50 @@ table.list th {
     height: 18px;
 }
 
+table.list > tbody > tr > td:first-child{
+	padding-left: 12px;
+}
+
+table.list > tbody > tr.focused {
+	background-color: #FFF5DF;
+}
+
+table.list > tbody > tr.focused > td:first-child {
+	background-image: url('../../images/background/icon_focused.png');
+	background-repeat: no-repeat;
+	background-position:0 center;
+}
+
+table.list tbody > tr:hover > td.action,table.list > tbody > tr.focused >td.action{
+	background-image: url('../../images/background/icon_tools.png');
+	background-repeat: no-repeat;
+	background-position:0 4px;
+}
+
+table.list tbody > tr:hover > td.action span{
+	background-image: url('../../images/background/icon_menu_indicator_dark.gif');
+	background-repeat: no-repeat;
+	background-position:0 center;
+	padding-left:6px;
+}
+
+table.list tbody > tr > td.action{
+	padding-left:22px;
+}
+
+table.list tbody > tr > td.action:hover,table.list > tbody > tr.focused >td.action{
+	cursor: pointer;
+	background-color:#3C78B5;
+	color: white;
+}
+
+table.list tbody > tr > td.action:hover span,table.list > tbody > tr.focused >td.action span{
+	background-image: url('../../images/background/icon_menu_indicator_light.gif');
+	background-repeat: no-repeat;
+	background-position:0 center;
+	padding-left:6px;
+}	
+
 table.list td {
    /*border: #CCC solid 1px;*/
    padding:4px;
@@ -304,3 +348,43 @@ table.profile th{
 	background-color: #F9F9F9;
 }
 
+/** 弹出菜单 */
+.popup-menu-layer {
+	display:none; 
+	width: 200px; 
+	position: absolute;
+	border: 1px solid #BBB;
+	left: 0;
+	z-index: 5000;
+	display: none;
+	overflow-x: hidden;
+	overflow-y: auto;
+	background: white;
+}
+
+.popup-menu-layer.box-shadow {
+	-moz-box-shadow: 3px 3px 5px rgba(0,0,0,0.5);
+	-webkit-box-shadow: 3px 3px 5px rgba(0,0,0,0.5);
+	box-shadow: 3px 3px 5px rgba(0,0,0,0.5);
+}
+
+.popup-menu-list ul.section {
+	list-style: none;
+	border-bottom: 1px solid #BBB;
+	margin-bottom: 4px;
+	padding-bottom: 4px;
+}
+
+.popup-menu-list li a {
+	text-decoration: none;
+	background-position: 5px 3px;
+	background-repeat: no-repeat;
+	padding: .3em .5em;
+	display: block;
+	color: #333;
+}
+
+.popup-menu-list li:hover a {
+	background-color: #3C78B5;
+	color: white;
+}
