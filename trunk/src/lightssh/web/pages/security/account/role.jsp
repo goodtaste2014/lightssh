@@ -46,6 +46,7 @@
 			 * 显示角色列表
 			 */
 			function showRoleList( list ){
+				$("#version_list").html('');
 				$.each( list , function( index,role ){
 					var item = "<input type='checkbox' value='"+role.id+"' rolename='"+role.name+"'/>"
 					item += "<strong>"+role.name+"</strong>";

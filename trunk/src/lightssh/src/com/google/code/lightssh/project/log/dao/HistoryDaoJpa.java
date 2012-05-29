@@ -2,13 +2,15 @@ package com.google.code.lightssh.project.log.dao;
 
 import java.util.List;
 
-import com.google.code.lightssh.common.dao.hibernate.HibernateAnnotationDao;
+import org.springframework.stereotype.Repository;
+
+import com.google.code.lightssh.common.dao.jpa.JpaAnnotationDao;
 import com.google.code.lightssh.project.log.entity.Access;
 import com.google.code.lightssh.project.log.entity.History;
 
 
-//@Repository("historyDao")
-public class HistoryDaoHibernate extends HibernateAnnotationDao<History> implements HistoryDao{
+@Repository("historyDao")
+public class HistoryDaoJpa extends JpaAnnotationDao<History> implements HistoryDao{
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -16,7 +18,7 @@ public class HistoryDaoHibernate extends HibernateAnnotationDao<History> impleme
 		String hql = " SELECT m FROM " + entityClass.getName()
 		+ " AS m WHERE m.access = ? ";
 	
-		List<History> results = getHibernateTemplate().find(hql,access );
+		List<History> results = getJpaTemplate().find(hql,access );
 		
 		return (results==null||results.isEmpty())?null:results.get(0);
 	}

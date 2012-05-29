@@ -50,6 +50,11 @@
 			<mys:column title="创建日期" value="createDate" sortable="true" width="90px"/>
 			<mys:column title="有效期(起)" value="period.start" sortable="true" width="90px" />
 			<mys:column title="有效期(止)" value="period.end" sortable="true" width="90px"/>
+			<mys:column title="角色" width="200px">
+				<s:iterator value="roles">
+					<s:property value="%{name}"/>
+				</s:iterator>
+			</mys:column>
 			<mys:column title="描述" value="description"/>
 			<mys:column title="操作" width="40px" cssClass="action">
 				<span>&nbsp;</span>
@@ -57,11 +62,23 @@
 					<div class="popup-menu-list" style="white-space: nowrap; width: auto; ">
 						<ul class="section">
 							<li>
-								<a href="<s:url value="/security/account/edit.do?account.id=%{id}&role=update"/>">编辑角色</a>
+								<a href="#">禁用帐号</a>
+							</li>
+						</ul>
+						
+						<ul class="section">
+							<li>
+								<a href="<s:url value="/security/account/edit.do?account.id=%{id}"/>">编辑帐号</a>
 							</li>
 							<li>
+								<a href="<s:url value="/security/account/edit.do?account.id=%{id}&role=update"/>">编辑角色</a>
+							</li>
+						</ul>
+						
+						<ul class="section">
+							<li>
 								<s:if test="loginName != @com.google.code.lightssh.project.security.service.LoginAccountManagerImpl@ROOT_LOGIN_NAME">
-									<a href="#" onclick="javascript:doRemove('<s:property value="%{id}"/>','<s:property value="%{loginName}"/>')">删除</a>
+									<a href="#" onclick="javascript:doRemove('<s:property value="%{id}"/>','<s:property value="%{loginName}"/>')">删除帐号</a>
 								</s:if>
 							</li>
 						</ul>

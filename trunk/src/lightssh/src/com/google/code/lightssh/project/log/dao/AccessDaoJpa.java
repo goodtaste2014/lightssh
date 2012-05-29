@@ -4,13 +4,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.google.code.lightssh.common.dao.hibernate.HibernateAnnotationDao;
+import org.springframework.stereotype.Repository;
+
+import com.google.code.lightssh.common.dao.jpa.JpaAnnotationDao;
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.util.StringUtil;
 import com.google.code.lightssh.project.log.entity.Access;
 
-//@Repository("accessDao")
-public class AccessDaoHibernate extends HibernateAnnotationDao<Access> {
+@Repository("accessDao")
+public class AccessDaoJpa extends JpaAnnotationDao<Access> {
 	
 	public ListPage<Access> list(ListPage<Access> page,Access t ){
 		if( t == null )

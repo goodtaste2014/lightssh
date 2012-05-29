@@ -3,7 +3,9 @@ package com.google.code.lightssh.project.geo.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.code.lightssh.common.dao.hibernate.HibernateAnnotationDao;
+import org.springframework.stereotype.Repository;
+
+import com.google.code.lightssh.common.dao.jpa.JpaAnnotationDao;
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.util.StringUtil;
 import com.google.code.lightssh.project.geo.entity.GeographicBoundary;
@@ -13,8 +15,8 @@ import com.google.code.lightssh.project.geo.entity.GeographicBoundary;
  * @author YangXiaojin
  *
  */
-//@Repository("geoDao")
-public class GeographicBoundaryDaoHibernate extends HibernateAnnotationDao<GeographicBoundary>{
+@Repository("geoDao")
+public class GeographicBoundaryDaoJpa extends JpaAnnotationDao<GeographicBoundary>{
 	
 	public ListPage<GeographicBoundary> list(ListPage<GeographicBoundary> page,GeographicBoundary t ){
 		if( t == null )
