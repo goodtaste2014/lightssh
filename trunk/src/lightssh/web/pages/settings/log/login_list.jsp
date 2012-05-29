@@ -65,43 +65,31 @@
 				</tbody>
 			</table>
 		</s:form>
+		
+		<mys:table cssClass="list" value="page" status="loop">
+			<mys:column title="序号" width="50px">
+				<s:property value="#loop.index + 1"/>
+			</mys:column>
+			<mys:column title="时间" value="createdTime" sortable="true" sortKey="createdTime" width="200px"/>
+			<mys:column title="IP" value="ip" sortable="true" width="150px"/>
+			<mys:column title="操作者" value="operator" sortable="true" width="200px"/>
+			<mys:column title="描述" value="description"/>
+			<mys:column title="操作" width="40px" cssClass="action">
+				<span>&nbsp;</span>
+				<div class="popup-menu-layer">
+					<div class="popup-menu-list">
+						<ul class="section">
+							<li>
+								<a href="#" onclick="javascript:popupView('<s:property value="%{operator}"/>')"><s:property value="%{operator}"/></a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</mys:column>
+		</mys:table>
 	
-		<table class="list">
-			<colgroup>
-				<col class="element" width="50px"/>
-				<col class="element" width="200px"/>
-				<col class="element" width="150px"/>
-				<col class="element" width="200px"/>
-				<col class="element" />
-			</colgroup>
-			<thead>
-				<tr>
-					<th>序号</th>
-					<th>时间</th>
-					<th>IP</th>
-					<th>登录用户</th>
-					<th>描述</th>
-				</tr>
-			</thead>
-			
-			<s:iterator value="page.list" status="loop">
-			<tr class="<s:property value="#loop.odd?\"odd\":\"even\""/>">
-				<td><s:property value="#loop.index+1"/></td>
-				<td><s:property value="%{createdTime}"/></td>
-				<td><s:property value="%{ip}"/></td>
-				<td>
-					<a href="#" onclick="javascript:popupView('<s:property value="%{operator}"/>')">
-						<s:property value="%{operator}"/>
-					</a>
-				</td>
-				<td><s:property value="%{description}"/></td>
-			</tr>
-			</s:iterator>
-			</table>
-			
-			<s:set name="pagination" value="%{page}"/>
-			<jsp:include page="/pages/common/pagination.jsp"/>
-			
-			<div id="account_popup" title="登录账户信息" style="display: none;">&nbsp;</div>
+		<mys:pagination value="page" />
+	
+		<div id="account_popup" title="登录账户信息" style="display: none;">&nbsp;</div>
 	</body>
 </html>

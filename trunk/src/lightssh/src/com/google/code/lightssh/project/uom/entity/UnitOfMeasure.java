@@ -39,6 +39,7 @@ public class UnitOfMeasure implements Persistence<String>{
 		,DRY_VOLUME("dry volume")
 		,LIQUID_VOLUME("液体体积")
 		,WEIGHT("重量")
+		,VOLUME_LIQ("VOLUME LIQ")
 		,OTHER("其它");
 		
 		UomType( String value ){

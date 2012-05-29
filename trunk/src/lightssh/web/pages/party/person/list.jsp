@@ -37,51 +37,38 @@
 			</table>
 		</s:form>
 		--%>
-	
-		<table id="orgnization_list" class="list">
-			<colgroup>
-				<col class="element" width="50px"/>
-				<col class="element" width="80px"/>
-				<col class="element" width="100px"/>
-				<col class="element" width="130px"/>
-				<col class="element" width="200px"/>
-				<col class="element" width="50px"/>
-				<col class="element" width="50px"/>
-				<col class="element" />
-				<col class="element" width="60px"/>
-			</colgroup>
-			<thead>
-				<tr>
-					<th>&nbsp;</th>
-					<th>编号</th>
-					<th>姓名</th>
-					<th>证件类型</th>
-					<th>证件号码</th>
-					<th>性别</th>
-					<th>有效</th>
-					<th>描述</th>
-					<th>操作</th>
-				</tr>
-			</thead>
-			
-			<s:iterator value="page.list" status="loop">
-			<tr class="<s:property value="#loop.odd?\"odd\":\"even\""/>">
-				<td><s:property value="#loop.index+1"/></td>
-				<td><s:property value="%{id}"/></td>
-				<td><a href="<s:url value="/party/person/edit.do?party=person&party.id=%{id}"/>"><s:property value="%{name}"/></a></td>
-				<td><s:property value="%{credentialsType}"/></td>
-				<td><s:property value="%{identityCardNumber}"/></td>
-				<td><s:property value="%{gender}"/></td>
-				<td><s:property value="%{enabled?'是':'否'}"/></td>
-				<td><s:property value="%{description}"/></td>
-				<td>
-					<a href="#" onclick="javascript:doRemove('<s:property value="%{id}"/>','<s:property value="%{name}"/>')">删除</a>
-				</td>
-			</tr>
-			</s:iterator>
-			</table>
-			
-			<s:set name="pagination" value="%{page}"/>
-			<jsp:include page="/pages/common/pagination.jsp"/>
+		
+		<mys:table cssClass="list" value="page" status="loop">
+			<mys:column title="序号" width="40px">
+				<s:property value="#loop.index + 1"/>
+			</mys:column>
+			<mys:column title="编号" value="identity" sortKey="id" sortable="true" width="50px"/>
+			<mys:column title="姓名" value="name" sortable="true" width="100px"/>
+			<mys:column title="证件类型" value="credentialsType" sortable="true" width="100px"/>
+			<mys:column title="证件号码" value="identityCardNumber" sortable="true" width="130px"/>
+			<mys:column title="性别" value="gender" sortable="true" width="200px"/>
+			<mys:column title="有效" value="enabled?'是':'否'" sortable="true" width="50px"/>
+			<mys:column title="描述" value="description" />
+			<mys:column title="操作" width="40px" cssClass="action">
+				<span>&nbsp;</span>
+				<div class="popup-menu-layer">
+					<div class="popup-menu-list">
+						<ul>
+							<li>
+								<a href="<s:url value="/party/person/edit.do?party=person&party.id=%{id}"/>">编辑信息</a>
+							</li>
+						</ul>
+						
+						<ul>
+							<li>
+								<a href="#" onclick="javascript:doRemove('<s:property value="%{id}"/>','<s:property value="%{name}"/>')">删除</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</mys:column>
+		</mys:table>
+		
+		<mys:pagination value="page"/>
 	</body>
 </html>

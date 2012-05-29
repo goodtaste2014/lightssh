@@ -29,6 +29,11 @@
         	<result name="success" >/pages/security/account/view.jsp</result>
         </action>
         
+        <action name="view" class="loginAccountAction" method="view">
+        	<result name="input" >/pages/security/system/notfound_ajax.jsp</result>
+        	<result name="success" >/pages/security/account/view.jsp</result>
+        </action>
+        
         <action name="list" class="loginAccountAction" method="list">
 			<result name="success" >/pages/security/account/list.jsp</result>
         </action>

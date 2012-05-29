@@ -40,6 +40,13 @@
 	            <property name="showSql" value="true" /> 
 	            <property name="generateDdl" value="true" />
 	        </bean> 
+	    	<!--  
+	        <bean class="org.springframework.orm.jpa.vendor.OpenJpaVendorAdapter"> 
+	            <property name="databasePlatform" value="org.apache.openjpa.jdbc.sql.OracleDictionary" /> 
+	            <property name="showSql" value="true" /> 
+	            <property name="generateDdl" value="true" />
+	        </bean> 
+	    	-->
 	    </property>
 	</bean>
 	

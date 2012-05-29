@@ -51,47 +51,24 @@
 				</tbody>
 			</table>
 		</s:form>
+		
+		<mys:table cssClass="list" value="page" status="loop">
+			<mys:column title="序号" width="50px">
+				<s:property value="#loop.index + 1"/>
+			</mys:column>
+			<mys:column title="类型" value="type" sortable="true" width="80px"/>
+			<mys:column title="时间" value="@com.google.code.lightssh.common.util.TextFormater@format(time,'yyyy-MM-dd HH:mm:ss')" sortable="true" sortKey="time" width="150px"/>
+			<mys:column title="IP" value="ip" sortable="true" width="100px"/>
+			<mys:column title="操作者" value="operator" sortable="true" width="100px"/>
+			<mys:column title="描述" value="description"/>
+			<mys:column title="操作" width="40px">
+				<s:if test="showHistory">
+					<a href="<s:url value="/settings/log/compare.do?access.id=%{id}"/>">比较</a>
+				</s:if>
+			</mys:column>
+		</mys:table>
 	
-		<table class="list">
-			<colgroup>
-				<col class="element" width="50px"/>
-				<col class="element" width="80px"/>
-				<col class="element" width="150px"/>
-				<col class="element" width="100px"/>
-				<col class="element" width="100px"/>
-				<col class="element" />
-				<col class="element" width="50px"/>
-			</colgroup>
-			<thead>
-				<tr>
-					<th>序号</th>
-					<th>类型</th>
-					<th>时间</th>
-					<th>IP</th>
-					<th>操作者</th>
-					<th>描述</th>
-					<th>操作</th>
-				</tr>
-			</thead>
-			
-			<s:iterator value="page.list" status="loop">
-			<tr class="<s:property value="#loop.odd?\"odd\":\"even\""/>">
-				<td><s:property value="#loop.index+1"/></td>
-				<td><s:property value="%{type}"/></td>
-				<td><s:property value="@com.google.code.lightssh.common.util.TextFormater@format(time,'yyyy-MM-dd HH:mm:ss')"/></td>
-				<td><s:property value="%{ip}"/></td>
-				<td><s:property value="%{operator}"/></td>
-				<td><s:property value="%{description}"/></td>
-				<td>
-					<s:if test="showHistory">
-						<a href="<s:url value="/settings/log/compare.do?access.id=%{id}"/>">比较</a>
-					</s:if>
-				</td>
-			</tr>
-			</s:iterator>
-			</table>
-			
-			<s:set name="pagination" value="%{page}"/>
-			<jsp:include page="/pages/common/pagination.jsp"/>
+		<mys:pagination value="page" />
+		
 	</body>
 </html>
