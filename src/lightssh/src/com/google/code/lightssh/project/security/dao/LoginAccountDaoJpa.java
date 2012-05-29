@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 import com.google.code.lightssh.common.ApplicationException;
@@ -31,7 +30,7 @@ public class LoginAccountDaoJpa extends JpaAnnotationDao<LoginAccount>
 	@SuppressWarnings("unchecked")
 	@Override
 	public LoginAccount get(String loginName) {
-		String hql = " SELECT m FROM " + entityClass.getName() + " AS m WHERE m.loginName = ? ";
+		String hql = " SELECT m FROM " + entityClass.getName() + " AS m WHERE m.loginName = ?1 ";
 		List<LoginAccount> results = getJpaTemplate().find(hql, loginName );
 		
 		return (results==null||results.isEmpty())?null:results.get(0);
@@ -61,7 +60,6 @@ public class LoginAccountDaoJpa extends JpaAnnotationDao<LoginAccount>
 		return la;
 	}
 	
-	@SuppressWarnings("deprecation")
 	public LoginAccount getWithPartyIdentity(final String loginName){
 		final String sql_loginaccount = " select * from T_SECURITY_LOGINACCOUNT t where t.login_name = ? ";
 		LoginAccount account = null;
@@ -70,10 +68,7 @@ public class LoginAccountDaoJpa extends JpaAnnotationDao<LoginAccount>
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try{
-			//conn = getEntityManager().unwrap( java.sql.Connection.class );
-			Session hibernateSession = getEntityManager().unwrap(Session.class);
-			conn = hibernateSession.connection(); 
-			
+			conn = super.getConnection();
 			ps = conn.prepareStatement(sql_loginaccount);
 			ps.setString(1, loginName);
 			rs = ps.executeQuery();

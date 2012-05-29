@@ -35,40 +35,33 @@
 				</tbody>
 			</table>
 		</s:form>
+		
+		<mys:table cssClass="list" value="page" status="loop">
+			<mys:column title="序号" width="50px">
+				<s:property value="#loop.index + 1"/>
+			</mys:column>
+			<mys:column title="名称" value="name" sortable="true" width="260px"/>
+			<mys:column title="创建日期" value="createdTime" sortable="true" width="160px"/>
+			<mys:column title="描述" value="description"/>
+			<mys:column title="操作" width="40px" cssClass="action">
+				<span>&nbsp;</span>
+				<div class="popup-menu-layer">
+					<div class="popup-menu-list">
+						<ul class="section">
+							<li><a href="<s:url value="/security/role/permission.do?role.id=%{id}"/>">设置权限</a></li>
+							<li><a href="<s:url value="/security/role/edit.do?role.id=%{id}"/>">编辑角色</a></li>
+						</ul>
+						
+						<ul class="section">
+							<li>
+								<a href="#" onclick="javascript:doRemove('<s:property value="%{id}"/>','<s:property value="%{name}"/>')">删除角色</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</mys:column>
+		</mys:table>
 	
-		<table class="list">
-			<colgroup>
-				<col class="element" width="50px"/>
-				<col class="element" width="260px"/>
-				<col class="element" width="160px"/>
-				<col class="element" />
-				<col class="element" width="100px"/>
-			</colgroup>
-			<thead>
-				<tr>
-					<th>序号</th>
-					<th>名称</th>
-					<th>创建日期</th>
-					<th>描述</th>
-					<th>操作</th>
-				</tr>
-			</thead>
-			
-			<s:iterator value="page.list" status="loop">
-			<tr class="<s:property value="#loop.odd?\"odd\":\"even\""/>">
-				<td><s:property value="#loop.index+1"/></td>
-				<td><a href="<s:url value="/security/role/edit.do?role.id=%{id}"/>"><s:property value="%{name}"/></a></td>
-				<td><s:property value="%{createdTime}"/></td>
-				<td><s:property value="%{description}"/></td>
-				<td>
-					<a href="<s:url value="/security/role/permission.do?role.id=%{id}"/>">权限</a>
-					<a href="#" onclick="javascript:doRemove('<s:property value="%{id}"/>','<s:property value="%{name}"/>')">删除</a>
-				</td>
-			</tr>
-			</s:iterator>
-			</table>
-			
-			<s:set name="pagination" value="%{page}"/>
-			<jsp:include page="/pages/common/pagination.jsp"/>
+		<mys:pagination value="page" />
 	</body>
 </html>

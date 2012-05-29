@@ -64,40 +64,35 @@
 			</tbody>
 		</table>
 	</s:form>
+	
+	<mys:table cssClass="list" value="page" status="loop">
+		<mys:column title="序号" width="50px">
+			<s:property value="#loop.index + 1"/>
+		</mys:column>
+		<mys:column title="名称" value="name" sortable="true" width="300px"/>
+		<mys:column title="创建时间" value="createdTime" sortable="true" width="160px"/>
+		<mys:column title="描述" value="description" />
+		<mys:column title="操作" width="40px" cssClass="action">
+			<span>&nbsp;</span>
+			<div class="popup-menu-layer">
+				<div class="popup-menu-list">
+					<ul>
+						<li>
+							<a href="#" onclick="viewnode('<s:property value="%{id}"/>')">查看结点</a>
+						</li>
+					</ul>
+					<ul>
+						<li>
+							<a href="<s:url value="editnode.do?tree.id=%{id}"/>">添加结点</a>
+						</li>
+						<li>
+							<a href="<s:url value="edit.do?tree.id=%{id}"/>">编辑树</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</mys:column>
+	</mys:table>
 
-	<table class="list">
-		<colgroup>
-			<col class="element" width="50px"/>
-			<col class="element" width="300px"/>
-			<col class="element" />
-			<col class="element" width="200px"/>
-		</colgroup>
-		<thead>
-			<tr>
-				<th>序号</th>
-				<th>名称</th>
-				<th>描述</th>
-				<th>操作</th>
-			</tr>
-		</thead>
-		
-		<s:iterator value="page.list" status="loop">
-		<tr class="<s:property value="#loop.odd?\"odd\":\"even\""/>">
-			<td><s:property value="#loop.index+1"/></td>
-			<td><a href="<s:url value="edit.do?tree.id=%{id}"/>"><s:property value="%{name}"/></a></td>
-			<td><s:property value="%{description}"/></td>
-			<td>
-				<span class="view" onclick="viewnode('<s:property value="%{id}"/>')">查看结点</span>
-				<a class="new" href="<s:url value="/settings/tree/editnode.do?tree.id=%{id}"/>">
-					添加结点
-				</a>
-			</td>
-		</tr>
-		</s:iterator>
-		</table>
-		
-		<s:set name="pagination" value="%{page}"/>
-		<jsp:include page="/pages/common/pagination.jsp"/>
-		
-		<div id="popup" title="树结点" style="display: none;">&nbsp;</div>
+	<div id="popup" title="树结点" style="display: none;">&nbsp;</div>
 </body>

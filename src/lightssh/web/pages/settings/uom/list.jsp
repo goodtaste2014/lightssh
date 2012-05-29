@@ -48,46 +48,31 @@
 			</tbody>
 		</table>
 	</s:form>
+	
+	<mys:table cssClass="list" value="page" status="loop">
+		<mys:column title="序号" width="50px">
+			<s:property value="#loop.index + 1"/>
+		</mys:column>
+		<mys:column title="类型" value="type" sortable="true" width="80px"/>
+		<mys:column title="系统编号" value="code" sortable="true" width="100px"/>
+		<mys:column title="ISO编号" value="isoCode" sortable="true" width="100px"/>
+		<mys:column title="状态" value="active?'活动的':'已冻结'" sortKey="active" sortable="true" width="50px"/>
+		<mys:column title="描述" value="description"/>
+		<mys:column title="操作" width="40px" cssClass="action">
+			<span>&nbsp;</span>
+			<div class="popup-menu-layer">
+				<div class="popup-menu-list">
+					<ul class="section">
+						<li>
+							<a href="<s:url value="/settings/uom/toggle.do?uom.code=%{code}"/>">
+								<s:property value="%{active?'冻结':'激活'}"/>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</mys:column>
+	</mys:table>
 
-	<table class="list">
-		<colgroup>
-			<col class="element" width="50px"/>
-			<col class="element" width="80px"/>
-			<col class="element" width="100px"/>
-			<col class="element" width="100px"/>
-			<col class="element" width="50px"/>
-			<col class="element" />
-			<col class="element" width="50px"/>
-		</colgroup>
-		<thead>
-			<tr>
-				<th>序号</th>
-				<th>类型</th>
-				<th>系统编号</th>
-				<th>ISO编码</th>
-				<th>状态</th>
-				<th>描述</th>
-				<th>操作</th>
-			</tr>
-		</thead>
-		
-		<s:iterator value="page.list" status="loop">
-		<tr class="<s:property value="#loop.odd?\"odd\":\"even\""/>">
-			<td><s:property value="#loop.index+1"/></td>
-			<td><s:property value="%{type}"/></td>
-			<td><s:property value="%{code}"/></td>
-			<td><s:property value="%{isoCode}"/></td>
-			<td><s:property value="%{active?'活动的':'已冻结'}"/></td>
-			<td><s:property value="%{description}"/></td>
-			<td>
-				<a href="<s:url value="/settings/uom/toggle.do?uom.code=%{code}"/>">
-					<s:property value="%{active?'冻结':'激活'}"/>
-				</a>
-			</td>
-		</tr>
-		</s:iterator>
-		</table>
-		
-		<s:set name="pagination" value="%{page}"/>
-		<jsp:include page="/pages/common/pagination.jsp"/>
+	<mys:pagination value="page" />
 </body>

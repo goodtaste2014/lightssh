@@ -360,15 +360,13 @@ table.profile th{
 	overflow-x: hidden;
 	overflow-y: auto;
 	background: white;
-}
-
-.popup-menu-layer.box-shadow {
+	
 	-moz-box-shadow: 3px 3px 5px rgba(0,0,0,0.5);
 	-webkit-box-shadow: 3px 3px 5px rgba(0,0,0,0.5);
 	box-shadow: 3px 3px 5px rgba(0,0,0,0.5);
 }
 
-.popup-menu-list ul.section {
+.popup-menu-layer .popup-menu-list ul {
 	list-style: none;
 	border-bottom: 1px solid #BBB;
 	margin-bottom: 4px;
