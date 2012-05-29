@@ -2,7 +2,10 @@ package com.google.code.lightssh.project.party.dao;
 
 import java.util.Collection;
 
-import com.google.code.lightssh.common.dao.hibernate.HibernateAnnotationDao;
+import org.springframework.stereotype.Repository;
+
+import com.google.code.lightssh.common.ApplicationException;
+import com.google.code.lightssh.common.dao.jpa.JpaAnnotationDao;
 import com.google.code.lightssh.project.contact.entity.ContactMechanism;
 import com.google.code.lightssh.project.contact.entity.ContactMechanism.ContactMechanismType;
 import com.google.code.lightssh.project.party.entity.Party;
@@ -13,16 +16,15 @@ import com.google.code.lightssh.project.party.entity.PartyContact;
  * @author YangXiaojin
  *
  */
-//@Repository("partyContactDao")
-public class PartyContactDaoHibernate extends HibernateAnnotationDao<PartyContact> implements PartyContactDao{
+@Repository("partyContactDao")
+public class PartyContactDaoJpa extends JpaAnnotationDao<PartyContact> implements PartyContactDao{
 
 	@Override
 	public void remove(ContactMechanism contact) {
-		String hql = " FROM " + entityClass.getName() 
-			+ " AS m WHERE m.contact.id = ? "; 
-		Collection<?> results = getHibernateTemplate().find(hql,contact.getId() );
-		if( results != null )
-			getHibernateTemplate().deleteAll( results );
+		//String hql = " FROM " + entityClass.getName() 
+		//	+ " AS m WHERE m.contact.id = ? "; 
+
+		throw new ApplicationException("删除未实现");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -46,7 +48,7 @@ public class PartyContactDaoHibernate extends HibernateAnnotationDao<PartyContac
 				}//end for
 		}
 		
-		return getHibernateTemplate().find(hql.toString(),party);
+		return getJpaTemplate().find(hql.toString(),party);
 	}
 
 }

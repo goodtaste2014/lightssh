@@ -226,10 +226,11 @@ public class LoginAccountManagerImpl extends BaseManagerImpl<LoginAccount>
 		LoginAccount old = this.get( account );
 		if( old != null ){
 			old.setRoles( account.getRoles() );
-			getDao().updateRole(old);
-			//getDao().update(old);
+			//getDao().updateRole(old);
+			getDao().update(old);
 		}
 	}
+	
 	public void updateRole( LoginAccount account, Access log ){
 		updateRole( account );
 		

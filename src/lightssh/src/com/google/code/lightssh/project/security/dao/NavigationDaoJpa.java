@@ -3,7 +3,9 @@ package com.google.code.lightssh.project.security.dao;
 import java.util.Collection;
 import java.util.List;
 
-import com.google.code.lightssh.common.dao.hibernate.HibernateAnnotationDao;
+import org.springframework.stereotype.Repository;
+
+import com.google.code.lightssh.common.dao.jpa.JpaAnnotationDao;
 import com.google.code.lightssh.project.security.entity.Navigation;
 import com.google.code.lightssh.project.security.entity.Permission;
 
@@ -12,15 +14,15 @@ import com.google.code.lightssh.project.security.entity.Permission;
  * @author YangXiaojin
  *
  */
-//@Repository("navigationDao")
-public class NavigationDaoHibernate extends HibernateAnnotationDao<Navigation> implements NavigationDao{
+@Repository("navigationDao")
+public class NavigationDaoJpa extends JpaAnnotationDao<Navigation> implements NavigationDao{
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Navigation> listTop() {
 		String hql = " SELECT n FROM Navigation AS n WHERE n.parent IS NULL ";
 		
-		return super.getHibernateTemplate().find(hql);
+		return super.getJpaTemplate().find(hql);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -40,7 +42,7 @@ public class NavigationDaoHibernate extends HibernateAnnotationDao<Navigation> i
 		}
 		hql.append(" ) ");
 		
-		return super.getHibernateTemplate().find(hql.toString());
+		return super.getJpaTemplate().find(hql.toString());
 	}
 
 }

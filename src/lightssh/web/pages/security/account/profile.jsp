@@ -103,7 +103,7 @@
 						<span class="popup party" onclick="popup();">&nbsp;</span>
 						<s:hidden name="account.party.id" id="party_id"/>
 						<s:hidden name="account.party.name" id="party_name"/>
-						<s:hidden name="account.party" id="party_clazz"/>
+						<s:hidden name="account.party" value="%{account.party.id.startsWith('ORG')?'organization':'person'}" id="party_clazz"/>
 						<span id="span_party_name"><s:property value="%{account.party.name}"/></span>
 					</td>
 				</tr>

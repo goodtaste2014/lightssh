@@ -5,15 +5,17 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
-import com.google.code.lightssh.common.dao.hibernate.HibernateAnnotationDao;
+import org.springframework.stereotype.Repository;
+
+import com.google.code.lightssh.common.dao.jpa.JpaAnnotationDao;
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.util.ReflectionUtil;
 import com.google.code.lightssh.project.party.entity.Organization;
 import com.google.code.lightssh.project.party.entity.Party;
 import com.google.code.lightssh.project.party.entity.Person;
 
-//@Repository("partyDao")
-public class PartyDaoHibernate extends HibernateAnnotationDao<Party> implements PartyDao{
+@Repository("partyDao")
+public class PartyDaoJpa extends JpaAnnotationDao<Party> implements PartyDao{
 	
 	public ListPage<Party> list(ListPage<Party> page,Party t ){
 		return this.list( super.entityClass, page, t );
@@ -72,7 +74,7 @@ public class PartyDaoHibernate extends HibernateAnnotationDao<Party> implements 
 	public Party read(Class clazz, Party party) {
 		if( party == null )
 			return null;
-		return this.getHibernateTemplate().get(clazz,party.getIdentity());
+		return this.getJpaTemplate().find(clazz,party.getIdentity());
 	}
 
 }

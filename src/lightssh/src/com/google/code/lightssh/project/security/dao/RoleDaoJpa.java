@@ -3,12 +3,14 @@ package com.google.code.lightssh.project.security.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.code.lightssh.common.dao.hibernate.HibernateAnnotationDao;
+import org.springframework.stereotype.Repository;
+
+import com.google.code.lightssh.common.dao.jpa.JpaAnnotationDao;
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.project.security.entity.Role;
 
-//@Repository("roleDao")
-public class RoleDaoHibernate extends HibernateAnnotationDao<Role> implements RoleDao{
+@Repository("roleDao")
+public class RoleDaoJpa extends JpaAnnotationDao<Role> implements RoleDao{
 	
 	public ListPage<Role> list(ListPage<Role> page,Role t ){
 		if( t == null )
@@ -31,7 +33,7 @@ public class RoleDaoHibernate extends HibernateAnnotationDao<Role> implements Ro
 	@SuppressWarnings("unchecked")
 	public Role get(String name ) {
 		String hql = " SELECT m FROM " + entityClass.getName() + " AS m WHERE m.name = ? ";
-		List<Role> results = getHibernateTemplate().find(hql, name );
+		List<Role> results = getJpaTemplate().find(hql, name );
 		
 		return (results==null||results.isEmpty())?null:results.get(0);
 	}

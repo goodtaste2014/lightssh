@@ -7,13 +7,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
 import org.hibernate.Session;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.SessionFactoryUtils;
+import org.springframework.stereotype.Repository;
 
-import com.google.code.lightssh.common.dao.hibernate.HibernateAnnotationDao;
+import com.google.code.lightssh.common.ApplicationException;
+import com.google.code.lightssh.common.dao.jpa.JpaAnnotationDao;
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.util.StringUtil;
 import com.google.code.lightssh.project.party.entity.Organization;
@@ -26,15 +24,15 @@ import com.google.code.lightssh.project.security.entity.Permission;
  * @author YangXiaojin
  *
  */
-//@Repository("loginAccountDao")
-public class LoginAccountDaoHibernate extends HibernateAnnotationDao<LoginAccount> 
+@Repository("loginAccountDao")
+public class LoginAccountDaoJpa extends JpaAnnotationDao<LoginAccount> 
 	implements LoginAccountDao{
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public LoginAccount get(String loginName) {
 		String hql = " SELECT m FROM " + entityClass.getName() + " AS m WHERE m.loginName = ? ";
-		List<LoginAccount> results = getHibernateTemplate().find(hql, loginName );
+		List<LoginAccount> results = getJpaTemplate().find(hql, loginName );
 		
 		return (results==null||results.isEmpty())?null:results.get(0);
 	}
@@ -63,6 +61,7 @@ public class LoginAccountDaoHibernate extends HibernateAnnotationDao<LoginAccoun
 		return la;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public LoginAccount getWithPartyIdentity(final String loginName){
 		final String sql_loginaccount = " select * from T_SECURITY_LOGINACCOUNT t where t.login_name = ? ";
 		LoginAccount account = null;
@@ -71,8 +70,10 @@ public class LoginAccountDaoHibernate extends HibernateAnnotationDao<LoginAccoun
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try{
-			conn = SessionFactoryUtils.getDataSource(
-					getSessionFactory()).getConnection();
+			//conn = getEntityManager().unwrap( java.sql.Connection.class );
+			Session hibernateSession = getEntityManager().unwrap(Session.class);
+			conn = hibernateSession.connection(); 
+			
 			ps = conn.prepareStatement(sql_loginaccount);
 			ps.setString(1, loginName);
 			rs = ps.executeQuery();
@@ -96,7 +97,6 @@ public class LoginAccountDaoHibernate extends HibernateAnnotationDao<LoginAccoun
 		}
 		
 		return account;
-		
 	}
 
 	public ListPage<LoginAccount> list(ListPage<LoginAccount> page,LoginAccount t ){
@@ -168,19 +168,10 @@ public class LoginAccountDaoHibernate extends HibernateAnnotationDao<LoginAccoun
 		return super.query(page, hql.toString(), params.toArray( ) );
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void updateRole( final LoginAccount account ){
-		getHibernateTemplate().execute(
-			new HibernateCallback() {
-	        	public Object doInHibernate(Session session) throws HibernateException {
-	        		LoginAccount old = (LoginAccount)session.load( 
-	        				LoginAccount.class, account.getIdentity() );
-	        		old.setRoles( account.getRoles() );
-	        		
-	        		return 1;
-	    		}// end doInHibernate
-	    	}); 
+		throw new ApplicationException("DAO未实现！");
 	}
+	
 	public ListPage<LoginAccount> listLight(ListPage<LoginAccount> page,LoginAccount t ){
 		StringBuffer hql = new StringBuffer();
 
@@ -196,6 +187,7 @@ public class LoginAccountDaoHibernate extends HibernateAnnotationDao<LoginAccoun
 		
 		return super.query(page,select,hql.toString(),params.toArray() );
 	}
+	
 	@SuppressWarnings("unchecked")
 	public List<LoginAccount> listByPermission(final Permission p ){
 		if( p == null || p.getIdentity() == null )
@@ -212,16 +204,6 @@ public class LoginAccountDaoHibernate extends HibernateAnnotationDao<LoginAccoun
 			+ " left join T_REF_LOGINACCOUNT_ROLE ref_lr on sla.id = ref_lr.loginaccount_id " 
 			+ " where ref_lr.role_id in( " + roles + " ) order by sla.LOGIN_NAME asc ";
 		
-		return (List<LoginAccount>) getHibernateTemplate().execute(
-			new HibernateCallback() {
-				public Object doInHibernate(Session session) throws HibernateException {
-					Query query = session.createSQLQuery(sql ).addEntity(LoginAccount.class);
-					query.setParameter(0, p.getIdentity() );
-					
-	        		List<LoginAccount> list = query.list();
-	        		return list;
-	        	}// end doInHibernate
-        	}); 
-		
+		return getEntityManager().createNativeQuery( sql, super.entityClass ).getResultList();
 	}
 }
