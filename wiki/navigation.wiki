@@ -1,6 +1,4 @@
 #sidebar TableOfContents
 
   * [index lightssh 概述]
-  * [project_structure 项目结构]
-  * [helloword2 lightssh之旅]
   * [setup 运行lightssh]
