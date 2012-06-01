@@ -37,8 +37,6 @@
 	    <property name="jpaVendorAdapter"> 
 	        <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"> 
 	            <property name="databasePlatform" value="org.hibernate.dialect.Oracle10gDialect" /> 
-	            <property name="showSql" value="true" /> 
-	            <property name="generateDdl" value="true" />
 	        </bean> 
 	    	<!--  
 	        <bean class="org.springframework.orm.jpa.vendor.OpenJpaVendorAdapter"> 
