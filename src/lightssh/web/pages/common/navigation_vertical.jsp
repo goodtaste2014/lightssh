@@ -110,7 +110,7 @@
 					<%-- 系统日志--%>
 					<li>
 						<a href="#"><s:text name="project.nav.syslog"/></a>
-						<ul id="">
+						<ul id="settings_log">
 							<li><a href="<s:url value="/settings/log/loginlist.do"/>" target="main_frame">登录日志</a></li>
 							<li><a href="<s:url value="/settings/log/list.do"/>" target="main_frame"><s:text name="project.nav.syslog"/></a></li>
 						</ul>
@@ -123,6 +123,15 @@
 					<li><a href="<s:url value="/settings/geo/list.do"/>" target="main_frame">地理区域</a></li>
 					<%-- 分类树--%>
 					<li><a href="<s:url value="/settings/tree/list.do"/>" target="main_frame">分类树</a></li>
+					<%-- 工作流--%>
+					<li>
+						<a href="#">工作流</a>
+						<ul id="workflow">
+							<li><a href="<s:url value="/workflow/process/definitionlist.do"/>" target="main_frame">流程定义列表</a></li>
+							<li><a href="<s:url value="/workflow/process/instancelist.do"/>" target="main_frame">流程实例列表</a></li>
+							<li><a href="<s:url value="/workflow/task/list.do"/>" target="main_frame">任务列表</a></li>
+						</ul>
+					</li>
 				</ul>
 			</li>
 		</ul>

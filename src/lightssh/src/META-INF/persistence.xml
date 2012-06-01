@@ -10,7 +10,13 @@
     <persistence-unit name="lightssh">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <properties>
+        	<property name="hibernate.show_sql" value="false"/>
+            <property name="hibernate.format_sql" value="false"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect"/>
+            <!-- create,update -->
+            <property name="hibernate.hbm2ddl.auto" value="false"/>
         </properties>
+
     </persistence-unit>
 
 	<!-- OpenJPA 支持 -->
@@ -19,6 +25,7 @@
 		<provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
 		<properties>
 			<property name="openjpa.RuntimeUnenhancedClasses" value="supported"/>
+			<property name="openjpa.Log" value="DefaultLevel=WARN, Tool=INFO"/>
 		</properties>
 	</persistence-unit>
 	-->

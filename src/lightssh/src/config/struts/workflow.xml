@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+	<package name="workflow_process" extends="default" namespace="/workflow/process">
+		<action name="definitionlist" class="workflowAction" method="processDefinitionList">
+			<result name="success">/pages/workflow/process/list_definition.jsp</result>	
+        </action>
+        
+		<action name="instancelist" class="workflowAction" method="processInstanceList">
+			<result name="success">/pages/workflow/process/list_instance.jsp</result>	
+        </action>
+    </package>
+    
+	<package name="workflow_task" extends="default" namespace="/workflow/task">
+		<action name="list" class="workflowAction" method="tasklist">
+			<result name="success">/pages/workflow/list_task.jsp</result>	
+        </action>
+	</package>
+	
+	<package name="workflow" extends="default" namespace="/workflow">
+		<action name="processlist" class="workflowAction" method="processlist">
+			<result name="success">/pages/workflow/list_process.jsp</result>	
+        </action>
+        
+		<action name="start" class="workflowAction" method="start">
+			<result name="success" type="redirectAction">processlist</result>	
+        </action>
+        
+    </package>
+    
+</struts>

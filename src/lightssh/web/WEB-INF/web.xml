@@ -19,6 +19,9 @@
 			,classpath:config/spring/applicationContext-scheduler.xml
 			,classpath:config/spring/applicationContext-webservice.xml
 			,classpath:config/spring/applicationContext-shiro.xml
+			,classpath:config/spring/applicationContext-workflow.xml
+			<!--  
+			-->
 		</param-value>
 	</context-param>
 	<context-param>
