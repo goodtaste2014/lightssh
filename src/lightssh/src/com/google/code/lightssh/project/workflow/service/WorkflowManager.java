@@ -30,8 +30,17 @@ public interface WorkflowManager extends Manager{
 	
 	/**
 	 * 启动流程
-	 * @param processKey 流程key
 	 */
 	public ProcessInstance start( String processKey);
+	
+	/**
+	 * 认领任务
+	 */
+	public void claim( String taskId,String userId );
+	
+	/**
+	 * 完成任务
+	 */
+	public void complete( String taskId );
 
 }
