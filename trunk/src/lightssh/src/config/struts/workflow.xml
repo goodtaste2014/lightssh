@@ -13,21 +13,29 @@
 		<action name="instancelist" class="workflowAction" method="processInstanceList">
 			<result name="success">/pages/workflow/process/list_instance.jsp</result>	
         </action>
+        
+        <action name="start" class="workflowAction" method="start">
+			<result name="success" type="redirectAction">instancelist</result>	
+        </action>
     </package>
     
 	<package name="workflow_task" extends="default" namespace="/workflow/task">
 		<action name="list" class="workflowAction" method="tasklist">
-			<result name="success">/pages/workflow/list_task.jsp</result>	
+			<result name="success">/pages/workflow/task/list.jsp</result>	
+        </action>
+        
+		<action name="claim" class="workflowAction" method="claim">
+			<result name="success" type="redirectAction">list</result>	
+        </action>
+        
+		<action name="complete" class="workflowAction" method="complete">
+			<result name="success" type="redirectAction">list</result>	
         </action>
 	</package>
 	
 	<package name="workflow" extends="default" namespace="/workflow">
 		<action name="processlist" class="workflowAction" method="processlist">
 			<result name="success">/pages/workflow/list_process.jsp</result>	
-        </action>
-        
-		<action name="start" class="workflowAction" method="start">
-			<result name="success" type="redirectAction">processlist</result>	
         </action>
         
     </package>

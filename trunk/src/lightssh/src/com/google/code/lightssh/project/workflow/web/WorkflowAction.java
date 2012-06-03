@@ -9,7 +9,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.google.code.lightssh.common.model.page.ListPage;
-import com.google.code.lightssh.common.web.action.BaseAction;
+import com.google.code.lightssh.common.util.StringUtil;
+import com.google.code.lightssh.project.web.action.BaseAction;
 import com.google.code.lightssh.project.workflow.service.WorkflowManager;
 
 /**
@@ -86,6 +87,34 @@ public class WorkflowAction extends BaseAction{
 	 */
 	public String tasklist( ){
 		task_page = workflowManager.listTask(task_page);
+		return SUCCESS;
+	}
+	
+	/**
+	 * 认领流程
+	 */
+	public String claim( ){
+		try{
+			String key = request.getParameter("taskId");
+			String userId = request.getParameter("userId");
+			workflowManager.claim( key ,StringUtil.hasText(userId)?userId:getLoginUser());
+		}catch( Exception e ){
+			this.saveErrorMessage( e.getMessage() );
+		}
+		return SUCCESS;
+	}
+	
+	/**
+	 * 完成流程
+	 */
+	public String complete( ){
+		try{
+			String key = request.getParameter("taskId");
+			workflowManager.complete( key );
+		}catch( Exception e ){
+			this.saveErrorMessage( e.getMessage() );
+		}
+		
 		return SUCCESS;
 	}
 

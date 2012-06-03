@@ -14,8 +14,10 @@ import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
 import org.springframework.stereotype.Component;
 
+import com.google.code.lightssh.common.ApplicationException;
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.model.page.OrderBy;
+import com.google.code.lightssh.common.util.StringUtil;
 
 /**
  * 工作流业务实现
@@ -138,17 +140,42 @@ public class WorkflowManagerImpl implements WorkflowManager{
 				query.orderByTaskName();
 			else if( "id".equals(orderBy.getProperty()) )
 				query.orderByTaskId();
+			else if( "createTime".equals(orderBy.getProperty()) )
+				query.orderByTaskCreateTime();
+			else if( "priority".equals(orderBy.getProperty()) )
+				query.orderByTaskPriority();
 			
+			/*
 			query.orderByDueDate();
 			query.orderByExecutionId();
 			query.orderByProcessInstanceId();
 			query.orderByTaskAssignee();
-			query.orderByTaskCreateTime();
 			query.orderByTaskDescription();
-			query.orderByTaskPriority();
+			*/
 		}
 		
 		return (ListPage<Task>)query(query,page);
+	}
+	
+	/**
+	 * 认领流程
+	 */
+	public void claim( String taskId,String userId ){
+		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+		if( task == null )
+			throw new ApplicationException("任务["+taskId+"]不存在！");
+		
+		if( StringUtil.hasText( task.getAssignee() ) )
+			throw new ApplicationException("任务["+taskId+"]已被用户["+task.getAssignee()+"]认领！");
+		
+		taskService.claim(taskId, userId);
+	}
+	
+	/**
+	 * 完成任务
+	 */
+	public void complete( String taskId ){
+		taskService.complete(taskId);
 	}
 
 }
