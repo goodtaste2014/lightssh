@@ -22,6 +22,7 @@
     <include file="config/struts/security.xml"/>
     <include file="config/struts/party.xml"/>
     <include file="config/struts/settings.xml"/>
+    <include file="config/struts/workflow.xml"/>
 
     <package name="default" extends="json-default" namespace="/">
         <interceptors>
