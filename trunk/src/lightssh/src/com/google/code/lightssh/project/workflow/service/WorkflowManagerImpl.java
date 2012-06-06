@@ -1,11 +1,24 @@
 package com.google.code.lightssh.project.workflow.service;
 
+import java.io.InputStream;
+import java.util.Map;
+
 import javax.annotation.Resource;
 
+import org.activiti.engine.FormService;
+import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.form.FormData;
+import org.activiti.engine.form.StartFormData;
+import org.activiti.engine.form.TaskFormData;
+import org.activiti.engine.history.HistoricProcessInstance;
+import org.activiti.engine.history.HistoricProcessInstanceQuery;
+import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.query.Query;
+import org.activiti.engine.repository.Deployment;
+import org.activiti.engine.repository.DeploymentQuery;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.repository.ProcessDefinitionQuery;
 import org.activiti.engine.runtime.ProcessInstance;
@@ -38,8 +51,11 @@ public class WorkflowManagerImpl implements WorkflowManager{
 	//@Resource(name="identityService")
 	//private IdentityService identityService;
 	
-	//@Resource(name="historyService")
-	//private HistoryService historyService;
+	@Resource(name="historyService")
+	private HistoryService historyService;
+	
+	@Resource(name="formService")
+	private FormService formService;
 	
 	/**
 	 * 查询
@@ -61,6 +77,45 @@ public class WorkflowManagerImpl implements WorkflowManager{
 		page.setList( query.listPage(page.getStart()-1,page.getEnd()) );
 		
 		return page;
+	}
+	
+	/**
+	 * 查询部署信息
+	 */
+	@SuppressWarnings("unchecked")
+	public ListPage<Deployment> listDeployment( ListPage<Deployment> page ){
+		if( page == null )
+			page = new ListPage<Deployment>();
+		
+		DeploymentQuery query = repositoryService.createDeploymentQuery();
+		
+		OrderBy orderBy = page.getOrderBy();
+		if( orderBy != null ){
+			if( "id".equals(orderBy.getProperty()) )
+				query.orderByDeploymentId();
+			else if( "deploymentTime".equals(orderBy.getProperty()) )
+				query.orderByDeploymenTime();
+			else if( "name".equals(orderBy.getProperty()) )
+				query.orderByDeploymentName();
+		}
+		
+		return (ListPage<Deployment>)query(query,page);
+	}
+	
+	/**
+	 * 部署流程
+	 */
+	public void deploy( String resourceName,InputStream inputStream){
+		repositoryService.createDeployment()
+			.addInputStream(resourceName, inputStream)
+			.name(resourceName).deploy();
+	}
+	
+	/**
+	 * 取消部署
+	 */
+	public void undeploy( String deploymentId ){
+		this.repositoryService.deleteDeployment(deploymentId,true);
 	}
 	
 	/**
@@ -115,6 +170,39 @@ public class WorkflowManagerImpl implements WorkflowManager{
 		}
 		
 		return (ListPage<ProcessInstance>)query(query,page);
+	}
+	
+	/**
+	 * 历史流程示例
+	 */
+	@SuppressWarnings("unchecked")
+	public ListPage<HistoricProcessInstance> listProcessHistory( ListPage<HistoricProcessInstance> page ){
+		if( page == null )
+			page = new ListPage<HistoricProcessInstance>();
+		
+		HistoricProcessInstanceQuery query = historyService.createHistoricProcessInstanceQuery();
+		
+		query.finished();
+		//query.startedBy(userId);
+		
+		OrderBy orderBy = page.getOrderBy();
+		if( orderBy != null ){
+			if( "processDefinitionId".equals(orderBy.getProperty()) )
+				query.orderByProcessDefinitionId();
+			else if( "processInstanceId".equals(orderBy.getProperty()) )
+				query.orderByProcessInstanceId();
+			else if( "businessKey".equals(orderBy.getProperty()) )
+				query.orderByProcessInstanceBusinessKey();
+			else if( "duration".equals(orderBy.getProperty()) )
+				query.orderByProcessInstanceDuration();
+			else if( "startTime".equals(orderBy.getProperty()) )
+				query.orderByProcessInstanceStartTime();
+			else if( "endTime".equals(orderBy.getProperty()) )
+				query.orderByProcessInstanceEndTime();
+			
+		}
+		
+		return (ListPage<HistoricProcessInstance>)query(query,page);
 	}
 	
 	/**
@@ -176,6 +264,47 @@ public class WorkflowManagerImpl implements WorkflowManager{
 	 */
 	public void complete( String taskId ){
 		taskService.complete(taskId);
+	}
+	
+	/**
+	 * 提交数据
+	 */
+	public ProcessInstance submitStartFormData(String processDefinitionId,String businessKey,Map<String,String> properties  ){
+		return formService.submitStartFormData(processDefinitionId,businessKey,properties);
+	}
+	
+	/**
+	 * 提交数据
+	 */
+	public void submitFormData(String taskId,Map<String,String> properties ){
+		this.formService.submitTaskFormData(taskId, properties);
+	}
+	
+	/**
+	 * 任务表单数据
+	 */
+	public TaskFormData getTaskFormData(String taskId ){
+		return formService.getTaskFormData(taskId);
+	}
+	
+	/**
+	 * 开始事件表单数据
+	 */
+	public StartFormData getStartFormData(String processDefinitionId ){
+		return formService.getStartFormData(processDefinitionId);
+	}
+	
+	/**
+	 * 表单数据
+	 * @param id 流程类型ID 或  任务ID
+	 * @return FormData
+	 */
+	public FormData getFormData(String id ){
+		HistoricTaskInstance task = historyService
+			.createHistoricTaskInstanceQuery().taskId(id).singleResult();
+		if( task != null )
+			return getTaskFormData(id);
+		return getStartFormData(id);
 	}
 
 }

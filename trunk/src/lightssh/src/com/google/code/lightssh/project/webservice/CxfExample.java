@@ -1,4 +1,4 @@
-package com.google.code.lightssh.project.example.service;
+package com.google.code.lightssh.project.webservice;
 
 import javax.jws.WebService;
 
@@ -11,5 +11,7 @@ import javax.jws.WebService;
 public interface CxfExample {
 
 	public String sayHello( String username );
+	
+	public boolean upload( FileUpload fu );
 	
 }

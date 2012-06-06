@@ -62,7 +62,7 @@
 						<li><a href="#" onclick="popup('<s:property value="id"/>');">分配任务</a></li>
 					</ul>
 					<ul>
-						<li><a href="complete.do?taskId=<s:property value="id"/>">完成流程</a></li>
+						<li><a href="prepare.do?taskId=<s:property value="id"/>">提交流程</a></li>
 					</ul>
 				</div>
 			</div>

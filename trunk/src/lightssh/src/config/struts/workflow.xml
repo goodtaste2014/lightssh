@@ -5,6 +5,21 @@
 
 <struts>
 
+	<package name="workflow_deployment" extends="default" namespace="/workflow/deployment">
+		<action name="deploy" class="workflowAction" method="deploy">
+			<result name="input">/pages/workflow/deployment/profile.jsp</result>	
+			<result name="success" type="redirectAction">list</result>	
+        </action>
+        
+        <action name="undeploy" class="workflowAction" method="undeploy">
+			<result name="success" type="redirectAction">list</result>	
+        </action>
+        
+        <action name="list" class="workflowAction" method="deploymentList">
+			<result name="success">/pages/workflow/deployment/list.jsp</result>	
+        </action>
+	</package>
+	
 	<package name="workflow_process" extends="default" namespace="/workflow/process">
 		<action name="definitionlist" class="workflowAction" method="processDefinitionList">
 			<result name="success">/pages/workflow/process/list_definition.jsp</result>	
@@ -14,9 +29,14 @@
 			<result name="success">/pages/workflow/process/list_instance.jsp</result>	
         </action>
         
+		<action name="historylist" class="workflowAction" method="historyInstanceList">
+			<result name="success">/pages/workflow/process/list_history.jsp</result>	
+        </action>
+        
         <action name="start" class="workflowAction" method="start">
 			<result name="success" type="redirectAction">instancelist</result>	
         </action>
+        
     </package>
     
 	<package name="workflow_task" extends="default" namespace="/workflow/task">
@@ -26,6 +46,23 @@
         
 		<action name="claim" class="workflowAction" method="claim">
 			<result name="success" type="redirectAction">list</result>	
+        </action>
+        
+		<action name="prepare" class="workflowAction" method="prepare">
+			<result name="input" type="chain">render</result>
+			<result name="success" type="chain">complete</result>
+        </action>
+        
+		<action name="render" class="workflowAction" method="render">
+			<result name="success">/pages/workflow/form/apply_vacation.jsp</result>	
+        </action>
+        
+		<action name="submit" class="workflowAction" method="submit">
+			<result name="success" type="chain">view</result>
+        </action>
+        
+		<action name="view" class="workflowAction" method="view">
+			<result name="success">/pages/workflow/form/apply_vacation.jsp</result>
         </action>
         
 		<action name="complete" class="workflowAction" method="complete">
