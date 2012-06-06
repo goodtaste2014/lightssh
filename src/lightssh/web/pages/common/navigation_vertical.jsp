@@ -127,8 +127,10 @@
 					<li>
 						<a href="#">工作流</a>
 						<ul id="workflow">
-							<li><a href="<s:url value="/workflow/process/definitionlist.do"/>" target="main_frame">流程定义列表</a></li>
-							<li><a href="<s:url value="/workflow/process/instancelist.do"/>" target="main_frame">流程实例列表</a></li>
+							<li><a href="<s:url value="/workflow/deployment/list.do"/>" target="main_frame">部署列表</a></li>
+							<li><a href="<s:url value="/workflow/process/definitionlist.do"/>" target="main_frame">流程类型</a></li>
+							<li><a href="<s:url value="/workflow/process/instancelist.do"/>" target="main_frame">未完成流程</a></li>
+							<li><a href="<s:url value="/workflow/process/historylist.do"/>" target="main_frame">已完成流程</a></li>
 							<li><a href="<s:url value="/workflow/task/list.do"/>" target="main_frame">任务列表</a></li>
 						</ul>
 					</li>

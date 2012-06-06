@@ -55,12 +55,13 @@
 		<mys:column title="序号" width="50px">
 			<s:property value="#loop.index + 1"/>
 		</mys:column>
-		<mys:column title="版本" value="version" sortable="true" width="60px"/>
+		<mys:column title="ID" value="getId()" sortable="false" width="200px"/>
 		<mys:column title="编号" value="key" sortable="true" width="200px"/>
+		<mys:column title="版本" value="version" sortable="true" width="60px"/>
+		<mys:column title="部署编号" value="deploymentId" sortable="true" width="80px"/>
 		<mys:column title="名称" value="name" sortable="true"/>
 		<%-- 
 		<mys:column title="文件名" value="resourceName" sortable="false" width="80px"/>
-		<mys:column title="DeploymentId" value="deploymentId" sortable="false" width="80px"/>
 		--%>
 		<mys:column title="操作" width="40px" cssClass="action">
 			<span>&nbsp;</span>

@@ -17,9 +17,9 @@
 			,classpath:config/spring/applicationContext-no-annotation.xml
 			,classpath:config/spring/applicationContext-cache.xml
 			,classpath:config/spring/applicationContext-scheduler.xml
-			,classpath:config/spring/applicationContext-webservice.xml
 			,classpath:config/spring/applicationContext-shiro.xml
 			,classpath:config/spring/applicationContext-workflow.xml
+			,classpath:config/spring/applicationContext-webservice.xml
 			<!--  
 			-->
 		</param-value>

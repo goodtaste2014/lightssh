@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="apply_vacation_02" name="请假流程">
+    <documentation>请假流程示例</documentation>
+    <startEvent id="startevent1" name="Start"></startEvent>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <userTask id="apply_vacation" name="发起休假申请">
+      <extensionElements>
+        <activiti:formProperty id="startTime" name="开始时间" type="date" datePattern="yyyy-MM-dd HH:mm:ss" required="true" readable="true" writable="true"></activiti:formProperty>
+        <activiti:formProperty id="endTime" name="结束时间" type="date" datePattern="yyyy-MM-dd HH:mm:ss" required="true" readable="true" writable="true"></activiti:formProperty>
+        <activiti:formProperty id="type" name="请假类型" type="enum">
+          <activiti:value id="T01" name="事假"></activiti:value>
+          <activiti:value id="T02" name="病假"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="leaveDays" name="请假天数" type="string"></activiti:formProperty>
+        <activiti:formProperty id="motivation" name="请假原因" type="string"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <userTask id="adjust_vacation" name="调整申请"></userTask>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow1" name="" sourceRef="startevent1" targetRef="apply_vacation"></sequenceFlow>
+    <sequenceFlow id="flow2" name="" sourceRef="apply_vacation" targetRef="audit_vacation"></sequenceFlow>
+    <sequenceFlow id="flow3" name="批准通过" sourceRef="exclusivegateway1" targetRef="endevent1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${passed}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow4" name="未通过审批" sourceRef="exclusivegateway1" targetRef="adjust_vacation">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${!passed}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow5" name="" sourceRef="adjust_vacation" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow6" name="重新发起申请" sourceRef="exclusivegateway2" targetRef="apply_vacation">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${resendApply}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow7" name="不重新申请" sourceRef="exclusivegateway2" targetRef="endevent1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${!resendApply}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="audit_vacation" name="审核休假申请">
+      <extensionElements>
+        <activiti:formProperty id="passed" name="是否通过" type="enum">
+          <activiti:value id="true" name="通过"></activiti:value>
+          <activiti:value id="false" name="不通过"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="remark" name="批注" type="string"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow8" name="" sourceRef="audit_vacation" targetRef="exclusivegateway1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_apply_vacation_02">
+    <bpmndi:BPMNPlane bpmnElement="apply_vacation_02" id="BPMNPlane_apply_vacation_02">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35" width="35" x="80" y="120"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35" width="35" x="620" y="120"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="apply_vacation" id="BPMNShape_apply_vacation">
+        <omgdc:Bounds height="55" width="105" x="160" y="110"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40" width="40" x="484" y="117"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="adjust_vacation" id="BPMNShape_adjust_vacation">
+        <omgdc:Bounds height="55" width="105" x="452" y="200"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40" width="40" x="484" y="297"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="audit_vacation" id="BPMNShape_audit_vacation">
+        <omgdc:Bounds height="55" width="105" x="320" y="110"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="115" y="137"></omgdi:waypoint>
+        <omgdi:waypoint x="160" y="137"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="265" y="137"></omgdi:waypoint>
+        <omgdi:waypoint x="320" y="137"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="524" y="137"></omgdi:waypoint>
+        <omgdi:waypoint x="620" y="137"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="504" y="157"></omgdi:waypoint>
+        <omgdi:waypoint x="504" y="200"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="504" y="255"></omgdi:waypoint>
+        <omgdi:waypoint x="504" y="297"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="484" y="317"></omgdi:waypoint>
+        <omgdi:waypoint x="212" y="316"></omgdi:waypoint>
+        <omgdi:waypoint x="212" y="165"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="524" y="317"></omgdi:waypoint>
+        <omgdi:waypoint x="637" y="316"></omgdi:waypoint>
+        <omgdi:waypoint x="637" y="155"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
+        <omgdi:waypoint x="425" y="137"></omgdi:waypoint>
+        <omgdi:waypoint x="484" y="137"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
