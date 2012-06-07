@@ -54,7 +54,7 @@
         </action>
         
 		<action name="render" class="workflowAction" method="render">
-			<result name="success">/pages/workflow/form/apply_vacation.jsp</result>	
+			<result name="success">/pages/workflow/form/rendering.jsp</result>	
         </action>
         
 		<action name="submit" class="workflowAction" method="submit">
@@ -62,7 +62,7 @@
         </action>
         
 		<action name="view" class="workflowAction" method="view">
-			<result name="success">/pages/workflow/form/apply_vacation.jsp</result>
+			<result name="success">/pages/workflow/form/rendering.jsp</result>
         </action>
         
 		<action name="complete" class="workflowAction" method="complete">

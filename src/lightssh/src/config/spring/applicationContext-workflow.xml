@@ -12,7 +12,7 @@
 		<property name="transactionManager" ref="transactionManager" />
 		<property name="databaseSchemaUpdate" value="false" />
 		<!-- 不设置属性deploymentName，流程每次会重新发布 -->
-		<property name="deploymentName" value="lightssh" />
+		<!--<property name="deploymentName" value="lightssh" />-->
 		
 		<property name="jpaEntityManagerFactory" ref="entityManagerFactory" />
 		<property name="jpaHandleTransaction" value="true" />

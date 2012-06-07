@@ -47,6 +47,6 @@
 		</mys:column>
 	</mys:table>
 
-	<mys:pagination value="deployment_page" />
+	<mys:pagination value="deployment_page" pageParamPrefix="deployment_page"/>
 	
 </body>

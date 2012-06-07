@@ -1,11 +1,13 @@
 package com.google.code.lightssh.project.workflow.service;
 
 import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
 
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.form.TaskFormData;
+import org.activiti.engine.history.HistoricDetail;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -39,7 +41,17 @@ public interface WorkflowManager extends Manager{
 	/**
 	 * 查询任务
 	 */
+	public Task getTask( String taskId );
+	
+	/**
+	 * 查询任务
+	 */
 	public ListPage<Task> listTask( ListPage<Task> page );
+	
+	/**
+	 * 查询任务之前表单数据
+	 */
+	public List<HistoricDetail> listHistoricDetail( String taskId );
 	
 	/**
 	 * 查询部署信息
