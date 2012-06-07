@@ -73,8 +73,16 @@ public class WorkflowManagerImpl implements WorkflowManager{
 				query.asc();
 		}
 		
-		page.setAllSize( (int)query.count() );
-		page.setList( query.listPage(page.getStart()-1,page.getEnd()) );
+		int count = (int)query.count();
+		page.setAllSize(count);
+		int start = page.getStart()-1;
+		if( start > count ){
+			start = (page.getAllPage()-1)*page.getSize() 
+				+ ((count>page.getSize())?((count%page.getSize())-1):0);
+			page.setNumber( page.getAllPage() );
+		}
+		
+		page.setList( query.listPage(start,page.getSize()) );
 		
 		return page;
 	}
@@ -108,14 +116,14 @@ public class WorkflowManagerImpl implements WorkflowManager{
 	public void deploy( String resourceName,InputStream inputStream){
 		repositoryService.createDeployment()
 			.addInputStream(resourceName, inputStream)
-			.name(resourceName).deploy();
+			.name("lightssh").deploy();
 	}
 	
 	/**
 	 * 取消部署
 	 */
 	public void undeploy( String deploymentId ){
-		this.repositoryService.deleteDeployment(deploymentId,true);
+		this.repositoryService.deleteDeployment(deploymentId,false);
 	}
 	
 	/**
