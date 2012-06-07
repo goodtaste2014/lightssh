@@ -1,6 +1,7 @@
 package com.google.code.lightssh.project.workflow.service;
 
 import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -13,9 +14,12 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.form.TaskFormData;
+import org.activiti.engine.history.HistoricDetail;
+import org.activiti.engine.history.HistoricDetailQuery;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricProcessInstanceQuery;
 import org.activiti.engine.history.HistoricTaskInstance;
+import org.activiti.engine.history.HistoricTaskInstanceQuery;
 import org.activiti.engine.query.Query;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.DeploymentQuery;
@@ -116,14 +120,15 @@ public class WorkflowManagerImpl implements WorkflowManager{
 	public void deploy( String resourceName,InputStream inputStream){
 		repositoryService.createDeployment()
 			.addInputStream(resourceName, inputStream)
-			.name("lightssh").deploy();
+			.enableDuplicateFiltering()
+			.name( "lightssh" ).deploy();
 	}
 	
 	/**
 	 * 取消部署
 	 */
 	public void undeploy( String deploymentId ){
-		this.repositoryService.deleteDeployment(deploymentId,false);
+		this.repositoryService.deleteDeployment(deploymentId,true);
 	}
 	
 	/**
@@ -224,6 +229,13 @@ public class WorkflowManagerImpl implements WorkflowManager{
 	/**
 	 * 查询任务
 	 */
+	public Task getTask( String taskId ){
+		return taskService.createTaskQuery().taskId(taskId).singleResult();
+	}
+	
+	/**
+	 * 查询任务
+	 */
 	@SuppressWarnings("unchecked")
 	public ListPage<Task> listTask( ListPage<Task> page ){
 		if( page == null )
@@ -251,6 +263,53 @@ public class WorkflowManagerImpl implements WorkflowManager{
 		}
 		
 		return (ListPage<Task>)query(query,page);
+	}
+	
+	/**
+	 * 查询历史任务
+	 */
+	@SuppressWarnings("unchecked")
+	public ListPage<HistoricTaskInstance> listHistoryTask( ListPage<HistoricTaskInstance> page ){
+		if( page == null )
+			page = new ListPage<HistoricTaskInstance>();
+		
+		HistoricTaskInstanceQuery query = historyService.createHistoricTaskInstanceQuery();
+		
+		query.finished(); //已完成任务
+		
+		OrderBy orderBy = page.getOrderBy();
+		if( orderBy != null ){
+			if( "endTime".equals(orderBy.getProperty()) )
+				query.orderByHistoricTaskInstanceEndTime();
+			else if( "startTime".equals(orderBy.getProperty()) )
+				query.orderByHistoricActivityInstanceStartTime();
+		}
+		
+		return (ListPage<HistoricTaskInstance>)query(query,page);
+	}
+	
+	/**
+	 * 查询任务之前表单数据
+	 */
+	public List<HistoricDetail> listHistoricDetail( String taskId ){
+		Task task = this.getTask(taskId);
+		if( task == null )
+			return null;
+		
+		List<HistoricTaskInstance> historyTaskList = historyService.createHistoricTaskInstanceQuery()
+			.processInstanceId(task.getProcessInstanceId())
+			.finished()
+			.orderByTaskId().desc()
+			.listPage(0,1);
+		
+		if( historyTaskList == null || historyTaskList.isEmpty() )
+			return null;
+		HistoricTaskInstance historyTask = historyTaskList.get(0);
+		
+		HistoricDetailQuery query = historyService.createHistoricDetailQuery().formProperties();
+		query.taskId( historyTask.getId() );
+		
+		return query.list();
 	}
 	
 	/**

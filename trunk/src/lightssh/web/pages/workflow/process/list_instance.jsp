@@ -83,5 +83,5 @@
 		</mys:column>
 	</mys:table>
 
-	<mys:pagination value="pi_page" />
+	<mys:pagination value="pi_page"  pageParamPrefix="pi_page"/>
 </body>

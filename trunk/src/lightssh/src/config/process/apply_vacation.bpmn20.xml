@@ -17,23 +17,12 @@
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <userTask id="adjust_vacation" name="调整申请"></userTask>
+    <userTask id="adjust_vacation" name="调整申请">
+      <extensionElements>
+        <activiti:formProperty id="modify" name="重新填写" type="boolean"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow1" name="" sourceRef="startevent1" targetRef="apply_vacation"></sequenceFlow>
-    <sequenceFlow id="flow2" name="" sourceRef="apply_vacation" targetRef="audit_vacation"></sequenceFlow>
-    <sequenceFlow id="flow3" name="批准通过" sourceRef="exclusivegateway1" targetRef="endevent1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${passed}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow4" name="未通过审批" sourceRef="exclusivegateway1" targetRef="adjust_vacation">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${!passed}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow5" name="" sourceRef="adjust_vacation" targetRef="exclusivegateway2"></sequenceFlow>
-    <sequenceFlow id="flow6" name="重新发起申请" sourceRef="exclusivegateway2" targetRef="apply_vacation">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${resendApply}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow7" name="不重新申请" sourceRef="exclusivegateway2" targetRef="endevent1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${!resendApply}]]></conditionExpression>
-    </sequenceFlow>
     <userTask id="audit_vacation" name="审核休假申请">
       <extensionElements>
         <activiti:formProperty id="passed" name="是否通过" type="enum">
@@ -43,6 +32,21 @@
         <activiti:formProperty id="remark" name="批注" type="string"></activiti:formProperty>
       </extensionElements>
     </userTask>
+    <sequenceFlow id="flow1" name="" sourceRef="startevent1" targetRef="apply_vacation"></sequenceFlow>
+    <sequenceFlow id="flow2" name="" sourceRef="apply_vacation" targetRef="audit_vacation"></sequenceFlow>
+    <sequenceFlow id="flow3" name="批准通过" sourceRef="exclusivegateway1" targetRef="endevent1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${passed=="true"}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow4" name="未通过审批" sourceRef="exclusivegateway1" targetRef="adjust_vacation">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${passed=="false"}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow5" name="" sourceRef="adjust_vacation" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow6" name="重新发起申请" sourceRef="exclusivegateway2" targetRef="apply_vacation">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${modify}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow7" name="不重新申请" sourceRef="exclusivegateway2" targetRef="endevent1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${!modify}]]></conditionExpression>
+    </sequenceFlow>
     <sequenceFlow id="flow8" name="" sourceRef="audit_vacation" targetRef="exclusivegateway1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_apply_vacation_02">

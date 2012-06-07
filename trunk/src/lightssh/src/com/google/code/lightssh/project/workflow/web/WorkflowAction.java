@@ -3,12 +3,14 @@ package com.google.code.lightssh.project.workflow.web;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
+import org.activiti.engine.history.HistoricDetail;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -148,10 +150,11 @@ public class WorkflowAction extends BaseAction{
 		}
 		
 		String fileName = request.getParameter("deployment_file_name");
-		if( StringUtil.hasText(fileName) && !fileName.endsWith(".bpmn20.xml") )
-			fileName = fileName + ".bpmn20.xml";
-		else
+		if( !StringUtil.hasText(fileName) )
 			fileName = uploadFileName;
+			
+		if( !fileName.endsWith(".bpmn20.xml") )
+			fileName = fileName + ".bpmn20.xml";
 		
 		try{
 			this.workflowManager.deploy(fileName,new FileInputStream(upload) );
@@ -251,7 +254,11 @@ public class WorkflowAction extends BaseAction{
 		if( data == null )
 			return ERROR;
 		
-		//List<FormProperty> list = data.getFormProperties();
+		List<HistoricDetail> historicTasks  = workflowManager.listHistoricDetail(taskId);
+		if( historicTasks != null ){
+			request.setAttribute("history_task_form_data",historicTasks);
+		}
+		
 		return SUCCESS;
 	}
 	

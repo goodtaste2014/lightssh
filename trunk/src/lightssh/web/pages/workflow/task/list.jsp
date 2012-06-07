@@ -69,7 +69,7 @@
 		</mys:column>
 	</mys:table>
 
-	<mys:pagination value="task_page" />
+	<mys:pagination value="task_page"  pageParamPrefix="task_page"/>
 	
 	<div id="popup" title="认领任务" style="display: none;">
 		<table class="profile">

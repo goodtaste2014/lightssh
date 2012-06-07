@@ -60,5 +60,5 @@
 		</mys:column>
 	</mys:table>
 
-	<mys:pagination value="hp_page" />
+	<mys:pagination value="hp_page" pageParamPrefix="hp_page"/>
 </body>
