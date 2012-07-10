@@ -3,13 +3,18 @@
 目前程序支持Oracle,当然只要你添加对应数据库驱动，其它关系数据库也行的。
 
 项目大多数表可以由程序组件自动生成，Quartz相关的表需要手动执行SQL，按照如下三步操作：
-1./lightssh/src/META-INF/persistence.xml
+ # /lightssh/src/META-INF/persistence.xml
 
-<property name="hibernate.hbm2ddl.auto" value="false"/> false 改成 create 或 update
+{{{
+<property name="hibernate.hbm2ddl.auto" value="false"/> 
+}}}
+false 改成 create 或 update
 
-2.手动执行
+ # 手动执行
 /lightssh/src/config/sql/table.quartz.sql
 
-3./lightssh/src/config/spring/applicationContext-workflow.xml
-<property name="databaseSchemaUpdate" value="false" /> false 改为 true
-
+ # /lightssh/src/config/spring/applicationContext-workflow.xml
+{{{
+<property name="databaseSchemaUpdate" value="false" />
+}}}
+ false 改为 true
