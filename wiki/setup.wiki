@@ -4,17 +4,24 @@
 
 项目大多数表可以由程序组件自动生成，Quartz相关的表需要手动执行SQL，按照如下三步操作：
  # /lightssh/src/META-INF/persistence.xml
-
 {{{
 <property name="hibernate.hbm2ddl.auto" value="false"/> 
-}}}
 false 改成 create 或 update
-
+}}}
  # 手动执行
+{{{
 /lightssh/src/config/sql/table.quartz.sql
-
+}}}
  # /lightssh/src/config/spring/applicationContext-workflow.xml
 {{{
 <property name="databaseSchemaUpdate" value="false" />
-}}}
  false 改为 true
+}}}
+
+
+
+
+
+
+
+
