@@ -130,7 +130,7 @@ public interface Dao<T extends Persistence<?>> {
 
 = 配置DAO =
 
-配置JPA实现的DAO,示例如下：
+如果你所需要的DAO实现比较简单，接口中提及的方式能很好满足，那么你不需要编写任何DAO实现的Java代码，只需要如下一段Spring的配置，你有拥有了类型安全的DAO实现。配置JPA实现的DAO,示例如下：
 {{{
 <bean id="permissionDao" class="com.google.code.lightssh.common.dao.jpa.JpaDao">
 	<constructor-arg>
