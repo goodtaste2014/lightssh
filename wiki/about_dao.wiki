@@ -129,3 +129,18 @@ public interface Dao<T extends Persistence<?>> {
 }}}
 
 = 配置DAO =
+
+配置JPA实现的DAO,示例如下：
+{{{
+<bean id="permissionDao" class="com.google.code.lightssh.common.dao.jpa.JpaDao">
+	<constructor-arg>
+    		<value>com.google.code.lightssh.project.security.entity.Permission</value>
+    	</constructor-arg>    
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+</bean>
+
+}}}
+
+
+= 参考资料 =
+ # http://www.ibm.com/developerworks/cn/java/j-genericdao.html
