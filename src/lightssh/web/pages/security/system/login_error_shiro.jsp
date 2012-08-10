@@ -25,6 +25,6 @@
 			expMsg="登录异常:"+authExp.getMessage() ;
 		}
 		
-		out.print("<div class=\"error\">"+expMsg+"</div>");
+		out.print( expMsg );
 	}
 %>

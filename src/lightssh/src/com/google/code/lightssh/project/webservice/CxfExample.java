@@ -12,6 +12,6 @@ public interface CxfExample {
 
 	public String sayHello( String username );
 	
-	public boolean upload( FileUpload fu );
+	public boolean upload( BigData fu );
 	
 }

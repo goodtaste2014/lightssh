@@ -1,5 +1,6 @@
 package com.google.code.lightssh.project.webservice;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -45,32 +46,56 @@ public class CxfExampleImpl implements CxfExample{
 	 * fu.setDate( source );
 	 * fu.setTitle("test.tmp");
 	 * 
-	 * client.update( source );
+	 * client.upload( source );
 	 * 
 	 */
-	public boolean upload( FileUpload fu ){
+	public boolean upload( BigData fu ){
 		if( fu == null || fu.getData() == null )
 			return false;
 		
-		String dir = System.getProperty("java.io.tmpdir");
-		File file = new File( dir,fu.getTitle());
-		FileOutputStream fos = null;
-		
-		try{
-			fos = new FileOutputStream( file );
-			fu.getData().writeTo(fos);
-		}catch( IOException e ){
-			log.error("WebService上传文件异常：",e);
-		}finally{
-			if( fos != null )
-				try{
-					fos.close();
-				}catch( IOException e ){
-					//ignore;
-				};
+		if( "true".equalsIgnoreCase(fu.getIsfile()) ){
+			String dir = System.getProperty("java.io.tmpdir");
+			File file = new File( dir,fu.getTitle());
+			FileOutputStream fos = null;
+			
+			try{
+				fos = new FileOutputStream( file );
+				fu.getData().writeTo(fos);
+			}catch( IOException e ){
+				log.error("WebService上传文件异常：",e);
+				return false;
+			}finally{
+				if( fos != null )
+					try{
+						fos.close();
+					}catch( IOException e ){
+						//ignore;
+					};
+			}
+			
+			log.info("文件已保存到：{}",file.getPath() );
+		}else{
+			ByteArrayOutputStream baos = null;
+			
+			try{
+				baos = new ByteArrayOutputStream( );
+				fu.getData().writeTo( baos );
+				String message = baos.toString( "UTF-8" );
+				log.info("接收到的信息是：{}",message );
+			}catch( IOException e ){
+				log.error("WebService上传文件异常：",e);
+				return false;
+			}finally{
+				if( baos != null )
+					try{
+						baos.close();
+					}catch( IOException e ){
+						//ignore;
+					};
+			}
 		}
 		
-		log.info("文件已保存到：{}",file.getPath() );
+		
 		return true;
 	}
 

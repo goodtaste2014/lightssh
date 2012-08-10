@@ -1,6 +1,5 @@
 package com.google.code.lightssh.project.security.entity;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,9 +16,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import com.google.code.lightssh.common.entity.base.BaseModel;
 import com.google.code.lightssh.common.model.Period;
 import com.google.code.lightssh.project.party.entity.Party;
@@ -31,7 +27,7 @@ import com.google.code.lightssh.project.party.entity.Party;
  */
 @Entity
 @Table( name="T_SECURITY_LOGINACCOUNT" )
-public class LoginAccount extends BaseModel implements UserDetails{
+public class LoginAccount extends BaseModel {
 
 	private static final long serialVersionUID = 8280727772996743600L;
 	
@@ -201,34 +197,18 @@ public class LoginAccount extends BaseModel implements UserDetails{
 		return false;
 	}
 	
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		if( roles == null )
-			return null;
-		
-		Set<Permission> all = new HashSet<Permission>( );
-		for( Role each:roles )
-			all.addAll( each.getPermissions() );
-		
-		return all;
-	}
-
-	@Override
 	public String getUsername() {
 		return this.getLoginName();
 	}
 
-	@Override
 	public boolean isAccountNonExpired() {
 		return isExpired( );
 	}
 
-	@Override
 	public boolean isAccountNonLocked() {
 		return true;
 	}
 
-	@Override
 	public boolean isCredentialsNonExpired() {
 		return true;
 	}

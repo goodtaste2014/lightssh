@@ -21,7 +21,6 @@ import com.google.code.lightssh.common.web.SessionKey;
 import com.google.code.lightssh.project.log.service.LoginLogManager;
 import com.google.code.lightssh.project.security.entity.LoginAccount;
 import com.google.code.lightssh.project.security.service.LoginAccountManager;
-import com.google.code.lightssh.project.security.service.SecurityUtil;
 import com.google.code.lightssh.project.util.RequestUtil;
 
 /**
@@ -89,15 +88,17 @@ public class CaptchaFormAuthenticationFilter extends FormAuthenticationFilter{
 	 * 验证码认证
 	 */
 	protected void doCaptchaValidate( HttpServletRequest request ,CaptchaUsernamePasswordToken token ){
-		if( SecurityUtil.isCheckCaptcha( request ) && 
-			!SecurityUtil.isPassedCaptchaValidate(request, token.getCaptcha() )){
-			throw new ShiroBadCaptchaException("验证码错误！");
+		if( isCheckCaptcha( request )){
+			String captcha = (String)request.getSession().getAttribute(
+					com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
+			
+			if(captcha!=null && !captcha.equalsIgnoreCase(token.getCaptcha()))
+				throw new ShiroBadCaptchaException("验证码错误！");
 		}
 	}
+	
 	/**
-	 * 取 LoginAccount
-	 * @param username
-	 * @return
+	 * 取用户信息
 	 */
 	protected LoginAccount fetchLoginAccount( String username ){
 		if( username == null )
@@ -117,6 +118,54 @@ public class CaptchaFormAuthenticationFilter extends FormAuthenticationFilter{
 		
 		return account;
 	}
+	
+	/**
+	 * 设置登录失败次数
+	 */
+	private void setFailedCount( HttpServletRequest request,int count ){
+		request.getSession().setAttribute(SessionKey.LOGIN_FAILURE_COUNT,count);
+	}
+	
+	/**
+	 * 取得登录失败次数
+	 */
+	private int getFailedCount( HttpServletRequest request ){
+		Integer failed_count = (Integer) request.getSession().getAttribute(
+				SessionKey.LOGIN_FAILURE_COUNT);
+		return (failed_count == null) ? 0 : failed_count;
+	}
+	
+	/**
+	 * 添加失败次数
+	 */
+	protected void incFailedCount( HttpServletRequest request){
+		setFailedCount(request,getFailedCount( request )+1);
+	}
+	
+	/**
+	 * 清除失败次数
+	 */
+	protected void clearFailedCount( HttpServletRequest request){
+		setFailedCount(request,0);
+	}
+	
+	/**
+	 * 是否做验证码检查
+	 */
+	protected boolean isCheckCaptcha( HttpServletRequest request ){
+		boolean enabled = "true".equalsIgnoreCase(systemConfig.getProperty(
+				ConfigConstants.CAPTCHA_ENABLED_KEY,"false"));
+		int times = 0;
+		try{
+			times = Integer.parseInt(systemConfig.getProperty(
+				ConfigConstants.CAPTCHA_LOGIN_IGNORE_TIMES_KEY,"0"));
+		}catch(Exception e){
+			//ignore
+		}
+		
+		return enabled && getFailedCount( request ) >= times;
+	}
+	
 	/**
 	 * 写Cookie
 	 */
@@ -149,7 +198,7 @@ public class CaptchaFormAuthenticationFilter extends FormAuthenticationFilter{
             Subject subject = getSubject(request, response);
             subject.login(token);
             
-            SecurityUtil.clearFailedCount((HttpServletRequest)request );//清除失败次数
+            clearFailedCount((HttpServletRequest)request );//清除失败次数
             
             //更换用户登录后，刷新页头
             Cookie cookie = new Cookie("REFRESH-HEADER","TRUE");
@@ -167,9 +216,9 @@ public class CaptchaFormAuthenticationFilter extends FormAuthenticationFilter{
         	writeSession( account,(HttpServletRequest)request );
             return onLoginSuccess(token, subject, request, response);
         } catch (AuthenticationException e) {
-        	SecurityUtil.incFailedCount((HttpServletRequest)request);//登录失败次数
+        	incFailedCount((HttpServletRequest)request);//登录失败次数
         	
-        	int failed_count = SecurityUtil.getFailedCount((HttpServletRequest)request);
+        	int failed_count = getFailedCount((HttpServletRequest)request);
         	if( (failed_count % WARN_LOGIN_COUNT) ==0 ){
         		log.warn("登录失败次数超过"+ failed_count +"次:username=" + token.getPrincipal()
         				+ ",ip=" + RequestUtil.getIpAddr((HttpServletRequest)request));
@@ -188,13 +237,11 @@ public class CaptchaFormAuthenticationFilter extends FormAuthenticationFilter{
     protected void setFailureAttribute(ServletRequest request, AuthenticationException ae) {
         request.setAttribute(getFailureKeyAttribute(), ae);
     }
+    
     /**
      * 登录成功跳转地址
      */
     public String getSuccessUrl() {
-    	//String domain = StringUtil.clean( getDynamicDomain() );
-        //return (domain== null?"":domain)+ super.getSuccessUrl();
-        
         return super.getSuccessUrl();
     }
     

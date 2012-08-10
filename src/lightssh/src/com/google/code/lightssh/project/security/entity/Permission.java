@@ -5,8 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.springframework.security.core.GrantedAuthority;
-
 import com.google.code.lightssh.common.entity.Persistence;
 
 /**
@@ -16,7 +14,7 @@ import com.google.code.lightssh.common.entity.Persistence;
  */
 @Entity
 @Table( name="T_SECURITY_PERMISSION")
-public class Permission implements Persistence<String>,GrantedAuthority{
+public class Permission implements Persistence<String>{
 
 	private static final long serialVersionUID = 1649939616381932770L;
 	
@@ -45,11 +43,6 @@ public class Permission implements Persistence<String>,GrantedAuthority{
 	
 	public Permission( String token ){
 		this.token = token;
-	}
-	
-	@Override
-	public String getAuthority() {
-		return this.getToken();
 	}
 	
 	@Override

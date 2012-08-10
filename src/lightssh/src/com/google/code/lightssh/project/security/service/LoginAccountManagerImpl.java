@@ -11,9 +11,6 @@ import net.sf.ehcache.Element;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import com.google.code.lightssh.common.ApplicationException;
@@ -38,7 +35,7 @@ import com.google.code.lightssh.project.security.entity.LoginAccount.LoginAccoun
  */
 @Component("loginAccountManager")
 public class LoginAccountManagerImpl extends BaseManagerImpl<LoginAccount>
-	implements LoginAccountManager,UserDetailsService{
+	implements LoginAccountManager{
 	
 	private static Logger log = LoggerFactory.getLogger(LoginAccountManagerImpl.class);
 	
@@ -100,12 +97,6 @@ public class LoginAccountManagerImpl extends BaseManagerImpl<LoginAccount>
 		}
 		*/
 		return result;
-	}
-
-	@Override
-	public UserDetails loadUserByUsername(String loginName)
-			throws UsernameNotFoundException {
-		return get( loginName );
 	}
 
 	@Override

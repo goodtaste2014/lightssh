@@ -18,5 +18,12 @@ public interface ConfigConstants {
 	
 	/** CAS服务器Keysotre*/
 	public static final String CAS_SERVER_KEYSTORE_KEY = "cas.server.keystore";
-
+	
+	/** 是否显示验证码 */
+	public static final String CAPTCHA_ENABLED_KEY = "captcha.enabled";
+	
+	/** 登录失败几次后显示验证码*/
+	public static final String CAPTCHA_LOGIN_IGNORE_TIMES_KEY = "captcha.login.ignore.times";
+	
+	
 }
