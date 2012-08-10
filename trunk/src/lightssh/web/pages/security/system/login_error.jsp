@@ -1,24 +1,30 @@
-<%@ page language="java" pageEncoding="UTF-8" contentType="text/html;charset=utf-8" %>
-<%@ page import="org.springframework.security.authentication.*"%>
-<%@ page import="com.google.code.lightssh.project.security.service.BadCaptchaException"%>
-<%@ include file="/pages/common/taglibs.jsp" %>
+<%@page language="java" pageEncoding ="UTF-8" contentType="text/html;charset=utf-8"%>
+
+<%@page import="com.google.code.lightssh.project.security.service.BadCaptchaException"%>
+<%@page import="org.apache.shiro.SecurityUtils"%>
+<%@page import="org.apache.shiro.subject.Subject"%>
+<%@page import="org.apache.shiro.authc.*"%>
+
+<%@include file="/pages/common/taglibs.jsp"%>
 
 <%
-	org.springframework.security.core.AuthenticationException authExp = (org.springframework.security.core.AuthenticationException)request.getSession().getAttribute("SPRING_SECURITY_LAST_EXCEPTION");
+	Object obj=request.getAttribute(org.apache.shiro.web.filter.authc.FormAuthenticationFilter.DEFAULT_ERROR_KEY_ATTRIBUTE_NAME);
+	AuthenticationException authExp = (AuthenticationException)obj;
 	if( authExp != null ){
-		String expMsg = "登录异常:" + authExp.getMessage();
-		if( authExp instanceof DisabledException ){
-			expMsg = "用户账号已被禁用!";
-		}else if( authExp instanceof AccountExpiredException ){
-			expMsg = "用户账号已过期!";
-		}else if( authExp instanceof BadCredentialsException ){
-			expMsg = "错误的用户账号或密码！";
-		}else if( authExp instanceof BadCaptchaException ){
-			expMsg = "验证码错误!";
-		}else if( authExp instanceof AuthenticationServiceException ){
-			expMsg = "错误的用户账号!";
+		String expMsg="";
+		
+		if(authExp instanceof UnknownAccountException || authExp instanceof IncorrectCredentialsException){
+			expMsg="错误的用户账号或密码！";
+		}else if( authExp instanceof BadCaptchaException){
+			expMsg="验证码错误！";
+		}else if( obj instanceof LockedAccountException ){
+			expMsg= "用户账号已禁用！";
+		}else if( obj instanceof ExpiredCredentialsException ){
+			expMsg= "用户账号已过期！";
+		}else{
+			expMsg="登录异常:"+authExp.getMessage() ;
 		}
-		out.print("<div class=\"error\">" + expMsg + "</div>");
+		
+		out.print("<div class=\"error\">"+expMsg+"</div>");
 	}
-	
 %>
