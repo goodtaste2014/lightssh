@@ -1,6 +1,10 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <%@ page language ="java" pageEncoding = "UTF-8" contentType="text/html;charset=utf-8" %> 
 <%@ page import ="org.springframework.security.authentication.*"%>
 <%@ include file="/pages/common/taglibs.jsp" %>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>	
 	<title>系统登录</title>
@@ -37,10 +41,11 @@
 		 * 显示提示信息
 		 */
 		function showMessage( msg ){
-			if( $('.error').html() == null )
-				$('.messages').child("<div class='error'>"+msg+"</div>") 
-			else 
+			if( $('.error').length == 0 ){
+				$('.messages').append("<div class='error'>"+msg+"</div>") 
+			}else{
 				$('.error').text( msg );
+			}
 		}
 		
 		function refresh(){
@@ -57,63 +62,49 @@
 	<div id="login_panel">
 	
 	<div id="login">
-		<div class="login_form_top">
-			<span class="left">&nbsp;</span>
-			<span class="right">&nbsp;</span>
-		</div> 
 		
 		<div class="login_frame">
 			<div class="login_form">
-				<div class="right">
-					<h3>系统登录</h3>
+				<h3>用户登录</h3>
 					
-					<div class="messages" style="float: none;">
-						<div class="warning" id="js_warning">您的浏览器不支持JAVASCRIPT，无法登录系统！</div>
-						<div class="error">
-							<%@ include file="/pages/security/system/login_error_shiro.jsp" %>
-						</div>
-					</div>
-					
-					<s:form id="login_form" action="login" namespace="/" method="post" onsubmit="return dosubmit();">
-						<ul>
-							<li>
-								<label for="username">账号：</label>
-								<input type='text' id="username" class="user" name='j_username' size="30" autocomplete="off"/>
-							</li>
-							<li>
-								<label for="password">密码：</label>
-								<input type='password' id="password" class="password" name='j_password' size="30"/>
-							</li>
-							
-							<s:if test="showCaptcha">
-							<li>
-								<label for="captcha">验证码：</label>
-								<input type='text' class="captcha" id="captcha" name='j_captcha' size="15"/>
-								<span class="refresh" onclick="refresh();">看不清楚?</span><br/>
-								<label>&nbsp;</label>
-								<!--<img id="jcaptcha" src="<%= request.getContextPath() %>/images/jcaptcha" />-->
-								<img id="jcaptcha" alt="captcha" style="margin-left:0 !important;margin:4px 0 0 2px;" 
-									src="<%= request.getContextPath() %>/images/kaptcha.jpg">
-							</li>
-							</s:if>
-							
-							<li>
-								<label for="login_submit">&nbsp;</label>
-								<input type="submit" value="登录" id="login_submit" class="action login"/>
-							</li>
-						</ul>
-					</s:form>
-				
+				<div class="messages">
+					<div class="warning" id="js_warning">您的浏览器不支持JAVASCRIPT，无法登录系统！</div>
+					<%@ include file="/pages/security/system/login_error_shiro.jsp" %>
 				</div>
+				
+				<s:form id="login_form" action="login" namespace="/" method="post" onsubmit="return dosubmit();">
+					<ul>
+						<li>
+							<label for="username">账号：</label>
+							<input type='text' id="username" class="user" name='j_username' size="30" autocomplete="off"/>
+						</li>
+						<li>
+							<label for="password">密码：</label>
+							<input type='password' id="password" class="password" name='j_password' size="30"/>
+						</li>
+						
+						<s:if test="showCaptcha">
+						<li>
+							<label for="captcha">验证码：</label>
+							<input type='text' class="captcha" id="captcha" name='j_captcha' size="15"/>
+							<span class="refresh" onclick="refresh();">看不清楚?</span><br/>
+							<label>&nbsp;</label>
+							<!--<img id="jcaptcha" src="<%= request.getContextPath() %>/images/jcaptcha" />-->
+							<img id="jcaptcha" alt="captcha" style="margin-left:0 !important;margin:4px 0 0 2px;" 
+								src="<%= request.getContextPath() %>/images/kaptcha.jpg">
+						</li>
+						</s:if>
+						
+						<li>
+							<label for="login_submit">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+							<input type="submit" value="登录" id="login_submit" class="action login"/>
+						</li>
+					</ul>
+				</s:form>
 			</div>
-		</div>
-		
-		<div class="login_form_bottom">
-			<span class="left">&nbsp;</span>
-			<span class="right">&nbsp;</span>
 		</div>
 	</div>	
 	
 	</div>
 </body>
-
+</html>
