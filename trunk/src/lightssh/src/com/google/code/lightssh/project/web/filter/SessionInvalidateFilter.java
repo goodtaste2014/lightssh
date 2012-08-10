@@ -12,12 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.ehcache.Cache;
 
+import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
 import com.google.code.lightssh.common.web.SessionKey;
-import com.google.code.lightssh.project.security.service.SecuirtyFramework;
-import com.google.code.lightssh.project.security.service.SecurityUtil;
 
 @Component( "sessionInvalidateFilter" )
 public class SessionInvalidateFilter extends GenericFilterBean{
@@ -44,7 +43,7 @@ public class SessionInvalidateFilter extends GenericFilterBean{
 		HttpServletRequest request = (HttpServletRequest)req;
 		HttpServletResponse response = (HttpServletResponse)rsp;
 		if( cache != null ){
-			String username = SecurityUtil.getPrincipal( SecuirtyFramework.SHIRO.getValue() );
+			String username = SecurityUtils.getSubject().getPrincipal().toString();
 			if( cache.get( username ) != null ){
 				cache.remove( username );
 				request.getSession().setAttribute( SessionKey.ERROR_MESSAGES, "账号["+username+"]已被禁止使用！");

@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.shiro.SecurityUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +16,6 @@ import com.google.code.lightssh.common.web.action.CrudAction;
 import com.google.code.lightssh.project.security.entity.LoginAccount;
 import com.google.code.lightssh.project.security.entity.Role;
 import com.google.code.lightssh.project.security.service.LoginAccountManager;
-import com.google.code.lightssh.project.security.service.SecurityUtil;
 
 /**
  * LoginAccount Action 
@@ -134,7 +134,7 @@ public class LoginAccountAction extends CrudAction<LoginAccount>{
 		if( super.isGet() )
 			return INPUT;
 		
-		String loginName = SecurityUtil.getPrincipal();
+		String loginName = SecurityUtils.getSubject().getPrincipal().toString();
 		
 		if( loginName == null )
 			return LOGIN;
@@ -175,7 +175,7 @@ public class LoginAccountAction extends CrudAction<LoginAccount>{
 	}
 	
 	public String myprofile( ){
-		String loginName = SecurityUtil.getPrincipal();
+		String loginName = SecurityUtils.getSubject().getPrincipal().toString();
 		if( loginName == null )
 			return LOGIN;
 		

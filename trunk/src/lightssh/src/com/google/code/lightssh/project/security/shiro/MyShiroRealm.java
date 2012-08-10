@@ -48,6 +48,7 @@ public class MyShiroRealm extends AuthorizingRealm{
 					Collection<String> pers = each.getPermissionsAsString();
 					if( pers != null )
 						info.addStringPermissions( pers );
+					
 				}
 				
 				return info;

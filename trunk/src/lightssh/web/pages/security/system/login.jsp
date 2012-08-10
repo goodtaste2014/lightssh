@@ -69,16 +69,12 @@
 					
 					<div class="messages" style="float: none;">
 						<div class="warning" id="js_warning">您的浏览器不支持JAVASCRIPT，无法登录系统！</div>
-						<s:set name="isShiro" value="#request.secuirtyFramework=='shiro'"/>
-						<s:if test="%{#isShiro}">
+						<div class="error">
 							<%@ include file="/pages/security/system/login_error_shiro.jsp" %>
-						</s:if>
-						<s:else>
-							<%@ include file="/pages/security/system/login_error.jsp" %>
-						</s:else>
+						</div>
 					</div>
 					
-					<s:form id="login_form" action="%{#isShiro?'login':'j_spring_security_check'}" namespace="/" method="post" onsubmit="return dosubmit();">
+					<s:form id="login_form" action="login" namespace="/" method="post" onsubmit="return dosubmit();">
 						<ul>
 							<li>
 								<label for="username">账号：</label>
@@ -89,14 +85,15 @@
 								<input type='password' id="password" class="password" name='j_password' size="30"/>
 							</li>
 							
-							<s:if test="#session.login_failure_count >= 3">
+							<s:if test="showCaptcha">
 							<li>
 								<label for="captcha">验证码：</label>
 								<input type='text' class="captcha" id="captcha" name='j_captcha' size="15"/>
 								<span class="refresh" onclick="refresh();">看不清楚?</span><br/>
 								<label>&nbsp;</label>
 								<!--<img id="jcaptcha" src="<%= request.getContextPath() %>/images/jcaptcha" />-->
-								<img id="jcaptcha" alt="captcha" style="margin-left:0 !important;margin:4px 0 0 2px;" src="<%= request.getContextPath() %>/images/kaptcha.jpg">
+								<img id="jcaptcha" alt="captcha" style="margin-left:0 !important;margin:4px 0 0 2px;" 
+									src="<%= request.getContextPath() %>/images/kaptcha.jpg">
 							</li>
 							</s:if>
 							

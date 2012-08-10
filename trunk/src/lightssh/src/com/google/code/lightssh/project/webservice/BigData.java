@@ -13,9 +13,12 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType
-public class FileUpload {
+public class BigData {
 	@XmlAttribute
 	private String title;
+	
+	@XmlAttribute
+	private String isfile;
 
 	@XmlElement
 	@XmlMimeType("application/octet-stream")
@@ -36,5 +39,14 @@ public class FileUpload {
 	public void setData(DataHandler data) {
 		this.data = data;
 	}
+
+	public String getIsfile() {
+		return isfile;
+	}
+
+	public void setIsfile(String isfile) {
+		this.isfile = isfile;
+	}
+
 	
 }

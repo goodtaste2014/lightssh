@@ -2,7 +2,7 @@ package com.google.code.lightssh.project.sequence.service;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.lang.xwork.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import com.google.code.lightssh.common.ApplicationException;
