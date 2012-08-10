@@ -69,7 +69,7 @@
 					
 				<div class="messages">
 					<div class="warning" id="js_warning">您的浏览器不支持JAVASCRIPT，无法登录系统！</div>
-					<%@ include file="/pages/security/system/login_error_shiro.jsp" %>
+					<%@ include file="/pages/security/system/login_error.jsp" %>
 				</div>
 				
 				<s:form id="login_form" action="login" namespace="/" method="post" onsubmit="return dosubmit();">
