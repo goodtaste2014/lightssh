@@ -94,55 +94,50 @@ input[type=button], input[type=submit], input[type=reset]{
 }
 
 input.action{
-	line-height:18px;
-    padding:1px 4px 0 18px;
+	height:26px;
+	line-height:22px;
+    padding:0px 6px 0 22px;
 }
 
 input.save{
-	background: #f2f2f2 url("../../images/background/icon_save.gif") no-repeat left center;
+	background: #f2f2f2 url("../../images/background/icon_save.gif") no-repeat 4px center;
 }
 
 input.search{
-	background: #f2f2f2 url("../../images/background/icon_search.png") no-repeat left center;
+	background: #f2f2f2 url("../../images/background/icon_search.png") no-repeat 4px center;
 }
 
 input.settings{
-	background: #f2f2f2 url("../../images/background/icon_settings.png") no-repeat left center;
+	background: #f2f2f2 url("../../images/background/icon_settings.png") no-repeat 4px center;
 }
 
 input.new{
-	background: #f2f2f2 url("../../images/background/icon_new.png") no-repeat left center;
+	background: #f2f2f2 url("../../images/background/icon_new.png") no-repeat 4px center;
 }
 
 input.list{
 	padding:1px 4px 0 20px;
-	background: #f2f2f2 url("../../images/background/icon_list.png") no-repeat left center;
+	background: #f2f2f2 url("../../images/background/icon_list.png") no-repeat 4px center;
 }
 
 input.pdf{
-	background: #f2f2f2 url("../../images/background/icon_pdf.png") no-repeat left center;
+	background: #f2f2f2 url("../../images/background/icon_pdf.png") no-repeat 4px center;
 }
 
 input.xls{
-	background: #f2f2f2 url("../../images/background/icon_excel.png") no-repeat left center;
+	background: #f2f2f2 url("../../images/background/icon_excel.png") no-repeat 4px center;
 }
 
 input.csv{
-	background: #f2f2f2 url("../../images/background/icon_csv.png") no-repeat left center;
+	background: #f2f2f2 url("../../images/background/icon_csv.png") no-repeat 4px center;
 }
 
 input.rtf{
-	background: #f2f2f2 url("../../images/background/icon_word.png") no-repeat left center;
+	background: #f2f2f2 url("../../images/background/icon_word.png") no-repeat 4px center;
 }
 
 input.login{
-	background: #f2f2f2 url("../../images/background/icon_login.png") no-repeat left center;
-	height:20px;
-	line-height:20px;
-	vertical-align:middle;
-    padding:0 4px 0 18px;
-    margin-left: 0 !important;
-    margin-left: 2px;
+	background: #f2f2f2 url("../../images/background/icon_login.png") no-repeat 4px center;
 }
 
 input.action:hover,input.action:active

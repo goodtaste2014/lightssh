@@ -152,9 +152,18 @@ body#header{
 
 #login {
 	position: relative;
-	width: 360px;
+	width: 380px;
 	margin: 0 auto;
 	text-align: left;
+	
+	-moz-border-radius: 8px; /* Firefox */
+	-webkit-border-radius: 8px; /* Safari and Chrome */
+	border-radius: 8px; /* Opera 10.5+, future browsers, and now also Internet Explorer 6+ using IE-CSS3 */
+	
+	filter:progid:DXImageTransform.Microsoft.Shadow(color=#D3D3D3,direction=145, Strength=6); 
+	box-shadow: 2px 2px 6px #999;
+	-moz-box-shadow: 2px 2px 6px #999;
+	-webkit-box-shadow: 2px 2px 6px #999;
 }
 
 #login .login_frame{
@@ -164,12 +173,6 @@ body#header{
 	border-radius: 8px;
 	border: 1px solid #AAA;
 	
-	box-shadow: 2px 2px 6px #999;
-	filter:progid:DXImageTransform.Microsoft.Shadow(color='#999', Direction=135, Strength=5); 
-	-webkit-border-radius: 8px;
-	-moz-border-radius: 8px;
-	-moz-box-shadow: 2px 2px 6px #999;
-	-webkit-box-shadow: 2px 2px 6px #999;
 }
 
 #login .login_frame h3{

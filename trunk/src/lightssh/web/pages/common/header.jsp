@@ -82,7 +82,7 @@
 			<div class="status" id="div_status">
 				<div class="right">
 					<s:set name="principal" value="@com.google.code.lightssh.project.security.service.SecurityUtil@getPrincipal()"/>
-					<s:text name="project.header.welcome"/>：<a href="<s:url value="/security/account/my.do"/>" class="icon user" target="main_frame"><s:property value="#principal"/></a>
+					<s:text name="project.header.welcome"/>：<a href="<s:url value="/security/account/my.do"/>" class="icon user" target="main_frame"><s:property value="#principal"/>&nbsp;</a>
 					
 					|&nbsp;<a href="<s:url value="/welcome.do"/>" class="icon home" target="_top"><s:text name="project.header.home"/></a>
 					|&nbsp;<a href="<s:url value="/security/account/edit.do?password=update"/>" class="icon password" target="main_frame"><s:text name="project.header.changepassword"/></a>
