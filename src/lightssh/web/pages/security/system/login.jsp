@@ -12,6 +12,8 @@
 	<script language="javascript" src="<%= request.getContextPath() %>/scripts/jquery/jquery.min.js"></script>
 	<script language="javascript" src="<%= request.getContextPath() %>/scripts/jquery/plugins/cryptography/jquery.md5.js"></script>
 
+	<meta http-equiv="X-UA-Compatible" content="IE=9" />
+	
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$("#js_warning").remove();
@@ -75,20 +77,20 @@
 				<s:form id="login_form" action="login" namespace="/" method="post" onsubmit="return dosubmit();">
 					<ul>
 						<li>
-							<label for="username">账号：</label>
+							<label for="username">账号&nbsp;&nbsp;&nbsp;</label>
 							<input type='text' id="username" class="user" name='j_username' size="30" autocomplete="off"/>
 						</li>
 						<li>
-							<label for="password">密码：</label>
+							<label for="password">密码&nbsp;&nbsp;&nbsp;</label>
 							<input type='password' id="password" class="password" name='j_password' size="30"/>
 						</li>
 						
 						<s:if test="showCaptcha">
 						<li>
-							<label for="captcha">验证码：</label>
+							<label for="captcha">验证码</label>
 							<input type='text' class="captcha" id="captcha" name='j_captcha' size="15"/>
 							<span class="refresh" onclick="refresh();">看不清楚?</span><br/>
-							<label>&nbsp;</label>
+							<label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 							<!--<img id="jcaptcha" src="<%= request.getContextPath() %>/images/jcaptcha" />-->
 							<img id="jcaptcha" alt="captcha" style="margin-left:0 !important;margin:4px 0 0 2px;" 
 								src="<%= request.getContextPath() %>/images/kaptcha.jpg">
@@ -98,6 +100,7 @@
 						<li>
 							<label for="login_submit">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 							<input type="submit" value="登录" id="login_submit" class="action login"/>
+							<a href="#">忘记密码？</a>
 						</li>
 					</ul>
 				</s:form>
