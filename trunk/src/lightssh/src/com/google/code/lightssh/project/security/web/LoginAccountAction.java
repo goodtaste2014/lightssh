@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.cxf.common.util.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -122,6 +123,11 @@ public class LoginAccountAction extends CrudAction<LoginAccount>{
 			calendar.add(Calendar.DAY_OF_MONTH, 1);
 			calendar.add(Calendar.MILLISECOND, -1);
 			this.account.getPeriod().setEnd( calendar.getTime() );
+		}
+		
+		if( account != null && account.getParty() != null 
+				&& StringUtils.isEmpty(account.getParty().getId())){
+			account.setParty(null);
 		}
 		
 		return super.save();
