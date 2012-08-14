@@ -39,7 +39,7 @@
 				<tr>
 					<th><label for="name">用户账号</label></th>
 					<td>
-						<s:set name="principal" value="@com.google.code.lightssh.project.security.service.SecurityUtil@getPrincipal()"/>
+						<s:set name="principal" value="#session[@com.google.code.lightssh.common.web.SessionKey@LOGIN_ACCOUNT].loginName"/>
 						<s:property value="#principal"/>
 					</td>
 				</tr>
