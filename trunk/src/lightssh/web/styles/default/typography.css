@@ -63,10 +63,10 @@ input,textarea{
     border: 1px solid #d1e5f6;
     border-top-color: #b0c1cf;
     border-left-color: #b0c1cf;
+    padding:2px;
     vertical-align: middle;
     font-size:12px;
     line-height:12px;
-    padding:2px;
     margin:2px 0 2px 0;
     font-family:'Verdana'; 
 }
@@ -96,7 +96,8 @@ input[type=button], input[type=submit], input[type=reset]{
 input.action{
 	height:26px;
 	line-height:24px;
-    padding:0px 6px 0 22px;
+    padding:0 6px 0 22px;
+    overflow:visible; /* fixed IE bug */
 }
 
 input.save{
