@@ -45,7 +45,7 @@ function addLevelClass( menu_id ){
 function addOneLevelClass( elements,level,last_level ){
 	$.each( elements , function(index,ul_menu ){
 		var no_child = ($(ul_menu).parent().has("ul").length ==0);
-		$(ul_menu).html("<span></span>" + $(ul_menu).html() );
+		$(ul_menu).html("<span>&nbsp;</span>" + $(ul_menu).html() );
 		
 		if( last_level ==3 && no_child){
 			$(ul_menu).addClass("level"+last_level);
