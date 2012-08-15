@@ -218,6 +218,20 @@ div#login {
 	/*margin-left: 77px;*/
 }
 
+body#login #login_footer{
+	width:100%;
+	text-align:center;
+	float: left;
+	position: absolute;
+	top:70%;
+	color: #CCCCCC;
+}
+
+body#login #login_footer a{
+	color: #AAAAAA;
+	text-decoration: underline;
+}
+
 body#login #paint_canvas{
 	z-index:-1;
 	float:left;
@@ -237,3 +251,5 @@ body#login #paint_canvas .paint_cell{
 	height:1px;
 	width:100%;
 }
+
+
