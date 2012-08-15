@@ -3,14 +3,12 @@ package com.google.code.lightssh.project.web.action;
 import javax.annotation.Resource;
 
 import org.apache.shiro.SecurityUtils;
-import org.apache.struts2.ServletActionContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.google.code.lightssh.common.config.SystemConfig;
 import com.google.code.lightssh.common.web.SessionKey;
 import com.google.code.lightssh.common.web.action.BaseAction;
-import com.google.code.lightssh.project.security.service.SecuirtyFramework;
 import com.google.code.lightssh.project.security.shiro.ConfigConstants;
 
 /**
@@ -69,17 +67,10 @@ public class SecurityAction extends BaseAction{
 	 * 登录
 	 */
 	public String login(){		
-		String security = ServletActionContext.getServletContext()
-			.getInitParameter( SECUIRTY_FRAMEWORK_PARAM );
-		
 		//如果登录成功(session未失效),再次登录会一直停留在登录页面
-		if( SecuirtyFramework.SHIRO.getValue().equalsIgnoreCase( security )
-				&& SecurityUtils.getSubject().isAuthenticated() ){
+		if( SecurityUtils.getSubject().isAuthenticated() ){
 			return SUCCESS;
 		}
-		
-		if( SecuirtyFramework.SHIRO.getValue().equalsIgnoreCase( security ) )
-			request.setAttribute("secuirtyFramework", "shiro");
 		
 		return INPUT;
 	}
