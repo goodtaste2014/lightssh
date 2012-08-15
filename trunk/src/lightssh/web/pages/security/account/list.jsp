@@ -44,7 +44,7 @@
 			</mys:column>
 			<mys:column title="登录账号" value="loginName" sortable="true" width="150px"/>
 			<mys:column title="会员" value="party.name" sortable="false" width="150px"/>
-			<mys:column title="有效" sortable="true" width="50px">
+			<mys:column title="有效" sortable="true" width="50px" sortKey="enabled">
 				<s:property value="%{enabled?'是':'否'}"/>
 			</mys:column>
 			<mys:column title="创建日期" value="createDate" sortable="true" width="90px"/>

@@ -212,9 +212,9 @@ table.list thead {
     background-position:bottom;
 }
 
-table.list th.sortable{
-	padding-left:14px;
-	background-position:4px center;
+table.list th.sortable span{
+	padding-left:12px;
+	background-position:2px center;
 	background-repeat:no-repeat;
 	background-image:url("../../images/background/icon_sortable.png");
 }
@@ -235,15 +235,15 @@ table.list thead .active:hover {
 table.list thead .ascending,table.list thead .descending {
 	background-color:#BBB;
 	background-repeat:no-repeat;
-	background-position:100% 50%;;
+	background-position:100% 50%;
 	padding-right: 20px;
 }
 
-table.list thead .ascending,table.list thead .descending:hover{
+table.list thead .ascending span,table.list thead .descending span:hover{
 	background-image:url("../../images/background/icon_ascending.png");
 }
 
-table.list thead .descending,table.list thead .ascending:hover{
+table.list thead .descending span,table.list thead .ascending span:hover{
 	background-image:url("../../images/background/icon_descending.png");
 }
 
