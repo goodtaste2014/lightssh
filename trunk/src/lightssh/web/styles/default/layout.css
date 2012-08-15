@@ -146,15 +146,26 @@ body#header{
 }
 
 /* LOGIN */
+body#login{
+	height: 100%;
+	/*background: transparent url("../../images/background/bg_login.png") repeat-x 0 120px;*/
+}
+
 #login_panel{
-	margin-top: 100px;
+	z-index:999;
+	float:right;
+	width:100%;
+	height:100%;
 }	
 
-#login {
-	position: relative;
+div#login {
+	float:right;
+	z-index:998;
 	width: 380px;
-	margin: 0 auto;
 	text-align: left;
+	/*margin: 0 auto;*/
+	margin-right:15%;
+	margin-top:10%;
 	
 	-moz-border-radius: 8px; /* Firefox */
 	-webkit-border-radius: 8px; /* Safari and Chrome */
@@ -166,19 +177,25 @@ body#header{
 	-webkit-box-shadow: 2px 2px 6px #999;
 }
 
+#login .login_title{
+	height: 80px;
+}
+
+#login .login_title h3{
+	font-size:24px;
+	font-weight:normal;
+	color:#226666;
+	height: 50px;
+	line-height: 50px;
+	padding: 4px 0 4px 0;
+}
+
 #login .login_frame{
-	margin: 0 auto;
 	background: white;
 	padding: 10px 39px 19px;
 	border-radius: 8px;
 	border: 1px solid #AAA;
 	
-}
-
-#login .login_frame h3{
-	padding: 4px 0 4px 0;
-	font-size: 14px;
-	color: #1E1E3B;
 }
 
 #login .login_frame .login_form ul{
@@ -201,4 +218,22 @@ body#header{
 	/*margin-left: 77px;*/
 }
 
+body#login #paint_canvas{
+	z-index:-1;
+	float:left;
+	width:100%;
+	height:100%;
+	position:absolute;
+}
 
+body#login #paint_canvas #paint_panel{
+	height:150px;
+	margin-top:15%;
+}
+
+body#login #paint_canvas .paint_cell{
+	z-index:-2;
+	float:left;
+	height:1px;
+	width:100%;
+}

@@ -18,7 +18,45 @@
 		$(document).ready(function(){
 			$("#js_warning").remove();
 			$("#password").attr("value",'');
+			paint();
 		});
+
+		/** 渲染背景 */
+		function paint(){
+			var body = $("body[id='login']");
+			//$(body).append("<div id='paint_canvas'></div>")
+			var canvas = $("#paint_panel");
+
+			var CELL_HEIGHT = 1;
+			for( var i=0;i<$(canvas).height()/CELL_HEIGHT;i++){
+				var cell = $("<div class='paint_cell'></div>");
+				$(canvas).append( cell )
+				var color = randomColor();
+				if($.browser.msie){
+					$(cell).attr("style","filter:progid:DXImageTransform.Microsoft.Gradient(StartColorStr='#FFFFFF', EndColorStr='"+color+"', GradientType=1)");
+				}else if( $.browser.mozilla ){
+					$(cell).css("background","-moz-linear-gradient(left, #FFFFFF, "+color+")");
+				}else if( $.browser.opera ){
+					$(cell).css("background","-o-linear-gradient(left, #FFFFFF,"+color+")");
+				}else if( $.browser.webkit ){
+					$(cell).css("background","-webkit-gradient(linear,left top, right top, from(#FFFFFF), to("+color+"))");
+				}
+
+				$(cell).css("height",CELL_HEIGHT+"px");
+			}
+		}
+
+		/** 随机颜色 */
+		function randomColor() {
+			var arrHex = ["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"];	
+			var strHex = "#";	
+			var index;	
+			for(var i = 0; i < 6; i++) {
+				index = Math.round(Math.random() * 15);		
+				strHex += arrHex[index];
+			}	
+			return strHex;
+		}
 		
 		function dosubmit(){
 			if( $("#username").attr('value') == ''){
@@ -57,22 +95,25 @@
 	</script>
 </head>
 
-<body style="text-align: center;">
-	<br/>
-	<br/>
+<body style="text-align: center;" id="login">
 	
 	<div id="login_panel">
 	
 	<div id="login">
 		
 		<div class="login_frame">
-			<div class="login_form">
+			<div class="login_title">
 				<h3>用户登录</h3>
-					
+						
 				<div class="messages">
-					<div class="warning" id="js_warning">您的浏览器不支持JAVASCRIPT，无法登录系统！</div>
+					<div class="warning" id="js_warning">
+						<%-- 您的浏览器不支持JAVASCRIPT，无法登录系统！--%>
+					</div>
 					<%@ include file="/pages/security/system/login_error.jsp" %>
 				</div>
+			</div>
+			
+			<div class="login_form">
 				
 				<s:form id="login_form" action="login" namespace="/" method="post" onsubmit="return dosubmit();">
 					<ul>
@@ -108,6 +149,10 @@
 		</div>
 	</div>	
 	
+	</div>
+	
+	<div id='paint_canvas'>
+		<div id="paint_panel"></div>
 	</div>
 </body>
 </html>

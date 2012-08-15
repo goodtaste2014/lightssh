@@ -17,7 +17,7 @@
 			    	if( $.cookie( "REFRESH-HEADER" ) == 'TRUE' ){
 			    		//alert($.cookie( "REFRESH-HEADER") );
 			    		$.cookie( "REFRESH-HEADER",'',{path:'<%= request.getContextPath() %>'});
-			    		location.reload();
+			    		//location.reload();
 			    	}
 				});
 			});
