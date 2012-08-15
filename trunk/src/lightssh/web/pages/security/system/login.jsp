@@ -138,6 +138,12 @@
 						</li>
 						</s:if>
 						
+						<%-- 
+						<li>
+							<label for="rememberme">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+							<input type="checkbox" id="rememberme" name="j_rememberme" value="true"/>记住登录
+						</li>
+						--%>
 						<li>
 							<label for="login_submit">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 							<input type="submit" value="登录" id="login_submit" class="action login"/>
@@ -154,5 +160,11 @@
 	<div id='paint_canvas'>
 		<div id="paint_panel"></div>
 	</div>
+	
+	<div id="login_footer">
+		Copyright &copy;2011-<s:property value="@com.google.code.lightssh.common.util.TextFormater@format(new java.util.Date(),'yyyy')"/>
+		<a href="http://code.google.com/p/lightssh/">lightssh</a>,Licensed under the Apache License, Version 2.0.
+	</div>
+	
 </body>
 </html>

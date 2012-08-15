@@ -36,8 +36,9 @@
 				height:10%;
 				line-height:10%;
 				font-size:14px;
-				vertical-align: 
-				middle;text-align:center;
+				vertical-align:middle;
+				text-align:center;
+				margin-top: -4px; /** fixed ie bug*/
 			}
 			
 			div#toggle a{
@@ -88,7 +89,7 @@
 	
 	
 	<body style="margin:0">
-		<div style="margin:0;#F2FFBF;height: 100%;line-height: 100%;">
+		<div style="margin:0;height: 100%;line-height: 100%;">
 			<div id="top_half" style=""></div>
 			<div id="toggle" style=" ">
 				<a onclick="toggle()" href="javascript:void(0);">&laquo;</a>

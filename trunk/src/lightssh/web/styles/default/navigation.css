@@ -156,7 +156,7 @@ ul.vertical-menu{
 ul.vertical-menu li{
 	float: none !important;
 	float: left;
-	width: 100%;
+	width: 110%; /*100% ie bug*/
 	display:block;
 }
 
