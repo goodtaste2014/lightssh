@@ -10,7 +10,8 @@
 	<bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
 		<property name="dataSource" ref="dataSource" />
 		<property name="transactionManager" ref="transactionManager" />
-		<property name="databaseSchemaUpdate" value="false" />
+		<property name="databaseSchemaUpdate" value="true" />
+		<!--<property name="databaseTablePrefix" value="T_" />-->
 		<!-- 不设置属性deploymentName，流程每次会重新发布 -->
 		<!--<property name="deploymentName" value="lightssh" />-->
 		
