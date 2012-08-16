@@ -189,6 +189,18 @@ public class Person extends Party{
 	protected GeographicBoundary country;
 	
 	/**
+	 * 民族
+	 */
+	@Column( name="ETHNIC_GROUP",length=50 )
+	protected String ethnicGroup;
+	
+	/**
+	 * 政治面貌
+	 */
+	@Column( name="PARTY_AFFILIATION",length=50 )
+	protected String partyAffiliation;
+	
+	/**
 	 * 所属二级地理区域
 	 */
 	@ManyToOne
@@ -326,6 +338,22 @@ public class Person extends Party{
 
 	public void setFourthGeo(GeographicBoundary fourthGeo) {
 		this.fourthGeo = fourthGeo;
+	}
+
+	public String getEthnicGroup() {
+		return ethnicGroup;
+	}
+
+	public void setEthnicGroup(String ethnicGroup) {
+		this.ethnicGroup = ethnicGroup;
+	}
+
+	public String getPartyAffiliation() {
+		return partyAffiliation;
+	}
+
+	public void setPartyAffiliation(String partyAffiliation) {
+		this.partyAffiliation = partyAffiliation;
 	}
 
 	@Override
