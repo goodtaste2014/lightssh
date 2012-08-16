@@ -40,11 +40,38 @@
 			</tr>
 			
 			<tr>
+				<th><label for="geo">出生地(籍贯)</label></th>
+				<td>
+					<select name="party.country.code">
+						<option value="<s:property value="%{party.country.code}"/>">
+							<s:property value="%{party.countryGeo.name}"/>
+						</option>
+					</select>
+				</td>
+			</tr>
+			
+			<tr>
+				<th><label for="ethnicGroup">民族</label></th>
+				<td>
+					<s:textfield id="ethnicGroup" name="party.ethnicGroup"/>
+				</td>
+			</tr>
+			
+			<tr>
+				<th><label for="partyAffiliation">政治面貌</label></th>
+				<td>
+					<s:textfield id="partyAffiliation" name="party.partyAffiliation"/>
+				</td>
+			</tr>
+			
+			<%-- 
+			<tr>
 				<th><label for="enabled">是否有效</label></th>
 				<td>
 					<s:select name="party.enabled" list="#{true:'是',false:'否'}"></s:select>
 				</td>
 			</tr>
+			--%>
 			
 			<tr>
 				<th><label for="credentialsType">证件类型</label></th>
@@ -84,17 +111,6 @@
 					<s:select list="@com.google.code.lightssh.project.party.entity.Person$EducationLevel@values()" 
 						name="party.degree" listKey="name()" headerKey="" headerValue=""
 						value="party.degree.name()" id="degree"/>
-				</td>
-			</tr>
-			
-			<tr>
-				<th><label for="geo">出生地</label></th>
-				<td>
-					<select name="party.country.code">
-						<option value="<s:property value="%{party.country.code}"/>">
-							<s:property value="%{party.countryGeo.name}"/>
-						</option>
-					</select>
 				</td>
 			</tr>
 			

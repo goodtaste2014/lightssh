@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.annotation.Resource;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.cxf.common.util.StringUtils;
 import org.springframework.stereotype.Component;
 
 import com.google.code.lightssh.common.ApplicationException;
@@ -131,6 +132,12 @@ public class PartyManagerImpl extends BaseManagerImpl<Party> implements PartyMan
 		
 		if( party instanceof Organization && !isUniqueName( party ) )
 			throw new ApplicationException("名称["+party.getName()+"]已经存在！");
+		
+		if( party instanceof Person ){
+			if( ((Person) party).getCountry() != null && StringUtils.isEmpty(
+					((Person) party).getCountry().getIdentity()))
+				((Person) party).setCountry(null);
+		}
 		
 		if( inserted ){
 			party.setId( sequenceManager.nextSequenceNumber( party ) );
