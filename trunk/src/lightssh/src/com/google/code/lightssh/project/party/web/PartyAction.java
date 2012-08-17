@@ -11,6 +11,7 @@ import com.google.code.lightssh.common.util.StringUtil;
 import com.google.code.lightssh.common.web.action.CrudAction;
 import com.google.code.lightssh.project.log.entity.Access;
 import com.google.code.lightssh.project.party.entity.Party;
+import com.google.code.lightssh.project.party.entity.Person;
 import com.google.code.lightssh.project.party.service.PartyManager;
 
 /**
@@ -61,6 +62,20 @@ public class PartyAction extends CrudAction<Party>{
 			return CONTACT;
 			
 		return super.edit();
+	}
+	
+	/**
+	 * 查看
+	 */
+	public String view(){
+		if( party != null && party instanceof Person ){
+			this.setParty(getManager().getPerson(party));
+		}
+		
+		if( party == null )
+			return INPUT;
+		
+		return SUCCESS;
 	}
 	
     /**
