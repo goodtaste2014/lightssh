@@ -53,6 +53,11 @@
 			<result name="contact">/pages/party/person/profile_contact.jsp</result>	
         </action>
         
+        <action name="view" class="partyAction" method="view">
+        	<result name="input" type="redirectAction">notfound</result>
+			<result name="success">/pages/party/person/view.jsp</result>	
+        </action>
+        
         <action name="save" class="partyAction" method="save">
         	<interceptor-ref name="crudStack"/>
 			<result name="input" >/pages/party/person/profile.jsp</result>

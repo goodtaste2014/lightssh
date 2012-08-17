@@ -63,6 +63,9 @@
 							<li>
 								<a href="<s:url value="/party/person/edit.do?party=person&party.id=%{id}"/>">编辑信息</a>
 							</li>
+							<li>
+								<a href="<s:url value="/party/person/view.do?party=person&party.id=%{id}"/>">查看人员</a>
+							</li>
 						</ul>
 						
 						<ul>
