@@ -5,6 +5,11 @@ import java.util.Date;
 import org.quartz.CronTrigger;
 import org.quartz.Trigger;
 
+/**
+ * 定时任务包裹类
+ * @author YangXiaojin
+ *
+ */
 public class TriggerWrap {
 
 	private static final long serialVersionUID = -6368089938691033645L;

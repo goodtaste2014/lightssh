@@ -13,10 +13,10 @@ import org.springframework.stereotype.Component;
 
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.util.StringUtil;
-import com.google.code.lightssh.common.web.action.CrudAction;
 import com.google.code.lightssh.project.security.entity.LoginAccount;
 import com.google.code.lightssh.project.security.entity.Role;
 import com.google.code.lightssh.project.security.service.LoginAccountManager;
+import com.google.code.lightssh.project.web.action.GenericAction;
 
 /**
  * LoginAccount Action 
@@ -25,7 +25,7 @@ import com.google.code.lightssh.project.security.service.LoginAccountManager;
  */
 @Component( "loginAccountAction" )
 @Scope("prototype")
-public class LoginAccountAction extends CrudAction<LoginAccount>{
+public class LoginAccountAction extends GenericAction<LoginAccount>{
 	
 	private static final long serialVersionUID = 2391150894472042768L;
 	
@@ -75,6 +75,8 @@ public class LoginAccountAction extends CrudAction<LoginAccount>{
 			page = new ListPage<LoginAccount>( );
 		page.addAscending("createDate");
 		
+		if( this.isPost() )
+			cacheRequestParams();
 		return super.list();
 	}
 	

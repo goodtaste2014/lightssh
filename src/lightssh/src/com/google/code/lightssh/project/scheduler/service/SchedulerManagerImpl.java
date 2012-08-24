@@ -7,14 +7,20 @@ import java.util.Map;
 
 import org.quartz.CronTrigger;
 import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 import org.quartz.impl.StdScheduler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import com.google.code.lightssh.common.ApplicationException;
 import com.google.code.lightssh.common.util.StringUtil;
 import com.google.code.lightssh.project.scheduler.entity.JobInterval;
 import com.google.code.lightssh.project.scheduler.entity.TriggerWrap;
 
 public class SchedulerManagerImpl implements SchedulerManager{
+	
+	private static Logger log = LoggerFactory.getLogger(SchedulerManagerImpl.class);
 	
 	private JobIntervalManager jobIntervalManager;
 	
@@ -121,6 +127,19 @@ public class SchedulerManagerImpl implements SchedulerManager{
 			}
 		}//end for
 	}
+	
+	/**
+	 * 定时器状态
+	 */
+	protected int getTriggerState( String name,String group ){
+		try {
+			return scheduler.getTriggerState( name , group );
+		} catch (SchedulerException e) {
+			e.printStackTrace();
+		}
+		
+		return -1;
+	}
 
 	@Override
 	public List<TriggerWrap> listAllTrigger() {
@@ -130,13 +149,18 @@ public class SchedulerManagerImpl implements SchedulerManager{
 		if( list != null && !list.isEmpty() ){
 			result = new ArrayList<TriggerWrap>();
 			
-			Map<String,JobInterval> jiMap = getJobIntervalMap();
+			//Map<String,JobInterval> jiMap = getJobIntervalMap();
 			
 			for(Trigger trigger:list ){
 				TriggerWrap wrap = new TriggerWrap( (Trigger)trigger.clone() );
+				/*
 				wrap.setPause((jiMap!=null && !jiMap.isEmpty() 
 					&& (jiMap.get(trigger.getName())!=null)
 					&& (!jiMap.get(trigger.getName()).isEnabled()))?true:false);
+				*/
+				boolean pause = Trigger.STATE_PAUSED == 
+					getTriggerState(trigger.getName(), trigger.getGroup());
+				wrap.setPause(pause);
 				result.add(wrap);
 			}
 		}
@@ -144,6 +168,9 @@ public class SchedulerManagerImpl implements SchedulerManager{
 		return result;
 	}
 	
+	/**
+	 * 启动或暂停定时器
+	 */
 	public void toggleTrigger(String triggerName ){
 		if( StringUtil.clean(triggerName)==null )
 			return;
@@ -152,7 +179,6 @@ public class SchedulerManagerImpl implements SchedulerManager{
 		JobInterval jobInterval = jobIntervalManager.get( triggerName );
 		if( jobInterval != null ){
 			jobInterval.setEnabled( Boolean.valueOf( !jobInterval.isEnabled() ) );
-			jobIntervalManager.save(jobInterval);
 			cronExpression = StringUtil.clean(jobInterval.getCronExpression());
 		}
 		
@@ -160,24 +186,39 @@ public class SchedulerManagerImpl implements SchedulerManager{
 		if( triggers == null || triggers.isEmpty() )
 			return;
 		
+		boolean enabled = false;
 		for( Trigger trigger:triggers ){
 			if( triggerName.equals( trigger.getName() ) ){
 				try{
-					int state = scheduler.getTriggerState(trigger.getName(), trigger.getGroup());
+					int state = getTriggerState(trigger.getName(), trigger.getGroup());
 					if( Trigger.STATE_PAUSED == state ){
-						if( trigger instanceof CronTrigger && cronExpression != null){
-							((CronTrigger)trigger).setCronExpression(cronExpression);
-							scheduler.rescheduleJob(trigger.getName(), trigger.getGroup(), trigger);
+						if( trigger instanceof CronTrigger){ 
+							if(cronExpression != null){
+								((CronTrigger)trigger).setCronExpression(cronExpression);
+								scheduler.rescheduleJob(trigger.getName(), trigger.getGroup(), trigger);
+							}else{
+								cronExpression = ((CronTrigger)trigger).getCronExpression();
+							}
 						}
 						scheduler.resumeTrigger(trigger.getName(), trigger.getGroup());
+						enabled = true;
 					}else
 						scheduler.pauseTrigger(trigger.getName(), trigger.getGroup());
 				}catch( Exception e ){
-					//e.printStackTrace();
+					log.error("操作定时任务[{}]异常:",trigger.getName(),e);
+					throw new ApplicationException( e );
 				}
 				break;
 			}
 		}//end for
+		
+		if( jobInterval == null )
+			jobInterval = new JobInterval();
+
+		jobInterval.setTriggerName(triggerName);
+		jobInterval.setEnabled( enabled );
+		jobInterval.setCronExpression(cronExpression);
+		jobIntervalManager.save(jobInterval);
 	}
 	
 }

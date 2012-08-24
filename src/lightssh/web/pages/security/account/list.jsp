@@ -31,7 +31,7 @@
 				<tbody>
 					<tr>
 						<th><label for="name">登录账号</label></th>
-						<td><s:textfield id="name" name="account.loginName" size="40" maxlength="100"/></td>
+						<td><s:textfield id="name" name="account.loginName" value="%{cachedParams['account.loginName']}" size="40" maxlength="100"/></td>
 						<td colspan="2"><input type="submit" class="action search" value="查询"/></td>
 					</tr>
 				</tbody>
