@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.util.StringUtil;
-import com.google.code.lightssh.project.web.action.BaseAction;
+import com.google.code.lightssh.project.web.action.GenericAction;
 import com.google.code.lightssh.project.workflow.service.WorkflowManager;
 
 /**
@@ -29,9 +29,10 @@ import com.google.code.lightssh.project.workflow.service.WorkflowManager;
  * @author YangXiaojin
  *
  */
+@SuppressWarnings("unchecked")
 @Component( "workflowAction" )
 @Scope("prototype")
-public class WorkflowAction extends BaseAction{
+public class WorkflowAction extends GenericAction{
 
 	private static final long serialVersionUID = 1793759911301918645L;
 	
