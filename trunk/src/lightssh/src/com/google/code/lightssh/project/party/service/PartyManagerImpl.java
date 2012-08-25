@@ -98,7 +98,7 @@ public class PartyManagerImpl extends BaseManagerImpl<Party> implements PartyMan
 			throw new ApplicationException("组织机构("
 					+party.getId()+")存在下级组织，不允许删除！");
 		
-		dao.delete(party);
+		//dao.delete(party);
 		
 		if( access != null && isDoLog(party))
 			accessManager.log(access, party, null);
@@ -115,6 +115,8 @@ public class PartyManagerImpl extends BaseManagerImpl<Party> implements PartyMan
 		PartyRelationship pr = partyRelationshipManager.getRollupByFromParty( party );
 		if( pr != null )
 			partyRelationshipManager.remove( pr );
+		
+		dao.delete(party);
 		
 		//TODO ERROR !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!??????????????
 		for( PartyRole partyRole:partyRoles ){
