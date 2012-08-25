@@ -15,28 +15,35 @@
 		
 	<%@ include file="/pages/common/messages.jsp" %>
 	<table class="profile">
+		<caption>人员基本信息</caption>
 		<colgroup>
 			<col width="15%"/>
-			<col width="30%"/>
+			<col width="15%"/>
+			<col width="25%"/>
 			<col width="15%"/>
 			<col />
 		</colgroup>
 		<tbody>
 			<tr>
+				<th rowspan="7"><img src="<s:url value="/images/default_avatar.png"/>" height="150px"/></th>
 				<th>姓名</th>
 				<td><s:property value="%{party.name}"/></td>
-				<th rowspan="7">照片</th>
-				<td rowspan="7"></td>
-			</tr>
-				 	 		 	  	 
-			<tr>
-				<th>性别</th>
-				<td><s:property value="%{party.gender}"/></td>
+				<th>出生日期</th>
+				<td><s:property value="%{party.birthday}"/></td>
 			</tr>
 			
 			<tr>
-				<th>出生日期</th>
-				<td><s:property value="%{party.birthday}"/></td>
+				<th>性别</th>
+				<td><s:property value="%{party.gender}"/></td>
+				<th>婚况</th>
+				<td><s:property value="%{party.maritalStatus}"/></td>
+			</tr>
+			
+			<tr>
+				<th>民族</th>
+				<td><s:property value="%{party.ethnicGroup}"/></td>
+				<th>政治面貌</th>
+				<td><s:property value="%{party.partyAffiliation}"/></td>
 			</tr>
 			
 			<tr>
@@ -47,33 +54,40 @@
 					<s:property value="%{party.thirdGeo.name}"/>
 					<s:property value="%{party.fourthGeo.name}"/>
 				</td>
-			</tr>
-			
-			<tr>
-				<th>民族</th>
-				<td><s:property value="%{party.ethnicGroup}"/></td>
-			</tr>
-			
-			<tr>
-				<th>政治面貌</th>
-				<td><s:property value="%{party.partyAffiliation}"/></td>
-			</tr>
-			
-			<tr>
-				<th>婚况</th>
-				<td><s:property value="%{party.maritalStatus}"/></td>
-			</tr>
-			
-			<tr>
 				<th>最高学历</th>
 				<td><s:property value="%{party.degree}"/></td>
+			</tr>
+			
+			<tr>
 				<th>证件(<s:property value="%{party.credentialsType}"/>)</th>
 				<td><s:property value="%{party.identityCardNumber}"/></td>
+				<th>血型</th>
+				<td><s:property value="%{party.bloodType}"/></td>
 			</tr>
+			
+			<tr>
+				<th>身高</th>
+				<td>
+					<s:if test="party.height != null && party.height != 0">
+						<s:property value="%{party.height}"/>&nbsp;CM
+					</s:if>
+				</td>
+				<th>体重</th>
+				<td>
+					<s:if test="party.weight != null && party.weight != 0">
+						<s:property value="%{party.weight}"/>&nbsp;KG
+					</s:if>
+				</td>
+			</tr>
+			
 			<tr>
 				<th>描述</th>
 				<td colspan="3"><s:property value="%{party.description}"/></td>
 			</tr>
 		</tbody>
+	</table>
+	
+	<table class="profile">
+		<caption>人员联系方式</caption>
 	</table>
 </body>
