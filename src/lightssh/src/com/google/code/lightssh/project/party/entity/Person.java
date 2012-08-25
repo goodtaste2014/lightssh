@@ -117,6 +117,30 @@ public class Person extends Party{
 			return this.value;
 		}
 	}
+	
+	/**
+	 * 血型
+	 */
+	public enum BloodType{
+		A("A") 
+		,B("B")
+		,AB("AB")
+		,O("O");
+		
+		private String value;
+		
+		BloodType( String value ){
+			this.value = value;
+		}
+
+		public String getValue() {
+			return value;
+		}
+		
+		public String toString(){
+			return this.value;
+		}
+	}
 		
 	/**
 	 * first name
@@ -220,6 +244,25 @@ public class Person extends Party{
 	@ManyToOne
 	@JoinColumn( name="FOURTH_GEO_ID" )
 	protected GeographicBoundary fourthGeo;
+	
+	/**
+	 * 血型
+	 */
+	@Column( name="BLOOD_TYPE",length=10 )
+	@Enumerated(value=EnumType.STRING)
+	protected BloodType bloodType;
+	
+	/**
+	 * 身高
+	 */
+	@Column( name="HEIGHT" )
+	protected Integer height;
+	
+	/**
+	 * 体重
+	 */
+	@Column( name="WEIGHT" )
+	protected Double weight;
 	
 	/**
 	 * 全名
@@ -354,6 +397,30 @@ public class Person extends Party{
 
 	public void setPartyAffiliation(String partyAffiliation) {
 		this.partyAffiliation = partyAffiliation;
+	}
+
+	public BloodType getBloodType() {
+		return bloodType;
+	}
+
+	public void setBloodType(BloodType bloodType) {
+		this.bloodType = bloodType;
+	}
+
+	public Integer getHeight() {
+		return height;
+	}
+
+	public void setHeight(Integer height) {
+		this.height = height;
+	}
+
+	public Double getWeight() {
+		return weight;
+	}
+
+	public void setWeight(Double weight) {
+		this.weight = weight;
 	}
 
 	@Override

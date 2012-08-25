@@ -162,6 +162,7 @@ ul.vertical-menu li{
 
 ul.vertical-menu li a{
 	font-size: 12px;
+	vertical-align: middle;
 }	
 
 /* mouse over color */
@@ -214,6 +215,7 @@ ul.vertical-menu .level1{
     filter: progid:DXImageTransform.Microsoft.Gradient(
                 StartColorStr='#FFFFFF', EndColorStr='#D7E8F5', GradientType=0);
 }
+
 /* level2 */
 ul.vertical-menu .level2{
 	line-height:22px;
@@ -257,6 +259,7 @@ ul.vertical-menu li a.expand span{
 	padding-left:12px;
 	background-image:url("../../images/background/icon_expanded.gif");
 	background-repeat: no-repeat;
+	background-position: 2px center;
 	line-height:18px;
 	height:18px;
 }
@@ -265,6 +268,7 @@ ul.vertical-menu li a.collapse span{
 	padding-left:12px;
 	background-image:url("../../images/background/icon_collapsed.gif");
 	background-repeat: no-repeat;
+	background-position: 2px center;
 	line-height:18px;
 	height:18px;
 }

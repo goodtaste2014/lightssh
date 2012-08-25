@@ -91,6 +91,7 @@
 				$("#parent_name").val( org.name );
 				$("#parent_id").val( org.id );
 				$("#popup").dialog('destroy');
+				$("label[for='parent_id']").remove();
 			}
 			
 			function treeview_add( node ){

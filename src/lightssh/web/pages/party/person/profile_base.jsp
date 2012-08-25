@@ -3,6 +3,12 @@
 
 <s:form id="profile_form" action="save" namespace="/party/person" method="post">
 	<table class="profile">
+		<colgroup>
+			<col width="15%"/>
+			<col width="30%"/>
+			<col width="15%"/>
+			<col width="40%"/>
+		</colgroup>
 		<tbody>
 			<input type="hidden" name="party" value="person"/>
 			<s:hidden name="party.id"/>
@@ -29,9 +35,7 @@
 				<td>
 					<s:textfield id="name" name="party.name" size="20"/>
 				</td>
-			</tr>
-			
-			<tr>
+				
 				<th><label for="gendar">性别</label></th>
 				<td>
 					<s:select name="party.gender" value="%{party.gender.name()}" listKey="name()" 
@@ -40,6 +44,11 @@
 			</tr>
 			
 			<tr>
+				<th><label for="birthday">生日</label></th>
+				<td>
+					<s:textfield name="party.birthday" id="person_birthday" size="10"/>
+				</td>
+				
 				<th><label for="geo">出生地(籍贯)</label></th>
 				<td>
 					<select name="party.country.code">
@@ -55,9 +64,7 @@
 				<td>
 					<s:textfield id="ethnicGroup" name="party.ethnicGroup"/>
 				</td>
-			</tr>
-			
-			<tr>
+				
 				<th><label for="partyAffiliation">政治面貌</label></th>
 				<td>
 					<s:textfield id="partyAffiliation" name="party.partyAffiliation"/>
@@ -78,11 +85,9 @@
 				<td>
 					<s:select list="@com.google.code.lightssh.project.party.entity.CredentialsType@frequentlyUsed()" 
 						name="party.credentialsType" listKey="name()" headerKey="" headerValue=""
-						value="party.credentialsType==null?party.credentialsType.name()" onchange="autofill(this)"/>
+						value="party.credentialsType.name()" onchange="autofill(this)"/>
 				</td>
-			</tr>
 			
-			<tr>
 				<th><label for="identityCardNumber">证件号码</label></th>
 				<td>
 					<s:textfield name="party.identityCardNumber" size="30" onchange="autofill(this)"/>
@@ -90,10 +95,7 @@
 			</tr>
 			
 			<tr>
-				<th><label for="birthday">生日</label></th>
-				<td>
-					<s:textfield name="party.birthday" id="person_birthday" size="10"/>
-				</td>
+				
 			</tr>
 			
 			<tr>
@@ -103,9 +105,7 @@
 						name="party.maritalStatus" listKey="name()" headerKey="" headerValue=""
 						value="party.maritalStatus.name()" id="maritalstatus"/>
 				</td>
-			</tr>
-			
-			<tr>
+			 
 				<th><label for="degree">最高学历</label></th>
 				<td>
 					<s:select list="@com.google.code.lightssh.project.party.entity.Person$EducationLevel@values()" 
@@ -115,8 +115,33 @@
 			</tr>
 			
 			<tr>
+				<th><label for="person_height">身高(CM)</label></th>
+				<td>
+					<s:textfield name="party.height" id="person_height" size="10"/>
+				</td>
+		
+				<th><label for="person_weight">体重(KG)</label></th>
+				<td>
+					<s:textfield name="party.weight" id="person_weight" size="10"/>
+				</td>
+			</tr>
+			
+			<tr>
+				<th><label for="bloodType">血型</label></th>
+				<td>
+					<s:select list="@com.google.code.lightssh.project.party.entity.Person$BloodType@values()" 
+						name="party.bloodType" listKey="name()" headerKey="" headerValue=""
+						value="party.bloodType.name()" id="bloodType"/>
+				</td>
+				
+				<th><label for=""></label></th>
+				<td>
+				</td>
+			</tr>
+			
+			<tr>
 				<th><label for="desc">描述</label></th>
-				<td><s:textarea id="desc" name="party.description" cols="60" rows="5"/></td>
+				<td colspan="3"><s:textarea id="desc" name="party.description" cols="80" rows="5"/></td>
 			</tr>
 		</tbody>
 	</table>
