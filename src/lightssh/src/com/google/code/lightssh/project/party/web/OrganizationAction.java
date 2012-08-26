@@ -11,9 +11,9 @@ import org.springframework.stereotype.Component;
 
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.web.action.CrudAction;
-import com.google.code.lightssh.project.contact.entity.ContactMechanism;
 import com.google.code.lightssh.project.log.entity.Access;
 import com.google.code.lightssh.project.party.entity.Organization;
+import com.google.code.lightssh.project.party.entity.PartyContact;
 import com.google.code.lightssh.project.party.entity.PartyRole;
 import com.google.code.lightssh.project.party.entity.PartyRole.RoleType;
 import com.google.code.lightssh.project.party.service.PartyContactManager;
@@ -115,7 +115,7 @@ public class OrganizationAction extends CrudAction<Organization>{
 			if( types != null && !types.isEmpty() )
 				this.party_role_type = types.get(0).getType();
 			
-			Collection<ContactMechanism> contacts = partyContactManager.list(party);
+			Collection<PartyContact> contacts = partyContactManager.list(party);
 			request.setAttribute("party_contacts",contacts );
 		}
 		

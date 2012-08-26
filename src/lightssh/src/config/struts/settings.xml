@@ -148,8 +148,14 @@
 			<result name="success" type="chain">viewparent</result>	
         </action>
         
-		<action name="removecontact" class="partyContactAction" method="remove">
+		<action name="removecontact" class="partyContactAction" method="delete">
+			<result name="input" type="redirectAction">viewparent</result>	
 			<result name="success" type="chain">viewparent</result>	
+		</action>
+		
+		<action name="editcontact" class="partyContactAction" method="edit">
+			<result name="input" >viewparent</result>	
+			<result name="success" type="redirectAction">viewparent</result>	
 		</action>
 	</package>
 	
