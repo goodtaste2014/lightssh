@@ -7,8 +7,8 @@
 	 * 隐藏或显示元素
 	 */
 	function displayElement( val ){
-		if( val == null )
-			val = $("contact_type").val();
+		if( val == null || val == '')
+			val = $("#contact_type").val();
 			
 		var tr_array = $("#contact_prfile_table tr");
 		$.each( tr_array,function(index,tr){
@@ -38,23 +38,25 @@
 				+"&nbsp;[ 国家代码 - 区号 - 号码 - 分机号 ]</td></tr>";
 			$("#contact_prfile_table tr:first").after( dom_tel_html );
 			clazz_val = "telephonenumber";
-		}else if('MOBILE' == val){
+		}else if('MOBILE' == val){//手机
 			var dom_tel_html = "<tr><th>手机</th><td>"
 				+"<input type='text'  param='ajax' size='2' name='contact.countryCode' value='+86'/>"
 				+" - <input type='text'  param='ajax' size='20' name='contact.contactNumber'/>"
 				+"&nbsp;[ 国家代码 - 号码  ]</td></tr>";
 			$("#contact_prfile_table tr:first").after( dom_tel_html );
 			clazz_val = "telephonenumber";
-		}else if('OTHER' == val || val == null ){
+		}else if('OTHER' == val || val == null ){ //其它
 			$("#contact_prfile_table tr:first").after( newTableTr(
 				{id:'contact_othertypevalue',label:'联系信息',name:'contact.otherTypeValue','size':40}) );
 			$("#contact_prfile_table tr:first").after( newTableTr(
 				{id:'contact_othertypename',label:'其它类型',name:'contact.otherTypeName'}) );
 		}else{
 			var label = '联系信息'
-			if('EMAIL'==val)
+			if('EMAIL'==val){
 				label = '邮箱地址'
-			else label = val;
+			}else{
+				label = $("#contact_type>option:selected").get(0).text;
+			}
 			$("#contact_prfile_table tr:first").after( newTableTr(
 				{'id':'contact_othertypevalue','label':label,'name':'contact.otherTypeValue','size':40}) );
 		}
@@ -134,7 +136,7 @@
 	}
 	
 	$(document).ready(function(){
-		displayElement();
+		displayElement( '' );
 	});
 </script>
 
@@ -149,7 +151,7 @@
 				<input type="hidden" id="clazz_contact" name="contact" value="contactmechanism"/>
 				<s:select list="@com.google.code.lightssh.project.contact.entity.ContactMechanism$ContactMechanismType@values()"
 					id="contact_type" listKey="name()" name="contact.type" value="contact.type.name()" 
-					onchange="showContactForm(this.value)" headerKey="" headerValue=""/>
+					onchange="showContactForm(this.value)"/>
 			</td>
 		</tr>
 		<tr>

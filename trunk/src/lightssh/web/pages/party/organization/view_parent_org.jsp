@@ -3,6 +3,13 @@
 	
 <head>
 	<meta name="decorator" content="background"/>
+	<script type="text/javascript">
+		function doRemove( id,name ){
+			var url = '<s:url value="/settings/organization/removecontact.do?partyContact.id="/>' + id ;
+			if( confirm('确认删除该联系方式'))
+				location.href=url;
+		}
+	</script>
 </head>
 
 <body>
@@ -42,32 +49,18 @@
 		</tbody>
 	</table>
 	
-	<table class="list">
-		<colgroup>
-			<col class="element" width="50px"/>
-			<col class="element" width="80px"/>
-			<col class="element" width="400px"/>
-			<col class="element" />
-			<col class="element" width="50px"/>
-		</colgroup>
-		<thead>
-			<tr>
-				<th>&nbsp;</th>
-				<th>类型</th>
-				<th>联系方式</th>
-				<th>描述</th>
-				<th>操作</th>
-			</tr>
-		</thead>
-		<s:iterator value="#request.party_contacts" status="loop">
-			<tr class="<s:property value="#loop.odd?\"odd\":\"even\""/>">
-				<td><s:property value="#loop.index+1"/></td>
-				<td><s:property value="type"/></td>
-				<td><s:property value="format()"/></td>
-				<td><s:property value="description" escape="true"/></td>
-				<td><a href="<s:url value="/settings/organization/removecontact.do?contact.id=%{id}"/>">删除</a></td>
-			</tr>
-		</s:iterator>
-	</table>
+	<mys:table value="#request.party_contacts" cssClass="list" status="loop">
+		<mys:column title="序号" width="50px">
+			<s:property value="#loop.index+1"/>
+		</mys:column>
+		<mys:column title="类型" value="contact.type" width="80px" sortable="false"/>
+		<mys:column title="联系方式" width="400px">
+			<s:property value="contact.format()"/>
+		</mys:column>
+		<mys:column title="描述" value="contact.description"/>
+		<mys:column title="操作" width="100px">
+			<a href="#" onclick="doRemove('<s:property value="%{id}"/>');">删除</a>
+		</mys:column>
+	</mys:table>
 	
 </body>

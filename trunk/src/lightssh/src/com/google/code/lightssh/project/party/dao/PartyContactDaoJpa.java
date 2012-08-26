@@ -20,7 +20,7 @@ import com.google.code.lightssh.project.party.entity.PartyContact;
 public class PartyContactDaoJpa extends JpaAnnotationDao<PartyContact> implements PartyContactDao{
 
 	@Override
-	public void remove(ContactMechanism contact) {
+	public Collection<PartyContact> list(Party party,ContactMechanism contact) {
 		//String hql = " FROM " + entityClass.getName() 
 		//	+ " AS m WHERE m.contact.id = ? "; 
 
@@ -29,10 +29,10 @@ public class PartyContactDaoJpa extends JpaAnnotationDao<PartyContact> implement
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Collection<ContactMechanism> list(Party party,
+	public Collection<PartyContact> list(Party party,
 			ContactMechanismType... types ) {
 		StringBuffer hql = new StringBuffer( 
-				" SELECT m.contact FROM " + entityClass.getName()
+				" SELECT m FROM " + entityClass.getName()
 			+ " AS m WHERE m.party = ? " );
 		
 		if( types != null ){

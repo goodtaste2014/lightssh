@@ -32,19 +32,21 @@ implements PartyContactManager{
 	}
 
 	@Override
-	public Collection<ContactMechanism> list(Party party,
+	public Collection<PartyContact> list(Party party,
 			ContactMechanismType type) {
 		return getDao().list(party, type);
 	}
 
 	@Override
-	public Collection<ContactMechanism> list(Party party) {
+	public Collection<PartyContact> list(Party party) {
 		return getDao().list(party );
 	}
 
 	@Override
-	public void remove(ContactMechanism contact) {
-		getDao().remove(contact);
+	public void remove(Party party,ContactMechanism contact) {
+		Collection<PartyContact> results = getDao().list(party, contact);
+		if( results != null && !results.isEmpty() )
+			remove( results );
 	}
 
 	@Override

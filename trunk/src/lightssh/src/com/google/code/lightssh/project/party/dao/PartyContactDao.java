@@ -16,16 +16,15 @@ import com.google.code.lightssh.project.party.entity.PartyContact;
 public interface PartyContactDao extends Dao<PartyContact>{
 	
 	/**
-	 * 通过ContactMechanism删除PartyContact
-	 * @param contact ContactMechanism
+	 * 根据 Party和Contact 查询
 	 */
-	public void remove( ContactMechanism contact );
+	public Collection<PartyContact> list(Party party,ContactMechanism contact);
 	
 	/**
 	 * 根据Party和联系方式类型查询联系方式
 	 * @param party Party
 	 * @param type 联系方式类型
 	 */
-	public Collection<ContactMechanism> list( Party party,ContactMechanismType...type );
+	public Collection<PartyContact> list( Party party,ContactMechanismType...type );
 
 }

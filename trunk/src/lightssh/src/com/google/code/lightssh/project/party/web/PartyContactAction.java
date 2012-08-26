@@ -23,18 +23,35 @@ public class PartyContactAction extends CrudAction<PartyContact>{
 	
 	private static final long serialVersionUID = 1L;
 	
+	private PartyContact partyContact;
+	
 	private ContactMechanism contact;
 	
 	private Party party;
 	
-	@Resource(name="partyContactManager" )
 	private PartyContactManager partyContactManager;
 	
 	private boolean exe_result;
+	
+	@Resource(name="partyContactManager" )
+	public void setManager(PartyContactManager partyContactManager){
+		this.partyContactManager = partyContactManager;
+		super.manager = partyContactManager;
+	}
 
 	@JSON( name="contact" )
 	public ContactMechanism getContact() {
 		return contact;
+	}
+
+	public PartyContact getPartyContact() {
+		this.partyContact = super.model;
+		return partyContact;
+	}
+
+	public void setPartyContact(PartyContact partyContact) {
+		this.partyContact = partyContact;
+		super.model = this.partyContact;
 	}
 
 	public void setContact(ContactMechanism contact) {
@@ -77,7 +94,7 @@ public class PartyContactAction extends CrudAction<PartyContact>{
 	
 	public String remove( ){
 		try{
-			partyContactManager.remove(contact);
+			partyContactManager.remove(party,contact);
 		}catch( Exception e ){
 			super.saveErrorMessage( e.getMessage() );
 		}
