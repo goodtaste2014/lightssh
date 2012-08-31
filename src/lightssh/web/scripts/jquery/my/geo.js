@@ -56,8 +56,10 @@
 			$(parent_geo).after( geo_select );
 		}
 
-		if( geo_code == null || geo_code == '' )
-			geo_code = $(event.currentTarget).val();
+		if( (geo_code == null || geo_code == '')&& event != null ){
+			var eTarget = event.currentTarget?event.currentTarget:event.srcElement;
+			geo_code = $(eTarget).val();
+		}
 		
 		$.ajax({
 			url: geo_url
