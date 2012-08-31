@@ -104,9 +104,9 @@ input[type=button], input[type=submit], input[type=reset]{
     cursor: pointer;
     border: 1px solid #bbb;
     
-    -webkit-border-radius:0.5em;
-	-moz-border-radius: 0.5em;
-	border-radius: 0.5em;
+    -webkit-border-radius:0.3em;
+	-moz-border-radius: 0.3em;
+	border-radius: 0.3em;
 	-webkit-transition: all .5s;
 	-moz-transition: all .5s;
 	transition: all .5s;
