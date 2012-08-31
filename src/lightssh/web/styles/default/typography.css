@@ -69,14 +69,26 @@ input,textarea{
     line-height:12px;
     margin:2px 0 2px 0;
     font-family:'Verdana'; 
+    
+	outline:none;
 }
 
 select{
 	vertical-align: middle;
     font-size:12px;
-    line-height:10px;
-    height:18px;
+    line-height:16px;
+    height:20px;
     font-family:'Verdana'; 
+    
+	outline:none;
+}
+
+input:focus{
+	background-color: white;
+	border-color: #6DCFF6;
+	-webkit-box-shadow: 0 0 5px rgba(109, 207, 246, .5);
+	-moz-box-shadow: 0 0 5px rgba(109,207,246,.5);
+	box-shadow: 0 0 5px rgba(109, 207, 246, .5);
 }
 
 input[type=file],input.file{
@@ -91,6 +103,13 @@ input[type=button], input[type=submit], input[type=reset]{
     text-decoration: none;
     cursor: pointer;
     border: 1px solid #bbb;
+    
+    -webkit-border-radius:0.5em;
+	-moz-border-radius: 0.5em;
+	border-radius: 0.5em;
+	-webkit-transition: all .5s;
+	-moz-transition: all .5s;
+	transition: all .5s;
 }
 
 input.action{
