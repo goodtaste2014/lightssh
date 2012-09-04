@@ -38,7 +38,7 @@ public class MyPathMatchingFilterChainResolver extends PathMatchingFilterChainRe
 			return pattern;
 		
 		return new String(pattern).replaceAll("(\\\\)(\\\\)=","=")
-			.replaceFirst("(\\\\)(\\\\)(\\.)","\\\\.")
+			.replaceAll("(\\\\)(\\\\)(\\.)","\\\\.")
 			.replaceFirst("(\\\\)(\\\\)(\\?)","\\\\?");
 	}
 	
