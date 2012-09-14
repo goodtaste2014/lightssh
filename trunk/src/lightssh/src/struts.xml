@@ -84,6 +84,7 @@
             <exception-mapping exception="java.lang.Exception" result="unknownException"/>
         </global-exception-mappings>
         
+        <!-- 403 PAGE -->
         <action name="403" class="securityAction">
             <result name="success">/pages/security/system/403.jsp</result>
         </action>
