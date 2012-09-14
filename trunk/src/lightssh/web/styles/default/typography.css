@@ -168,6 +168,13 @@ input.action:hover,input.action:active
 	color: #174417;
 }
 
+/** disabled */
+input[disabled]:hover{
+	cursor:default;
+	background-color: #F2F2F2;
+	border:1px solid #ddd;
+}
+
 input.user{
 	background: white url("../../images/background/icon_user.gif") no-repeat left center;
 	height:24px;

@@ -128,6 +128,7 @@ public class ContactMechanism extends UUIDModel{
 			case EMAIL:
 			case QQ:
 			case MSN:
+			case WEB_ADDRESS:
 				return this.otherTypeValue;
 			default: return "["+this.type+"]-" + this.description;
 		}

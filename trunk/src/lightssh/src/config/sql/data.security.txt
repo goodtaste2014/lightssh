@@ -3,9 +3,9 @@ DELETE FROM T_SECURITY_NAVIGATION;
 DELETE FROM T_REF_ROLE_PERMISSION;
 DELETE FROM T_SECURITY_PERMISSION;
 
-REM ## 插入权限
+--插入权限
 Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('编辑登录账户','SECURITY_ACCOUNT_EDIT','/security/account/edit.do*');
-REM ##Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('保存登录账户','SECURITY_ACCOUNT_SAVE','/security/account/save.do*');
+Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('保存登录账户','SECURITY_ACCOUNT_SAVE','/security/account/save.do*');
 Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('搜索登录账户','SECURITY_ACCOUNT_LIST','/security/account/list.do*');
 Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('修改密码','SECURITY_ACCOUNT_PASSWORD','/security/account/password.do*');
 Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('删除登录账户','SECURITY_ACCOUNT_REMOVE','/security/account/remove.do*');
@@ -17,12 +17,12 @@ Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('搜索角色'
 Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('删除角色','SECURITY_ROLE_REMOVE','/security/role/remove.do*');
 Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('编辑角色权限','SECURITY_ROLE_PERMISSION','/security/role/permission.do*');
 
-REM ## 基础管理
+--基础管理
 Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('系统日志','SETTINGS_LOG_LIST','/settings/log/list.do*');
 Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('定时任务','SETTINGS_SCHEDULER_LIST','/settings/scheduler/list.do*');
 
 
-REM ## 插入权限导航
+--插入权限导航
 Insert into T_SECURITY_NAVIGATION (ID,DESCRIPTION,NAME,SEQUENCE,PARENT_ID,PERMISSION_ID) values (100,null,'系统管理',1,null,null);
 Insert into T_SECURITY_NAVIGATION (ID,DESCRIPTION,NAME,SEQUENCE,PARENT_ID,PERMISSION_ID) values (110,null,'登录账号',1,100,null);
 Insert into T_SECURITY_NAVIGATION (ID,DESCRIPTION,NAME,SEQUENCE,PARENT_ID,PERMISSION_ID) values (111,null,'修改密码',1,110,'SECURITY_ACCOUNT_PASSWORD');

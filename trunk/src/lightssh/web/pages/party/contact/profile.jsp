@@ -39,7 +39,7 @@
 			$("#contact_prfile_table tr:first").after( dom_tel_html );
 			clazz_val = "telephonenumber";
 		}else if('MOBILE' == val){//手机
-			var dom_tel_html = "<tr><th>手机</th><td>"
+			var dom_tel_html = "<tr><th><label class='required'>手机</label></th><td>"
 				+"<input type='text'  param='ajax' size='2' name='contact.countryCode' value='+86'/>"
 				+" - <input type='text'  param='ajax' size='20' name='contact.contactNumber'/>"
 				+"&nbsp;[ 国家代码 - 号码  ]</td></tr>";
@@ -73,6 +73,7 @@
 	}
 	
 	function showContactForm( val ){
+		showMessage('');
 		displayElement( val );
 	}
 	
@@ -80,12 +81,15 @@
 	 * 提交数据
 	 */
 	function dosubmit( ){
+		showMessage('');
+		$("#submit").attr('disabled', 'true');//防重复提交
+		
 		var url = "<s:url value="/party/contact/save.do"/>";
 		var other_param = '';
 		$.each( $("input[param='ajax']"),function(index,ele){
 			other_param += ',"'+$(ele).attr("name")+'":"' +$(ele).val()+'"' ;
 		});
-		//alert( other_param );
+		//alert( $("#contact_type").val() );
 		var params = '{"contact":"' + $("#clazz_contact").val() + '"'
 			+',"party":"organization","party.id":"'+ $("input[name='party.id']").val() + '"'
 			+',"contact.type":"'+ $("#contact_type").val() + '"'
@@ -116,10 +120,34 @@
 			if( errors['contact.otherTypeName'] != null ){ //其它类型
 				showError( $("input[name='contact.otherTypeName']"),errors['contact.otherTypeName'][0] );
 			}
+
+			if( errors['contact.consignee'] != null ){ //邮政地址-收件人
+				showError( $("input[name='contact.consignee']"),errors['contact.consignee'][0] );
+			}
+			
+			if( errors['contact.postalCode'] != null ){ //邮政地址-邮编
+				showError( $("input[name='contact.postalCode']"),errors['contact.postalCode'][0] );
+			}
+			
+			if( errors['contact.address'] != null ){ //邮政地址-地址
+				showError( $("input[name='contact.address']"),errors['contact.address'][0] );
+			}
+			
+			if( errors['contact.contactNumber'] != null ){ //号码
+				showError( $("input[name='contact.contactNumber']"),errors['contact.contactNumber'][0] );
+			}
+			
+			if( errors['contact.otherTypeValue'] != null ){ //号码
+				showError( $("input[name='contact.otherTypeValue']"),errors['contact.otherTypeValue'][0] );
+			}
 		}
+
+		$("#submit").removeAttr('disabled');//防重复提交
 	}
 	
 	function showError( ele ,val){
+		//alert(val);
+		$( ele ).focus();
 		$( ele ).after( $("<label name='error' class='error'>"+val+"</label>") );
 	}
 	
@@ -162,5 +190,5 @@
 </table>
 
 	<p class="submit">
-		<input type="button" class="action save" name="save" value="添加" onclick="dosubmit()"/>
+		<input id="submit" type="button" class="action save" name="save" value="添加" onclick="dosubmit()"/>
 	</p>
