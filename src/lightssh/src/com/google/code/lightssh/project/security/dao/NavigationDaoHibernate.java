@@ -35,7 +35,7 @@ public class NavigationDaoHibernate extends HibernateAnnotationDao<Navigation> i
 		for( Navigation item:colls ){
 			if( item == null || item.getId() == null )
 				continue;
-			hql.append( (isFirst?"":",") + item.getId() );
+			hql.append( (isFirst?"":",") + "'" + item.getId() +"'" );
 			isFirst = false;
 		}
 		hql.append(" ) ");
