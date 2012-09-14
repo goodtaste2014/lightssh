@@ -37,7 +37,7 @@ public class NavigationDaoJpa extends JpaAnnotationDao<Navigation> implements Na
 		for( Navigation item:colls ){
 			if( item == null || item.getId() == null )
 				continue;
-			hql.append( (isFirst?"":",") + item.getId() );
+			hql.append( (isFirst?"":",") + "'" + item.getId() + "'" );
 			isFirst = false;
 		}
 		hql.append(" ) ");

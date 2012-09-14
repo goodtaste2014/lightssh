@@ -5,7 +5,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 	<head>
 		<title><s:text name="project.name" /></title>
+		<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/jquery.min.js"></script>
 		<link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/styles/<mys:theme />/theme.css" />
+		<script type="text/javascript">
+			$(document).ready(function(){
+				if( top != self ){//防止多嵌套
+					top.location.href=location.href;
+				}
+				$("#js_warning").remove();
+				$("#password").attr("value",'');
+				paint();
+			});
+		</script>
 	</head>
 	
 	<frameset rows="70px,*,20px" frameborder="0" framespacing="0" border="0" >

@@ -16,6 +16,10 @@
 	
 	<script type="text/javascript">
 		$(document).ready(function(){
+			if( top != self ){
+				//top.location.href=location.href;
+				//top.frames['navigation_frame'].hidden();
+			}
 			$("#js_warning").remove();
 			$("#password").attr("value",'');
 			paint();
