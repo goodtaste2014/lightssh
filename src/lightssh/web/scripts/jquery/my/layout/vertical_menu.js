@@ -23,8 +23,8 @@ function initVerticalMenu( menu_id ){
 	//添加事件，选中菜单的样式
 	$.each( $( '#'+menu_id+' li a') , function(index,li_a ){
 		$(li_a).bind("click",function(){
-			$("#"+menu_id+" a.current").removeClass("current");
-			$(this).addClass("current");
+				$("#"+menu_id+" a.current").removeClass("current");
+				$(this).addClass("current");
 			});
 		});
 }
@@ -109,11 +109,25 @@ function menuCookieStatus( ul_elements ){
  */
 function menuExpandOrCollapse( ){
 	var cookie_name = "menu_status"; //TODO
-
+	
 	//隐藏或显示子菜单
 	var ul_menu = $(this).parent().children("ul");
 	var isExpanded = $(ul_menu).css("display")=="block";
 	$(ul_menu).css("display",isExpanded?"none":"block");
+	
+	//关闭其它打开菜单
+	var openedL1 = $("ul").siblings(".level1.expand");
+	var openedIsCurrent = $(ul_menu).attr("id")
+		==$(openedL1).parent().children("ul").attr("id");//当前为展开
+	if( !openedIsCurrent )
+		openedIsCurrent = $(ul_menu).parent().parent().attr("id")
+		==$(openedL1).parent().children("ul").attr("id");
+	var closedUl = null; //关闭的UL
+	if( !openedIsCurrent ){
+		$(openedL1).removeClass("expand").addClass("collapse");
+		$(openedL1).parent().children("ul").css("display","none");
+		closedUl = $(openedL1).parent().children("ul").attr("id");
+	}
 	
 	//当前菜单样式
 	$(this).removeClass("expand").removeClass("collapse");
@@ -132,8 +146,16 @@ function menuExpandOrCollapse( ){
 		var ss = status.split(",");
 		if( ss != null && ss != "" ){
 			$.each( ss, function(index,ul_status){
-				if( ul_status.split(":")[0] != id )
+				var pair = ul_status.split(":");
+				if( (pair[0] == id) ){
+					//new_status += (new_status!=""?",":"") + ul_status;
+					//Cookie其它展开菜单都关闭
+					new_status += (new_status!=""?",":"") + pair[0] + (isExpanded?":collapse":":expand");
+				}else if( pair[0] == closedUl ){
+					new_status += (new_status!=""?",":"") + pair[0] + ":collapse";
+				}else{
 					new_status += (new_status!=""?",":"") + ul_status;
+				}
 			});
 		}else if( status.split(":")[0] != id ){
 			new_status += status;
