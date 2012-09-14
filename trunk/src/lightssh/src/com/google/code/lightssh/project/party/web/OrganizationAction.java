@@ -199,7 +199,7 @@ public class OrganizationAction extends CrudAction<Organization>{
             return INPUT;
         } 
         
-        String hint =  "保存(id="+ party.getIdentity() +")成功！" ;
+        String hint =  "保存["+ party.getName() +"]成功！" ;
         saveSuccessMessage( hint );
         String saveAndNext = request.getParameter("saveAndNext");
         if( saveAndNext != null && !"".equals( saveAndNext.trim() ) ){

@@ -7,6 +7,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
 import com.google.code.lightssh.common.entity.Persistence;
+import com.google.code.lightssh.common.model.Nameable;
 import com.google.code.lightssh.common.model.Sequenceable;
 import com.google.code.lightssh.common.util.StringUtil;
 
@@ -18,7 +19,7 @@ import com.google.code.lightssh.common.util.StringUtil;
 //@MappedSuperclass
 @Entity
 @Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
-public abstract class Party implements Persistence<String>,Sequenceable,Cloneable{
+public abstract class Party implements Persistence<String>,Sequenceable,Cloneable,Nameable{
 	
 	private static final long serialVersionUID = 1L;
 	

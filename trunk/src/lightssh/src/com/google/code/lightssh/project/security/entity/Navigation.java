@@ -19,7 +19,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import com.google.code.lightssh.common.entity.base.BaseModel;
+import com.google.code.lightssh.common.entity.base.UUIDModel;
 
 
 /**
@@ -29,7 +29,7 @@ import com.google.code.lightssh.common.entity.base.BaseModel;
  */
 @Entity
 @Table( name="T_SECURITY_NAVIGATION")
-public class Navigation extends BaseModel{
+public class Navigation extends UUIDModel{
 	
 	private static final long serialVersionUID = 8876574038535772527L;
 
