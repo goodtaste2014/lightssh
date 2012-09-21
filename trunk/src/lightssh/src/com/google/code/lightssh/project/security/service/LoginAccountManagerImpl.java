@@ -1,6 +1,7 @@
 package com.google.code.lightssh.project.security.service;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -142,6 +143,7 @@ public class LoginAccountManagerImpl extends BaseManagerImpl<LoginAccount>
 			throw new ApplicationException("原密码不正确！");
 		
 		account.setPassword( hash_new_pwd  );
+		account.setLastUpdatePasswordTime(Calendar.getInstance());//密码更新时间
 		super.dao.update( account );
 	}
 	

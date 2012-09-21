@@ -39,4 +39,12 @@ jQuery.lightssh={
 		$("tr").removeClass("focused");
 		$(popupMenu).parent().parent().addClass("focused");//事件目标父结点
 	}
+
+	 /**
+	  * 显示域错误信息
+	  */
+	,showFieldError:function(ele,val){
+		$( ele ).focus();
+		$( ele ).after( $("<label name='error' class='error'>"+val+"</label>") );
+	}
 };

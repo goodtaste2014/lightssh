@@ -151,7 +151,7 @@
 						<li>
 							<label for="login_submit">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 							<input type="submit" value="登录" id="login_submit" class="action login"/>
-							<a href="#">忘记密码？</a>
+							<a href="<s:url value="/security/recovery/account.do"/>">忘记密码？</a>
 						</li>
 					</ul>
 				</s:form>

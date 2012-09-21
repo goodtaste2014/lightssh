@@ -15,6 +15,19 @@ public class GenericAction<T extends Persistence<?>> extends com.google.code.lig
 	private static final long serialVersionUID = 1L;
 	
 	/**
+	 * 验证码
+	 */
+	private String captcha;
+	
+	public String getCaptcha() {
+		return captcha;
+	}
+
+	public void setCaptcha(String captcha) {
+		this.captcha = captcha;
+	}
+	
+	/**
 	 * 登录帐户
 	 */
 	public LoginAccount getLoginAccount( ){

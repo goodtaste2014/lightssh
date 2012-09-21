@@ -1,5 +1,6 @@
 package com.google.code.lightssh.project.security.entity;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -66,6 +67,12 @@ public class LoginAccount extends BaseModel {
 	private String password;
 	
 	/**
+	 * 邮箱
+	 */
+	@Column(name="EMAIL",unique=true,length=255)
+	private String email;
+	
+	/**
 	 * 是否有效
 	 */
 	@Column( name="ENABLED" )
@@ -117,6 +124,12 @@ public class LoginAccount extends BaseModel {
 	 */
 	@Column( name="USE_CA" )
 	private Boolean useCa;
+	
+	/**
+	 * 最后一次更新密码时间
+	 */
+	@Column( name="LAST_UPDATE_PASSWORD_TIME" )
+	private Calendar lastUpdatePasswordTime;
 	
 	public LoginAccount() {
 		super();
@@ -301,4 +314,21 @@ public class LoginAccount extends BaseModel {
 	public void setUseCa(Boolean useCa) {
 		this.useCa = useCa;
 	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public Calendar getLastUpdatePasswordTime() {
+		return lastUpdatePasswordTime;
+	}
+
+	public void setLastUpdatePasswordTime(Calendar lastUpdatePasswordTime) {
+		this.lastUpdatePasswordTime = lastUpdatePasswordTime;
+	}
+
 }

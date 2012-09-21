@@ -12,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import com.google.code.lightssh.common.entity.base.UUIDModel;
 import com.google.code.lightssh.common.model.Period;
@@ -22,7 +23,7 @@ import com.google.code.lightssh.common.model.Period;
  *
  */
 @Entity
-@Table( name="T_PARTY_ROLE" )
+@Table( name="T_PARTY_ROLE",uniqueConstraints={@UniqueConstraint(columnNames={"PARTY_ID","TYPE"})} )
 public class PartyRole extends UUIDModel{
 	
 	private static final long serialVersionUID = 2352810614613495760L;
