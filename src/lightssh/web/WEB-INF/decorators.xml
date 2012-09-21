@@ -8,5 +8,7 @@
     <decorator name="background" page="background.jsp"/>
 
     <decorator name="portal" page="portal.jsp"/>
+    
+    <decorator name="public" page="public.jsp"/>
 
 </decorators>

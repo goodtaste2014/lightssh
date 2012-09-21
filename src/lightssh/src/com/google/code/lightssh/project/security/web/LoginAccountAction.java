@@ -182,6 +182,9 @@ public class LoginAccountAction extends GenericAction<LoginAccount>{
 		return SUCCESS;
 	}
 	
+	/**
+	 * 查询当前登录帐号信息
+	 */
 	public String myprofile( ){
 		String loginName = SecurityUtils.getSubject().getPrincipal().toString();
 		if( loginName == null )
@@ -190,6 +193,26 @@ public class LoginAccountAction extends GenericAction<LoginAccount>{
 		this.setAccount( getManager().get( loginName ) );
 		if( this.account == null )
 			return LOGIN;
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * 忘记密码
+	 */
+	public String forgotpassword(){
+		if( this.isGet() )
+			return INPUT;
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * 忘记用户名
+	 */
+	public String forgotusername(){
+		if( this.isGet() )
+			return INPUT;
 		
 		return SUCCESS;
 	}

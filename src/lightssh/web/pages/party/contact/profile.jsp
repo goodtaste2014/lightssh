@@ -112,46 +112,39 @@
 			$("label[name='error']").remove();
 			var errors = json.fieldErrors;
 			if( errors['contact.type'] != null ){ //类型
-				showError( $("select[name='contact.type']"),errors['contact.type'][0] );
+				$.lightssh.showFieldError( $("select[name='contact.type']"),errors['contact.type'][0] );
 			}
 			if( errors['contact.description'] != null ){ //描述
-				showError( $("textarea[name='contact.description']"),errors['contact.description'][0] );
+				$.lightssh.showFieldError( $("textarea[name='contact.description']"),errors['contact.description'][0] );
 			}
 			if( errors['contact.otherTypeName'] != null ){ //其它类型
-				showError( $("input[name='contact.otherTypeName']"),errors['contact.otherTypeName'][0] );
+				$.lightssh.showFieldError( $("input[name='contact.otherTypeName']"),errors['contact.otherTypeName'][0] );
 			}
 
 			if( errors['contact.consignee'] != null ){ //邮政地址-收件人
-				showError( $("input[name='contact.consignee']"),errors['contact.consignee'][0] );
+				$.lightssh.showFieldError( $("input[name='contact.consignee']"),errors['contact.consignee'][0] );
 			}
 			
 			if( errors['contact.postalCode'] != null ){ //邮政地址-邮编
-				showError( $("input[name='contact.postalCode']"),errors['contact.postalCode'][0] );
+				$.lightssh.showFieldError( $("input[name='contact.postalCode']"),errors['contact.postalCode'][0] );
 			}
 			
 			if( errors['contact.address'] != null ){ //邮政地址-地址
-				showError( $("input[name='contact.address']"),errors['contact.address'][0] );
+				$.lightssh.showFieldError( $("input[name='contact.address']"),errors['contact.address'][0] );
 			}
 			
 			if( errors['contact.contactNumber'] != null ){ //号码
-				showError( $("input[name='contact.contactNumber']"),errors['contact.contactNumber'][0] );
+				$.lightssh.showFieldError( $("input[name='contact.contactNumber']"),errors['contact.contactNumber'][0] );
 			}
 			
 			if( errors['contact.otherTypeValue'] != null ){ //号码
-				showError( $("input[name='contact.otherTypeValue']"),errors['contact.otherTypeValue'][0] );
+				$.lightssh.showFieldError( $("input[name='contact.otherTypeValue']"),errors['contact.otherTypeValue'][0] );
 			}
 		}
 
 		$("#submit").removeAttr('disabled');//防重复提交
 	}
 	
-	function showError( ele ,val){
-		//alert(val);
-		$( ele ).focus();
-		$( ele ).after( $("<label name='error' class='error'>"+val+"</label>") );
-	}
-	
-		
 	/**
 	 * 显示提示信息
 	 */

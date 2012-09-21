@@ -22,7 +22,7 @@
         </action>
         
         <action name="password" class="loginAccountAction" method="password">
-			<result name="input" >/pages/security/account/password.jsp</result>
+			<result name="input" >/pages/security/account/password/edit.jsp</result>
         </action>
         
         <action name="my" class="loginAccountAction" method="myprofile">
@@ -57,6 +57,34 @@
  				<param name="bufferSize">1024</param>
 			</result>
 		</action>
+		
+	</package>
+	
+	<package name="security_password" extends="default" namespace="/security/recovery">
+		<action name="account" class="loginAccountAction">
+			<result name="success">/pages/security/account/recovery.jsp</result>
+		</action>
+		
+		<action name="forgotpassword" class="loginAccountAction" method="forgotpassword">
+			<result name="input" type="redirectAction">account</result>
+			<result name="success">/pages/security/account/password/forgot.jsp</result>
+        </action>
+        
+		<action name="forgotusername" class="loginAccountAction" method="forgotusername">
+			<result name="input">/pages/security/account/recovery/forgotusername.jsp</result>
+			<result name="success">/pages/security/account/recovery/forgotusername.jsp</result>
+        </action>
+        
+		<action name="recoveryoptions" class="loginAccountAction" method="retrieve">
+		</action>
+		
+		<action name="emailrecovery" class="loginAccountAction" method="emailrecovery">
+		</action>
+		
+		<action name="retrieve" class="loginAccountAction" method="retrieve">
+			<result name="input">/pages/security/account/password/forget.jsp</result>
+			<result name="success">/pages/security/account/password/retrieve.jsp</result>
+        </action>
 	</package>
 
 	<package name="security_role" extends="default" namespace="/security/role">
