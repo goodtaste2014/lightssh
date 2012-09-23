@@ -19,6 +19,12 @@ public interface LoginAccountManager extends BaseManager<LoginAccount>{
 	 * 根据名称查询登录账号
 	 */
 	public LoginAccount get( String name );
+	
+	/**
+	 * 根据电子邮箱查登录帐号
+	 */
+	public LoginAccount getByEmail(String email);
+	
 	/**
 	 * 根据名称查询登录账号,只查询当前实现（不关联查询）
 	 */

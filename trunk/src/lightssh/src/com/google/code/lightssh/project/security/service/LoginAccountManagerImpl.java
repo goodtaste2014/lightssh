@@ -78,6 +78,14 @@ public class LoginAccountManagerImpl extends BaseManagerImpl<LoginAccount>
 		return getDao().get( name );
 	}
 	
+
+	/**
+	 * 根据电子邮箱查登录帐号
+	 */
+	public LoginAccount getByEmail(String email){
+		return getDao().getByEmail(email);
+	}
+	
 	public LoginAccount getLight( String name ){
 		return getDao().getWithPartyIdentity( name ); //TODO
 	}

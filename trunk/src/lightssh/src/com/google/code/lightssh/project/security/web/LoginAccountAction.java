@@ -8,11 +8,14 @@ import javax.annotation.Resource;
 
 import org.apache.cxf.common.util.StringUtils;
 import org.apache.shiro.SecurityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.util.StringUtil;
+import com.google.code.lightssh.project.mail.MailSenderManager;
 import com.google.code.lightssh.project.security.entity.LoginAccount;
 import com.google.code.lightssh.project.security.entity.Role;
 import com.google.code.lightssh.project.security.service.LoginAccountManager;
@@ -28,6 +31,11 @@ import com.google.code.lightssh.project.web.action.GenericAction;
 public class LoginAccountAction extends GenericAction<LoginAccount>{
 	
 	private static final long serialVersionUID = 2391150894472042768L;
+
+	private static Logger log = LoggerFactory.getLogger(LoginAccountAction.class);
+	
+	@Resource(name="mailSenderManager")
+	private MailSenderManager mailSenderManager;
 	
 	private LoginAccount account;
 	
@@ -213,6 +221,24 @@ public class LoginAccountAction extends GenericAction<LoginAccount>{
 	public String forgotusername(){
 		if( this.isGet() )
 			return INPUT;
+		
+		cleanCaptcha();//防止重复提交
+		
+		if( account == null || account.getEmail() == null )
+			return INPUT;
+		
+		try{
+			
+			String email = account.getEmail();
+			setAccount(getManager().getByEmail( email ));
+			
+			if( account != null ){
+				//send username to email address
+				mailSenderManager.forgotUsername(account.getUsername(),email);
+			}
+		}catch( Exception e ){
+			log.warn("找回用户名过程出现异常：",e);
+		}
 		
 		return SUCCESS;
 	}

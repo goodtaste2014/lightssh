@@ -39,6 +39,15 @@ public class LoginAccountDaoHibernate extends HibernateAnnotationDao<LoginAccoun
 		return (results==null||results.isEmpty())?null:results.get(0);
 	}
 	
+	@SuppressWarnings("unchecked")
+	@Override
+	public LoginAccount getByEmail(String email) {
+		String hql = " SELECT m FROM " + entityClass.getName() + " AS m WHERE m.email = ? ";
+		List<LoginAccount> results = getHibernateTemplate().find(hql, email );
+		
+		return (results==null||results.isEmpty())?null:results.get(0);
+	}
+	
 	/**
 	 * 组装LoginAccount对象
 	 */

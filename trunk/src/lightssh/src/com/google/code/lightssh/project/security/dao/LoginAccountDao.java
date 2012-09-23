@@ -19,6 +19,12 @@ public interface LoginAccountDao extends Dao<LoginAccount>{
 	 */
 	public LoginAccount get( String loginName );
 	
+
+	/**
+	 * 根据电子邮箱查登录帐号
+	 */
+	public LoginAccount getByEmail(String email);
+	
 	/**
 	 * 更新角色
 	 */
