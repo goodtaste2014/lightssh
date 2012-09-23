@@ -13,7 +13,7 @@
         </field-validator>
 	</field>
 	
-	<field name="captcha" >
+	<field name="captcha">
 		<field-validator type="requiredstring">
             <message>必填项！</message>
         </field-validator>

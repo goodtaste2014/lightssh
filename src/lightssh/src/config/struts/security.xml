@@ -72,7 +72,7 @@
         
 		<action name="forgotusername" class="loginAccountAction" method="forgotusername">
 			<result name="input">/pages/security/account/recovery/forgotusername.jsp</result>
-			<result name="success">/pages/security/account/recovery/forgotusername.jsp</result>
+			<result name="success">/pages/security/account/recovery/help_username.jsp</result>
         </action>
         
 		<action name="recoveryoptions" class="loginAccountAction" method="retrieve">

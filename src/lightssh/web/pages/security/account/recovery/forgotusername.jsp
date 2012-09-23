@@ -44,6 +44,8 @@
 			<span class="refresh" onclick="refreshCaptcha()">刷新</span>
 		</p>
 		
+		<input type="button" value="返回" class="action plain" 
+			onclick="location.href='<s:url value="/security/recovery/account.do"/>'"/>
 		<input type="submit" value="继续" class="action plain"/>
 	</form>
 </body>

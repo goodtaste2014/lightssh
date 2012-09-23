@@ -76,6 +76,12 @@
 		</property> 
 	</bean>
 	
+	<!-- email sender -->
+	<bean id="mailSender" class="com.google.code.lightssh.common.mail.sender.ApacheMailSender">
+		<property name="debug" value="false"/>
+		<property name="charset" value="UTF-8"/>
+	</bean>
+	
 	<!-- WEBLOGIC NOT ALLOWED -->
 	<!--  
 	<import resource="applicationContext-no-annotation.xml"/>

@@ -78,5 +78,13 @@ public class GenericAction<T extends Persistence<?>> extends com.google.code.lig
 		
 		return cachedParamMap.get(request.getAttribute( Globals.FORWARD_REQUEST_URI_ATTR ));
 	}
+	
+	/**
+	 * 清除验证码
+	 */
+	protected void cleanCaptcha( ){
+		request.getSession().setAttribute(
+				com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY,null);
+	}
 
 }
