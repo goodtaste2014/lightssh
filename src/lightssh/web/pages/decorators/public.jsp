@@ -25,10 +25,16 @@
 		
 		<div class="portal-header-bar">
 			<div class="header content">
-				<a href="<s:url value="/security/account/recovery.do"/>">
+				<a href="<s:url value="/login.do"/>">
 					<img src="<s:url value="/images/logo.png"/>" class="logo" alt="LightSSH">
 				</a>
 			</div>
+			
+			<shiro:authenticated>
+				<div style="float: right;height:80px;line-height: 80px;margin-right: 2em;">
+					<a href="<s:url value="/welcome.do"/>" class="icon user"><s:property value="loginUser"/></a>
+				</div>
+			</shiro:authenticated>
 		</div>
 		
 		<div id="main">

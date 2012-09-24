@@ -29,7 +29,7 @@
 			$("input[type=submit]").attr('disabled', 'true');//防重复提交
 			
 			var url = "<s:url value="/security/recovery/forgotusername.do"/>";
-			if( $("input[name='forgot']").val()=='passowrd')
+			if( $("input[name='forgot']:checked").val()=='password')
 				url = "<s:url value="/security/recovery/forgotpassword.do"/>";
 
 			$("form").attr("action",url);
@@ -42,13 +42,19 @@
 
 <body class="public">
 	<h1>登录过程遇到问题了？</h1>
+	<%@ include file="/pages/common/messages.jsp" %>
 	<form method="post">
 		<div class="radio-option">
 			<input type="radio" name="forgot" value="password" id="radio1" onclick="recoveryOptionSelected()">
 			<label class="radio-label" for="radio1">忘记了密码</label>
 			<div class="hideable-box">
 				<div class="secondary">要重置密码，请输入您登录系统时所用的用户名，该用户名可以是您的邮箱地址。</div>
-				<input id="subject" type="text" name="account.username" value="" size="40">
+				<label>
+					电子邮件地址/用户名
+					<p>
+						<input id="subject" type="text" name="account.loginName" value="" size="40">
+					</p>
+				</label>
 			</div>
 		</div>
 		

@@ -59,9 +59,23 @@
 			</tr>
 			
 			<tr>
-				<th><label >密码保护问题</label></th>
+				<th><label >邮箱地址</label></th>
 				<td>
-					<s:property value="account.passwordQuestion"/>
+					<s:property value="account.email"/>
+				</td>
+			</tr>
+			
+			<tr>
+				<th><label>上次更新密码时间</label></th>
+				<td>
+					<s:property value="account.lastUpdatePasswordTime"/>
+				</td>
+			</tr>
+			
+			<tr>
+				<th><label for="desc">创建时间</label></th>
+				<td>
+					<s:property value="@com.google.code.lightssh.common.util.TextFormater@format(account.createDate,'yyyy-MM-dd HH:mm:ss')"/>
 				</td>
 			</tr>
 			
@@ -73,12 +87,6 @@
 				</td>
 			</tr>
 			
-			<tr>
-				<th><label for="desc">创建时间</label></th>
-				<td>
-					<s:property value="account.createDate"/>
-				</td>
-			</tr>
 		</tbody>
 	</table>
 </body>
