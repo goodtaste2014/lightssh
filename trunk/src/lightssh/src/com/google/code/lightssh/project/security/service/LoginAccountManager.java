@@ -49,6 +49,13 @@ public interface LoginAccountManager extends BaseManager<LoginAccount>{
 	 * 更新密码
 	 */
 	public void updatePassword( String name,String password,String newPassword );
+
+	/**
+	 * 重置密码
+	 * @param name 登录帐号
+	 * @param newPassword 新密码
+	 */
+	public void resetPassword( String name,String newPassword );
 	
 	/**
 	 * 更新角色

@@ -155,6 +155,25 @@ public class LoginAccountManagerImpl extends BaseManagerImpl<LoginAccount>
 		super.dao.update( account );
 	}
 	
+	/**
+	 * 重置密码
+	 * @param name 登录帐号
+	 * @param newPassword 新密码
+	 */
+	public void resetPassword( String name,String newPassword ){
+		LoginAccount account = getDao().get(name);
+		if( account == null )
+			throw new ApplicationException("找不到名称为"+name+"的账号！");
+		
+		String hash_new_pwd = CryptographyUtil.hashMd5Hex( newPassword );
+
+		account.setPassword( hash_new_pwd  );
+		account.setLastUpdatePasswordTime(Calendar.getInstance());//密码更新时间
+		super.dao.update( account );
+		
+		log.info("系统登录帐号[{}]密码被重置！",name);
+	}
+	
 	public void save( LoginAccount account ,Access access ){
 		this.save(account);
 		if( access != null ){
