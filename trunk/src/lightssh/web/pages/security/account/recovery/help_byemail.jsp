@@ -10,22 +10,14 @@
 </head>	
 
 <body class="public">
-	<h1>帐户帮助</h1>
+	<h1>电子邮件已发送到<strong><s:property value="account.email"/></strong></h1>
 	
 	<s:if test="account != null ">
 		<p>
 			<div class="secondary">
 				已向 <strong><s:property value="account.email"/></strong>
-				发送了一封电子邮件，其中含有与该地址关联的用户名。
+				发送了一封电子邮件，要恢复您的帐户，请按照邮件内容进行操作。
 				<br/>
-				收到此邮件后，你可用使用该用户名进行登录。如果您忘记了登录密码，可以通过链接
-				<a href="<s:url value="/security/recovery/account.do"/>">忘记密码</a>找回。
-			</div>
-			
-			<div class="secondary">
-				<br/>
-				如果<strong> <s:property value="account.email"/></strong>
-				不是您的邮箱地址，您就不会收到电子邮件。
 			</div>
 		</p>
 	</s:if>
