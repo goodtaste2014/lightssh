@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.catalina.Globals;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.UsernamePasswordToken;
 
 import com.google.code.lightssh.common.entity.Persistence;
 import com.google.code.lightssh.common.web.SessionKey;
@@ -40,6 +43,24 @@ public class GenericAction<T extends Persistence<?>> extends com.google.code.lig
 	public String getLoginUser( ){
 		LoginAccount la = getLoginAccount();
 		return la==null?null:la.getLoginName();
+	}
+	
+	/**
+	 * 登录
+	 */
+	protected void login( LoginAccount account ){
+		if( account == null || account.getLoginName() == null
+				|| account.getPassword() == null )
+			return;
+		
+		AuthenticationToken token = new UsernamePasswordToken(
+				account.getLoginName(),account.getPassword());
+		
+		SecurityUtils.getSubject().login(token);
+		
+		//记录Session
+		request.getSession().setAttribute(
+				SessionKey.LOGIN_ACCOUNT, account);
 	}
 	
 	/**

@@ -14,7 +14,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.google.code.lightssh.common.model.page.ListPage;
+import com.google.code.lightssh.common.util.CryptographyUtil;
 import com.google.code.lightssh.common.util.StringUtil;
+import com.google.code.lightssh.common.web.SessionKey;
 import com.google.code.lightssh.project.mail.MailSenderManager;
 import com.google.code.lightssh.project.security.entity.LoginAccount;
 import com.google.code.lightssh.project.security.entity.Role;
@@ -42,6 +44,11 @@ public class LoginAccountAction extends GenericAction<LoginAccount>{
 	private List<String> passwords = new ArrayList<String>();
 	
 	private String ids;
+	
+	/**
+	 * 安全值 
+	 */
+	private String safeMessage;
 	
 	@Resource( name="loginAccountManager" )
 	public void setLoginAccountManager( LoginAccountManager manager ){
@@ -76,6 +83,14 @@ public class LoginAccountAction extends GenericAction<LoginAccount>{
 
 	public void setIds(String ids) {
 		this.ids = ids;
+	}
+
+	public String getSafeMessage() {
+		return safeMessage;
+	}
+
+	public void setSafeMessage(String safeMessage) {
+		this.safeMessage = safeMessage;
 	}
 
 	public String list(){
@@ -206,11 +221,144 @@ public class LoginAccountAction extends GenericAction<LoginAccount>{
 	}
 	
 	/**
+	 * 帐号恢复
+	 */
+	public String recovery(){
+		SecurityUtils.getSubject().logout();
+		
+		//clean Session
+		request.getSession().setAttribute(
+				SessionKey.LOGIN_ACCOUNT,null);
+		return SUCCESS;
+	}
+	
+	/**
 	 * 忘记密码
 	 */
 	public String forgotpassword(){
 		if( this.isGet() )
 			return INPUT;
+		
+		if( account == null || account.getLoginName() == null )
+			return INPUT;
+		
+		String subject = account.getLoginName();
+		if( subject.indexOf("@") > 0 )
+			setAccount( getManager().getByEmail(subject) );
+		else
+			setAccount( getManager().get(subject) );
+		
+		if( account ==  null ){
+			this.saveErrorMessage("没有找到与该登录用户名或电子邮件地址关联的帐户信息！");
+			return INPUT;
+		}
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * 通过邮箱找回密码
+	 */
+	public String emailrecovery( ){
+		if( account == null || account.getLoginName() == null )
+			return INPUT;
+		
+		cleanCaptcha();//防止重复提交
+		
+		LoginAccount la = this.getManager().get(account.getLoginName());
+		if( la == null ){
+			this.addActionError("无法找回与用户"+account.getLoginName()+"匹配的帐号信息！");
+			return INPUT;
+		}
+		
+		this.setAccount(la);
+		StringBuffer url = new StringBuffer();
+		url.append("HTTP/1.1".equals(request.getProtocol())?"http://":"https://");
+		url.append( request.getRemoteHost());
+		url.append( request.getLocalPort()!=80?":"+request.getLocalPort():"");
+		url.append( request.getContextPath() );
+		
+		url.append("/security/recovery/emailretrieve.do");
+		url.append("?account.loginName="+account.getLoginName());
+		url.append("&message=");
+		url.append(CryptographyUtil.hashSha1Hex(account.getEmail()+account.getPassword()));
+		try{
+			mailSenderManager.forgotPassword(url.toString(),account);
+		}catch( Exception e ){
+			this.addActionError("找回密码异常："+e.getMessage());
+			return INPUT;
+		}
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * 邮件重置密码
+	 */
+	public String emailretrieve(){
+		String message = request.getParameter("message");
+		if( account == null || account.getLoginName() == null || message == null ){
+			this.addActionError("错误的链接地址！");
+			return INPUT;
+		}
+		
+		LoginAccount la = this.getManager().get(account.getLoginName());
+		if( la == null ){
+			this.addActionError("非法或过期的链接地址！");
+			return INPUT;
+		}
+		this.setAccount(la);
+		
+		String checkMsg = CryptographyUtil.hashSha1Hex(
+				account.getEmail()+account.getPassword());
+		if( !message.equals(checkMsg) ){
+			this.addActionError("非法或过期的链接地址！");
+			return INPUT;
+		}
+		
+		//用于重置密码的"安全值"
+		safeMessage = CryptographyUtil.hashSha1Hex(
+				request.getSession().getId() 
+				+ account.getLoginName() + account.getPassword());
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * 重置密码
+	 */
+	public String retrieve( ){
+		if( safeMessage == null || account == null 
+				|| account.getLoginName() == null )
+			return ERROR;
+		
+		setAccount( this.getManager().get(account.getLoginName()) );
+		if( account == null )
+			return ERROR;
+		
+		if( passwords == null || passwords.isEmpty() ){
+			this.addFieldError("passwords[0]","未设置新密码！");
+			return INPUT;
+		}
+
+		//用于重置密码的"安全值"
+		String checkValue = CryptographyUtil.hashSha1Hex(
+					request.getSession().getId() 
+					+ account.getLoginName() + account.getPassword());
+		
+		if( !safeMessage.equals(checkValue) ){
+			return ERROR;
+		}
+		
+		try{
+			getManager().resetPassword(account.getLoginName(),passwords.get(0));
+			
+			login(account);//登录
+			this.cleanCaptcha(); //防止重复登录
+		}catch( Exception e ){
+			log.error("重设帐号[{}]密码异常：",account.getLoginName(),e);
+			return ERROR;
+		}
 		
 		return SUCCESS;
 	}
