@@ -62,16 +62,19 @@
 					<div class="popup-menu-list" style="white-space: nowrap; width: auto; ">
 						<ul class="section">
 							<li>
-								<a href="#">禁用帐号</a>
+								<a href="<s:url value="/security/account/edit.do?account.id=%{id}"/>">编辑帐号</a>
+							</li>
+							<li>
+								<a href="<s:url value="/security/account/edit.do?account.id=%{id}&role=update"/>">编辑角色</a>
 							</li>
 						</ul>
 						
 						<ul class="section">
 							<li>
-								<a href="<s:url value="/security/account/edit.do?account.id=%{id}"/>">编辑帐号</a>
+								<a href="#">禁用帐号</a>
 							</li>
 							<li>
-								<a href="<s:url value="/security/account/edit.do?account.id=%{id}&role=update"/>">编辑角色</a>
+								<a href="<s:url value="/security/account/prereset.do?account.loginName=%{loginName}"/>">重设密码</a>
 							</li>
 						</ul>
 						

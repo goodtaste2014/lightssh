@@ -209,13 +209,52 @@ public class LoginAccountAction extends GenericAction<LoginAccount>{
 	 * 查询当前登录帐号信息
 	 */
 	public String myprofile( ){
-		String loginName = SecurityUtils.getSubject().getPrincipal().toString();
-		if( loginName == null )
+		if( this.getLoginUser() == null )
 			return LOGIN;
 		
-		this.setAccount( getManager().get( loginName ) );
+		this.setAccount( getManager().get( getLoginUser() ) );
 		if( this.account == null )
 			return LOGIN;
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * 重置密码
+	 */
+	public String prereset(){
+		if( account == null || account.getLoginName() == null ){
+			this.saveErrorMessage("重置密码参数错误！");
+			return INPUT;
+		}
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * 重置密码
+	 */
+	public String resetpassword(){
+		if( account == null || account.getLoginName() == null
+				|| passwords == null || passwords.isEmpty() ){
+			this.addActionError("请求参数错误！");
+			return INPUT;
+		}
+		
+		if( this.getLoginUser().equals(account.getLoginName()) ){
+			this.addActionError("不能重置当前登录用户的密码！");
+			return INPUT;
+		}
+		
+		try{
+			getManager().resetPassword(account.getLoginName(),passwords.get(0));
+		}catch( Exception e ){
+			super.addActionError("重置密码异常："+e.getMessage());
+		}
+		
+		saveSuccessMessage("帐号["+account.getLoginName()+"]登录密码已被成功重置！");
+		log.info("操作员[{}]成功重置帐号[{}]登录密码！"
+				,getLoginUser(),account.getLoginName());
 		
 		return SUCCESS;
 	}

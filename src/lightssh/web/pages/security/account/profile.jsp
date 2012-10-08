@@ -21,7 +21,7 @@
 			 */
 			$("#profile_form").validate({
 				rules:{
-					"account.loginName":{required:true,loginName:true}
+					"account.loginName":{required:true}
 				},
 				messages:{
 					"account.loginName": {}
@@ -119,6 +119,10 @@
 						<s:textfield name="account.period.start" id="account_start_date" size="10" /> -
 						<s:textfield name="account.period.end" id="account_end_date" size="10"/>
 					</td>
+				</tr>
+				<tr>
+					<th><label for="email">电子邮箱</label></th>
+					<td><s:textfield id="email" name="account.email" size="40"/></td>
 				</tr>
 				<tr>
 					<th><label for="desc">描述</label></th>

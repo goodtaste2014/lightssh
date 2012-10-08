@@ -101,6 +101,29 @@ label.required{
 div.messages{
 	clear: both;
 	color: #FF3300;
+	background-color: #FCF8E3;
+	border: 1px solid #FBEED5;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	/*margin-right: 1em;*/
+}
+
+div.messages .close{
+	float: right;
+	margin-right:1em;
+	border:0;
+	background:transparent;
+	cursor: pointer;
+	font-size: 1.5em;
+	color:#ccc;
+}
+
+div.messages .close:hover{
+	color:red;
+}
+
+div.messages .warning{
 }
 
 div.warning,label.error,span.error{
