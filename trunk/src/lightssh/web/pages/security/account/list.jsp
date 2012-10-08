@@ -58,34 +58,34 @@
 			<mys:column title="描述" value="description"/>
 			<mys:column title="操作" width="40px" cssClass="action">
 				<span>&nbsp;</span>
-				<div class="popup-menu-layer box-shadow">
-					<div class="popup-menu-list" style="white-space: nowrap; width: auto; ">
-						<ul class="section">
-							<li>
-								<a href="<s:url value="/security/account/edit.do?account.id=%{id}"/>">编辑帐号</a>
-							</li>
-							<li>
-								<a href="<s:url value="/security/account/edit.do?account.id=%{id}&role=update"/>">编辑角色</a>
-							</li>
-						</ul>
+				<div class="popup-menu-layer">
+					<ul class="dropdown-menu">
+						<li>
+							<a href="<s:url value="/security/account/edit.do?account.id=%{id}"/>">编辑帐号</a>
+						</li>
 						
-						<ul class="section">
-							<li>
-								<a href="#">禁用帐号</a>
-							</li>
-							<li>
-								<a href="<s:url value="/security/account/prereset.do?account.loginName=%{loginName}"/>">重设密码</a>
-							</li>
-						</ul>
+						<li>
+							<a href="#">禁用帐号</a>
+						</li>
 						
-						<ul class="section">
-							<li>
-								<s:if test="loginName != @com.google.code.lightssh.project.security.service.LoginAccountManagerImpl@ROOT_LOGIN_NAME">
-									<a href="#" onclick="javascript:doRemove('<s:property value="%{id}"/>','<s:property value="%{loginName}"/>')">删除帐号</a>
-								</s:if>
-							</li>
-						</ul>
-					</div>
+						<li class="section"/>
+						
+						<li>
+							<a href="<s:url value="/security/account/edit.do?account.id=%{id}&role=update"/>">编辑角色</a>
+						</li>
+						
+						<li class="section"/>
+						
+						<li>
+							<a href="<s:url value="/security/account/prereset.do?account.loginName=%{loginName}"/>">重设密码</a>
+						</li>
+						
+						<s:if test="loginName != @com.google.code.lightssh.project.security.service.LoginAccountManagerImpl@ROOT_LOGIN_NAME">
+						<li>
+							<a href="#" onclick="javascript:doRemove('<s:property value="%{id}"/>','<s:property value="%{loginName}"/>')">删除帐号</a>
+						</li>
+						</s:if>
+					</ul>
 				</div>
 			</mys:column>
 		</mys:table>

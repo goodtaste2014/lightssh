@@ -66,24 +66,24 @@
 		<mys:column title="操作" width="40px" cssClass="action">
 			<span>&nbsp;</span>
 			<div class="popup-menu-layer">
-				<div class="popup-menu-list">
-					<ul>
-						<li><a href="start.do?processDefinitionKey=<s:property value="%{key}"/>">启动流程</a></li>
-					</ul>
-					<ul>
-						<li>
-							<a href="#">详情</a>
-						</li>
-						<li>
-							<a href="#">流程图</a>
-						</li>
-					</ul>
-					<ul>
-						<li>
-							<a href="#">历史版本</a>
-						</li>
-					</ul>
-				</div>
+				<ul class="dropdown-menu">
+					<li><a href="start.do?processDefinitionKey=<s:property value="%{key}"/>">启动流程</a></li>
+					
+					<li class="section"/>
+					
+					<li>
+						<a href="#">详情</a>
+					</li>
+					<li>
+						<a href="#">流程图</a>
+					</li>
+					
+					<li class="section"/>
+					
+					<li>
+						<a href="#">历史版本</a>
+					</li>
+				</ul>
 			</div>
 		</mys:column>
 	</mys:table>

@@ -46,18 +46,14 @@
 			<mys:column title="操作" width="40px" cssClass="action">
 				<span>&nbsp;</span>
 				<div class="popup-menu-layer">
-					<div class="popup-menu-list">
-						<ul class="section">
-							<li><a href="<s:url value="/security/role/permission.do?role.id=%{id}"/>">设置权限</a></li>
-							<li><a href="<s:url value="/security/role/edit.do?role.id=%{id}"/>">编辑角色</a></li>
-						</ul>
-						
-						<ul class="section">
-							<li>
-								<a href="#" onclick="javascript:doRemove('<s:property value="%{id}"/>','<s:property value="%{name}"/>')">删除角色</a>
-							</li>
-						</ul>
-					</div>
+					<ul class="dropdown-menu">
+						<li><a href="<s:url value="/security/role/permission.do?role.id=%{id}"/>">设置权限</a></li>
+						<li><a href="<s:url value="/security/role/edit.do?role.id=%{id}"/>">编辑角色</a></li>
+						<li class="section"/>
+						<li>
+							<a href="#" onclick="javascript:doRemove('<s:property value="%{id}"/>','<s:property value="%{name}"/>')">删除角色</a>
+						</li>
+					</ul>
 				</div>
 			</mys:column>
 		</mys:table>

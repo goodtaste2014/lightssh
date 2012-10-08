@@ -61,15 +61,13 @@
 		<mys:column title="操作" width="40px" cssClass="action">
 			<span>&nbsp;</span>
 			<div class="popup-menu-layer">
-				<div class="popup-menu-list">
-					<ul class="section">
-						<li>
-							<a href="<s:url value="/settings/uom/toggle.do?uom.code=%{code}"/>">
-								<s:property value="%{active?'冻结':'激活'}"/>
-							</a>
-						</li>
-					</ul>
-				</div>
+				<ul class="dropdown-menu">
+					<li>
+						<a href="<s:url value="/settings/uom/toggle.do?uom.code=%{code}"/>">
+							<s:property value="%{active?'冻结':'激活'}"/>
+						</a>
+					</li>
+				</ul>
 			</div>
 		</mys:column>
 	</mys:table>

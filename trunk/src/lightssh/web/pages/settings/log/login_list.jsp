@@ -77,13 +77,11 @@
 			<mys:column title="操作" width="40px" cssClass="action">
 				<span>&nbsp;</span>
 				<div class="popup-menu-layer">
-					<div class="popup-menu-list">
-						<ul class="section">
-							<li>
-								<a href="#" onclick="javascript:popupView('<s:property value="%{operator}"/>')"><s:property value="%{operator}"/></a>
-							</li>
-						</ul>
-					</div>
+					<ul class="dropdown-menu">
+						<li>
+							<a href="#" onclick="javascript:popupView('<s:property value="%{operator}"/>')"><s:property value="%{operator}"/></a>
+						</li>
+					</ul>
 				</div>
 			</mys:column>
 		</mys:table>

@@ -63,23 +63,18 @@
 		<mys:column title="描述" value="description"/>
 		<mys:column title="操作" width="40px" cssClass="action">
 			<span>&nbsp;</span>
-			<div class="popup-menu-layer box-shadow">
-				<div class="popup-menu-list" style="white-space: nowrap; width: auto; ">
-					<ul class="section">
-						<li>
-							<a href="<s:url value="/settings/geo/toggle.do?geo.code=%{code}"/>">
-								<s:property value="%{active?'冻结':'激活'}"/>
-							</a>
-						</li>
-						<li><a href="#">编辑数据</a></li>
-						<li><a href="#">删除数据</a></li>
-					</ul>
-					
-					<ul class="section">
-						<li><a href="#">... ...</a></li>
-					</ul>
-					
-				</div>
+			<div class="popup-menu-list">
+				<ul class="dropdown-menu">
+					<li>
+						<a href="<s:url value="/settings/geo/toggle.do?geo.code=%{code}"/>">
+							<s:property value="%{active?'冻结':'激活'}"/>
+						</a>
+					</li>
+					<li><a href="#">编辑数据</a></li>
+					<li><a href="#">删除数据</a></li>
+					<li class="section"/>
+					<li><a href="#">... ...</a></li>
+				</ul>
 			</div>
 		</mys:column>
 	</mys:table>

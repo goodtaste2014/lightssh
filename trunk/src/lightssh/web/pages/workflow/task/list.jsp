@@ -56,15 +56,14 @@
 		<mys:column title="操作" width="40px" cssClass="action">
 			<span>&nbsp;</span>
 			<div class="popup-menu-layer">
-				<div class="popup-menu-list">
-					<ul>
-						<li><a href="claim.do?taskId=<s:property value="id"/>">由我认领</a></li>
-						<li><a href="#" onclick="popup('<s:property value="id"/>');">分配任务</a></li>
-					</ul>
-					<ul>
-						<li><a href="prepare.do?taskId=<s:property value="id"/>">提交流程</a></li>
-					</ul>
-				</div>
+				<ul class="dropdown-menu">
+					<li><a href="claim.do?taskId=<s:property value="id"/>">由我认领</a></li>
+					<li><a href="#" onclick="popup('<s:property value="id"/>');">分配任务</a></li>
+					
+					<li class="section"/>
+					
+					<li><a href="prepare.do?taskId=<s:property value="id"/>">提交流程</a></li>
+				</ul>
 			</div>
 		</mys:column>
 	</mys:table>
