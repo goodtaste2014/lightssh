@@ -49,13 +49,11 @@
 		<mys:column title="操作" width="40px" cssClass="action">
 			<span>&nbsp;</span>
 			<div class="popup-menu-layer">
-				<div class="popup-menu-list">
-					<ul>
-						<li>
-							<a href="#">&nbsp;</a>
-						</li>
-					</ul>
-				</div>
+				<ul class="dropdown-menu">
+					<li>
+						<a href="#">&nbsp;</a>
+					</li>
+				</ul>
 			</div>
 		</mys:column>
 	</mys:table>

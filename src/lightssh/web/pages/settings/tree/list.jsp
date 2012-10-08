@@ -75,21 +75,18 @@
 		<mys:column title="操作" width="40px" cssClass="action">
 			<span>&nbsp;</span>
 			<div class="popup-menu-layer">
-				<div class="popup-menu-list">
-					<ul>
-						<li>
-							<a href="#" onclick="viewnode('<s:property value="%{id}"/>')">查看结点</a>
-						</li>
-					</ul>
-					<ul>
-						<li>
-							<a href="<s:url value="editnode.do?tree.id=%{id}"/>">添加结点</a>
-						</li>
-						<li>
-							<a href="<s:url value="edit.do?tree.id=%{id}"/>">编辑树</a>
-						</li>
-					</ul>
-				</div>
+				<ul class="dropdown-menu">
+					<li>
+						<a href="#" onclick="viewnode('<s:property value="%{id}"/>')">查看结点</a>
+					</li>
+					<li class="section"/>
+					<li>
+						<a href="<s:url value="editnode.do?tree.id=%{id}"/>">添加结点</a>
+					</li>
+					<li>
+						<a href="<s:url value="edit.do?tree.id=%{id}"/>">编辑树</a>
+					</li>
+				</ul>
 			</div>
 		</mys:column>
 	</mys:table>

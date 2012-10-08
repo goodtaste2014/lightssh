@@ -58,22 +58,20 @@
 			<mys:column title="操作" width="40px" cssClass="action">
 				<span>&nbsp;</span>
 				<div class="popup-menu-layer">
-					<div class="popup-menu-list">
-						<ul>
-							<li>
-								<a href="<s:url value="/party/person/edit.do?party=person&party.id=%{id}"/>">编辑信息</a>
-							</li>
-							<li>
-								<a href="<s:url value="/party/person/view.do?party=person&party.id=%{id}"/>">查看人员</a>
-							</li>
-						</ul>
+					<ul class="dropdown-menu">
+						<li>
+							<a href="<s:url value="/party/person/edit.do?party=person&party.id=%{id}"/>">编辑信息</a>
+						</li>
+						<li>
+							<a href="<s:url value="/party/person/view.do?party=person&party.id=%{id}"/>">查看人员</a>
+						</li>
 						
-						<ul>
-							<li>
-								<a href="#" onclick="javascript:doRemove('<s:property value="%{id}"/>','<s:property value="%{name}"/>')">删除</a>
-							</li>
-						</ul>
-					</div>
+						<li class="section"/>
+						
+						<li>
+							<a href="#" onclick="javascript:doRemove('<s:property value="%{id}"/>','<s:property value="%{name}"/>')">删除</a>
+						</li>
+					</ul>
 				</div>
 			</mys:column>
 		</mys:table>

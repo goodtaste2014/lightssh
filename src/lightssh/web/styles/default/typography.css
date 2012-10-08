@@ -386,7 +386,7 @@ table.profile th{
 /** 弹出菜单 */
 .popup-menu-layer {
 	display:none; 
-	width: 200px; 
+	min-width: 160px; 
 	position: absolute;
 	border: 1px solid #BBB;
 	left: 0;
@@ -396,28 +396,43 @@ table.profile th{
 	overflow-y: auto;
 	background: white;
 	
-	-moz-box-shadow: 3px 3px 5px rgba(0,0,0,0.5);
-	-webkit-box-shadow: 3px 3px 5px rgba(0,0,0,0.5);
-	box-shadow: 3px 3px 5px rgba(0,0,0,0.5);
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+	-webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+	-moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+	-webkit-background-clip: padding-box;
+	-moz-background-clip: padding;
+	background-clip: padding-box;
 }
 
-.popup-menu-layer .popup-menu-list ul {
-	list-style: none;
-	border-bottom: 1px solid #BBB;
-	margin-bottom: 4px;
-	padding-bottom: 4px;
+.popup-menu-layer .dropdown-menu{
+	padding:5px 0 5px 0;
 }
 
-.popup-menu-list li a {
+.popup-menu-layer .dropdown-menu li{
+	line-height: 18px;
+}
+
+.popup-menu-layer .section{
+	height: 1px;
+	margin: 4px 1px;
+	overflow: hidden;
+	background-color: #E5E5E5;
+	border-bottom: 1px solid white;
+}
+
+.popup-menu-layer li a {
 	text-decoration: none;
 	background-position: 5px 3px;
 	background-repeat: no-repeat;
-	padding: .3em .5em;
+	padding:.2em 0 .2em 1.5em;
 	display: block;
 	color: #333;
 }
 
-.popup-menu-list li:hover a {
+.popup-menu-layer li:hover a {
 	background-color: #3C78B5;
 	color: white;
 }
