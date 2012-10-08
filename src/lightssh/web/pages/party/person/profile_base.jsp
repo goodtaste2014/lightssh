@@ -44,7 +44,7 @@
 			</tr>
 			
 			<tr>
-				<th><label for="birthday">生日</label></th>
+				<th><label for="person_birthday">生日</label></th>
 				<td>
 					<s:textfield name="party.birthday" id="person_birthday" size="10"/>
 				</td>
@@ -62,7 +62,7 @@
 			<tr>
 				<th><label for="ethnicGroup">民族</label></th>
 				<td>
-					<s:textfield id="ethnicGroup" name="party.ethnicGroup"/>
+					<s:textfield id="ethnicGroup" name="party.ethnicGroup" />
 				</td>
 				
 				<th><label for="partyAffiliation">政治面貌</label></th>
@@ -85,12 +85,12 @@
 				<td>
 					<s:select list="@com.google.code.lightssh.project.party.entity.CredentialsType@frequentlyUsed()" 
 						name="party.credentialsType" listKey="name()" headerKey="" headerValue=""
-						value="party.credentialsType.name()" onchange="autofill(this)"/>
+						value="party.credentialsType.name()" onchange="autofill(this)" id="credentialsType"/>
 				</td>
 			
 				<th><label for="identityCardNumber">证件号码</label></th>
 				<td>
-					<s:textfield name="party.identityCardNumber" size="30" onchange="autofill(this)"/>
+					<s:textfield name="party.identityCardNumber" size="30" onchange="autofill(this)" id="identityCardNumber"/>
 				</td>
 			</tr>
 			
