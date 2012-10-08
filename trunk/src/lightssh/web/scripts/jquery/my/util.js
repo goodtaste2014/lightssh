@@ -47,4 +47,18 @@ jQuery.lightssh={
 		$( ele ).focus();
 		$( ele ).after( $("<label name='error' class='error'>"+val+"</label>") );
 	}
+	
+	/**
+	 * 删除提示消息
+	 */
+	,removeMessages:function( ){
+		var eTarget = null;
+		if( event != null )
+			eTarget = event.currentTarget?event.currentTarget:event.srcElement;
+		
+		if( eTarget == null )
+			return;
+		
+		$(eTarget).parent().hide('slow');
+	}
 };

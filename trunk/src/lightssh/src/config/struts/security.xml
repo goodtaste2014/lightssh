@@ -48,6 +48,16 @@
 			<result name="success" type="redirectAction">list</result>
         </action>
         
+        <action name="prereset" class="loginAccountAction" method="prereset">
+			<result name="input" type="redirectAction">list</result>
+			<result name="success" >/pages/security/account/resetpassword.jsp</result>
+        </action>
+        
+        <action name="resetpassword" class="loginAccountAction" method="resetpassword">
+			<result name="input" >/pages/security/account/resetpassword.jsp</result>
+			<result name="success" type="redirectAction">list</result>
+        </action>
+        
         <action name="report" class="reportLoginAccountAction" method="report">
 			<result name="input" type="redirectAction">list</result>
 			<result name="success" type="stream">
