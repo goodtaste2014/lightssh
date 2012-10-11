@@ -49,6 +49,7 @@
 	        	/security/recovery/**=anon
 	        	
 	        	/webservices/**=anon
+	        	/remoting/**=anon
 	        	
 	            #权限配置
 	            #/security/account/edit.do=authc,perms[SECURITY_ACCOUNT_NEW]

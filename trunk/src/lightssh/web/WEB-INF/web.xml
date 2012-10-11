@@ -18,9 +18,10 @@
 			,classpath:config/spring/applicationContext-cache.xml
 			,classpath:config/spring/applicationContext-scheduler.xml
 			,classpath:config/spring/applicationContext-security.xml
-			,classpath:config/spring/applicationContext-workflow.xml
 			,classpath:config/spring/applicationContext-webservice.xml
+			,classpath:config/spring/applicationContext-remoting.xml
 			<!--  
+			,classpath:config/spring/applicationContext-workflow.xml
 			-->
 		</param-value>
 	</context-param>
@@ -167,6 +168,23 @@
 		<servlet-name>cxfservlet</servlet-name>
 		<url-pattern>/webservices/*</url-pattern>
 	</servlet-mapping>
+	
+	<!-- remoting servlet -->
+	<servlet>
+		<servlet-name>remoting</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<load-on-startup>2</load-on-startup>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:config/spring/applicationContext-remoting.xml</param-value>
+		</init-param>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>remoting</servlet-name>
+		<url-pattern>/remoting/*</url-pattern>
+	</servlet-mapping>
+	
 	<!-- log4j listener -->
 	<!--  
 	<listener>
@@ -184,6 +202,7 @@
 		<servlet-name>ViewStatusMessages</servlet-name>
 		<url-pattern>/lbClassicStatus</url-pattern>
 	</servlet-mapping>
+	
 	<!-- startup listener -->
 	<listener>
 		<listener-class>com.google.code.lightssh.project.web.listener.StartupListener</listener-class>
