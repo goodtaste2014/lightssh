@@ -109,12 +109,13 @@
 			<div class="login_title">
 				<h3>用户登录</h3>
 						
-				<div class="messages">
-					<div class="warning" id="js_warning">
-						<%-- 您的浏览器不支持JAVASCRIPT，无法登录系统！--%>
+				<div class="messages" id="js_warning">
+					<div class="warning">
+						您的浏览器不支持JAVASCRIPT，无法登录系统！
 					</div>
-					<%@ include file="/pages/security/system/login_error.jsp" %>
 				</div>
+				
+				<%@ include file="/pages/security/system/login_error.jsp" %>
 			</div>
 			
 			<div class="login_form">
