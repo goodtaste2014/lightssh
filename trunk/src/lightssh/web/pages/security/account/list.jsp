@@ -68,13 +68,13 @@
 							<a href="#">禁用帐号</a>
 						</li>
 						
-						<li class="section"/>
+						<li class="section"></li>
 						
 						<li>
 							<a href="<s:url value="/security/account/edit.do?account.id=%{id}&role=update"/>">编辑角色</a>
 						</li>
 						
-						<li class="section"/>
+						<li class="section"></li>
 						
 						<li>
 							<a href="<s:url value="/security/account/prereset.do?account.loginName=%{loginName}"/>">重设密码</a>

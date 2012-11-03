@@ -49,7 +49,7 @@
 					<ul class="dropdown-menu">
 						<li><a href="<s:url value="/security/role/permission.do?role.id=%{id}"/>">设置权限</a></li>
 						<li><a href="<s:url value="/security/role/edit.do?role.id=%{id}"/>">编辑角色</a></li>
-						<li class="section"/>
+						<li class="section"></li>
 						<li>
 							<a href="#" onclick="javascript:doRemove('<s:property value="%{id}"/>','<s:property value="%{name}"/>')">删除角色</a>
 						</li>
