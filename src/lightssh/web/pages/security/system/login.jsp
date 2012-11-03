@@ -138,7 +138,7 @@
 							<label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 							<!--<img id="jcaptcha" src="<%= request.getContextPath() %>/images/jcaptcha" />-->
 							<img id="jcaptcha" alt="captcha" style="margin-left:0 !important;margin:4px 0 0 2px;" 
-								src="<%= request.getContextPath() %>/images/kaptcha.jpg">
+								src="<%= request.getContextPath() %>/images/kaptcha.jpg"/>
 						</li>
 						</s:if>
 						
