@@ -9,7 +9,7 @@
 		<meta name="decorator" content="background"/>
 		
 		<script language="javascript" src="<%= request.getContextPath() %>/scripts/jquery/plugins/treeview/jquery.treeview.js"></script>
-		<link rel="stylesheet" href="<%= request.getContextPath() %>/scripts/jquery/plugins/treeview/jquery.treeview.css" type="text/css">
+		<link rel="stylesheet" href="<%= request.getContextPath() %>/scripts/jquery/plugins/treeview/jquery.treeview.css" type="text/css"/>
 		
 		<script type="text/javascript">
 			function selectResource( objElement ){	

@@ -66,7 +66,7 @@
 				<label>
 					电子邮件地址
 					<p>
-						<input id="email" type="text" name="account.email" value="" size="40">
+						<input id="email" type="text" name="account.email" value="" size="40"/>
 					</p>
 				</label>
 				
