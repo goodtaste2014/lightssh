@@ -1,5 +1,4 @@
 <%@ page language="java" pageEncoding="UTF-8" contentType="text/html;charset=utf-8" %>
-<%@ page import="org.springframework.security.authentication.*"%>
 <%@ include file="/pages/common/taglibs.jsp" %>
 
 <head>	
