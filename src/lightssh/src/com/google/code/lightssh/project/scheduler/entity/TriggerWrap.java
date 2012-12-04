@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.quartz.CronTrigger;
 import org.quartz.Trigger;
+import org.quartz.Trigger.TriggerState;
 
 /**
  * 定时任务包裹类
@@ -16,16 +17,12 @@ public class TriggerWrap {
 	
 	private Trigger trigger;
 	
-	private boolean pause;
+	private TriggerState state;
 
 	public boolean isPause() {
-		return pause;
+		return TriggerState.PAUSED.equals(state);
 	}
 
-	public void setPause(boolean pause) {
-		this.pause = pause;
-	}
-	
 	public TriggerWrap( Trigger trigger ){
 		this.trigger = trigger;
 	}
@@ -59,6 +56,14 @@ public class TriggerWrap {
 	
 	public String getDescription(){
 		return trigger.getDescription();
+	}
+
+	public TriggerState getState() {
+		return state;
+	}
+
+	public void setState(TriggerState state) {
+		this.state = state;
 	}
 
 }
