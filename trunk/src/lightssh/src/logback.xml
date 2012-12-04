@@ -21,7 +21,7 @@
  
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
         	<!-- daily rollover -->
-        	<fileNamePattern>/weblogic/Oracle/Middleware/user_projects/domains/ecps_domain/logs/ecps.%d{yyyy-MM-dd}.log</fileNamePattern>
+        	<fileNamePattern>/usr/local/tomcat/logs/zlrt-mp.%d{yyyy-MM-dd}.log</fileNamePattern>
         	<!-- keep 365 days' worth of history -->
 			<maxHistory>365</maxHistory>
         </rollingPolicy>

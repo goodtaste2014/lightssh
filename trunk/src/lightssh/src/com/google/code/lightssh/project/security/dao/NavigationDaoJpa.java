@@ -3,6 +3,8 @@ package com.google.code.lightssh.project.security.dao;
 import java.util.Collection;
 import java.util.List;
 
+import javax.persistence.Query;
+
 import org.springframework.stereotype.Repository;
 
 import com.google.code.lightssh.common.dao.jpa.JpaAnnotationDao;
@@ -17,12 +19,16 @@ import com.google.code.lightssh.project.security.entity.Permission;
 @Repository("navigationDao")
 public class NavigationDaoJpa extends JpaAnnotationDao<Navigation> implements NavigationDao{
 
+	private static final long serialVersionUID = 2228287462062288592L;
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Navigation> listTop() {
 		String hql = " SELECT n FROM Navigation AS n WHERE n.parent IS NULL ";
 		
-		return super.getJpaTemplate().find(hql);
+		Query query = this.getEntityManager().createQuery(hql);
+		return query.getResultList();
+		//return super.getJpaTemplate().find(hql);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -42,7 +48,10 @@ public class NavigationDaoJpa extends JpaAnnotationDao<Navigation> implements Na
 		}
 		hql.append(" ) ");
 		
-		return super.getJpaTemplate().find(hql.toString());
+		Query query = this.getEntityManager().createQuery(hql.toString());
+		return query.getResultList();
+		
+		//return super.getJpaTemplate().find(hql.toString());
 	}
 
 }

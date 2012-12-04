@@ -22,6 +22,8 @@ import com.google.code.lightssh.project.party.entity.PartyContact;
 public class PartyContactManagerImpl extends BaseManagerImpl<PartyContact>
 implements PartyContactManager{
 	
+	private static final long serialVersionUID = 1405379451063089511L;
+
 	@Resource( name="partyContactDao")
 	public void setDao( PartyContactDao dao ){
 		this.dao = dao;

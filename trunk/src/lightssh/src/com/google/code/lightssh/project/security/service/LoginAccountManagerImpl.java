@@ -38,6 +38,8 @@ import com.google.code.lightssh.project.security.entity.LoginAccount.LoginAccoun
 public class LoginAccountManagerImpl extends BaseManagerImpl<LoginAccount>
 	implements LoginAccountManager{
 	
+	private static final long serialVersionUID = 8212430389472262891L;
+
 	private static Logger log = LoggerFactory.getLogger(LoginAccountManagerImpl.class);
 	
 	/** 管理员账号 */
@@ -190,6 +192,8 @@ public class LoginAccountManagerImpl extends BaseManagerImpl<LoginAccount>
 		if( inserted ){
 			account.setCreateDate( new Date() );
 			account.setPassword( CryptographyUtil.hashMd5Hex( DEFAULT_PASSWORD ) );
+			if( account.getType() == null )
+				account.setType(LoginAccount.LoginAccountType.ADMIN);
 		}
 		
 		LoginAccount exist = getDao().get( account.getLoginName() );
@@ -315,5 +319,25 @@ public class LoginAccountManagerImpl extends BaseManagerImpl<LoginAccount>
 		dao.list(page,account);
 		
 		return page.getList();
+	}
+	
+	/**
+	 * 登录失败锁定时间
+	 */
+	public void updateLockTime( LoginAccount la ){
+		if( la == null || la.getIdentity() == null )
+			throw new ApplicationException("参数错误！");
+		
+		this.getDao().updateLockTime(la,Calendar.getInstance());
+	}
+	
+	/**
+	 * 解除登录失败锁定时间
+	 */
+	public void releaseLockTime( LoginAccount la ){
+		if( la == null || la.getIdentity() == null )
+			throw new ApplicationException("参数错误！");
+		
+		this.getDao().updateLockTime(la,null);
 	}
 }

@@ -18,6 +18,8 @@ import com.google.code.lightssh.project.sequence.entity.Sequence;
 @Component( "sequenceManager" )
 public class SequenceManagerImpl implements SequenceManager{
 	
+	private static final long serialVersionUID = 8897157086717995506L;
+	
 	private SequenceDao dao;
 
 	@Resource( name="sequenceDao" )

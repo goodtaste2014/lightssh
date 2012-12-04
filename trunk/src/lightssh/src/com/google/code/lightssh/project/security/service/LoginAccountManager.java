@@ -93,4 +93,14 @@ public interface LoginAccountManager extends BaseManager<LoginAccount>{
 	 * 查询会员登录帐户
 	 */
 	public List<LoginAccount> listByParty( Party party );
+	
+	/**
+	 * 登录失败锁定时间
+	 */
+	public void updateLockTime( LoginAccount la );
+
+	/**
+	 * 解除登录失败锁定时间
+	 */
+	public void releaseLockTime( LoginAccount la );
 }

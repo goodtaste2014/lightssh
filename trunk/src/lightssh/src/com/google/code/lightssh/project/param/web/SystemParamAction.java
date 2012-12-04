@@ -43,6 +43,19 @@ public class SystemParamAction extends CrudAction<SystemParam>{
 		super.model = this.param;
 	}
 	
+    public String edit( ){
+        if( param != null && param.getIdentity() != null ){
+        	setParam(manager.get( param.getIdentity() ));
+        }
+        
+        if( param != null && param.isReadonly() ){
+        	this.saveErrorMessage("参数为只读，不进行修改！");
+        	return ERROR;
+        }
+        
+        return SUCCESS;
+    }
+	
 	@JSON(name="unique")
 	public boolean isUnique() {
 		return unique;
@@ -52,6 +65,18 @@ public class SystemParamAction extends CrudAction<SystemParam>{
 		this.unique = this.getManager().isUniqueGroupAndName( param );
 		return SUCCESS;
 	}
+  	
+  	public String view(){
+  		if( param == null || param.getId() == null )
+  			return INPUT;
+  		
+  		this.setParam(getManager().get(param.getId()));
+  		
+  		if( param == null )
+  			return INPUT;
+  		
+  		return SUCCESS;
+  	}
 	
 	public String list(){
 		if( page == null )

@@ -22,6 +22,8 @@ import com.google.code.lightssh.project.geo.entity.GeographicBoundary;
 public class GeographicBoundaryManagerImpl extends BaseManagerImpl<GeographicBoundary>
 implements GeographicBoundaryManager{
 	
+	private static final long serialVersionUID = 1278038793052299840L;
+	
 	@Resource(name="geoAssociationDao")
 	private GeoAssociationDao geoAssociationDao;
 	

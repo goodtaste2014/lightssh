@@ -36,6 +36,8 @@ import com.google.code.lightssh.project.sequence.service.SequenceManager;
 @Component("partyManager")
 public class PartyManagerImpl extends BaseManagerImpl<Party> implements PartyManager{
 	
+	private static final long serialVersionUID = -7697405089934152590L;
+
 	@Resource(name="sequenceManager")
 	private SequenceManager sequenceManager;
 	

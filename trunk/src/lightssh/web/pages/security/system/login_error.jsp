@@ -1,6 +1,7 @@
 <%@page language="java" pageEncoding ="UTF-8" contentType="text/html;charset=utf-8"%>
 
 <%@page import="com.google.code.lightssh.project.security.service.BadCaptchaException"%>
+<%@page import="com.google.code.lightssh.project.security.shiro.TimeLockedException"%>
 <%@page import="org.apache.shiro.SecurityUtils"%>
 <%@page import="org.apache.shiro.subject.Subject"%>
 <%@page import="org.apache.shiro.authc.*"%>
@@ -21,6 +22,8 @@
 			expMsg= "用户账号已禁用！";
 		}else if( obj instanceof ExpiredCredentialsException ){
 			expMsg= "用户账号已过期！";
+		}else if( obj instanceof TimeLockedException ){
+			expMsg= authExp.getMessage();
 		}else{
 			expMsg="登录异常:"+authExp.getMessage() ;
 		}

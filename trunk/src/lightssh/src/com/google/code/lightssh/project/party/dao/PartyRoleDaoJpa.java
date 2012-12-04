@@ -2,6 +2,8 @@ package com.google.code.lightssh.project.party.dao;
 
 import java.util.List;
 
+import javax.persistence.Query;
+
 import org.springframework.stereotype.Repository;
 
 import com.google.code.lightssh.common.ApplicationException;
@@ -18,13 +20,18 @@ import com.google.code.lightssh.project.party.entity.PartyRole.RoleType;
 @Repository("partyRoleDao")
 public class PartyRoleDaoJpa extends JpaAnnotationDao<PartyRole> implements PartyRoleDao{
 
+	private static final long serialVersionUID = -3513118241719222382L;
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<PartyRole> list(RoleType type) {
 		String hql = " SELECT m FROM " + entityClass.getName()
 			+ " AS m WHERE m.type = ? ";
 	
-		return getJpaTemplate().find(hql,type );
+		Query query = this.getEntityManager().createQuery(hql);
+		return this.addQueryParams(query,type).getResultList();
+		
+		//return getJpaTemplate().find(hql,type );
 	}
 
 	@SuppressWarnings("unchecked")
@@ -33,7 +40,10 @@ public class PartyRoleDaoJpa extends JpaAnnotationDao<PartyRole> implements Part
 		String hql = " SELECT m.party FROM " + entityClass.getName()
 			+ " AS m WHERE m.type = ? ";
 
-		return getJpaTemplate().find(hql,type );
+		Query query = this.getEntityManager().createQuery(hql);
+		return this.addQueryParams(query,type).getResultList();
+		
+		//return getJpaTemplate().find(hql,type );
 	}
 
 	@SuppressWarnings("unchecked")
@@ -42,7 +52,10 @@ public class PartyRoleDaoJpa extends JpaAnnotationDao<PartyRole> implements Part
 		String hql = " SELECT m FROM " + entityClass.getName()
 			+ " AS m WHERE m.party.id = ? ";
 		
-		return getJpaTemplate().find(hql,party.getIdentity() );
+		//return getJpaTemplate().find(hql,party.getIdentity() );
+		
+		Query query = this.getEntityManager().createQuery(hql);
+		return this.addQueryParams(query,party.getIdentity()).getResultList();
 	}
 	
 	@Override
@@ -71,7 +84,10 @@ public class PartyRoleDaoJpa extends JpaAnnotationDao<PartyRole> implements Part
 				hql.append(" )");
 		}
 
-		return getJpaTemplate().find(hql.toString(),party );
+		//return getJpaTemplate().find(hql.toString(),party );
+		
+		Query query = this.getEntityManager().createQuery(hql.toString());
+		return this.addQueryParams(query,party).getResultList();
 	}
 
 }

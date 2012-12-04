@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import com.google.code.lightssh.common.dao.Dao;
 import com.google.code.lightssh.common.dao.SearchCondition;
-import com.google.code.lightssh.common.model.ConnectionConfig;
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.service.BaseManagerImpl;
 import com.google.code.lightssh.common.util.StringUtil;
@@ -24,6 +23,8 @@ import com.google.code.lightssh.project.param.entity.SystemParam;
  */
 @Component( "systemParamManager" )
 public class SystemParamManagerImpl extends BaseManagerImpl<SystemParam> implements SystemParamManager{
+	
+	private static final long serialVersionUID = 3614332539755325943L;
 	
 	private static Logger log = LoggerFactory.getLogger(SystemParamManagerImpl.class);
 	
@@ -51,6 +52,18 @@ public class SystemParamManagerImpl extends BaseManagerImpl<SystemParam> impleme
 		ListPage<SystemParam> page = new ListPage<SystemParam>(1);
 		SearchCondition sc = new SearchCondition();
 		sc.equal("name", name );
+		page = dao.list(page, sc);
+		
+		return (page.getList()==null||page.getList().isEmpty())
+			?null:page.getList().get(0);
+	}
+	
+	@Override
+	public SystemParam getByGroupAndName(String group, String name) {
+		ListPage<SystemParam> page = new ListPage<SystemParam>(1);
+		SearchCondition sc = new SearchCondition();
+		sc.equal("name", name );
+		sc.equal("group", group );
 		page = dao.list(page, sc);
 		
 		return (page.getList()==null||page.getList().isEmpty())
@@ -91,41 +104,14 @@ public class SystemParamManagerImpl extends BaseManagerImpl<SystemParam> impleme
 		if( t != null ){
 			if( t.getName() != null )
 				sc.like("name",t.getName() );
+			
 			if( t.getGroup() != null )
 				sc.like("group",t.getGroup() );
+			
+			if( t.getValue() != null )
+				sc.like("value",t.getValue() );
 		}
 		return dao.list(page,sc);
 	}
-	
-	@Override
-	public ConnectionConfig getPortalWebServiceParam() {
-		List<SystemParam> list = this.listByGroup( SystemParam.WS_FSPS_PORTAL_GROUP_NAME );
-		if( list == null || list.isEmpty() ){
-			String msg = "未设置结算门户WebService调用相关参数值";
-			log.error(msg +"{}",SystemParam.WS_FSPS_PORTAL_GROUP_NAME);
-			//throw new ApplicationException( msg );
-			return null;
-		}
-		
-		ConnectionConfig param = new ConnectionConfig();
-		for( SystemParam item:list ){
-			if( SystemParam.ADDRESS.equals(item.getName()) )
-				param.setHost( item.getValue() );
-			else if( SystemParam.USERNAME.equals(item.getName()) )
-				param.setUsername( item.getValue() );
-			else if( SystemParam.PASSWORD.equals(item.getName()) )
-				param.setPassword( item.getValue() );
-		}
-		
-		if( param.getHost() == null || param.getUsername()==null
-				|| param.getPassword() == null ){
-			String msg = "结算门户WebService调用参数值未正确设置";
-			log.error(msg +"{}",SystemParam.WS_FSPS_PORTAL_GROUP_NAME);
-			//throw new ApplicationException( msg );
-			return null;
-		}
-		
-		return param;
-	} 
 
 }

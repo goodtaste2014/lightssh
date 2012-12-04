@@ -23,6 +23,8 @@ import com.google.code.lightssh.project.security.entity.LoginAccount;
 @Component( "loginLogManager" )
 public class LoginLogManagerImpl extends BaseManagerImpl<LoginLog> implements LoginLogManager{
 	
+	private static final long serialVersionUID = -699487480823847341L;
+
 	@Resource( name="loginLogDao" )
 	public void setSystemParamDao( Dao<LoginLog> dao ){
 		super.dao = dao;

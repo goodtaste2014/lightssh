@@ -17,6 +17,8 @@ import com.google.code.lightssh.project.party.entity.Person;
 @Repository("partyDao")
 public class PartyDaoJpa extends JpaAnnotationDao<Party> implements PartyDao{
 	
+	private static final long serialVersionUID = -2223709423588592533L;
+
 	public ListPage<Party> list(ListPage<Party> page,Party t ){
 		return this.list( super.entityClass, page, t );
 	}
@@ -74,7 +76,8 @@ public class PartyDaoJpa extends JpaAnnotationDao<Party> implements PartyDao{
 	public Party read(Class clazz, Party party) {
 		if( party == null )
 			return null;
-		return this.getJpaTemplate().find(clazz,party.getIdentity());
+		
+		return this.getEntityManager().find(clazz,party.getIdentity());
 	}
 
 }

@@ -2,6 +2,8 @@ package com.google.code.lightssh.project.party.dao;
 
 import java.util.Collection;
 
+import javax.persistence.Query;
+
 import org.springframework.stereotype.Repository;
 
 import com.google.code.lightssh.common.ApplicationException;
@@ -18,6 +20,8 @@ import com.google.code.lightssh.project.party.entity.PartyContact;
  */
 @Repository("partyContactDao")
 public class PartyContactDaoJpa extends JpaAnnotationDao<PartyContact> implements PartyContactDao{
+
+	private static final long serialVersionUID = 4134413325348834944L;
 
 	@Override
 	public Collection<PartyContact> list(Party party,ContactMechanism contact) {
@@ -48,7 +52,11 @@ public class PartyContactDaoJpa extends JpaAnnotationDao<PartyContact> implement
 				}//end for
 		}
 		
-		return getJpaTemplate().find(hql.toString(),party);
+		//return getJpaTemplate().find(hql.toString(),party);
+		
+		Query query = getEntityManager().createQuery(hql.toString());
+		super.addQueryParams(query, party);
+		return query.getResultList();
 	}
 
 }

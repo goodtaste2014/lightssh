@@ -20,6 +20,8 @@ import com.google.code.lightssh.project.uom.entity.UnitOfMeasure.UomType;
 @Component("uomManager")
 public class UnitOfMeasureManagerImpl extends BaseManagerImpl<UnitOfMeasure> implements UnitOfMeasureManager{
 
+	private static final long serialVersionUID = 2592728879401389125L;
+
 	@Resource( name="uomDao" )
 	public void setDao(Dao<UnitOfMeasure> dao) {
 		this.dao = dao;

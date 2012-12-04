@@ -16,11 +16,11 @@
 			classpath:config/spring/applicationContext.xml
 			,classpath:config/spring/applicationContext-no-annotation.xml
 			,classpath:config/spring/applicationContext-cache.xml
-			,classpath:config/spring/applicationContext-scheduler.xml
 			,classpath:config/spring/applicationContext-security.xml
 			,classpath:config/spring/applicationContext-webservice.xml
-			,classpath:config/spring/applicationContext-remoting.xml
+			,classpath:config/spring/applicationContext-scheduler.xml
 			<!--  
+			,classpath:config/spring/applicationContext-remoting.xml
 			,classpath:config/spring/applicationContext-workflow.xml
 			-->
 		</param-value>
@@ -173,11 +173,11 @@
 	<servlet>
 		<servlet-name>remoting</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-		<load-on-startup>2</load-on-startup>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
 			<param-value>classpath:config/spring/applicationContext-remoting.xml</param-value>
 		</init-param>
+		<load-on-startup>2</load-on-startup>
 	</servlet>
 	
 	<servlet-mapping>

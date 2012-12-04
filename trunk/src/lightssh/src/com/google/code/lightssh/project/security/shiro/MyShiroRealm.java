@@ -5,8 +5,6 @@ import java.util.Collection;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.ExpiredCredentialsException;
-import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -70,12 +68,6 @@ public class MyShiroRealm extends AuthorizingRealm{
 			LoginAccount account = accountManager.get( token.getUsername() );
 	
 			if( account != null ){
-				if( !account.isEnabled() )
-					throw new LockedAccountException("用户账号已禁用！");
-				
-				if( !account.isExpired() )
-					throw new ExpiredCredentialsException("用户账号已过期！");
-				
 				return new SimpleAuthenticationInfo(
 						account.getLoginName(),account.getPassword(), getName() );
 			}

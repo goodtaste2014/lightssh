@@ -18,6 +18,8 @@ import com.google.code.lightssh.project.tree.entity.Tree;
 @Repository("treeDao")
 public class TreeDaoJpa extends JpaAnnotationDao<Tree>{
 	
+	private static final long serialVersionUID = 8024579934424493402L;
+
 	public ListPage<Tree> list(ListPage<Tree> page,Tree t ){
 		if( t == null )
 			return list( page );

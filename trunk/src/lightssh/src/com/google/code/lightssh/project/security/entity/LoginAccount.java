@@ -14,8 +14,10 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.google.code.lightssh.common.entity.base.BaseModel;
 import com.google.code.lightssh.common.model.Period;
@@ -67,6 +69,12 @@ public class LoginAccount extends BaseModel {
 	private String password;
 	
 	/**
+	 * 手机号
+	 */
+	@Column(name="MOBILE",unique=true,length=20)
+	private String mobile;
+	
+	/**
 	 * 邮箱
 	 */
 	@Column(name="EMAIL",unique=true,length=255)
@@ -81,7 +89,8 @@ public class LoginAccount extends BaseModel {
 	/**
 	 * 创建时间
 	 */
-	@Column( name="CREATE_DATE",nullable=false)
+	@Column( name="CREATE_DATE",nullable=false,columnDefinition="DATE")
+	@Temporal( TemporalType.TIMESTAMP )
 	private Date createDate;
 	
 	/**
@@ -108,9 +117,13 @@ public class LoginAccount extends BaseModel {
 	/**
 	 * 所属组织或人员
 	 */
-	@ManyToOne( fetch=FetchType.LAZY )
-	@JoinColumn( name="PARTY_ID")
+	//@ManyToOne( fetch=FetchType.LAZY )
+	//@JoinColumn( name="PARTY_ID")
+	@Transient
 	private Party party;
+	
+	@Column( name="PARTY_ID")
+	private String partyId;
 	
 	/**
 	 * 登录账号类型
@@ -128,8 +141,16 @@ public class LoginAccount extends BaseModel {
 	/**
 	 * 最后一次更新密码时间
 	 */
-	@Column( name="LAST_UPDATE_PASSWORD_TIME" )
+	@Column( name="LAST_UPDATE_PASSWORD_TIME",columnDefinition="DATE" )
+	@Temporal( TemporalType.TIMESTAMP )
 	private Calendar lastUpdatePasswordTime;
+	
+	/**
+	 * 最近一次登录错误锁定时间
+	 */
+	@Column( name="LAST_LOGIN_LOCK_TIME",columnDefinition="DATE" )
+	@Temporal( TemporalType.TIMESTAMP )
+	private Calendar lastLoginLockTime;
 	
 	public LoginAccount() {
 		super();
@@ -322,6 +343,14 @@ public class LoginAccount extends BaseModel {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+	public String getMobile() {
+		return mobile;
+	}
+
+	public void setMobile( String mobile ) {
+		this.mobile = mobile;
+	}
 
 	public Calendar getLastUpdatePasswordTime() {
 		return lastUpdatePasswordTime;
@@ -329,6 +358,22 @@ public class LoginAccount extends BaseModel {
 
 	public void setLastUpdatePasswordTime(Calendar lastUpdatePasswordTime) {
 		this.lastUpdatePasswordTime = lastUpdatePasswordTime;
+	}
+
+	public Calendar getLastLoginLockTime() {
+		return lastLoginLockTime;
+	}
+
+	public void setLastLoginLockTime(Calendar lastLoginLockTime) {
+		this.lastLoginLockTime = lastLoginLockTime;
+	}
+
+	public String getPartyId() {
+		return partyId;
+	}
+
+	public void setPartyId(String partyId) {
+		this.partyId = partyId;
 	}
 
 }

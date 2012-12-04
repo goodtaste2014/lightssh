@@ -23,6 +23,8 @@ import com.google.code.lightssh.project.log.entity.History;
 @Component("accessManager")
 public class AccessManagerImpl extends BaseManagerImpl<Access> implements AccessManager{
 	
+	private static final long serialVersionUID = -2943948007204180986L;
+
 	protected Dao<Access> dao;
 	
 	@Resource(name="historyDao")

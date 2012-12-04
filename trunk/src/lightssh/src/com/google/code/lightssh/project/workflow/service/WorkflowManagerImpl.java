@@ -42,7 +42,9 @@ import com.google.code.lightssh.common.util.StringUtil;
  */
 @Component("workflowManager")
 public class WorkflowManagerImpl implements WorkflowManager{
-	
+
+	private static final long serialVersionUID = -263409561222061490L;
+
 	@Resource(name="runtimeService")
 	private RuntimeService runtimeService;
 	

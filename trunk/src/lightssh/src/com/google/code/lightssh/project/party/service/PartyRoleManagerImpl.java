@@ -21,6 +21,8 @@ import com.google.code.lightssh.project.party.entity.PartyRole.RoleType;
 @Component("partyRoleManager")
 public class PartyRoleManagerImpl extends BaseManagerImpl<PartyRole> implements PartyRoleManager{
 
+	private static final long serialVersionUID = -412450282593132209L;
+
 	@Resource(name="partyRoleDao")
 	public void setDao( PartyRoleDao dao ){
 		super.dao = dao;

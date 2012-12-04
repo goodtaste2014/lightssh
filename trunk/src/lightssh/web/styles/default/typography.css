@@ -122,6 +122,11 @@ input.action{
     overflow:visible; /* fixed IE bug */
 }
 
+input.right{
+	float: right;
+	margin-right: 1em;
+}
+
 input.plain{
 	padding:0 10px 0 12px;
 }
@@ -435,4 +440,15 @@ table.profile th{
 .popup-menu-layer li:hover a {
 	background-color: #3C78B5;
 	color: white;
+}
+
+.popup-menu-layer li.disabled a {
+	color: #DDD;
+	cursor: default;
+}
+
+.popup-menu-layer li.disabled:hover a {
+	background-color:#DDD;
+	color: white;
+	cursor: default;
 }

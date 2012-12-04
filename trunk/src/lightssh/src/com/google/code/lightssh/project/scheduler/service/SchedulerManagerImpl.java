@@ -5,22 +5,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.quartz.CronTrigger;
 import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 import org.quartz.impl.StdScheduler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import com.google.code.lightssh.common.ApplicationException;
 import com.google.code.lightssh.common.util.StringUtil;
 import com.google.code.lightssh.project.scheduler.entity.JobInterval;
 import com.google.code.lightssh.project.scheduler.entity.TriggerWrap;
 
 public class SchedulerManagerImpl implements SchedulerManager{
 	
-	private static Logger log = LoggerFactory.getLogger(SchedulerManagerImpl.class);
+	private static final long serialVersionUID = 544811394387288846L;
+
+	//private static Logger log = LoggerFactory.getLogger(SchedulerManagerImpl.class);
 	
 	private JobIntervalManager jobIntervalManager;
 	
@@ -42,16 +39,26 @@ public class SchedulerManagerImpl implements SchedulerManager{
 	private List<Trigger> listTriggers( ){
 		List<Trigger> triggers = new ArrayList<Trigger>( );
 		
-		String groups[] = { Scheduler.DEFAULT_GROUP };
+		//String groups[] = { Scheduler.DEFAULT_GROUP };
+		List<String> groups  = new ArrayList<String>();
+		groups.add( Scheduler.DEFAULT_GROUP );
+		
 		try{
+			//groups = scheduler.getTriggerGroupNames();
 			groups = scheduler.getTriggerGroupNames();
 		}catch( Exception e ){}
 		
 		try{
-			for( String group:groups )
+			for( String group:groups ){
+				/*
 				for( String name:scheduler.getTriggerNames(group) ){
 					triggers.add( scheduler.getTrigger( name, group ) );
 				}
+				*/
+				//scheduler.getTrigger(triggerKey);
+				//GroupMatcher gm = new GroupMatcher("","");
+				//scheduler.getTriggerKeys(matcher)
+			}
 		}catch( Exception e ){}
 		
 		return triggers;
@@ -83,6 +90,7 @@ public class SchedulerManagerImpl implements SchedulerManager{
 			return;
 		
 		//针对每个Trigger 设置Cron表示达
+		/*
 		for( Trigger trigger:triggers ){
 			JobInterval jobInterval = jiMap.get( trigger.getName() );
 			if( trigger instanceof CronTrigger && jobInterval != null ){
@@ -98,6 +106,7 @@ public class SchedulerManagerImpl implements SchedulerManager{
 				}
 			}
 		}//end for
+		*/
 	}
 
 	@Override
@@ -115,6 +124,7 @@ public class SchedulerManagerImpl implements SchedulerManager{
 		if( triggers == null || triggers.isEmpty() )
 			return;
 		
+		/*
 		for( Trigger trigger:triggers ){
 			if( triggerName.equals( trigger.getName() ) && trigger instanceof CronTrigger ){
 				try{
@@ -126,18 +136,20 @@ public class SchedulerManagerImpl implements SchedulerManager{
 				break;
 			}
 		}//end for
+		*/
 	}
 	
 	/**
 	 * 定时器状态
 	 */
 	protected int getTriggerState( String name,String group ){
+		/*
 		try {
 			return scheduler.getTriggerState( name , group );
 		} catch (SchedulerException e) {
 			e.printStackTrace();
 		}
-		
+		*/
 		return -1;
 	}
 
@@ -152,19 +164,20 @@ public class SchedulerManagerImpl implements SchedulerManager{
 			//Map<String,JobInterval> jiMap = getJobIntervalMap();
 			
 			for(Trigger trigger:list ){
-				TriggerWrap wrap = new TriggerWrap( (Trigger)trigger.clone() );
 				/*
+				TriggerWrap wrap = new TriggerWrap( (Trigger)trigger.clone() );
 				wrap.setPause((jiMap!=null && !jiMap.isEmpty() 
 					&& (jiMap.get(trigger.getName())!=null)
 					&& (!jiMap.get(trigger.getName()).isEnabled()))?true:false);
 				*/
+				/*
 				boolean pause = Trigger.STATE_PAUSED == 
 					getTriggerState(trigger.getName(), trigger.getGroup());
 				wrap.setPause(pause);
 				result.add(wrap);
+				*/
 			}
 		}
-		
 		return result;
 	}
 	
@@ -187,6 +200,7 @@ public class SchedulerManagerImpl implements SchedulerManager{
 			return;
 		
 		boolean enabled = false;
+		/*
 		for( Trigger trigger:triggers ){
 			if( triggerName.equals( trigger.getName() ) ){
 				try{
@@ -211,7 +225,7 @@ public class SchedulerManagerImpl implements SchedulerManager{
 				break;
 			}
 		}//end for
-		
+		*/
 		if( jobInterval == null )
 			jobInterval = new JobInterval();
 

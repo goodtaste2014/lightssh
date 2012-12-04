@@ -1,6 +1,7 @@
 package com.google.code.lightssh.project.security.shiro;
 
 import java.net.URLEncoder;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.servlet.ServletRequest;
@@ -10,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.ExpiredCredentialsException;
+import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.apache.shiro.web.util.WebUtils;
@@ -21,6 +24,7 @@ import com.google.code.lightssh.common.web.SessionKey;
 import com.google.code.lightssh.project.log.service.LoginLogManager;
 import com.google.code.lightssh.project.security.entity.LoginAccount;
 import com.google.code.lightssh.project.security.service.LoginAccountManager;
+import com.google.code.lightssh.project.security.service.LoginFailureManager;
 import com.google.code.lightssh.project.util.RequestUtil;
 
 /**
@@ -46,6 +50,9 @@ public class CaptchaFormAuthenticationFilter extends FormAuthenticationFilter{
 	
 	/** 登录帐号 */
 	private LoginAccountManager accountManager;
+	
+	/** 登录失败记录*/
+	private LoginFailureManager loginFailureManager;
 	
 	/** 系统参数 */
 	private SystemConfig systemConfig;
@@ -74,6 +81,10 @@ public class CaptchaFormAuthenticationFilter extends FormAuthenticationFilter{
 		this.systemConfig = systemConfig;
 	}
 
+	public void setLoginFailureManager(LoginFailureManager loginFailureManager) {
+		this.loginFailureManager = loginFailureManager;
+	}
+
 	protected CaptchaUsernamePasswordToken createToken(ServletRequest request, ServletResponse response) {
         String username = getUsername(request);
         String password = getPassword(request);
@@ -94,6 +105,38 @@ public class CaptchaFormAuthenticationFilter extends FormAuthenticationFilter{
 			
 			if(captcha!=null && !captcha.equalsIgnoreCase(token.getCaptcha()))
 				throw new ShiroBadCaptchaException("验证码错误！");
+		}
+	}
+	
+	/**
+	 * 业务验证
+	 */
+	protected void doBusinessValidate( LoginAccount account ){
+		if( account == null )
+			return;
+		
+		if( !account.isEnabled() )
+			throw new LockedAccountException("用户账号已禁用！");
+		
+		if( !account.isExpired() )
+			throw new ExpiredCredentialsException("用户账号已过期！");
+		
+		Calendar now = Calendar.getInstance();
+		Calendar lockedTime = account.getLastLoginLockTime();
+		if( lockedTime != null ){
+			int minutes = 10;
+			try{
+				minutes = Integer.parseInt(systemConfig.getProperty(
+					ConfigConstants.LOGIN_FAILURE_LOCK_MINUTES_KEY,"10"));
+			}catch(Exception e){
+				log.warn("登录锁定时间设置为10分钟。");
+			}
+			
+			lockedTime.add(Calendar.MINUTE, minutes );
+			int remain = lockedTime.get( Calendar.MINUTE ) - now.get( Calendar.MINUTE );
+			if( now.compareTo(lockedTime) < 1 )
+				throw new TimeLockedException("用户账号已被锁定，" +
+						(remain>0?remain+"分钟后重试":"请稍后重试")+"！");
 		}
 	}
 	
@@ -150,6 +193,32 @@ public class CaptchaFormAuthenticationFilter extends FormAuthenticationFilter{
 	}
 	
 	/**
+	 * 锁定登录帐户
+	 */
+	protected boolean doLock( int failed_count,LoginAccount la ){
+		boolean locked = false;
+		
+		int times = 3;
+		try{
+			times = Integer.parseInt(systemConfig.getProperty(
+				ConfigConstants.LOGIN_FAILURE_LOCK_TIMES_KEY,"3"));
+		}catch(Exception e){
+			//ignore
+		}
+		
+		if( failed_count >= times ){
+			try{
+				accountManager.updateLockTime(la);
+				locked = true;
+			}catch( Exception e ){
+				log.warn("更新登录失败锁定时间异常：",e);
+			}
+		}
+		
+		return locked;
+	}
+	
+	/**
 	 * 是否做验证码检查
 	 */
 	protected boolean isCheckCaptcha( HttpServletRequest request ){
@@ -194,6 +263,7 @@ public class CaptchaFormAuthenticationFilter extends FormAuthenticationFilter{
         LoginAccount account = fetchLoginAccount( token.getUsername() );;
         try {
         	doCaptchaValidate( (HttpServletRequest)request,token );
+        	doBusinessValidate( account ); //业务检查
         	
             Subject subject = getSubject(request, response);
             subject.login(token);
@@ -216,15 +286,24 @@ public class CaptchaFormAuthenticationFilter extends FormAuthenticationFilter{
         	writeSession( account,(HttpServletRequest)request );
             return onLoginSuccess(token, subject, request, response);
         } catch (AuthenticationException e) {
-        	incFailedCount((HttpServletRequest)request);//登录失败次数
-        	
-        	int failed_count = getFailedCount((HttpServletRequest)request);
-        	if( (failed_count % WARN_LOGIN_COUNT) ==0 ){
-        		log.warn("登录失败次数超过"+ failed_count +"次:username=" + token.getPrincipal()
-        				+ ",ip=" + RequestUtil.getIpAddr((HttpServletRequest)request));
+        	if( !(e instanceof TimeLockedException) ){
+	        	incFailedCount((HttpServletRequest)request);//登录失败次数
+	        	
+	        	//登录失败记录
+	        	String ip = RequestUtil.getIpAddr((HttpServletRequest)request);
+	        	loginFailureManager.save(account,token.getUsername(),ip
+	        			,((HttpServletRequest)request).getSession().getId());
+	        	
+	        	int failed_count = getFailedCount((HttpServletRequest)request);
+	        	boolean locked = doLock( failed_count, account );
+	        	if( locked ){
+	        		log.warn("登录帐户[{}]在用户[{}]登录时被锁定。"
+	        				,account.getIdentity(),token.getUsername());
+	        	}
         	}
+        	
             return onLoginFailure(token, e, request, response);
-        }
+        } 
     }
     
     protected void writeSession( LoginAccount account ,HttpServletRequest request ){

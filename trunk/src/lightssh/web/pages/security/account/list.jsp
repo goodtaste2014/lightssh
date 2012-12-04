@@ -64,14 +64,16 @@
 							<a href="<s:url value="/security/account/edit.do?account.id=%{id}"/>">编辑帐号</a>
 						</li>
 						
+						<s:if test="loginName != @com.google.code.lightssh.project.security.service.LoginAccountManagerImpl@ROOT_LOGIN_NAME">
 						<li>
-							<a href="#">禁用帐号</a>
+							<a href="#" onclick="javascript:doRemove('<s:property value="%{id}"/>','<s:property value="%{loginName}"/>')">删除帐号</a>
 						</li>
+						</s:if>
 						
 						<li class="section"></li>
 						
 						<li>
-							<a href="<s:url value="/security/account/edit.do?account.id=%{id}&role=update"/>">编辑角色</a>
+							<a href="<s:url value="/security/account/view.do?account.loginName=%{loginName}"/>">帐号详情</a>
 						</li>
 						
 						<li class="section"></li>
@@ -80,11 +82,19 @@
 							<a href="<s:url value="/security/account/prereset.do?account.loginName=%{loginName}"/>">重设密码</a>
 						</li>
 						
-						<s:if test="loginName != @com.google.code.lightssh.project.security.service.LoginAccountManagerImpl@ROOT_LOGIN_NAME">
-						<li>
-							<a href="#" onclick="javascript:doRemove('<s:property value="%{id}"/>','<s:property value="%{loginName}"/>')">删除帐号</a>
+						<li class="disabled">
+							<a href="#">禁用帐号</a>
 						</li>
-						</s:if>
+						
+						<li>
+							<a href="<s:url value="releaselock.do?account.id=%{id}"/>">释放登录锁</a>
+						</li>
+						
+						<li class="section"></li>
+						
+						<li>
+							<a href="<s:url value="/security/account/edit.do?account.id=%{id}&role=update"/>">设置权限</a>
+						</li>
 					</ul>
 				</div>
 			</mys:column>

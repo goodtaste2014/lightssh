@@ -9,6 +9,8 @@ import com.google.code.lightssh.common.config.SystemConfig;
  */
 public class ProjectConfig extends SystemConfig{
 	
+	private static final long serialVersionUID = -6615457240004924005L;
+	
 	/** 系统名称  */
 	public static final String PROJECT_NAME = "project";
 	
@@ -20,5 +22,5 @@ public class ProjectConfig extends SystemConfig{
 	public String getProjectName() {
 		return PROJECT_NAME;
 	}
-
+	
 }

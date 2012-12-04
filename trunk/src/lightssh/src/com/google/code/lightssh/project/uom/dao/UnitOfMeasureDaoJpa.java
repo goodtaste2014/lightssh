@@ -3,6 +3,8 @@ package com.google.code.lightssh.project.uom.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Query;
+
 import org.springframework.stereotype.Repository;
 
 import com.google.code.lightssh.common.dao.jpa.JpaAnnotationDao;
@@ -20,6 +22,8 @@ import com.google.code.lightssh.project.uom.entity.UnitOfMeasure.UomType;
 @Repository("uomDao")
 public class UnitOfMeasureDaoJpa extends JpaAnnotationDao<UnitOfMeasure>{
 	
+	private static final long serialVersionUID = 3401883955850546215L;
+
 	public ListPage<UnitOfMeasure> list(ListPage<UnitOfMeasure> page,UnitOfMeasure t,UomType...types){
 		if( t == null && types == null ){
 			return list( page );
@@ -111,8 +115,12 @@ public class UnitOfMeasureDaoJpa extends JpaAnnotationDao<UnitOfMeasure>{
 		hql.append( Currency.class.getName() );
 		hql.append( " AS m WHERE m.code = ? ");
 		
-		List<Currency> result = super.getJpaTemplate().find( 
-				hql.toString(), new Object[]{code} );
+		//List<Currency> result = super.getJpaTemplate().find( 
+		//		hql.toString(), new Object[]{code} );
+		
+		Query query = this.getEntityManager().createQuery(hql.toString());
+		this.addQueryParams(query,code);
+		List<Currency> result = query.getResultList();
 		
 		return (result==null||result.isEmpty())?null:result.get(0);
 	}
@@ -135,8 +143,9 @@ public class UnitOfMeasureDaoJpa extends JpaAnnotationDao<UnitOfMeasure>{
 			params.add(unitOfMeasure.getCode());
 		}
 		
-		List<Currency> result = super.getJpaTemplate().find( 
-				hql.toString(), params.toArray() );
+		Query query = this.getEntityManager().createQuery(hql.toString());
+		this.addQueryParams(query,params);
+		List<Currency> result = query.getResultList();
 		
 		if(result!=null && !result.isEmpty()){
 			exsit = true;

@@ -19,6 +19,8 @@ import com.google.code.lightssh.project.tree.entity.Tree;
 @Component("treeManager")
 public class TreeManagerImpl extends BaseManagerImpl<Tree> implements TreeManager{
 	
+	private static final long serialVersionUID = 377108948620867982L;
+	
 	@Resource(name="nodeDao")
 	private Dao<Node> nodeDao;
 	

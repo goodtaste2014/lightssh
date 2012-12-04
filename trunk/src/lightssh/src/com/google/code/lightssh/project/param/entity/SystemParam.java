@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
 import com.google.code.lightssh.common.entity.base.UUIDModel;
@@ -27,11 +29,11 @@ public class SystemParam extends UUIDModel{
 	 */
 	public static final String DEFAULT_GROUP_NAME = "DEFAULT";
 	
-	/** 结算门户WebService组名 */
-	public static final String WS_FSPS_PORTAL_GROUP_NAME = "WS_FSPS_PORTAL";
-	public static final String ADDRESS = "ADDR"; //地址
-	public static final String USERNAME = "USERNAME"; //用户名
-	public static final String PASSWORD = "PASSWORD"; //密码
+	/**
+	 * 子系统名称
+	 */
+	@Column( name="SYSTEM",length=20 )
+	private String system;
 
 	/**
 	 * 组名
@@ -48,7 +50,7 @@ public class SystemParam extends UUIDModel{
 	/**
 	 * 参数值
 	 */
-	@Column( name="VALUE",length=500 )
+	@Column( name="VALUE",length=4000 )
 	private String value;
 	
 	/**
@@ -66,7 +68,8 @@ public class SystemParam extends UUIDModel{
 	/**
 	 * 最后更新时间
 	 */
-	@Column( name="LAST_UPDATE_TIME" )
+	@Column( name="LAST_UPDATE_TIME",columnDefinition="DATE")
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date lastUpdateTime;
 	
 	/**
@@ -74,6 +77,19 @@ public class SystemParam extends UUIDModel{
 	 */
 	@Column( name="DESCRIPTION",length=500 )
 	private String description;
+	
+	/**
+	 * 只读
+	 */
+	@Column( name="READONLY" )
+	private Boolean readonly;
+	
+	/**
+	 * 是否只读
+	 */
+	public boolean isReadonly( ){
+		return Boolean.TRUE.equals( this.readonly );
+	}
 	
 	/**
 	 * 是否有效
@@ -143,6 +159,22 @@ public class SystemParam extends UUIDModel{
 
 	public void setLastUpdateTime(Date lastUpdateTime) {
 		this.lastUpdateTime = lastUpdateTime;
+	}
+
+	public Boolean getReadonly() {
+		return readonly;
+	}
+
+	public void setReadonly(Boolean readonly) {
+		this.readonly = readonly;
+	}
+
+	public String getSystem() {
+		return system;
+	}
+
+	public void setSystem(String system) {
+		this.system = system;
 	}
 
 	@Override
