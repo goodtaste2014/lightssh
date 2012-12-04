@@ -18,6 +18,8 @@ import com.google.code.lightssh.project.identity.entity.IdentityType;
 @Component( "identityManager" )
 public class IdentityManagerImpl extends BaseManagerImpl<Identity> implements IdentityManager{
 	
+	private static final long serialVersionUID = 7496130215939685277L;
+	
 	protected IdentityDao dao;
 		
 	public IdentityManagerImpl() {

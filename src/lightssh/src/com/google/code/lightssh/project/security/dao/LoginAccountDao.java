@@ -1,5 +1,6 @@
 package com.google.code.lightssh.project.security.dao;
 
+import java.util.Calendar;
 import java.util.List;
 
 import com.google.code.lightssh.common.dao.Dao;
@@ -44,5 +45,10 @@ public interface LoginAccountDao extends Dao<LoginAccount>{
 	 * 查询带Party ID
 	 */
 	public LoginAccount getWithPartyIdentity( String loginName);
+	
+	/**
+	 * 更新登录锁定时间
+	 */
+	public int updateLockTime( LoginAccount la,Calendar time);
 	
 }

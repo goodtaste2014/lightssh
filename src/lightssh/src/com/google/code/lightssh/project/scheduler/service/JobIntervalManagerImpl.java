@@ -18,7 +18,8 @@ import com.google.code.lightssh.project.scheduler.entity.JobInterval;
 @Component( "jobIntervalManager" )
 public class JobIntervalManagerImpl extends BaseManagerImpl<JobInterval> implements JobIntervalManager{
 
-	
+	private static final long serialVersionUID = 8239840139265721193L;
+
 	@Resource( name="jobIntervalDao" )
 	public void setDao(Dao<JobInterval> dao) {
 		this.dao = dao;

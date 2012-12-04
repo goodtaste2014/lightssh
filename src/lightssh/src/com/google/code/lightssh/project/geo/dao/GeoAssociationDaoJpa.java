@@ -1,9 +1,7 @@
 package com.google.code.lightssh.project.geo.dao;
 
-import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import org.springframework.orm.jpa.JpaCallback;
 import org.springframework.stereotype.Repository;
 
 import com.google.code.lightssh.common.dao.jpa.JpaAnnotationDao;
@@ -20,6 +18,8 @@ import com.google.code.lightssh.project.geo.entity.GeographicBoundary;
 public class GeoAssociationDaoJpa extends JpaAnnotationDao<GeoAssociation>
 implements GeoAssociationDao{
 	
+	private static final long serialVersionUID = -3237608173700784894L;
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public ListPage<GeographicBoundary> listGeoByParent(
@@ -31,7 +31,12 @@ implements GeoAssociationDao{
 		hql.append( super.entityClass.getName() );
 		hql.append(  " AS m WHERE m.toGeo = ? " );
 		final Object[] params = new Object[]{geo};
+		
+		Query query = getEntityManager().createQuery( hql.toString() );
+		this.addQueryParams(query, params);
+		return (ListPage<GeographicBoundary>) query.getResultList();
 
+		/*
 		return (ListPage<GeographicBoundary>) getJpaTemplate().execute(
 				new JpaCallback() {
 		        	public Object doInJpa( EntityManager entityManager) {
@@ -57,6 +62,7 @@ implements GeoAssociationDao{
 		        		return page;
 	        		}// end doInHibernate
 	        	}); 
+		*/
 	}
 
 }

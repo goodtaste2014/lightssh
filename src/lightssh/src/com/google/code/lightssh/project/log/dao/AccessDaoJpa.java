@@ -14,6 +14,8 @@ import com.google.code.lightssh.project.log.entity.Access;
 @Repository("accessDao")
 public class AccessDaoJpa extends JpaAnnotationDao<Access> {
 	
+	private static final long serialVersionUID = -8246977185697977669L;
+
 	public ListPage<Access> list(ListPage<Access> page,Access t ){
 		if( t == null )
 			return list( page );

@@ -48,6 +48,8 @@ public class MailSenderManagerImpl implements MailSenderManager{
 		config.setPassword( this.systemConfig.getProperty( 
 				MailConfigConstants.EMAIL_PASSWORD_KEY ) );
 		
+		config.setSsl( "true".equalsIgnoreCase(systemConfig.getProperty( 
+				MailConfigConstants.EMAIL_SSL_KEY ) ));
 		return config;
 	}
 

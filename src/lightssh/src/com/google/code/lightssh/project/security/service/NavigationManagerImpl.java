@@ -29,6 +29,8 @@ import com.google.code.lightssh.project.security.entity.Role;
 @Component("navigationManager")
 public class NavigationManagerImpl extends BaseManagerImpl<Navigation> implements NavigationManager{
 
+	private static final long serialVersionUID = -1156261316022370821L;
+
 	/**xxxx赋予角色*/
 	public static final String TEAM_ROLE = "TEAM_ROLE";
 	

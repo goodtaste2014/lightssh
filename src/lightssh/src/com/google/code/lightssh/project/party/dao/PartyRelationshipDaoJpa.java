@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Query;
+
 import org.springframework.stereotype.Repository;
 
 import com.google.code.lightssh.common.ApplicationException;
@@ -22,6 +24,8 @@ import com.google.code.lightssh.project.party.entity.PartyRelationship.Relations
 public class PartyRelationshipDaoJpa extends JpaAnnotationDao<PartyRelationship> 
 implements PartyRelationshipDao{
 
+	private static final long serialVersionUID = -3759568965957492052L;
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<PartyRelationship> list( RelationshipType type ) {
@@ -30,7 +34,12 @@ implements PartyRelationshipDao{
 			+ "  AND ( m.period.end IS NULL OR m.period.end >= ? )"
 			;
 	
-		return getJpaTemplate().find(hql,new Object[]{type,new Date()} );
+		//return getJpaTemplate().find(hql,new Object[]{type,new Date()} );
+		
+		Query query = this.getEntityManager().createQuery(hql);
+		this.addQueryParams(query,new Object[]{type,new Date()} );
+		
+		return query.getResultList();
 	}
 	
 	@Override
@@ -61,7 +70,10 @@ implements PartyRelationshipDao{
 			params.add( to );
 		}
 		
-		return getJpaTemplate().find(hql.toString(), params.toArray( ) );
+//		return getJpaTemplate().find(hql.toString(), params.toArray( ) );
+		Query query = this.getEntityManager().createQuery(hql.toString());
+		this.addQueryParams(query, params);
+		return query.getResultList();
 	}
 
 }

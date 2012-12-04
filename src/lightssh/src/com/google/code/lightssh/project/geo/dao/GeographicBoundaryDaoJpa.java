@@ -18,6 +18,8 @@ import com.google.code.lightssh.project.geo.entity.GeographicBoundary;
 @Repository("geoDao")
 public class GeographicBoundaryDaoJpa extends JpaAnnotationDao<GeographicBoundary>{
 	
+	private static final long serialVersionUID = -3633813864979137570L;
+
 	public ListPage<GeographicBoundary> list(ListPage<GeographicBoundary> page,GeographicBoundary t ){
 		if( t == null )
 			return list( page );

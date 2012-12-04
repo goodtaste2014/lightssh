@@ -1,11 +1,13 @@
 package com.google.code.lightssh.project.security.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+
+import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 
@@ -27,11 +29,16 @@ import com.google.code.lightssh.project.security.entity.Permission;
 public class LoginAccountDaoJpa extends JpaAnnotationDao<LoginAccount> 
 	implements LoginAccountDao{
 
+	private static final long serialVersionUID = 4617159875674281868L;
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public LoginAccount get(String loginName) {
 		String hql = " SELECT m FROM " + entityClass.getName() + " AS m WHERE m.loginName = ?1 ";
-		List<LoginAccount> results = getJpaTemplate().find(hql, loginName );
+		//List<LoginAccount> results = getJpaTemplate().find(hql, loginName );
+		Query query = this.getEntityManager().createQuery(hql);
+		this.addQueryParams(query,loginName);
+		List<LoginAccount> results = query.getResultList();
 		
 		return (results==null||results.isEmpty())?null:results.get(0);
 	}
@@ -42,7 +49,11 @@ public class LoginAccountDaoJpa extends JpaAnnotationDao<LoginAccount>
 	@SuppressWarnings("unchecked")
 	public LoginAccount getByEmail(String email) {
 		String hql = " SELECT m FROM " + entityClass.getName() + " AS m WHERE m.email = ?1 ";
-		List<LoginAccount> results = getJpaTemplate().find(hql, email );
+		//List<LoginAccount> results = getJpaTemplate().find(hql, email );
+		
+		Query query = this.getEntityManager().createQuery(hql);
+		this.addQueryParams(query,email);
+		List<LoginAccount> results = query.getResultList();
 		
 		return (results==null||results.isEmpty())?null:results.get(0);
 	}
@@ -50,6 +61,7 @@ public class LoginAccountDaoJpa extends JpaAnnotationDao<LoginAccount>
 	/**
 	 * 组装LoginAccount对象
 	 */
+	@SuppressWarnings("unused")
 	private LoginAccount buildObject( ResultSet rs ){
 		if( rs == null )
 			return null;
@@ -57,11 +69,17 @@ public class LoginAccountDaoJpa extends JpaAnnotationDao<LoginAccount>
 		LoginAccount la = new LoginAccount();
 		try{
 			la.setId( rs.getLong("ID"));
-			//la.setParty_id( rs.getString("PARTY_ID"));
+			la.setPartyId(rs.getString("PARTY_ID"));
 			la.setLoginName(rs.getString("LOGIN_NAME"));
 			la.setPassword( rs.getString("PASSWORD"));
 			la.setEnabled( rs.getBoolean("ENABLED"));
 			la.setPeriod( rs.getDate("PERIOD_START"), rs.getDate("PERIOD_END"));
+			Calendar cal = Calendar.getInstance();
+			Timestamp lockedTime = rs.getTimestamp("LAST_LOGIN_LOCK_TIME");
+			if( lockedTime != null ){
+				cal.setTime( lockedTime );
+				la.setLastLoginLockTime( cal );
+			}
 			//la.setUseCa( rs.getBoolean("USE_CA") );
 			//la.setType( LoginAccount.LoginAccountType.valueOf( rs.getString("TYPE") ));
 		}catch( SQLException e ){
@@ -72,37 +90,61 @@ public class LoginAccountDaoJpa extends JpaAnnotationDao<LoginAccount>
 	}
 	
 	public LoginAccount getWithPartyIdentity(final String loginName){
-		final String sql_loginaccount = " select * from T_SECURITY_LOGINACCOUNT t where t.login_name = ? ";
-		LoginAccount account = null;
+		return this.get(loginName);
 		
+		/*
+		//这种方式对连接池释放连接有用//TODO
+		final String sql_loginaccount = " select * from T_SECURITY_LOGINACCOUNT t where t.login_name = ? ";
+		
+		LoginAccount result = null;
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		SessionImpl session = null;
 		try{
-			conn = super.getConnection();
+			session = ((SessionImpl)getEntityManager().getDelegate());
+			conn = session.connection();
 			ps = conn.prepareStatement(sql_loginaccount);
 			ps.setString(1, loginName);
 			rs = ps.executeQuery();
 			while(rs.next()){
-				account = buildObject( rs );
+				result = buildObject( rs );
 				break;
 			}
-		}catch (SQLException e){
-			e.printStackTrace();
+			
+		}catch( Exception e ){
+			//ignore
 		}finally{
-			try{
-				if( rs != null )
-					rs.close();
-				if( ps != null )
-					ps.close();
-				if( conn != null )
-					conn.close();
-			}catch( Exception e ){
-				
-			}
+			session.close();
+			close( rs,ps,conn);
 		}
+		return result;
+		*/
 		
-		return account;
+		//Query query = getEntityManager().createNativeQuery(sql_loginaccount);
+		//Object result = addQueryParams(query,new Object[]{loginName}).getSingleResult();
+		
+		/*
+		//这种方式无法释放连接池连接//TODO
+		return getEntityManager().unwrap( org.hibernate.Session.class).doReturningWork(
+			new ReturningWork<LoginAccount>(){
+				public LoginAccount execute(Connection conn) throws SQLException { 
+					PreparedStatement ps = conn.prepareStatement(sql_loginaccount);
+					ps.setString(1, loginName);
+					ResultSet rs = ps.executeQuery();
+					LoginAccount result = null;
+					while(rs.next()){
+						result = buildObject( rs );
+						break;
+					}
+					
+					close( rs,ps,conn);
+					
+					return result;
+		        }
+			}
+		); 
+		*/
 	}
 
 	public ListPage<LoginAccount> list(ListPage<LoginAccount> page,LoginAccount t ){
@@ -211,5 +253,31 @@ public class LoginAccountDaoJpa extends JpaAnnotationDao<LoginAccount>
 			+ " where ref_lr.role_id in( " + roles + " ) order by sla.LOGIN_NAME asc ";
 		
 		return getEntityManager().createNativeQuery( sql, super.entityClass ).getResultList();
+	}
+	
+	/**
+	 * 更新登录锁定时间
+	 */
+	public int updateLockTime( LoginAccount la ,Calendar time){
+		if( la == null || la.getIdentity() == null )
+			return 0;
+		/*
+		String hql = "UPDATE " + this.entityClass.getName() 
+			+ " SET lastLoginLockTime = ? WHERE id = ? ";
+		
+		Query query = getEntityManager().createQuery(hql);
+		this.addQueryParams(query,new Object[]{
+				Calendar.getInstance(),la.getIdentity()});
+		
+		return query.executeUpdate();
+		*/
+		LoginAccount old = read(la);
+		if( old != null ){
+			old.setLastLoginLockTime( time );
+			this.update( old );
+			return 1;
+		}
+			
+		return 0;
 	}
 }

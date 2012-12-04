@@ -25,6 +25,8 @@ import com.google.code.lightssh.project.security.entity.Role;
 @Component("roleManager")
 public class RoleManagerImpl extends BaseManagerImpl<Role> implements RoleManager{
 	
+	private static final long serialVersionUID = 5340905466451969796L;
+
 	/** 系统超级管理员角色  */
 	public static final String SUPER_ROLE = "Super Role";
 	

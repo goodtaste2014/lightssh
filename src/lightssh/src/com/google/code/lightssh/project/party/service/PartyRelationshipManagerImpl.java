@@ -22,6 +22,8 @@ import com.google.code.lightssh.project.party.entity.PartyRelationship.Relations
 public class PartyRelationshipManagerImpl extends BaseManagerImpl<PartyRelationship> 
 implements PartyRelationshipManager{
 	
+	private static final long serialVersionUID = -3739191774353397479L;
+	
 	//@Resource(name="partyRoleManager")
 	//private PartyRoleManager partyRoleManager;
 	

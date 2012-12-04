@@ -430,4 +430,20 @@ public class LoginAccountAction extends GenericAction<LoginAccount>{
 		return SUCCESS;
 	}
 	
+	/**
+	 * 释放登录锁
+	 */
+	public String releaselock( ){
+		if( account == null || account.getIdentity() == null )
+			return INPUT;
+		
+		try{
+			this.getManager().releaseLockTime(account);
+		}catch( Exception e ){
+			this.saveErrorMessage("释放登录锁异常："+e.getMessage());
+			return INPUT;
+		}
+		
+		return SUCCESS;
+	}
 }

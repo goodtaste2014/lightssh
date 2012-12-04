@@ -18,7 +18,7 @@
 			 * 查看会员详情
 			 */
 			function popupView( name ){
-				var url = '<s:url value="/security/account/view.do"/>?account.loginName=' + name;
+				var url = '<s:url value="/security/account/popupview.do"/>?account.loginName=' + name;
 				var popup = $("#account_popup");
 				//$( popup ).html( '<div><img id=\'loading\' src=\'<%= request.getContextPath() %>/images/loading.gif\'/>' );
 				$( popup ).dialog({

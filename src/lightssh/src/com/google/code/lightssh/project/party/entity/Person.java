@@ -194,7 +194,7 @@ public class Person extends Party{
 	/**
 	 * 生日
 	 */
-	@Column( name="BIRTHDAY" )
+	@Column( name="BIRTHDAY",columnDefinition="DATE" )
 	@Temporal(TemporalType.DATE)
 	protected Date birthday;
 	

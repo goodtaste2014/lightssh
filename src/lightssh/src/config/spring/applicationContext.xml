@@ -6,13 +6,13 @@
 	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="
 	http://www.springframework.org/schema/beans
-	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
 	http://www.springframework.org/schema/context
-	http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	http://www.springframework.org/schema/context/spring-context-3.1.xsd
 	http://www.springframework.org/schema/tx
-	http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+	http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
 	http://www.springframework.org/schema/aop
-	http://www.springframework.org/schema/aop/spring-aop-3.0.xsd" default-lazy-init="true">
+	http://www.springframework.org/schema/aop/spring-aop-3.1.xsd" default-lazy-init="true">
 
 	<context:annotation-config/>
 	
@@ -60,9 +60,16 @@
     <bean id="systemConfig" class="com.google.code.lightssh.project.config.ProjectConfig" scope="singleton" init-method="init"/>
     
     <!-- data source spied-->
+    <!--  
     <bean id="dataSourceSpied" class="com.google.code.lightssh.common.config.ConfigurableDataSource" destroy-method="close" init-method="init">
 		<property name="systemConfig" ref="systemConfig"/>
 	</bean>
+    -->
+	
+	<bean id="dataSourceFactory"  class="com.google.code.lightssh.common.config.DataSourceFactory">
+		<property name="systemConfig" ref="systemConfig"/>
+	</bean>
+	<bean id="dataSourceSpied" factory-bean="dataSourceFactory" factory-method="createDataSource" />
 	
 	<!-- data source -->
 	<bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">

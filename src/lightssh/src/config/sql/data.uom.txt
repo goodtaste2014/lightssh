@@ -237,3 +237,4 @@ Insert into T_UOM_BASE (CODE,UOM_TYPE,ISO_CODE,DESCRIPTION) values('VDRY_mm3','V
 Insert into T_UOM_BASE (CODE,UOM_TYPE,ISO_CODE,DESCRIPTION) values('VDRY_ST','VOLUME_DRY','ST','Stere (cubic meter)');
 Insert into T_UOM_BASE (CODE,UOM_TYPE,ISO_CODE,DESCRIPTION) values('VDRY_yd3','VOLUME_DRY','yd3','Cubic yard');
 
+commit;

@@ -12,7 +12,7 @@
 	<ul class="path">
 		<li>系统管理</li>
 		<li>登录账号</li>
-		<li>我的账号</li>
+		<li>账号详情</li>
 	</ul>
 		
 	<%@ include file="/pages/common/messages.jsp" %>
@@ -69,6 +69,13 @@
 				<th><label>上次更新密码时间</label></th>
 				<td>
 					<s:property value="account.lastUpdatePasswordTime"/>
+				</td>
+			</tr>
+			
+			<tr>
+				<th><label>上次登录锁定时间</label></th>
+				<td>
+					<s:property value="account.lastLoginLockTime"/>
 				</td>
 			</tr>
 			

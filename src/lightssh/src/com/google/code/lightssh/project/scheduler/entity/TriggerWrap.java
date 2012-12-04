@@ -31,7 +31,7 @@ public class TriggerWrap {
 	}
 	
 	public String getName(){
-		return trigger.getName();
+		return trigger.getKey().getName();
 	}
 	
 	public String getCronExpression(){
@@ -54,7 +54,7 @@ public class TriggerWrap {
 	}
 
 	public String getGroup(){
-		return trigger.getGroup();
+		return trigger.getKey().getGroup();
 	}
 	
 	public String getDescription(){
