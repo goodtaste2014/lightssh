@@ -4,11 +4,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.quartz.CronTrigger;
 import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
 import org.quartz.Trigger;
+import org.quartz.TriggerKey;
+import org.quartz.Trigger.TriggerState;
 import org.quartz.impl.StdScheduler;
+import org.quartz.impl.matchers.GroupMatcher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import com.google.code.lightssh.common.ApplicationException;
 import com.google.code.lightssh.common.util.StringUtil;
 import com.google.code.lightssh.project.scheduler.entity.JobInterval;
 import com.google.code.lightssh.project.scheduler.entity.TriggerWrap;
@@ -17,7 +26,7 @@ public class SchedulerManagerImpl implements SchedulerManager{
 	
 	private static final long serialVersionUID = 544811394387288846L;
 
-	//private static Logger log = LoggerFactory.getLogger(SchedulerManagerImpl.class);
+	private static Logger log = LoggerFactory.getLogger(SchedulerManagerImpl.class);
 	
 	private JobIntervalManager jobIntervalManager;
 	
@@ -34,36 +43,35 @@ public class SchedulerManagerImpl implements SchedulerManager{
 	
 	/**
 	 * 获得系统Trigger
-	 * @return
 	 */
 	private List<Trigger> listTriggers( ){
 		List<Trigger> triggers = new ArrayList<Trigger>( );
 		
-		//String groups[] = { Scheduler.DEFAULT_GROUP };
 		List<String> groups  = new ArrayList<String>();
 		groups.add( Scheduler.DEFAULT_GROUP );
 		
 		try{
-			//groups = scheduler.getTriggerGroupNames();
 			groups = scheduler.getTriggerGroupNames();
 		}catch( Exception e ){}
 		
 		try{
 			for( String group:groups ){
-				/*
-				for( String name:scheduler.getTriggerNames(group) ){
-					triggers.add( scheduler.getTrigger( name, group ) );
-				}
-				*/
-				//scheduler.getTrigger(triggerKey);
-				//GroupMatcher gm = new GroupMatcher("","");
-				//scheduler.getTriggerKeys(matcher)
+				Set<TriggerKey> keys = scheduler.getTriggerKeys(
+						GroupMatcher.triggerGroupContains(group));
+				
+				for( TriggerKey key:keys )
+					triggers.add( scheduler.getTrigger( key ) );
 			}
-		}catch( Exception e ){}
+		}catch( Exception e ){
+			log.warn("获取系统定时任务异常："+e.getMessage());
+		}
 		
 		return triggers;
 	}
 	
+	/**
+	 * 定时器设置
+	 */
 	private Map<String,JobInterval> getJobIntervalMap( ){
 		List<JobInterval> list = jobIntervalManager.listAvailable();
 		if( list == null || list.isEmpty() )
@@ -142,15 +150,14 @@ public class SchedulerManagerImpl implements SchedulerManager{
 	/**
 	 * 定时器状态
 	 */
-	protected int getTriggerState( String name,String group ){
-		/*
+	protected TriggerState getTriggerState( TriggerKey key ){
 		try {
-			return scheduler.getTriggerState( name , group );
+			return scheduler.getTriggerState( key );
 		} catch (SchedulerException e) {
 			e.printStackTrace();
 		}
-		*/
-		return -1;
+		
+		return TriggerState.NONE;
 	}
 
 	@Override
@@ -164,18 +171,10 @@ public class SchedulerManagerImpl implements SchedulerManager{
 			//Map<String,JobInterval> jiMap = getJobIntervalMap();
 			
 			for(Trigger trigger:list ){
-				/*
-				TriggerWrap wrap = new TriggerWrap( (Trigger)trigger.clone() );
-				wrap.setPause((jiMap!=null && !jiMap.isEmpty() 
-					&& (jiMap.get(trigger.getName())!=null)
-					&& (!jiMap.get(trigger.getName()).isEnabled()))?true:false);
-				*/
-				/*
-				boolean pause = Trigger.STATE_PAUSED == 
-					getTriggerState(trigger.getName(), trigger.getGroup());
-				wrap.setPause(pause);
+				TriggerWrap wrap = new TriggerWrap( trigger );
+				wrap.setState(getTriggerState(trigger.getKey()));
+				
 				result.add(wrap);
-				*/
 			}
 		}
 		return result;
@@ -195,11 +194,42 @@ public class SchedulerManagerImpl implements SchedulerManager{
 			cronExpression = StringUtil.clean(jobInterval.getCronExpression());
 		}
 		
+		Trigger target = null;
+		try {
+			target = scheduler.getTrigger(TriggerKey.triggerKey(triggerName));
+		} catch (SchedulerException e) {
+			log.warn("获取定时任务[{}]异常：{}",triggerName,e.getMessage());
+			throw new ApplicationException( e );
+		}
+		
+		if( target == null )
+			throw new ApplicationException( "找不到相关定时任务["+triggerName+"]" );
+			
+		boolean enabled = false;
+		
+		try {
+			TriggerState state = scheduler.getTriggerState( target.getKey() );
+			
+			if( target instanceof CronTrigger){ 
+				cronExpression = ((CronTrigger)target).getCronExpression();
+			}
+			
+			if( TriggerState.PAUSED.equals(state) ){
+				scheduler.resumeTrigger( target.getKey() );//启动定时器
+				enabled = true;
+			}else if( TriggerState.NORMAL.equals(state) ){
+				scheduler.pauseTrigger(target.getKey());//暂停定时器
+			}
+		} catch (SchedulerException e) {
+			e.printStackTrace();
+		}
+		
+		//-----------------------------------------------------------------------------
 		List<Trigger> triggers = listTriggers( );
 		if( triggers == null || triggers.isEmpty() )
 			return;
 		
-		boolean enabled = false;
+		
 		/*
 		for( Trigger trigger:triggers ){
 			if( triggerName.equals( trigger.getName() ) ){
@@ -226,6 +256,7 @@ public class SchedulerManagerImpl implements SchedulerManager{
 			}
 		}//end for
 		*/
+		
 		if( jobInterval == null )
 			jobInterval = new JobInterval();
 

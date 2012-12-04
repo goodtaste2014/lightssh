@@ -16,6 +16,7 @@
 	
 	<bean id="exampleServiceJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 		<property name="jobClass" value="com.google.code.lightssh.project.example.service.QuartzExampleManagerImpl" />
+		<property name="description" value="定时任务示例"/>
 		<property name="jobDataAsMap">
 			<map>
 				<entry key="exampleBusinessObject" value-ref="exampleBusinessObject" />
@@ -25,7 +26,7 @@
 	
 	<bean id="exampleCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="name" value="example_scheduler"/>
-		<property name="cronExpression" value="* 0/10 * * * ?" />
+		<property name="cronExpression" value="0/10 * * * * ?" />
 		<property name="jobDetail" ref="exampleServiceJobDetail"/>
 	</bean>
 	
