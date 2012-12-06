@@ -39,7 +39,7 @@ public class SequenceDaoJpa extends JpaAnnotationDao<Sequence> implements Sequen
 		}catch( Exception e ){
 			//ignore
 		}finally{
-			session.close();
+			//session.close();
 			close( rs,ps,conn);
 		}
 		
