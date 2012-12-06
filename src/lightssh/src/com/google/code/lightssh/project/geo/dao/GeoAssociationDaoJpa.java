@@ -1,7 +1,5 @@
 package com.google.code.lightssh.project.geo.dao;
 
-import javax.persistence.Query;
-
 import org.springframework.stereotype.Repository;
 
 import com.google.code.lightssh.common.dao.jpa.JpaAnnotationDao;
@@ -32,9 +30,8 @@ implements GeoAssociationDao{
 		hql.append(  " AS m WHERE m.toGeo = ? " );
 		final Object[] params = new Object[]{geo};
 		
-		Query query = getEntityManager().createQuery( hql.toString() );
-		this.addQueryParams(query, params);
-		return (ListPage<GeographicBoundary>) query.getResultList();
+		String select_jpql = " SELECT m.fromGeo ";
+		return (ListPage<GeographicBoundary>) super.queryObject(page, select_jpql, hql.toString(), params);
 
 		/*
 		return (ListPage<GeographicBoundary>) getJpaTemplate().execute(
