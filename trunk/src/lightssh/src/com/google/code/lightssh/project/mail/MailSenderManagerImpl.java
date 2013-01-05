@@ -82,11 +82,15 @@ public class MailSenderManagerImpl implements MailSenderManager{
 		MailAddress mailAddress = new MailAddress( to,from );
 		
 		StringBuffer content = new StringBuffer();
+		content.append("<html>");
+		//content.append("<img src=\"http://www.gstatic.com/codesite/ph/images/defaultlogo.png\"></br>");
 		content.append("\n要重设您系统帐户 "+account.getLoginName()+" 的密码，请点击以下链接：" );
-		content.append( retrieveUrl );
+		content.append( "<a href=\""+retrieveUrl+"\">点击重设密码</a>" );
 		content.append("\n如果点击以上链接没有反应，请将该网址复制并粘贴到新的浏览器窗口中。" );
+		content.append("\n"+retrieveUrl);
+		content.append("</html>");
 		
-		mailSender.send(config,mailAddress
+		mailSender.sendHtml(config,mailAddress
 				,new MailContent("用户帮助-找回登录密码",content.toString()));
 
 	}

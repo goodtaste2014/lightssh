@@ -3,6 +3,7 @@ package com.google.code.lightssh.project.web.action;
 import javax.annotation.Resource;
 
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -22,11 +23,13 @@ public class SecurityAction extends BaseAction{
 
 	private static final long serialVersionUID = 1L;
 	
-	public static final String SECUIRTY_FRAMEWORK_PARAM ="secuirtyFramework";
-	
 	/** 系统参数 */
 	@Resource(name="systemConfig")
 	private SystemConfig systemConfig;
+	
+	public String getVersion( ){
+		return systemConfig.getProperty("version","trunk");
+	}
 	
 	/**
 	 * 是否显示验证码
@@ -54,8 +57,14 @@ public class SecurityAction extends BaseAction{
 	 */
 	public String logout(){
 		try{
-			//Spring Security 的退出不会执行到这里
+			//提示重复登录
+			Object obj = request.getSession().getAttribute(SessionKey.EXCEPTION_OBJECT);
+			
 			SecurityUtils.getSubject().logout();
+			
+			if( obj != null && obj instanceof Throwable ){
+				request.getSession().setAttribute(SessionKey.EXCEPTION_OBJECT, obj);
+			}
 		}catch( Exception e ){
 			//e.printStackTrace();
 		}
@@ -70,6 +79,13 @@ public class SecurityAction extends BaseAction{
 		//如果登录成功(session未失效),再次登录会一直停留在登录页面
 		if( SecurityUtils.getSubject().isAuthenticated() ){
 			return SUCCESS;
+		}else{
+			//提示重复登录
+			Object obj = request.getSession().getAttribute(SessionKey.EXCEPTION_OBJECT);
+			if( obj != null && obj instanceof Throwable ){
+				request.getSession().removeAttribute(SessionKey.EXCEPTION_OBJECT);
+				request.setAttribute(FormAuthenticationFilter.DEFAULT_ERROR_KEY_ATTRIBUTE_NAME, obj);
+			}
 		}
 		
 		return INPUT;

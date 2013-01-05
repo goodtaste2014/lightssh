@@ -10,6 +10,7 @@
     <persistence-unit name="lightssh">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <properties>
+        	<property name="hibernate.connection.release_mode" value="after_transaction"/>
         	<property name="hibernate.show_sql" value="false"/>
             <property name="hibernate.format_sql" value="false"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect"/>

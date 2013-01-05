@@ -6,10 +6,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.quartz.CronScheduleBuilder;
 import org.quartz.CronTrigger;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
+import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
 import org.quartz.Trigger.TriggerState;
 import org.quartz.impl.StdScheduler;
@@ -98,23 +100,67 @@ public class SchedulerManagerImpl implements SchedulerManager{
 			return;
 		
 		//针对每个Trigger 设置Cron表示达
-		/*
 		for( Trigger trigger:triggers ){
-			JobInterval jobInterval = jiMap.get( trigger.getName() );
+			JobInterval jobInterval = jiMap.get( trigger.getKey().getName() );
 			if( trigger instanceof CronTrigger && jobInterval != null ){
-				try{
-					if( jobInterval.isEnabled() ){ //重设置trigger
-						((CronTrigger)trigger).setCronExpression( jobInterval.getCronExpression() );
-						scheduler.rescheduleJob(trigger.getName(), trigger.getGroup(), trigger);
-					}else{//停用
-						scheduler.pauseTrigger(trigger.getName(), trigger.getGroup());
-					}
-				}catch( Exception e ){
-					//e.printStackTrace();
-				}
+				freshTrigger( trigger,jobInterval.isEnabled()
+						,jobInterval.getCronExpression() );
 			}
 		}//end for
-		*/
+	}
+	
+	/**
+	 * 刷新定时任务
+	 */
+	public void refresh(String name,String group){
+		if( scheduler == null )
+			return;
+		
+		try {
+			Trigger trigger = scheduler.getTrigger(TriggerKey.triggerKey(name, group));
+			if( trigger != null && trigger instanceof CronTrigger){
+				JobInterval jobInterval = this.jobIntervalManager.get( name );
+				if( jobInterval != null ){
+					CronScheduleBuilder csb = CronScheduleBuilder.cronSchedule(
+							jobInterval.getCronExpression());
+					
+					trigger = TriggerBuilder.newTrigger()
+						.withIdentity( trigger.getKey() )
+						.withDescription(trigger.getDescription())
+						.withSchedule(csb).build();
+					scheduler.rescheduleJob(trigger.getKey(),trigger);
+					if( !jobInterval.isEnabled() )
+						scheduler.pauseTrigger(trigger.getKey());
+				}
+			}
+		} catch (SchedulerException e) {
+			throw new ApplicationException(e);
+		}
+		
+	}
+	
+	/**
+	 * 刷新触发器
+	 */
+	private void freshTrigger(Trigger trigger,boolean run,String cronExp ){
+		if( scheduler == null )
+			return;
+		
+		try{
+			if( run ){ //重设置trigger
+				CronScheduleBuilder csb = CronScheduleBuilder.cronSchedule(cronExp);
+				
+				trigger = TriggerBuilder.newTrigger()
+					.withIdentity( trigger.getKey() )
+					.withDescription(trigger.getDescription())
+					.withSchedule(csb).build();
+				scheduler.rescheduleJob(trigger.getKey(),trigger);
+			}else{//停用
+				scheduler.pauseTrigger(trigger.getKey());
+			}
+		}catch( Exception e ){
+			//e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -184,10 +230,17 @@ public class SchedulerManagerImpl implements SchedulerManager{
 	 * 启动或暂停定时器
 	 */
 	public void toggleTrigger(String triggerName ){
+		toggleTrigger(triggerName,Scheduler.DEFAULT_GROUP);
+	}
+	
+	/**
+	 * 启动或暂停定时器
+	 */
+	public void toggleTrigger(String triggerName,String group ){
 		if( StringUtil.clean(triggerName)==null )
 			return;
 		
-		String cronExpression = null;
+		String cronExpression = null,description;
 		JobInterval jobInterval = jobIntervalManager.get( triggerName );
 		if( jobInterval != null ){
 			jobInterval.setEnabled( Boolean.valueOf( !jobInterval.isEnabled() ) );
@@ -196,7 +249,7 @@ public class SchedulerManagerImpl implements SchedulerManager{
 		
 		Trigger target = null;
 		try {
-			target = scheduler.getTrigger(TriggerKey.triggerKey(triggerName));
+			target = scheduler.getTrigger(TriggerKey.triggerKey(triggerName,group));
 		} catch (SchedulerException e) {
 			log.warn("获取定时任务[{}]异常：{}",triggerName,e.getMessage());
 			throw new ApplicationException( e );
@@ -205,6 +258,7 @@ public class SchedulerManagerImpl implements SchedulerManager{
 		if( target == null )
 			throw new ApplicationException( "找不到相关定时任务["+triggerName+"]" );
 			
+		description = target.getDescription();
 		boolean enabled = false;
 		
 		try {
@@ -224,45 +278,15 @@ public class SchedulerManagerImpl implements SchedulerManager{
 			e.printStackTrace();
 		}
 		
-		//-----------------------------------------------------------------------------
-		List<Trigger> triggers = listTriggers( );
-		if( triggers == null || triggers.isEmpty() )
-			return;
-		
-		
-		/*
-		for( Trigger trigger:triggers ){
-			if( triggerName.equals( trigger.getName() ) ){
-				try{
-					int state = getTriggerState(trigger.getName(), trigger.getGroup());
-					if( Trigger.STATE_PAUSED == state ){
-						if( trigger instanceof CronTrigger){ 
-							if(cronExpression != null){
-								((CronTrigger)trigger).setCronExpression(cronExpression);
-								scheduler.rescheduleJob(trigger.getName(), trigger.getGroup(), trigger);
-							}else{
-								cronExpression = ((CronTrigger)trigger).getCronExpression();
-							}
-						}
-						scheduler.resumeTrigger(trigger.getName(), trigger.getGroup());
-						enabled = true;
-					}else
-						scheduler.pauseTrigger(trigger.getName(), trigger.getGroup());
-				}catch( Exception e ){
-					log.error("操作定时任务[{}]异常:",trigger.getName(),e);
-					throw new ApplicationException( e );
-				}
-				break;
-			}
-		}//end for
-		*/
-		
-		if( jobInterval == null )
+		if( jobInterval == null ){
 			jobInterval = new JobInterval();
+			jobInterval.setCronExpression(cronExpression);
+			jobInterval.setTriggerName(triggerName);
+			jobInterval.setDescription(description);
+		}
 
-		jobInterval.setTriggerName(triggerName);
 		jobInterval.setEnabled( enabled );
-		jobInterval.setCronExpression(cronExpression);
+		
 		jobIntervalManager.save(jobInterval);
 	}
 	

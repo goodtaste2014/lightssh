@@ -10,6 +10,9 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.Element;
+
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.ExpiredCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
@@ -23,6 +26,7 @@ import com.google.code.lightssh.common.config.SystemConfig;
 import com.google.code.lightssh.common.web.SessionKey;
 import com.google.code.lightssh.project.log.service.LoginLogManager;
 import com.google.code.lightssh.project.security.entity.LoginAccount;
+import com.google.code.lightssh.project.security.entity.OnlineUser;
 import com.google.code.lightssh.project.security.service.LoginAccountManager;
 import com.google.code.lightssh.project.security.service.LoginFailureManager;
 import com.google.code.lightssh.project.util.RequestUtil;
@@ -45,6 +49,11 @@ public class CaptchaFormAuthenticationFilter extends FormAuthenticationFilter{
 	
 	private String captchaParam = DEFAULT_CAPTCHA_PARAM;
 	
+	/**
+	 * 在线登录用户缓存
+	 */
+	private Cache onlineUserCache; 
+
 	/** 登录日志 */
 	private LoginLogManager loginLogManager;
 	
@@ -83,6 +92,10 @@ public class CaptchaFormAuthenticationFilter extends FormAuthenticationFilter{
 
 	public void setLoginFailureManager(LoginFailureManager loginFailureManager) {
 		this.loginFailureManager = loginFailureManager;
+	}
+	
+	public void setOnlineUserCache(Cache cache) {
+		this.onlineUserCache = cache;
 	}
 
 	protected CaptchaUsernamePasswordToken createToken(ServletRequest request, ServletResponse response) {
@@ -307,7 +320,15 @@ public class CaptchaFormAuthenticationFilter extends FormAuthenticationFilter{
     }
     
     protected void writeSession( LoginAccount account ,HttpServletRequest request ){
+    	//写session
     	request.getSession().setAttribute(SessionKey.LOGIN_ACCOUNT, account);
+    	
+    	//写在线缓存
+    	if( this.onlineUserCache != null ){
+    		String username = account.getLoginName();
+    		onlineUserCache.put(new Element(username
+    				,new OnlineUser(username,request) ));
+    	}
     }
     
     /**

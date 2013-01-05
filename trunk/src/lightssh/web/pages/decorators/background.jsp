@@ -17,8 +17,8 @@
 		<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/my/util.js"></script>
 		<script type="text/javascript">
 			$(document).ready(function(){
-				$(document).bind('click',function(){
-					$.lightssh.popupMenu();
+				$(document).bind('click',function(event){
+					$.lightssh.popupMenu( event );
 				});
 			});
 		</script>

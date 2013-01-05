@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.web.action.BaseAction;
 import com.google.code.lightssh.project.scheduler.entity.TriggerWrap;
 import com.google.code.lightssh.project.scheduler.service.SchedulerManager;
@@ -22,6 +23,36 @@ public class SchedulerAction extends BaseAction{
 
 	private static final long serialVersionUID = 6483507951968694317L;
 	
+	private ListPage<TriggerWrap> page;
+	
+	private String name;
+	
+	private String group;
+	
+	public ListPage<TriggerWrap> getPage() {
+		return page;
+	}
+
+	public void setPage(ListPage<TriggerWrap> page) {
+		this.page = page;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getGroup() {
+		return group;
+	}
+
+	public void setGroup(String group) {
+		this.group = group;
+	}
+
 	@Resource( name="schedulerManager" )
 	private SchedulerManager schedulerManager;
 
@@ -33,8 +64,15 @@ public class SchedulerAction extends BaseAction{
 	 * 列出所有定时任务
 	 */
 	public String listTriggers(){
+		if( page == null )
+			page = new ListPage<TriggerWrap>();
+		
+		page.setSize(500);
 		List<TriggerWrap> triggers = schedulerManager.listAllTrigger();
-		request.setAttribute("list", triggers);
+		if( triggers != null ){
+			page.setAllSize(triggers.size());
+			page.setList(triggers);
+		}
 		return SUCCESS;
 	}
 	
@@ -42,14 +80,24 @@ public class SchedulerAction extends BaseAction{
 	 * 停用/启用 Trigger
 	 */
 	public String toggle(){
-		String name = request.getParameter("name");
-		
 		try{
-			schedulerManager.toggleTrigger(name);
+			schedulerManager.toggleTrigger(name,group);
 		}catch( Exception e ){
-			this.addActionError("任务操作失败：" + e.getMessage() );
+			this.saveErrorMessage("任务操作失败：" + e.getMessage() );
 		}
 		
+		return SUCCESS;
+	}
+	
+	/**
+	 * 刷新定时任务
+	 */
+	public String refresh(){
+		try{
+			schedulerManager.refresh(name,group);
+		}catch( Exception e ){
+			this.saveErrorMessage("刷新定时任务["+name+","+group+"]异常：" + e.getMessage() );
+		}
 		return SUCCESS;
 	}
 

@@ -12,36 +12,36 @@
 			<result name="password">/pages/security/account/password.jsp</result>	
 			<result name="role">/pages/security/account/role.jsp</result>	
 			<result name="error" type="redirectAction">list</result>
-        </action>
+        	</action>
         
-        <action name="save" class="loginAccountAction" method="save">
-        	<interceptor-ref name="crudStack"/>
+		<action name="save" class="loginAccountAction" method="save">
+        		<interceptor-ref name="crudStack"/>
 			<result name="input" >/pages/security/account/profile.jsp</result>
 			<result name="next" type="redirectAction">edit</result>
 			<result name="success" type="redirectAction">list</result>
-        </action>
+        	</action>
         
-        <action name="password" class="loginAccountAction" method="password">
-			<result name="input" >/pages/security/account/password/edit.jsp</result>
-        </action>
+        	<action name="password" class="loginAccountAction" method="password">
+			<result name="input">/pages/security/account/password.jsp</result>
+        	</action>
         
-        <action name="my" class="loginAccountAction" method="myprofile">
-        	<result name="success" >/pages/security/account/view.jsp</result>
-        </action>
+	        <action name="my" class="loginAccountAction" method="myprofile">
+	        	<result name="success" >/pages/security/account/view.jsp</result>
+	        </action>
         
-        <action name="view" class="loginAccountAction" method="view">
+	        <action name="view" class="loginAccountAction" method="view">
 			<result name="input" type="redirectAction">list</result>
-        	<result name="success" >/pages/security/account/view.jsp</result>
-        </action>
+	        	<result name="success" >/pages/security/account/view.jsp</result>
+	        </action>
         
-        <action name="popupview" class="loginAccountAction" method="view">
-        	<result name="input" >/pages/security/system/notfound_ajax.jsp</result>
-        	<result name="success" >/pages/security/account/view.jsp</result>
-        </action>
+	        <action name="popupview" class="loginAccountAction" method="view">
+	        	<result name="input" >/pages/security/system/notfound_ajax.jsp</result>
+	        	<result name="success" >/pages/security/account/view.jsp</result>
+	        </action>
         
-        <action name="list" class="loginAccountAction" method="list">
+	        <action name="list" class="loginAccountAction" method="list">
 			<result name="success" >/pages/security/account/list.jsp</result>
-        </action>
+	        </action>
         
         <action name="remove" class="loginAccountAction" method="delete">
 			<result name="success" type="redirectAction">list</result>
@@ -75,6 +75,11 @@
  				<param name="contentType">${jasperEngine.contentType}</param>
  				<param name="contentDisposition">filename="LoginAccountReport"</param>
  				<param name="bufferSize">1024</param>
+			</result>
+		</action>
+		<action name="validatepassword" class="loginAccountAction" method="validatePassword">
+			<result name="success" type="json">
+				<param name="includeProperties">passed</param>
 			</result>
 		</action>
 		

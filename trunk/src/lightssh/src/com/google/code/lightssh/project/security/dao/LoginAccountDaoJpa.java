@@ -167,6 +167,11 @@ public class LoginAccountDaoJpa extends JpaAnnotationDao<LoginAccount>
 			params.add( t.getType() );
 		}
 		
+		if( t.getEnabled() != null ){
+			hql.append( " AND m.enabled = ? " );
+			params.add( t.getEnabled() );
+		}
+		
 		int subquery_flag = params.size();
 		if(t.getParty()!=null){
 			String entityClass = Party.class.getName();

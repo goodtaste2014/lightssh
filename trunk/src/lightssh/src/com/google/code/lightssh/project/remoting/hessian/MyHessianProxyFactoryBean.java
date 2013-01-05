@@ -19,6 +19,26 @@ public class MyHessianProxyFactoryBean extends HessianProxyFactoryBean{
 	public static final String REMOTING_SYSTEM_PREFIX = "remoting.system.";
 	
 	/**
+	 * 连接超时KEY
+	 */
+	public static final String REMOTING_CONN_TIMEOUT_KEY = "remoting.connect.timout";
+	
+	/**
+	 * 读超时KEY
+	 */
+	public static final String REMOTING_READ_TIMEOUT_KEY = "remoting.read.timout";
+	
+	/**
+	 * 连接超时
+	 */
+	private int connectTimeout = 5000;
+
+	/**
+	 * 读超时
+	 */
+    private int readTimeout = 5000;
+	
+	/**
 	 * 子系统名称
 	 */
 	private String system;
@@ -29,6 +49,27 @@ public class MyHessianProxyFactoryBean extends HessianProxyFactoryBean{
 	@Resource
 	private SystemConfig systemConfig;
 	
+	/**
+	 * 扩展Hessian代理
+	 */
+	private MyHessianProxyFactory proxyFactory = new MyHessianProxyFactory();
+	
+	public int getConnectTimeout() {
+		return connectTimeout;
+	}
+
+	public void setConnectTimeout(int connectTimeout) {
+		this.connectTimeout = connectTimeout;
+	}
+
+	public int getReadTimeout() {
+		return readTimeout;
+	}
+
+	public void setReadTimeout(int readTimeout) {
+		this.readTimeout = readTimeout;
+	}
+
 	/**
 	 * 系统远程服务地址前缀
 	 */
@@ -64,5 +105,32 @@ public class MyHessianProxyFactoryBean extends HessianProxyFactoryBean{
 		
 		return (prefix==null?"":prefix) + serviceAction;
 	}
+	
+	private void initConfig(){
+		if( systemConfig != null ){
+			try{
+				String connTimeoutTxt = systemConfig.getProperty(REMOTING_CONN_TIMEOUT_KEY);
+				this.connectTimeout = Integer.parseInt(connTimeoutTxt );
+			}catch( Exception e ){
+				//ignore
+			}
+			
+			try{
+				String readTimeoutTxt = systemConfig.getProperty(REMOTING_READ_TIMEOUT_KEY);
+				this.readTimeout = Integer.parseInt(readTimeoutTxt );
+			}catch( Exception e ){
+				//ignore
+			}
+		}
+	}
+	
+    public void afterPropertiesSet() {
+    	initConfig();
+    	
+        proxyFactory.setReadTimeout(readTimeout);
+        proxyFactory.setConnectTimeout(connectTimeout);
+        setProxyFactory(proxyFactory);
+        super.afterPropertiesSet();
+    }
 
 }

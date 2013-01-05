@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 
 import org.apache.cxf.common.util.StringUtils;
 import org.apache.shiro.SecurityUtils;
+import org.apache.struts2.json.annotations.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
@@ -45,6 +46,8 @@ public class LoginAccountAction extends GenericAction<LoginAccount>{
 	
 	private String ids;
 	
+	private boolean passed;
+
 	/**
 	 * 安全值 
 	 */
@@ -93,12 +96,21 @@ public class LoginAccountAction extends GenericAction<LoginAccount>{
 		this.safeMessage = safeMessage;
 	}
 
-	public String list(){
-		if( page == null )
-			page = new ListPage<LoginAccount>( );
-		page.addAscending("createDate");
-		
-		if( this.isPost() )
+	@JSON(name="passed")
+	public boolean isPassed() {
+		return passed;
+	}
+
+	public void setPassed(boolean passed) {
+		this.passed = passed;
+	}
+
+	public String list() {
+		if ( page == null )
+			page = new ListPage<LoginAccount>();
+		page.addAscending( "createDate" );
+
+		if ( this.isPost() )
 			cacheRequestParams();
 		return super.list();
 	}
@@ -153,9 +165,16 @@ public class LoginAccountAction extends GenericAction<LoginAccount>{
 		if( account != null && account.getParty() != null 
 				&& StringUtils.isEmpty(account.getParty().getId())){
 			account.setParty(null);
+		}else{
+			account.setPartyId( account.getParty().getId() );
+		}
+		try{
+			this.getManager().save(account);
+		}catch( Exception e ){
+			return INPUT;
 		}
 		
-		return super.save();
+		return SUCCESS;
 	}
 	
 	/**
@@ -171,7 +190,8 @@ public class LoginAccountAction extends GenericAction<LoginAccount>{
 			return LOGIN;
 		
 		try{
-			this.getManager().updatePassword( loginName,passwords.get(0),passwords.get(1));
+			this.getManager().updatePassword( loginName,
+					passwords.get( 0 ), passwords.get( 1 ) );
 			super.saveSuccessMessage("修改密码成功！");
 		}catch( Exception e ){
 			super.saveErrorMessage( e.getMessage() );
@@ -442,6 +462,18 @@ public class LoginAccountAction extends GenericAction<LoginAccount>{
 		}catch( Exception e ){
 			this.saveErrorMessage("释放登录锁异常："+e.getMessage());
 			return INPUT;
+		}
+		
+		return SUCCESS;
+	}
+	/**
+	 * 校验当前登录用户密码
+	 */
+	public String validatePassword(){
+		String password = request.getParameter("password");
+		if( getLoginAccount() != null && getLoginAccount().getPassword() != null 
+				&& getLoginAccount().getPassword().equals( password ) ){
+			this.passed = true;
 		}
 		
 		return SUCCESS;

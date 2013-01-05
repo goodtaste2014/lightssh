@@ -14,10 +14,10 @@
       	</property> 
     </bean>
     
-	<!-- sessionInvalidateUserCache -->
-	<bean id="sessionInvalidateUserCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+	<!-- onlineUserCache -->
+	<bean id="onlineUserCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
 		<property name="cacheManager" ref="cacheManager" />
-		<property name="cacheName" value="sessionInvalidateUserCache"/>
+		<property name="cacheName" value="onlineUserCache"/>
 	</bean>
 	
 </beans>

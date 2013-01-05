@@ -37,6 +37,12 @@ public class JobInterval implements Persistence<String>{
 	@Column( name="ENABLED" )
 	private Boolean enabled;
 	
+	/**
+	 * 描述
+	 */
+	@Column( name="DESCRIPTION",length=200 )
+	private String description;
+	
 	public void preInsert( ){
 		//do nothing
 	}
@@ -79,6 +85,14 @@ public class JobInterval implements Persistence<String>{
 
 	public void setEnabled(Boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 }

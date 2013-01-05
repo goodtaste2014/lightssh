@@ -1,0 +1,75 @@
+package com.google.code.lightssh.project.scheduler.service;
+
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.List;
+
+import com.google.code.lightssh.common.model.Result;
+import com.google.code.lightssh.common.service.BaseManager;
+import com.google.code.lightssh.project.scheduler.entity.Plan;
+import com.google.code.lightssh.project.scheduler.entity.PlanDetail;
+import com.google.code.lightssh.project.scheduler.entity.SchedulerType;
+
+/**
+ * 计划任务
+ * @author YangXiaojin
+ *
+ */
+public interface PlanManager extends BaseManager<Plan>{
+	
+	/**
+	 * 查询执行计划明细
+	 */
+	public List<PlanDetail> listDetail( Object[] ids );
+	
+	/**
+	 * 计划明细
+	 */
+	public PlanDetail getDetail( String id );
+	
+	/**
+	 * 执行计划明细
+	 */
+	public List<PlanDetail> listDetail(String planId);
+	
+	/**
+	 * 执行计划明细
+	 */
+	public List<PlanDetail> listDetail(Plan plan);
+	
+	/**
+	 * 取创建时间最新记录
+	 */
+	public Plan getLastByType(String type);
+	
+	/**
+	 * 取创建时间最新记录
+	 */
+	public Plan getLast(SchedulerType type);
+	
+	/**
+	 * 保存执行计划
+	 */
+	public void save( Plan plan,List<PlanDetail> details );
+	
+	/**
+	 * 明细入任务队列
+	 */
+	public void detailInQueue(PlanDetail pd);
+	
+	/**
+	 * 更新执行时间
+	 */
+	public void updateFireTime(String id,Calendar fireTime);
+	
+	/**
+	 * 更新完成时间
+	 */
+	public void updateFinishTime(String id,Calendar finishTime);
+	
+	/**
+	 * 更新数据状态
+	 */
+	public void updateStatus(Collection<Result> results);
+
+}

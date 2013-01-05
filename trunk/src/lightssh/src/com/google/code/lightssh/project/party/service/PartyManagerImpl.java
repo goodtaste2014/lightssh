@@ -118,12 +118,12 @@ public class PartyManagerImpl extends BaseManagerImpl<Party> implements PartyMan
 		if( pr != null )
 			partyRelationshipManager.remove( pr );
 		
-		dao.delete(party);
-		
-		//TODO ERROR !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!??????????????
+		//顺序问题
 		for( PartyRole partyRole:partyRoles ){
 			partyRoleManager.remove( partyRole );
 		}
+		
+		dao.delete(party);
 	}
 
 	@Override
