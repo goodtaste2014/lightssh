@@ -171,6 +171,35 @@ input.login{
 	background: #f2f2f2 url("../../images/background/icon_login.png") no-repeat 4px center;
 }
 
+input.ok{
+	background: #f2f2f2 url("../../images/background/icon_ok.png") no-repeat 4px center;
+}
+
+input.remove{
+	background: #f2f2f2 url("../../images/background/icon_remove.png") no-repeat 4px center;
+}
+
+input.tools{
+	background: #f2f2f2 url("../../images/background/icon_tools.png") no-repeat 4px center;
+}
+
+input.exit{
+	background: #f2f2f2 url("../../images/background/icon_exit.png") no-repeat 4px center;
+}
+
+input.select{
+	background: #f2f2f2 url("../../images/background/icon_select.png") no-repeat 4px center;
+}
+
+input.audit{
+	background: #f2f2f2 url("../../images/background/icon_audit.png") no-repeat 4px center;
+}
+
+input.audit.reject{
+	background: #f2f2f2 url("../../images/background/icon_audit_reject.png") no-repeat 4px center;
+}
+
+
 input.action:hover,input.action:active
 ,input.save:hover,input.save:active
 ,input.search:hover,input.search:active

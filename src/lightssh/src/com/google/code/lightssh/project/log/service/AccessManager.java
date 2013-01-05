@@ -26,5 +26,10 @@ public interface AccessManager extends BaseManager<Access>{
 	 * @return
 	 */
 	public History getHistory( Access access );
+	
+	/**
+	 * 写系统日志
+	 */
+	public void writeSystemLog(Access t);
 
 }

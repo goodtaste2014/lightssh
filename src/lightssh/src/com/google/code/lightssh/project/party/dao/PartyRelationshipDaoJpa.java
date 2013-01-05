@@ -60,17 +60,16 @@ implements PartyRelationshipDao{
 		hql.append( " WHERE m.type = ? ");
 		params.add( RelationshipType.ORG_ROLLUP );
 		
-		if( from != null ){
-			hql.append( " AND m.from.party = ? " );
-			params.add( from );
+		if( from != null && from.getIdentity() != null ){
+			hql.append( " AND m.from.party.id = ? " );
+			params.add( from.getIdentity() );
 		}
 		
-		if( to != null ){
-			hql.append( " AND m.to.party = ? " );
-			params.add( to );
+		if( to != null && to.getIdentity() != null){
+			hql.append( " AND m.to.party.id = ? " );
+			params.add( to.getId() );
 		}
 		
-//		return getJpaTemplate().find(hql.toString(), params.toArray( ) );
 		Query query = this.getEntityManager().createQuery(hql.toString());
 		this.addQueryParams(query, params);
 		return query.getResultList();

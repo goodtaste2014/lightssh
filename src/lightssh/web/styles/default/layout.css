@@ -215,7 +215,7 @@ div#login {
 }
 
 #login .login_title{
-	height: 80px;
+	min-height: 80px;
 }
 
 #login .login_title h3{
@@ -288,4 +288,71 @@ body#login #paint_canvas .paint_cell{
 	width:100%;
 }
 
+
+div.summary{
+	float:right;
+	text-align:right;
+	line-height:18px;
+	margin:-6px 2em 0 0;
+	clear: both;
+	vertical-align:middle;
+}
+
+div.summary label{
+	font-weight: normal;
+	height:16px;
+	line-height:16px;
+	color:#CCCCC;
+	cursor: auto;
+}
+
+div.summary label.sum{
+	padding-left:12px;
+	background:url("../../images/background/icon_sum.png") no-repeat -4px center;
+}
+
+div.summary .currency{
+	height:16px;
+	line-height:16px;
+	font-size:14px;
+	color:#FF0000;
+	margin-right: 1em;
+}
+
+div.summary .line .left,div.summary .line .right{
+	margin-top:2px;
+	float:right;
+	width:50%;
+	height:1px;
+	
+	/* Chrome, Safari:*/
+    background: -webkit-gradient(linear,
+                left top, right top, from(#FFFFFF), to(#4C66B5));
+                
+    /* Mozilla: */
+    background: -moz-linear-gradient(left, #FFFFFF, #4C66B5);
+    
+    /* Opera */
+	background: -o-linear-gradient(left, #FFFFFF, #4C66B5);
+	
+    /* MSIE */
+    filter: progid:DXImageTransform.Microsoft.Gradient(
+                StartColorStr='#FFFFFF', EndColorStr='#4C66B5', GradientType=1);
+}
+
+div.summary .line .left{
+	/* Chrome, Safari:*/
+    background: -webkit-gradient(linear,
+                left top, right top, from(#4C66B5), to(#FFFFFF));
+                
+    /* Mozilla: */
+    background: -moz-linear-gradient(left, #4C66B5, #FFFFFF);
+    
+    /* Opera */
+	background: -o-linear-gradient(left, #4C66B5, #FFFFFF);
+	
+    /* MSIE */
+    filter: progid:DXImageTransform.Microsoft.Gradient(
+                StartColorStr='#4C66B5', EndColorStr='#FFFFFF', GradientType=1);
+}
 

@@ -190,6 +190,7 @@ public class OrganizationAction extends CrudAction<Organization>{
 		
         Access access = new Access(  );
         access.init(request);
+        access.setDescription("操作组织机构");
         //access.setOperator( SecurityUtil.getPrincipal() );
         
         try{

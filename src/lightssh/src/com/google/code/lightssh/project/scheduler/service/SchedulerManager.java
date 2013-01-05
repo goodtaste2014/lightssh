@@ -28,6 +28,16 @@ public interface SchedulerManager extends Manager{
 	public void toggleTrigger( String triggerName );
 	
 	/**
+	 * 启动/停止Trigger
+	 */
+	public void toggleTrigger( String triggerName,String group );
+	
+	/**
+	 * 刷新定时任务
+	 */
+	public void refresh( String name,String group );
+	
+	/**
 	 * 列出所有Trigger
 	 */
 	public List<TriggerWrap> listAllTrigger( );

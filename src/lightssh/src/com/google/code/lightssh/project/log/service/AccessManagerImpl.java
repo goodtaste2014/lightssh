@@ -8,6 +8,7 @@ import com.google.code.lightssh.common.ApplicationException;
 import com.google.code.lightssh.common.dao.Dao;
 import com.google.code.lightssh.common.entity.Persistence;
 import com.google.code.lightssh.common.service.BaseManagerImpl;
+import com.google.code.lightssh.common.util.TextFormater;
 import com.google.code.lightssh.project.identity.entity.Identity;
 import com.google.code.lightssh.project.identity.service.IdentityManager;
 import com.google.code.lightssh.project.log.dao.HistoryDao;
@@ -90,6 +91,17 @@ public class AccessManagerImpl extends BaseManagerImpl<Access> implements Access
 			return null;
 		
 		return this.historyDao.getByAccess(access);
+	}
+	
+	/**
+	 * 写系统日志
+	 */
+	public void writeSystemLog(Access t){
+		if( t == null )
+			return;
+		if( t.getDescription() != null )
+			t.setDescription(TextFormater.format(t.getDescription(),196,true));
+		dao.create(t);
 	}
 
 }

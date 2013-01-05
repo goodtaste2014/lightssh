@@ -2,6 +2,9 @@
 
 <%@page import="com.google.code.lightssh.project.security.service.BadCaptchaException"%>
 <%@page import="com.google.code.lightssh.project.security.shiro.TimeLockedException"%>
+<%@page import="com.google.code.lightssh.project.security.shiro.OnlineUserExistException"%>
+<%@page import="com.google.code.lightssh.project.security.entity.OnlineUser"%>
+<%@page import="com.google.code.lightssh.common.util.TextFormater"%>
 <%@page import="org.apache.shiro.SecurityUtils"%>
 <%@page import="org.apache.shiro.subject.Subject"%>
 <%@page import="org.apache.shiro.authc.*"%>
@@ -24,6 +27,12 @@
 			expMsg= "用户账号已过期！";
 		}else if( obj instanceof TimeLockedException ){
 			expMsg= authExp.getMessage();
+		}else if( obj instanceof OnlineUserExistException ){
+			OnlineUser user = ((OnlineUserExistException)obj).getUser();
+			expMsg = "用户在重复登录，您被迫下线！";
+			if( user != null )
+				expMsg= TextFormater.format(user.getLoginTime(),"HH点mm分")
+					+"，用户已在["+user.getIp()+"]登录上线！";
 		}else{
 			expMsg="登录异常:"+authExp.getMessage() ;
 		}

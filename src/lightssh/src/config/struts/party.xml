@@ -6,7 +6,7 @@
 <struts>
 
 	<package name="party" extends="default" namespace="/party">
-		<action name="popup" class="partyAction" method="list">
+		<action name="popup" class="partyAction" method="popup">
 			<result name="success">/pages/party/popup.jsp</result>	
         </action>
     </package>

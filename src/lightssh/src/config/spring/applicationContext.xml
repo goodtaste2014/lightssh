@@ -31,7 +31,15 @@
 	<!-- Transaction -->
     <aop:config>
         <aop:advisor id="managerTx" advice-ref="txAdvice" pointcut="execution(* com.google.code.lightssh..*.*Manager.*(..))"/>    	
+        <aop:advisor id="managerTx2" advice-ref="txAdvice" pointcut="execution(* com.ylink.ylpay.project.mp..*.*Manager.*(..))"/>   
+        
+        <aop:aspect id="LogAspect" ref="systemLogAspect">
+        	<aop:pointcut id="businessService" expression="(execution(* com..*.BaseManager+.save(com.google.code.lightssh.common.entity.Persistence+))) OR (execution(* com..*.BaseManager+.remove(..))) "/>
+        	<aop:after pointcut-ref="businessService" method="doAfter"/>
+        </aop:aspect> 	
     </aop:config>
+    <!-- 系统日志切面 -->
+    <bean id="systemLogAspect" class="com.google.code.lightssh.project.log.aop.SystemLogAspect" />
 
     <tx:advice id="txAdvice" transaction-manager="transactionManager">
         <tx:attributes>

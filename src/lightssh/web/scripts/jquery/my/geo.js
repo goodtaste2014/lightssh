@@ -19,18 +19,19 @@
 	function initGeo( param ){
 		var selectors = param['geo_selectors'];
 		for( var i=0;i<selectors.length;i++){
-			showGeo( param,i+1,i==0?null:selectors[i-1].value );
-			$("select[name='"+selectors[i].name+"']").val( selectors[i].value );
+			var select = $("select[name='"+selectors[i].name+"']");
+			showGeo(null,param,i+1,i==0?null:selectors[i-1].value );
+			$( select ).val( selectors[i].value );
 		}
 	}
 
 	/**
 	 * 显示地理区域
 	 */
-	function showGeo( param,level,geo_code ){
+	function showGeo(evt,param,level,geo_code ){
 		if( param == null )
 			return;
-
+		
 		//GEO数据获取URL地址
 		var geo_url = param['geo_parent_url'];
 		if( level != null && level > 1 )
@@ -52,12 +53,13 @@
 		var geo_select = $("select[name='"+curr_sel_name+"']");
 		if( geo_select.length == 0 && ( level-2 >= 0) ){ //
 			var parent_geo = $("select[name='"+selectors[level-2].name+"']");
-			geo_select = $("<select name='"+curr_sel_name+"'></select>");
+			geo_select = $("<select style='margin-left:0.5em;' name='"+curr_sel_name+"'></select>");
 			$(parent_geo).after( geo_select );
 		}
 
-		if( (geo_code == null || geo_code == '')&& event != null ){
-			var eTarget = event.currentTarget?event.currentTarget:event.srcElement;
+		if( (geo_code == null || geo_code == '')&& evt != null ){
+			//var eTarget = event.currentTarget?event.currentTarget:event.srcElement;
+			var eTarget = (typeof evt.target != 'undefined')?evt.target:evt.srcElement;
 			geo_code = $(eTarget).val();
 		}
 		
@@ -87,7 +89,12 @@
 				var opt = "<option value='"+item.code+"'>"+item.name+"</option>";
 				$(geo_select).append( opt );
 			});
-		$( geo_select ).change(function(){showGeo(param,level+1);});
+		
+		//$( geo_select ).change(function(){showGeo(null,param,level+1);});
+		
+		$(geo_select).bind('change',function(event){
+			showGeo(event,param,level+1);
+		});
 	}
 
 	/**

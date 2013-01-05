@@ -21,6 +21,7 @@
 				<entry key="authc" value-ref="captchaFormAuthenticationFilter"/>
 				<entry key="perms" value-ref="myPermsFilter"/>
 				<entry key="cas" value-ref="casFilter"/>
+				<entry key="su" value-ref="singleUserLoginFilter"/>
 			</util:map>
 		</property>
 	    <property name="filterChainDefinitions">
@@ -70,8 +71,14 @@
 	
 	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
 	
+	<bean id="singleUserLoginFilter" class="com.google.code.lightssh.project.security.shiro.SingleUserLoginFilter">
+		<property name="logoutUrl" value="/logout.do"/>
+		<property name="onlineUserCache" ref="onlineUserCache"/>
+	</bean>
+	
 	<bean id="myPermsFilter" class="com.google.code.lightssh.project.security.shiro.MyPermissionsAuthorizationFilter">
-		<constructor-arg><value>true</value></constructor-arg><!-- true表示使用正则表达式 -->
+		<!-- true表示使用正则表达式 -->
+		<constructor-arg><value>true</value></constructor-arg>
 	</bean>
 
 	<!--  
@@ -103,6 +110,7 @@
 		<property name="loginLogManager" ref="loginLogManager"/>
 		<property name="loginFailureManager" ref="loginFailureManager"/>
 		<property name="systemConfig" ref="systemConfig"/>
+		<property name="onlineUserCache" ref="onlineUserCache"/>
 	</bean>
 	
 	<!-- CAS filter -->

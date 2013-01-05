@@ -142,7 +142,7 @@
 				<tr>
 					<th><label for="name" class="required">名称</label></th>
 					<td>
-						<s:set name="isInsert" value="%{(party==null||party.id==null)}"/>
+						<s:set name="isInsert" value="%{(party==null||party.insert)}"/>
 						<input type="hidden" name="party" value="organization"/>
 						<s:hidden name="party.id"/>
 						<s:hidden name="party.enabled" value="%{#isInsert?true:party.enabled}"/>
@@ -157,14 +157,14 @@
 					</td>
 				</tr>
 				<tr>
-					<th><label for="role_type">类型</label></th>
+					<th><label for="role_type" class="required">类型</label></th>
 					<td>
 						<s:radio list="@com.google.code.lightssh.project.party.entity.PartyRole$RoleType@internalOrg()"
 							listKey="name()" name="party_role_type" value="party_role_type==null?null:party_role_type.name()"/>
 					</td>
 				</tr>
 				<tr>
-					<th><label for="parent">上级组织</label></th>
+					<th><label for="parent" class="required">上级组织</label></th>
 					<td>
 						<span class="popup" onclick="popup();">&nbsp;</span>
 						<s:hidden name="party.parent.id" id="parent_id"/>

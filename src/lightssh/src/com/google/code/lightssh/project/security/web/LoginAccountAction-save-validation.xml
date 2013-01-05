@@ -23,7 +23,16 @@
             <message>“登录账号”只能包含中文,数字[0-9],英文字母[a-z,A-Z]！</message>
         </field-validator>
         
-        <field-validator type="fieldexpression" >
+	</field>
+	
+	<field name="account.email" >
+		<field-validator type="email">
+           <message>格式应为邮箱！</message>
+       </field-validator>
+	</field>
+	
+	<field name="account.period.end" >
+		<field-validator type="fieldexpression" >
             <param name="expression">
                  !(account.period != null &amp;&amp; account.period.getStart() != null 
                  	&amp;&amp; account.period.getEnd() != null 

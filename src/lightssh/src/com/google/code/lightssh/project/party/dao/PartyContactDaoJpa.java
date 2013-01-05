@@ -55,7 +55,7 @@ public class PartyContactDaoJpa extends JpaAnnotationDao<PartyContact> implement
 		//return getJpaTemplate().find(hql.toString(),party);
 		
 		Query query = getEntityManager().createQuery(hql.toString());
-		super.addQueryParams(query, party);
+		super.addQueryParams(query, new Object[]{party});
 		return query.getResultList();
 	}
 

@@ -7,9 +7,6 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.Element;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -53,21 +50,11 @@ public class LoginAccountManagerImpl extends BaseManagerImpl<LoginAccount>
 	@Resource(name="accessManager")
 	private AccessManager accessManager;
 	
-	/**
-	 * 存放已删除用户名，用于强制退出在线用户
-	 */
-	@Resource(name="sessionInvalidateUserCache")
-	private Cache sessionInvalidateUserCache;
-	
 	@Resource(name="loginAccountDao")
 	public void setDao(Dao<LoginAccount> dao) {
 		this.dao = dao;
 	}
 	
-	public void setSessionInvalidateUserCache(Cache sessionInvalidateUserCache) {
-		this.sessionInvalidateUserCache = sessionInvalidateUserCache;
-	}
-
 	private LoginAccountDao getDao(){
 		return (LoginAccountDao)super.dao;
 	}
@@ -207,9 +194,12 @@ public class LoginAccountManagerImpl extends BaseManagerImpl<LoginAccount>
 			exist.setParty( account.getParty() );
 			if( exist.getParty()!=null && exist.getParty().getId() == null )
 				exist.setParty( null );
+			exist.setPartyId(account.getPartyId());//TODO
 			exist.setDescription( account.getDescription() );
 			exist.setPeriod( account.getPeriod() );
 			exist.setEnabled( account.getEnabled() );
+			exist.setMobile(account.getMobile());
+			exist.setEmail(account.getEmail());
 			getDao().update( exist );
 		}else
 			getDao().create( account );
@@ -220,10 +210,8 @@ public class LoginAccountManagerImpl extends BaseManagerImpl<LoginAccount>
 		if( db_account != null && ROOT_LOGIN_NAME.equals(db_account.getLoginName()) )
 			throw new ApplicationException("系统超级管理员账户不允许删除！");
 
-		String name = db_account.getLoginName();
+		//String name = db_account.getLoginName();
 		super.remove(identity);
-		if( sessionInvalidateUserCache != null )
-			sessionInvalidateUserCache.put( new Element(name,name) );
 	}
 	
 	public void remove( LoginAccount account ){

@@ -28,11 +28,23 @@
 		
 		<s:form name="list" namespace="/system/account" method="post">
 			<table class="profile">
+				<colgroup>
+					<col width="10%"/>
+					<col width="20%"/>
+					<col width="10%"/>
+					<col width="20%"/>
+					<col/>
+				</colgroup>
 				<tbody>
 					<tr>
 						<th><label for="name">登录账号</label></th>
-						<td><s:textfield id="name" name="account.loginName" value="%{cachedParams['account.loginName']}" size="40" maxlength="100"/></td>
-						<td colspan="2"><input type="submit" class="action search" value="查询"/></td>
+						<td><s:textfield id="name" name="account.loginName" value="%{cachedParams['account.loginName']}" size="30" maxlength="100"/></td>
+						<th><label for="name">状态</label></th>
+						<td>
+							<s:select name="account.enabled" value="account.getEnabled()" 
+								list="#{'true':'是','false':'否'}" headerKey="" headerValue=""/>
+						</td>
+						<td colspan="2"><input type="submit" class="action search right" value="查询"/></td>
 					</tr>
 				</tbody>
 			</table>
