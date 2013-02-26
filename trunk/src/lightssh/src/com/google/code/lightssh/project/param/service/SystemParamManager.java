@@ -2,6 +2,7 @@ package com.google.code.lightssh.project.param.service;
 
 import java.util.List;
 
+import com.google.code.lightssh.common.model.ConnectionConfig;
 import com.google.code.lightssh.common.service.BaseManager;
 import com.google.code.lightssh.project.param.entity.SystemParam;
 
@@ -34,5 +35,9 @@ public interface SystemParamManager extends BaseManager<SystemParam>{
 	 */
 	public boolean isUniqueGroupAndName( SystemParam param );
 	
+	/**
+	 * 邮件参数
+	 */
+	public ConnectionConfig getEmailConnectionConfig( );
 
 }

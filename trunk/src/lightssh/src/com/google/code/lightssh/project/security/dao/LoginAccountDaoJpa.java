@@ -19,6 +19,7 @@ import com.google.code.lightssh.project.party.entity.Organization;
 import com.google.code.lightssh.project.party.entity.Party;
 import com.google.code.lightssh.project.security.entity.LoginAccount;
 import com.google.code.lightssh.project.security.entity.Permission;
+import com.google.code.lightssh.project.util.constant.AuditStatus;
 
 /**
  * LoginAccount Dao Hibernate implement
@@ -72,7 +73,7 @@ public class LoginAccountDaoJpa extends JpaAnnotationDao<LoginAccount>
 			la.setPartyId(rs.getString("PARTY_ID"));
 			la.setLoginName(rs.getString("LOGIN_NAME"));
 			la.setPassword( rs.getString("PASSWORD"));
-			la.setEnabled( rs.getBoolean("ENABLED"));
+			la.setStatus(AuditStatus.valueOf( rs.getString("STATUS") ));
 			la.setPeriod( rs.getDate("PERIOD_START"), rs.getDate("PERIOD_END"));
 			Calendar cal = Calendar.getInstance();
 			Timestamp lockedTime = rs.getTimestamp("LAST_LOGIN_LOCK_TIME");
@@ -167,9 +168,9 @@ public class LoginAccountDaoJpa extends JpaAnnotationDao<LoginAccount>
 			params.add( t.getType() );
 		}
 		
-		if( t.getEnabled() != null ){
-			hql.append( " AND m.enabled = ? " );
-			params.add( t.getEnabled() );
+		if( t.getStatus() != null ){
+			hql.append( " AND m.status = ? " );
+			params.add( t.getStatus());
 		}
 		
 		int subquery_flag = params.size();

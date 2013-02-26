@@ -19,7 +19,7 @@
 		<li>查看信息</li>
 	</ul>
 	
-	<input type="button" class="action settings" value="设置企业信息" 
+	<input type="button" class="action enterprise" value="设置企业信息" 
 		onclick="location.href='<s:url value="viewparent.do?action=edit"/>'"/>
 		
 	<%@ include file="/pages/common/messages.jsp" %>
@@ -27,6 +27,7 @@
 	<s:set name="org" value="party"/>
 	
 	<table class="profile">
+		<caption>企业信息</caption>
 		<tbody>
 			<tr>
 				<th>编号</th>

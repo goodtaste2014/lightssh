@@ -12,12 +12,13 @@
 	<ul class="path">
 		<li>系统管理</li>
 		<li>登录账号</li>
-		<li>账号详情</li>
+		<li>我的账号</li>
 	</ul>
 		
 	<%@ include file="/pages/common/messages.jsp" %>
 	
 	<table class="profile">
+		<caption>登录帐户信息</caption>
 		<tbody>
 			<tr>
 				<th><label for="name" >登录账号</label></th>
@@ -26,15 +27,15 @@
 				</td>
 			</tr>
 			<tr>
-				<th><label for="account_party">会员</label></th>
+				<th><label for="account_party">所属关系</label></th>
 				<td>
-					<span id="span_party_name"><s:property value="%{account.party.name}"/></span>
+					<s:property value="@com.google.code.lightssh.project.party.service.PartyHelper@getParty(account.partyId).name"/>
 				</td>
 			</tr>
 			<tr>
-				<th><label for="account_enabled">是否可用</label></th>
+				<th><label>状态</label></th>
 				<td>
-					<s:property value="account.enabled?'是':'否'"/>
+					<s:property value="account.status"/>
 				</td>
 			</tr>
 			<tr>
@@ -53,7 +54,7 @@
 				<th><label>拥有的角色</label></th>
 				<td>
 					<s:iterator value="%{account.roles}" status="loop">
-						<span style="white-space:nowrap;"><s:property value="name"/></span><br/>
+						<a href="<s:url value="/security/role/view.do?role.id=%{id}"/>"><s:property value="name"/></a><br/>
 					</s:iterator>
 				</td>
 			</tr>

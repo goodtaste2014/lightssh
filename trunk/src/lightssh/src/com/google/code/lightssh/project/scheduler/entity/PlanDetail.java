@@ -37,6 +37,9 @@ public class PlanDetail implements Persistence<String>{
 		PROCESSING("处理中"),
 		FAILURE("失败"),
 		SUCCESS("成功"),
+		WAITING_FOR_REPLY("等待回复"),
+		SUSPEND("挂起"),
+		EXCEPTION("异常"),
 		SKIP("跳过"),
 		;
 		
@@ -59,14 +62,19 @@ public class PlanDetail implements Persistence<String>{
 		super();
 	}
 
-	public PlanDetail(SchedulerType type,String group,Integer sequence) {
+	public PlanDetail(SchedulerType type,String group,Integer sequence,boolean synTask) {
 		super();
 		this.group = group;
 		this.type = type;
 		this.sequence = sequence;
 		this.failureCount=0;
 		this.status = Status.NEW;
+		this.synTask = synTask;
 		this.createdTime = Calendar.getInstance(); 
+	}
+	
+	public PlanDetail(SchedulerType type,String group,Integer sequence) {
+		this(type,group,sequence,false);
 	}
 
 	/**
@@ -124,6 +132,12 @@ public class PlanDetail implements Persistence<String>{
 	private Calendar finishTime;
 	
 	/**
+	 * 异步任务
+	 */
+	@Column(name="SYN_TASK")
+	private Boolean synTask;
+	
+	/**
 	 * 状态
 	 */
 	@Column(name="STATUS",nullable=false)
@@ -139,7 +153,7 @@ public class PlanDetail implements Persistence<String>{
 	/**
 	 * 异常信息
 	 */
-	@Column(name="ERR_MSG",length=200)
+	@Column(name="ERR_MSG",length=500)
 	private String errMsg;
 	
 	/**
@@ -154,6 +168,13 @@ public class PlanDetail implements Persistence<String>{
 	@Column(name="CREATED_TIME",columnDefinition="DATE")
 	@Temporal( TemporalType.TIMESTAMP )
 	private Calendar createdTime;
+	
+	/**
+	 * 是否异步任务
+	 */
+	public boolean isSynTask(){
+		return Boolean.TRUE.equals( this.synTask );
+	}
 	
 	/**
 	 * 是否完成
@@ -303,6 +324,14 @@ public class PlanDetail implements Persistence<String>{
 
 	public void setCreatedTime(Calendar createdTime) {
 		this.createdTime = createdTime;
+	}
+
+	public Boolean getSynTask() {
+		return synTask;
+	}
+
+	public void setSynTask(Boolean synTask) {
+		this.synTask = synTask;
 	}
 
 	public String getId() {

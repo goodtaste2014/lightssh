@@ -18,15 +18,13 @@
 			 * 查看会员详情
 			 */
 			function popupView( name ){
-				var url = '<s:url value="/security/account/popupview.do"/>?account.loginName=' + name;
-				var popup = $("#account_popup");
+				var url = '<s:url value="/security/account/view.do"/>?account.loginName=' + name;
+				//<div id="account_popup" title="登录账户信息" style="display: none;">&nbsp;</div>
+				var popup = $("<div title='登录账户信息'>&nbsp;<div>");
 				//$( popup ).html( '<div><img id=\'loading\' src=\'<%= request.getContextPath() %>/images/loading.gif\'/>' );
 				$( popup ).dialog({
 					resizable:false,modal: true,height:400,width: 700,
-					close: function(event, ui) {$(this).dialog('destroy').html(''); },				
-					buttons: {				
-						"关闭": function() {$(this).dialog('destroy').html('');}
-					}
+					close: function(event, ui) {$(this).dialog('destroy').html(''); }
 				});
 				
 				$.post(url,{},function(data){$( popup ).html( data );});
@@ -60,7 +58,7 @@
 						<td><label for="operator">登录用户</label></td>
 						<td><s:textfield id="operator" name="loginLog.operator"  size="10"/></td>
 						
-						<td colspan="2"><input type="submit" class="action search" value="查询"/></td>
+						<td colspan="2"><input type="submit" class="action search right" value="查询"/></td>
 					</tr>
 				</tbody>
 			</table>
@@ -79,7 +77,9 @@
 				<div class="popup-menu-layer">
 					<ul class="dropdown-menu">
 						<li>
-							<a href="#" onclick="javascript:popupView('<s:property value="%{operator}"/>')"><s:property value="%{operator}"/></a>
+							<a href="#" onclick="javascript:popupView('<s:property value="%{operator}"/>')">
+								查看操作员[<s:property value="%{operator}"/>]
+							</a>
 						</li>
 					</ul>
 				</div>
@@ -88,6 +88,5 @@
 	
 		<mys:pagination value="page" />
 	
-		<div id="account_popup" title="登录账户信息" style="display: none;">&nbsp;</div>
 	</body>
 </html>

@@ -41,19 +41,31 @@
 				<s:property value="#loop.index + 1"/>
 			</mys:column>
 			<mys:column title="名称" value="name" sortable="true" width="260px"/>
+			<mys:column title="状态" value="status" sortable="false" width="60px"/>
 			<mys:column title="创建日期" value="createdTime" sortable="true" width="160px"/>
 			<mys:column title="描述" value="description"/>
 			<mys:column title="操作" width="40px" cssClass="action">
 				<span>&nbsp;</span>
 				<div class="popup-menu-layer">
 					<ul class="dropdown-menu">
-						<li><a href="<s:url value="/security/role/permission.do?role.id=%{id}"/>">设置权限</a></li>
-						<li><a href="<s:url value="/security/role/edit.do?role.id=%{id}"/>">编辑角色</a></li>
-						<li class="section"></li>
-						<li>
-							<a href="#" onclick="javascript:doRemove('<s:property value="%{id}"/>','<s:property value="%{name}"/>')">删除角色</a>
-						</li>
-					</ul>
+						<li class="view"><a href="<s:url value="/security/role/view.do?role.id=%{id}"/>">查看角色</a></li>
+						<li class="section"/>
+						<s:if test="removed">
+							<li class="disabled"><a href="#">编辑角色</a></li>
+						</s:if>
+						<s:else>
+						<li class="edit"><a href="<s:url value="/security/role/edit.do?role.id=%{id}"/>">编辑角色</a></li>
+						</s:else>
+						
+						<li class="section"/>
+						<s:if test="removed">
+							<li class="disabled"><a href="#">删除角色</a></li>
+						</s:if>
+						<s:else>
+							<li class="remove">
+								<a href="#" onclick="javascript:doRemove('<s:property value="%{id}"/>','<s:property value="%{name}"/>')">删除角色</a>
+							</li>
+						</s:else>					</ul>
 				</div>
 			</mys:column>
 		</mys:table>

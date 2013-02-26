@@ -75,7 +75,9 @@
 		<mys:column title="序号"  width="50px"><s:property value="#loop.index+1"/></mys:column>
 		<mys:column title="子系统" sortable="true" value="system" width="80px"/>
 		<mys:column title="组名" value="group" sortable="true" width="100px"/>
-		<mys:column title="名称" value="name" sortable="true" width="150px"/>
+		<mys:column title="名称" sortKey="name" sortable="true" width="150px">
+			<s:property value="@com.google.code.lightssh.common.util.TextFormater@format(name,20,true)"/>
+		</mys:column>
 		<mys:column title="参数值" width="260px">
 			<s:set name="value_length" value="15" /> 
 			<s:if test="value.length() <= #value_length ">
@@ -103,7 +105,7 @@
 				<span>&nbsp;</span>
 				<div class="popup-menu-layer">
 					<ul class="dropdown-menu">
-						<li>
+						<li class="view">
 							<a href="<s:url value="view.do?param.id=%{id}"/>">查看参数</a></a>
 						</li>
 						<li class="section"/>
@@ -112,7 +114,7 @@
 							<li class="disabled"><a href="#">编辑参数</a></li>
 						</s:if>
 						<s:else>
-							<li>
+							<li class="edit">
 								<a href="<s:url value="edit.do?param.id=%{id}"/>">编辑参数</a></a>
 							</li>
 						</s:else>

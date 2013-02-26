@@ -1,6 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <%@ page language ="java" pageEncoding = "UTF-8" contentType="text/html;charset=utf-8" %> 
+<%@ page import ="org.springframework.security.authentication.*"%>
 <%@ include file="/pages/common/taglibs.jsp" %>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -84,7 +85,12 @@
 		 * 显示提示信息
 		 */
 		function showMessage( msg ){
-			if( $('.error').length == 0 ){
+
+			if($("div.messages").length == 0 ){
+				$('#login_form').before("<div class='messages'></div>")
+			}
+			
+			if( $('.messages > .error').length == 0 ){
 				$('.messages').append("<div class='error'>"+msg+"</div>") 
 			}else{
 				$('.error').text( msg );

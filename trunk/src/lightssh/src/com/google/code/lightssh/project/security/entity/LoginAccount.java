@@ -20,8 +20,10 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import com.google.code.lightssh.common.entity.base.BaseModel;
+import com.google.code.lightssh.common.model.Loggable;
 import com.google.code.lightssh.common.model.Period;
 import com.google.code.lightssh.project.party.entity.Party;
+import com.google.code.lightssh.project.util.constant.AuditStatus;
 
 /**
  * 登录账号
@@ -30,7 +32,7 @@ import com.google.code.lightssh.project.party.entity.Party;
  */
 @Entity
 @Table( name="T_SECURITY_LOGINACCOUNT" )
-public class LoginAccount extends BaseModel {
+public class LoginAccount extends BaseModel implements Cloneable,Loggable{
 
 	private static final long serialVersionUID = 8280727772996743600L;
 	
@@ -81,10 +83,11 @@ public class LoginAccount extends BaseModel {
 	private String email;
 	
 	/**
-	 * 是否有效
+	 * 状态
 	 */
-	@Column( name="ENABLED" )
-	private Boolean enabled;
+	@Column( name="STATUS",length=50 )
+	@Enumerated(EnumType.STRING)
+	private AuditStatus status;
 	
 	/**
 	 * 创建时间
@@ -141,7 +144,7 @@ public class LoginAccount extends BaseModel {
 	/**
 	 * 最后一次更新密码时间
 	 */
-	@Column( name="LAST_UPDATE_PASSWORD_TIME",columnDefinition="DATE" )
+	@Column( name="LAST_UPDATE_PASSWORD_TIME" )
 	@Temporal( TemporalType.TIMESTAMP )
 	private Calendar lastUpdatePasswordTime;
 	
@@ -173,7 +176,21 @@ public class LoginAccount extends BaseModel {
 	 * 是否有效
 	 */
 	public boolean isEnabled( ){
-		return Boolean.TRUE.equals( this.enabled );
+		return isEffective();
+	}
+	
+	/**
+	 * 是否有效
+	 */
+	public boolean isEffective( ){
+		return AuditStatus.EFFECTIVE.equals(this.status);
+	}
+	
+	/**
+	 * 是否标记删除
+	 */
+	public boolean isRemoved(){
+		return AuditStatus.DELETE.equals(this.status);
 	}
 	
 	/**
@@ -231,29 +248,21 @@ public class LoginAccount extends BaseModel {
 		return false;
 	}
 	
-	public String getUsername() {
-		return this.getLoginName();
-	}
-
-	public boolean isAccountNonExpired() {
-		return isExpired( );
-	}
-
-	public boolean isAccountNonLocked() {
-		return true;
-	}
-
-	public boolean isCredentialsNonExpired() {
-		return true;
-	}
-	
 	/**
 	 * 是否需要CA登录
 	 */
 	public boolean isUseCa( ){
 		return Boolean.TRUE.equals(this.useCa);
 	}
-
+	
+	public LoginAccount clone(){
+		 try{
+			 return (LoginAccount)super.clone();
+		 }catch( CloneNotSupportedException e ){
+			 return null;
+		 }
+	}
+	
 	//-- getters and setters --------------------------------------------------
 	
 	public String getLoginName() {
@@ -270,14 +279,6 @@ public class LoginAccount extends BaseModel {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public Boolean getEnabled() {
-		return enabled;
-	}
-
-	public void setEnabled(Boolean enabled) {
-		this.enabled = enabled;
 	}
 
 	public Period getPeriod() {
@@ -374,6 +375,30 @@ public class LoginAccount extends BaseModel {
 
 	public void setPartyId(String partyId) {
 		this.partyId = partyId;
+	}
+
+	public AuditStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(AuditStatus status) {
+		this.status = status;
+	}
+
+	@Override
+	public String logMessage() {
+		return "登录帐号 [邮箱=" + email + ",状态=" + this.status
+			+ ", 登录名=" + loginName + ",手机=" + mobile
+			+ ", 部门编号=" + partyId + ",有效期=" + period + ",拥有角色="
+			+ roles + "]";
+	}
+
+	@Override
+	public String toString() {
+		return "LoginAccount [email=" + email + ", enabled=" + this.isEnabled()
+				+ ", loginName=" + loginName + ", mobile=" + mobile
+				+ ", partyId=" + partyId + ", period=" + period + ", roles="
+				+ roles + "]";
 	}
 
 }

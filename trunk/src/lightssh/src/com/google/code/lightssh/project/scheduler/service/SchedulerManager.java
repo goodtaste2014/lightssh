@@ -2,6 +2,7 @@ package com.google.code.lightssh.project.scheduler.service;
 
 import java.util.List;
 
+import com.google.code.lightssh.common.model.CronExpression;
 import com.google.code.lightssh.common.service.Manager;
 import com.google.code.lightssh.project.scheduler.entity.TriggerWrap;
 
@@ -41,5 +42,15 @@ public interface SchedulerManager extends Manager{
 	 * 列出所有Trigger
 	 */
 	public List<TriggerWrap> listAllTrigger( );
+	
+	/**
+	 * 获取触发器
+	 */
+	public TriggerWrap get(String group,String name);
+	
+	/**
+	 * 更新时钟
+	 */
+	public void updateCronExp( String name,String group,CronExpression cronExp );
 
 }

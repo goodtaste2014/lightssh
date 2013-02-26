@@ -7,53 +7,47 @@
 
 	<package name="security_account" extends="default" namespace="/security/account">
 		<action name="edit" class="loginAccountAction" method="edit">
-			<result name="input">/pages/security/account/profile.jsp</result>	
-			<result name="success">/pages/security/account/profile.jsp</result>	
-			<result name="password">/pages/security/account/password.jsp</result>	
-			<result name="role">/pages/security/account/role.jsp</result>	
+			<result name="input">/pages/security/account/profile.jsp</result>
+			<result name="success">/pages/security/account/profile.jsp</result>
+			<result name="password">/pages/security/account/password.jsp</result>
 			<result name="error" type="redirectAction">list</result>
-        	</action>
-        
+		</action>
+
 		<action name="save" class="loginAccountAction" method="save">
-        		<interceptor-ref name="crudStack"/>
+			<interceptor-ref name="crudStack"/>
 			<result name="input" >/pages/security/account/profile.jsp</result>
 			<result name="next" type="redirectAction">edit</result>
 			<result name="success" type="redirectAction">list</result>
-        	</action>
+        </action>
         
-        	<action name="password" class="loginAccountAction" method="password">
+        <action name="password" class="loginAccountAction" method="password">
 			<result name="input">/pages/security/account/password.jsp</result>
-        	</action>
+        </action>
         
-	        <action name="my" class="loginAccountAction" method="myprofile">
-	        	<result name="success" >/pages/security/account/view.jsp</result>
-	        </action>
-        
-	        <action name="view" class="loginAccountAction" method="view">
+        <action name="my" class="loginAccountAction" method="myprofile">
+        	<result name="success" >/pages/security/account/view.jsp</result>
+        </action>
+       
+        <action name="view" class="loginAccountAction" method="view">
 			<result name="input" type="redirectAction">list</result>
-	        	<result name="success" >/pages/security/account/view.jsp</result>
-	        </action>
+        	<result name="success" >/pages/security/account/view.jsp</result>
+        </action>
+       
+        <action name="popupview" class="loginAccountAction" method="view">
+        	<result name="input" >/pages/security/system/notfound_ajax.jsp</result>
+        	<result name="success" >/pages/security/account/view.jsp</result>
+        </action>
         
-	        <action name="popupview" class="loginAccountAction" method="view">
-	        	<result name="input" >/pages/security/system/notfound_ajax.jsp</result>
-	        	<result name="success" >/pages/security/account/view.jsp</result>
-	        </action>
-        
-	        <action name="list" class="loginAccountAction" method="list">
+		<action name="list" class="loginAccountAction" method="list">
 			<result name="success" >/pages/security/account/list.jsp</result>
-	        </action>
+		</action>
         
         <action name="remove" class="loginAccountAction" method="delete">
 			<result name="success" type="redirectAction">list</result>
 			<result name="input" type="redirectAction">list</result>
-        </action>
-        
-        <action name="role" class="loginAccountAction" method="role">
-			<result name="input" >/pages/security/account/role.jsp</result>
-			<result name="success" type="redirectAction">list</result>
-        </action>
-        
-        <action name="prereset" class="loginAccountAction" method="prereset">
+		</action>
+
+		<action name="prereset" class="loginAccountAction" method="prereset">
 			<result name="input" type="redirectAction">list</result>
 			<result name="success" >/pages/security/account/resetpassword.jsp</result>
         </action>
@@ -61,14 +55,38 @@
         <action name="resetpassword" class="loginAccountAction" method="resetpassword">
 			<result name="input" >/pages/security/account/resetpassword.jsp</result>
 			<result name="success" type="redirectAction">list</result>
-        </action>
-        
-        <action name="releaselock" class="loginAccountAction" method="releaselock">
+		</action>
+		
+		<action name="releaselock" class="loginAccountAction" method="releaselock">
 			<result name="input" type="redirectAction">list</result>
 			<result name="success" type="redirectAction">list</result>
         </action>
-        
-        <action name="report" class="reportLoginAccountAction" method="report">
+		
+		<action name="todoauditlist" class="loginAccountAction" method="todoAuditList">
+			<result name="success">/pages/security/account/todo_audit_list.jsp</result>
+		</action>
+		
+		<action name="todoaudit" class="loginAccountAction" method="todoAudit">
+			<result name="input" type="redirectAction">todoauditlist</result>
+			<result name="success">/pages/security/account/todo_audit.jsp</result>
+		</action>
+		
+		<action name="audit" class="loginAccountAction" method="audit">
+			<result name="error" type="redirectAction">list</result>
+			<result name="input" type="redirectAction">
+				<param name="actionName">todoaudit</param>
+				<param name="accountChange.id">${accountChange.id}</param>
+				<param name="accountChange.loginAccount.id">${accountChange.loginAccount.id}</param>
+			</result>
+			<result name="success" type="redirectAction">list</result>
+		</action>
+		
+		<action name="auditlist" class="loginAccountAction" method="auditList">
+			<result name="input" type="redirectAction">list</result>
+			<result name="success">/pages/security/account/audit_list.jsp</result>
+		</action>
+
+		<action name="report" class="reportLoginAccountAction" method="report">
 			<result name="input" type="redirectAction">list</result>
 			<result name="success" type="stream">
  				<param name="inputName">inputStream</param>
@@ -77,6 +95,7 @@
  				<param name="bufferSize">1024</param>
 			</result>
 		</action>
+
 		<action name="validatepassword" class="loginAccountAction" method="validatePassword">
 			<result name="success" type="json">
 				<param name="includeProperties">passed</param>
@@ -93,12 +112,12 @@
 		<action name="forgotpassword" class="loginAccountAction" method="forgotpassword">
 			<result name="input" type="redirectAction">account</result>
 			<result name="success">/pages/security/account/recovery/forgotpassword.jsp</result>
-        </action>
+        	</action>
         
 		<action name="forgotusername" class="loginAccountAction" method="forgotusername">
 			<result name="input">/pages/security/account/recovery/forgotusername.jsp</result>
 			<result name="success">/pages/security/account/recovery/help_username.jsp</result>
-        </action>
+        	</action>
 		
 		<action name="emailrecovery" class="loginAccountAction" method="emailrecovery">
 			<result name="input">/pages/security/account/recovery/forgotpassword.jsp</result>
@@ -119,40 +138,59 @@
 	</package>
 
 	<package name="security_role" extends="default" namespace="/security/role">
-        <action name="edit" class="roleAction" method="edit">
+        	<action name="edit" class="roleAction" method="edit">
 			<result name="success">/pages/security/role/profile.jsp</result>	
-        </action>
+        	</action>
+		<action name="view" class="roleAction" method="edit">
+			<result name="input" type="redirectAction">list</result>
+			<result name="success">/pages/security/role/view.jsp</result>
+		</action>
         
-        <action name="save" class="roleAction" method="save">
-        	<interceptor-ref name="crudStack"/>
+        	<action name="save" class="roleAction" method="save">
+        		<interceptor-ref name="crudStack"/>
 			<result name="input" >/pages/security/role/profile.jsp</result>
 			<result name="success" type="redirectAction">list</result>
 			<result name="authorize" type="redirectAction">
 				<param name="actionName">permission</param>
 				<param name="role.id">${role.id}</param>
 			</result>
-        </action>
+        	</action>
         
-        <action name="list" class="roleAction" method="list">
+        	<action name="list" class="roleAction" method="list">
 			<result name="success" >/pages/security/role/list.jsp</result>
-        </action>
+        	</action>
         
-        <action name="remove" class="roleAction" method="delete">
+		<action name="todoauditlist" class="roleAction" method="todoAuditList">
+			<result name="success">/pages/security/role/todo_audit_list.jsp</result>
+		</action>
+		
+		<action name="todoaudit" class="roleAction" method="todoAudit">
+			<result name="input" type="redirectAction">todoauditlist</result>
+			<result name="success">/pages/security/role/todo_audit.jsp</result>
+		</action>
+		
+		<action name="audit" class="roleAction" method="audit">
+			<result name="error" type="redirectAction">list</result>
+			<result name="input" type="chain">todoaudit</result>
+			<result name="success" type="redirectAction">list</result>
+		</action>
+		
+		<action name="auditlist" class="roleAction" method="auditList">
+			<result name="input" type="redirectAction">list</result>
+			<result name="success">/pages/security/role/audit_list.jsp</result>
+		</action>
+
+		<action name="remove" class="roleAction" method="delete">
 			<result name="success" type="redirectAction">list</result>
 			<result name="input" type="redirectAction">list</result>
-        </action>
-        
-        <action name="permission" class="roleAction" method="permission">
-			<result name="input" type="redirectAction">list</result>
-			<result name="success">/pages/security/role/permission.jsp</result>
-        </action>
-        
-        <action name="addPermission" class="roleAction" method="addPermission">
+		</action>
+
+		<action name="addPermission" class="roleAction" method="addPermission">
+			<result name="input">/pages/security/role/profile.jsp</result>
 			<result name="success" type="redirectAction">list</result>
-			<result name="input">/pages/security/role/permission.jsp</result>
-        </action>
-        
-        <action name="popup" class="roleAction" method="list">
+		</action>
+
+		<action name="popup" class="roleAction" method="list">
 			<result name="success" type="json">
 				<param name="includeProperties">
 					^page\.list\[\d+\]\.id,
@@ -164,12 +202,13 @@
 					page\.number
 				</param>
 			</result>
-        </action>
+		</action>
 	</package>
-	
+
 	<package name="security_navigation" extends="default" namespace="/security/navigation">
 		<action name="list" class="navigationAction" method="list">
-			<result name="success" >/pages/security/navigation/list.jsp</result>
-        </action>
+			<result name="success">/pages/security/navigation/list.jsp</result>
+		</action>
 	</package>
+
 </struts>

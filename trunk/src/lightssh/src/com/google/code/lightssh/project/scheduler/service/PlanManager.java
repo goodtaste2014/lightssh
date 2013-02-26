@@ -9,6 +9,7 @@ import com.google.code.lightssh.common.service.BaseManager;
 import com.google.code.lightssh.project.scheduler.entity.Plan;
 import com.google.code.lightssh.project.scheduler.entity.PlanDetail;
 import com.google.code.lightssh.project.scheduler.entity.SchedulerType;
+import com.google.code.lightssh.project.scheduler.entity.PlanDetail.Status;
 
 /**
  * 计划任务
@@ -26,6 +27,16 @@ public interface PlanManager extends BaseManager<Plan>{
 	 * 计划明细
 	 */
 	public PlanDetail getDetail( String id );
+	
+	/**
+	 * 更新明细状态
+	 */
+	public void updateDetailStatus(String detailId,Status status );
+	
+	/**
+	 * 更新明细状态
+	 */
+	public void updateDetailStatus(String detailId,boolean success,String errMsg );
 	
 	/**
 	 * 执行计划明细
@@ -68,8 +79,13 @@ public interface PlanManager extends BaseManager<Plan>{
 	public void updateFinishTime(String id,Calendar finishTime);
 	
 	/**
+	 * 查询依赖未完成任务
+	 */
+	public List<PlanDetail> listRelyOnUnsuccessful( String id );
+	
+	/**
 	 * 更新数据状态
 	 */
-	public void updateStatus(Collection<Result> results);
+	public void updateDetailStatus(Collection<Result> results);
 
 }

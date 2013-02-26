@@ -14,7 +14,7 @@
     <constant name="struts.devMode" value="false"/>
     <constant name="struts.i18n.encoding" value="UTF-8"/>
     <constant name="struts.custom.i18n.resources" value="config.i18n.message"/>
-    <constant name="struts.configuration.xml.reload" value="true"/> 
+    <constant name="struts.configuration.xml.reload" value="false"/> 
     <!-- this option will use a internal ConcurrentHashMap in FreemarkerTemplateEngine but not freemarker native cache -->
 	<constant name="struts.freemarker.templatesCache" value="false"/>
 	<constant name="struts.multipart.saveDir" value="../temp"/> 

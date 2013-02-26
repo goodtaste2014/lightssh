@@ -35,6 +35,16 @@
     	<action name="refresh" class="schedulerAction" method="refresh">
 			<result name="success" type="redirectAction">list</result>	
         </action>
+        
+    	<action name="edit" class="schedulerAction" method="editTrigger">
+    		<result name="input" type="redirectAction">list</result>
+			<result name="success">/pages/settings/scheduler/profile_cronexp.jsp</result>
+        </action>
+        
+    	<action name="save" class="schedulerAction" method="saveTrigger">
+			<result name="input">/pages/settings/scheduler/profile_cronexp.jsp</result>
+			<result name="success" type="redirectAction">list</result>	
+        </action>
 	</package>
 	
 	<package name="settings_plan" extends="default" namespace="/settings/plan">

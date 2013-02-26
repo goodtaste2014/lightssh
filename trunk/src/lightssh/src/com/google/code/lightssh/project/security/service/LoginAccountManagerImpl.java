@@ -3,7 +3,9 @@ package com.google.code.lightssh.project.security.service;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -13,18 +15,18 @@ import org.springframework.stereotype.Component;
 
 import com.google.code.lightssh.common.ApplicationException;
 import com.google.code.lightssh.common.dao.Dao;
-import com.google.code.lightssh.common.dao.DaoException;
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.service.BaseManagerImpl;
 import com.google.code.lightssh.common.util.CryptographyUtil;
 import com.google.code.lightssh.project.log.entity.Access;
-import com.google.code.lightssh.project.log.service.AccessManager;
+import com.google.code.lightssh.project.log.entity.EntityChange;
 import com.google.code.lightssh.project.party.entity.Party;
 import com.google.code.lightssh.project.security.dao.LoginAccountDao;
 import com.google.code.lightssh.project.security.entity.LoginAccount;
 import com.google.code.lightssh.project.security.entity.Permission;
 import com.google.code.lightssh.project.security.entity.Role;
 import com.google.code.lightssh.project.security.entity.LoginAccount.LoginAccountType;
+import com.google.code.lightssh.project.util.constant.AuditStatus;
 
 /**
  * LoginAccount Manager implement
@@ -47,8 +49,8 @@ public class LoginAccountManagerImpl extends BaseManagerImpl<LoginAccount>
 	@Resource(name="roleManager")
 	private RoleManager roleManager;
 	
-	@Resource(name="accessManager")
-	private AccessManager accessManager;
+	@Resource(name="loginAccountChangeManager")
+	private LoginAccountChangeManager loginAccountChangeManager;
 	
 	@Resource(name="loginAccountDao")
 	public void setDao(Dao<LoginAccount> dao) {
@@ -67,7 +69,6 @@ public class LoginAccountManagerImpl extends BaseManagerImpl<LoginAccount>
 		return getDao().get( name );
 	}
 	
-
 	/**
 	 * 根据电子邮箱查登录帐号
 	 */
@@ -104,7 +105,7 @@ public class LoginAccountManagerImpl extends BaseManagerImpl<LoginAccount>
 			root = new LoginAccount( );
 			root.setCreateDate( new Date() );
 			root.setLoginName(ROOT_LOGIN_NAME);
-			root.setEnabled(Boolean.TRUE);
+			root.setStatus(AuditStatus.EFFECTIVE);
 			root.setType(LoginAccountType.ADMIN);
 			Role superRole = roleManager.initRole(true); //TODO
 			root.addRole(superRole); 
@@ -163,46 +164,72 @@ public class LoginAccountManagerImpl extends BaseManagerImpl<LoginAccount>
 		log.info("系统登录帐号[{}]密码被重置！",name);
 	}
 	
-	public void save( LoginAccount account ,Access access ){
-		this.save(account);
-		if( access != null ){
-			//access.setType(AccessType.SECURITY_ACCOUNT_ADD);
-			//this.accessManager.save(access);
-		}
-	}
-	
-	public void save( LoginAccount account ){
+	public void save( LoginAccount account,LoginAccount operator ){
 		if( account == null )
-			throw new SecurityException( "数据不完整，LoginAccount 为空！" );
+			throw new ApplicationException( "数据不完整，LoginAccount 为空！" );
 		
-		boolean inserted = (account.getId() == null);
+		boolean inserted = account.isInsert();
 		if( inserted ){
+			account.setStatus(AuditStatus.NEW);
 			account.setCreateDate( new Date() );
 			account.setPassword( CryptographyUtil.hashMd5Hex( DEFAULT_PASSWORD ) );
 			if( account.getType() == null )
 				account.setType(LoginAccount.LoginAccountType.ADMIN);
 		}
 		
-		LoginAccount exist = getDao().get( account.getLoginName() );
-		if( exist == null && !inserted )
-			throw new DaoException( "登录账号已不存在，不能进行修改操作！" );
+		if( account.getRoles() != null ){
+			Set<Role> dbRoles = new HashSet<Role>();
+			for( Role role:account.getRoles() ){
+				if( role == null )
+					continue;
+				Role dbRole = roleManager.get(role);
+				if( dbRole == null )
+					throw new ApplicationException( "所选角色["+role.getId()+"]已不存在！" );
+				dbRoles.add(dbRole);
+				
+			}
+			account.setRoles(dbRoles);
+		}
 		
-		if( exist != null && !exist.getIdentity().equals(account.getIdentity()))
-			throw new SecurityException( "登录账号名'"+account.getLoginName()+"'已存在！" );
+		LoginAccount dbAcc = getDao().get( account.getLoginName() );
+		LoginAccount originalAcc = null,newAcc = account;
+		if( dbAcc != null )
+			originalAcc = dbAcc.clone();
 		
-		if( exist != null ){
-			exist.setParty( account.getParty() );
-			if( exist.getParty()!=null && exist.getParty().getId() == null )
-				exist.setParty( null );
-			exist.setPartyId(account.getPartyId());//TODO
-			exist.setDescription( account.getDescription() );
-			exist.setPeriod( account.getPeriod() );
-			exist.setEnabled( account.getEnabled() );
-			exist.setMobile(account.getMobile());
-			exist.setEmail(account.getEmail());
-			getDao().update( exist );
-		}else
+		if( dbAcc == null && !inserted )
+			throw new ApplicationException( "登录账号已不存在，不能进行修改操作！" );
+		
+		if( dbAcc != null && !dbAcc.getIdentity().equals(account.getIdentity()))
+			throw new ApplicationException( "登录账号名'"+account.getLoginName()+"'已存在！" );
+		
+		if( dbAcc != null ){
+			if( !dbAcc.isEffective() ){
+				dbAcc.setPartyId(account.getPartyId());
+				dbAcc.setDescription( account.getDescription() );
+				dbAcc.setPeriod( account.getPeriod() );
+				dbAcc.setMobile(account.getMobile());
+				dbAcc.setEmail(account.getEmail());
+				dbAcc.setRoles( account.getRoles() );
+				getDao().update( dbAcc );
+			}
+			newAcc.setStatus( dbAcc.getStatus() );
+			newAcc.setCreateDate(dbAcc.getCreateDate());
+		}else if( inserted ){
 			getDao().create( account );
+		}
+		
+		//变更记录
+		String remark = null;
+		AuditStatus status = account.getStatus();
+		EntityChange.Type type = EntityChange.Type.CREATE;
+		if( AuditStatus.NEW.equals( status )){
+			type = EntityChange.Type.CREATE;
+		}else if(AuditStatus.EFFECTIVE.equals(status) ){
+			type = EntityChange.Type.UPDATE;
+			remark = "变更登录帐户";
+		}
+		
+		loginAccountChangeManager.save(operator,type,originalAcc,newAcc,remark);
 	}
 	
 	public void remove( Serializable identity ){
@@ -214,41 +241,25 @@ public class LoginAccountManagerImpl extends BaseManagerImpl<LoginAccount>
 		super.remove(identity);
 	}
 	
+	public void remove(LoginAccount account,LoginAccount operator,String remark) {
+		LoginAccount dbAcc = dao.read(account.getId());
+		if( dbAcc == null )
+			throw new ApplicationException("登录帐号不存在！");
+		
+		if( ROOT_LOGIN_NAME.equals(dbAcc.getLoginName()) )
+			throw new ApplicationException("系统超级管理员账户不允许删除！");
+		
+		if( remark == null )
+			remark = "删除角色";
+		LoginAccount newAcc = dbAcc.clone();
+		newAcc.setStatus(AuditStatus.DELETE);
+		loginAccountChangeManager.save(operator
+				,EntityChange.Type.DELETE,dbAcc, newAcc,remark);
+	}
+	
 	public void remove( LoginAccount account ){
 		if( account != null )
 			remove( account.getIdentity() );
-	}
-	
-	public void remove(LoginAccount t,Access log) {
-		LoginAccount la = get( t );
-		if( la != null ){
-			dao.delete(la);
-			if( log != null ){
-				//log.setType( AccessType.SECURITY_ACCOUNT_DELETE );
-				//log.setDescription( "删除的登录账户id=" + la.getIdentity() 
-				//		+ ",名称=" + la.getLoginName() );
-				//this.accessManager.save(log);
-			}
-		}
-	}
-	public void updateRole( LoginAccount account ){
-		if( account == null )
-			throw new SecurityException( "数据不完整，LoginAccount 为空！" );
-		
-		LoginAccount old = this.get( account );
-		if( old != null ){
-			old.setRoles( account.getRoles() );
-			//getDao().updateRole(old);
-			getDao().update(old);
-		}
-	}
-	
-	public void updateRole( LoginAccount account, Access log ){
-		updateRole( account );
-		
-		if( log != null ){
-			accessManager.save(log);
-		}
 	}
 	
 	public List<LoginAccount> listAdmin( ){

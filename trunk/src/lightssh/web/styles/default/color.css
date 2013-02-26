@@ -3,13 +3,18 @@ ul.path{
 	clear: both;
 	float:left;
 	color: #53A653;
+	/*border-bottom: 1px solid #f2f2f2;*/
+	margin: 5px 0 5px 0;
 	width: 100%;
 }	
 
 ul.path li{
-	background:url("../../images/background/icon_path.gif") no-repeat right;
+	/*background:url("../../images/background/icon_path.gif") no-repeat right;*/
+	background:url("data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAA0AAAAyCAMAAACwGaE2AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAEVQTFRF7%2B%2Fv5ubm8fHx5eXl%2BPj47u7u9PT06enp7e3t9%2Ff38PDw9fX18vLy6urq6Ojo6%2Bvr5OTk4%2BPj9vb28%2FPz7Ozs%2Bfn5%2F%2F%2F%2FoCjp%2BgAAABd0Uk5T%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwDmQOZeAAAAo0lEQVR42nTSSRLDIAxEUYHnMSO6%2F1FjW8J8FmH3qsumQUhSLOlJGWoxlM9G6b5Q6yNB%2BnpT8Uvpc6LmkdKmpZY9Qbp5IVM%2FUOptXd7W5W2zrG2Wtb11tb11tS062xadbSHpqBSqTKrv%2BJcjKkoNd5cZagPP0EXIoiyLXFPgDY4RypFpXKs5cCoiUGo4zathVhv4JryGidFxUZEK1YvU%2F%2FoJMAALAzLRLGBHPgAAAABJRU5ErkJggg%3D%3D") no-repeat center right;
 	float: left;
 	list-style: none;
+	line-height:14px;
+	height:14px;
 	padding-right: 1em;
 	padding-left: 4px;	
 }
@@ -21,6 +26,7 @@ ul.path li{
 .pagination{
 	margin:5px 0.5em 5px 0;
 	float:right;
+	height:100%;
 	clear: both;
 }
 
@@ -200,10 +206,32 @@ span.has{
 	padding-right: 16px;
 }
 
+span.new{
+	font-weight: bold;
+	background-image: url("../../images/background/icon_new.png");
+	background-repeat: no-repeat;
+	background-position:right center;
+	padding-right: 16px;
+}
+
+span.miss{
+	font-weight: bold;
+	background-image: url("../../images/background/icon_remove.png");
+	background-repeat: no-repeat;
+	background-position:right center;
+	padding-right: 16px;
+}
+
 span.popup{	
 	cursor:pointer;
 	padding-left:16px;
 	background:url("../../images/background/icon_popup.png") no-repeat;
+}
+
+span.popup.disabled{	
+	cursor:default;
+	padding-left:16px;
+	background:url("../../images/background/icon_popup_disabled.png") no-repeat;
 }
 
 span.popup.party{
@@ -220,4 +248,26 @@ span.view{
 	cursor:pointer;
 	padding-left:18px;
 	background:url("../../images/background/icon_search.png") no-repeat left;
+}
+
+span.compare{
+	display:inline-block;
+	font-weight:normal;
+	height:20px;
+	line-height:20px;
+	background-repeat: no-repeat;
+	background-position:left center;
+	padding: 0 0 0 16px;
+}
+	
+span.compare.new{
+	background-image: url("../../images/background/icon_compare_new.png");
+}
+
+span.compare.modify{
+	background-image: url("../../images/background/icon_compare_modify.png");
+}
+
+span.compare.delete{
+	background-image: url("../../images/background/icon_compare_delete.png");
 }

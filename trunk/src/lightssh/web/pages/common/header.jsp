@@ -75,8 +75,10 @@
 	<body id="header">
 		<div id="header">
 			<div class="logo">
+				<%-- 
 				<img alt="logo" src="<s:url value="/images/logo.png"/>" />
 				<a href="http://code.google.com/p/lightssh/" target="_blank">Light SSH</a>
+				--%>
 			</div>
 			
 			<div class="status" id="div_status">
@@ -95,6 +97,11 @@
 				</div>
 				<div class="left">&nbsp;</div>
 			</div>
+		</div>
+		
+		<div class="line">
+			<div class="left"></div>
+			<div class="right"></div>
 		</div>
 	</body>
 </html>

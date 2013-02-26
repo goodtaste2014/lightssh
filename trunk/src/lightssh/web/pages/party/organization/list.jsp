@@ -65,11 +65,17 @@
 			</ul> 
 		
 			<div id="tabs-1">
+				<table class="profile">
+					<tr>
+						<th><label for="name">名称/描述</label></th>
+						<td>
+							<input id="name" class="filter" name="livefilter" 
+								type="text" value="" size="40" onchange="if(this.value=='')initTreeTable();"/>
+						</td>
+					</tr>
+				</table>
+				
 				<div id="live_filter">
-		
-					<label for="name">名称/描述</label>
-					<input id="name" class="filter" name="livefilter" type="text" value="" size="40" onchange="if(this.value=='')initTreeTable();"/>
-					
 					<table id="orgnization_list" class="list">
 						<colgroup>
 							<col class="element" width="50px"/>

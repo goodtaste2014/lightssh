@@ -60,8 +60,8 @@
 	            /security/account/save.do=authc,perms[SECURITY_ACCOUNT_SAVE]
 	            
 	            #last
-	            /** = authc
-	        </value>
+	            /** = authc,su
+	       </value>
 	    </property>
 	</bean>
 		

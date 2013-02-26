@@ -1,5 +1,6 @@
 package com.google.code.lightssh.project.contact.entity;
 
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
@@ -18,26 +19,31 @@ public class TelephoneNumber extends ContactMechanism{
 	/**
 	 * 国家号
 	 */
+	@Column(name="COUNTRY_CODE",length=10)
 	private String countryCode;
 	
 	/**
 	 * 区号
 	 */
+	@Column(name="AREA_CODE",length=10)
 	private String areaCode;
 	
 	/**
 	 * 号码
 	 */
+	@Column(name="CONTACT_NUMBER",length=20)
 	private String contactNumber;
 	
 	/**
 	 * 附加号(分机)
 	 */
+	@Column(name="EXT_CODE",length=10)
 	private String extCode;
 	
 	/**
 	 * 寻找人
 	 */
+	@Column(name="ASK_FOR_NAME",length=20)
 	private String askForName;
 	
 	public String format( ){

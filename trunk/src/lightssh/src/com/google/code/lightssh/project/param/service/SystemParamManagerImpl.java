@@ -1,7 +1,9 @@
 package com.google.code.lightssh.project.param.service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -11,9 +13,11 @@ import org.springframework.stereotype.Component;
 
 import com.google.code.lightssh.common.dao.Dao;
 import com.google.code.lightssh.common.dao.SearchCondition;
+import com.google.code.lightssh.common.model.ConnectionConfig;
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.service.BaseManagerImpl;
 import com.google.code.lightssh.common.util.StringUtil;
+import com.google.code.lightssh.project.mail.MailConfigConstants;
 import com.google.code.lightssh.project.param.entity.SystemParam;
 
 /**
@@ -112,6 +116,54 @@ public class SystemParamManagerImpl extends BaseManagerImpl<SystemParam> impleme
 				sc.like("value",t.getValue() );
 		}
 		return dao.list(page,sc);
+	}
+	
+	/**
+	 * 取参数值
+	 */
+	protected String getParamValue( Map<String,SystemParam> paramMap,String name ){
+		if( name == null || paramMap == null || paramMap.isEmpty() )
+			return null;
+		
+		SystemParam param = paramMap.get(name);
+		if( param == null )
+			return null;
+		
+		return param.getValue();
+	}
+	
+	/**
+	 * 邮件参数
+	 */
+	public ConnectionConfig getEmailConnectionConfig( ){
+		List<SystemParam> params = listByGroup( 
+				MailConfigConstants.PARAM_GROUP_EMAIL );
+		
+		if( params == null )
+			return null;
+		
+		Map<String,SystemParam> paramMap = new HashMap<String,SystemParam>();
+		for( SystemParam item:params )
+			paramMap.put(item.getName(), item);
+		
+		ConnectionConfig config = new ConnectionConfig();
+		
+		config.setHost( getParamValue(
+				paramMap,MailConfigConstants.EMAIL_HOST_KEY));
+		
+		config.setPort( getParamValue(
+				paramMap,MailConfigConstants.EMAIL_PORT_KEY ) );
+		
+		config.setUsername(getParamValue(
+				paramMap,MailConfigConstants.EMAIL_USERNAME_KEY ) );
+		
+		config.setPassword(getParamValue(
+				paramMap,MailConfigConstants.EMAIL_PASSWORD_KEY ) );
+		
+		config.setSsl( "true".equalsIgnoreCase(getParamValue(
+				paramMap,MailConfigConstants.EMAIL_SSL_KEY ) ));
+		
+		return config;
 	}
 
 }

@@ -9,6 +9,7 @@
 	<td><s:property value="%{enabled?'是':'否'}"/></td>
 	<td><s:property value="%{description}"/></td>
 	<td>
+		<a href="<s:url value="/party/organization/edit.do?party.id=%{id}"/>">编辑</a>
 		<a href="#" onclick="javascript:doRemove('<s:property value="%{id}"/>','<s:property value="%{name}"/>')">删除</a>
 	</td>
 </tr>
