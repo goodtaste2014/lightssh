@@ -8,6 +8,8 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.google.code.lightssh.common.ApplicationException;
@@ -21,6 +23,7 @@ import com.google.code.lightssh.project.scheduler.dao.PlanDetailDao;
 import com.google.code.lightssh.project.scheduler.entity.Plan;
 import com.google.code.lightssh.project.scheduler.entity.PlanDetail;
 import com.google.code.lightssh.project.scheduler.entity.SchedulerType;
+import com.google.code.lightssh.project.scheduler.entity.PlanDetail.Status;
 import com.google.code.lightssh.project.sequence.service.SequenceManager;
 
 /**
@@ -32,6 +35,8 @@ import com.google.code.lightssh.project.sequence.service.SequenceManager;
 public class PlanManagerImpl extends BaseManagerImpl<Plan> implements PlanManager{
 
 	private static final long serialVersionUID = -6376825556178324639L;
+	
+	private static Logger log = LoggerFactory.getLogger( PlanManagerImpl.class );
 	
 	@Resource(name="planDetailDao")
 	private PlanDetailDao planDetailDao;
@@ -59,6 +64,97 @@ public class PlanManagerImpl extends BaseManagerImpl<Plan> implements PlanManage
 			return null;
 		
 		return this.planDetailDao.read(id);
+	}
+	
+	/**
+	 * 更新明细状态
+	 */
+	public void updateDetailStatus(String detailId,Status status ){
+		PlanDetail detail = getDetail(detailId);
+		if( detail == null )
+			throw new ApplicationException("执行计划明细["+detailId+"]对应数据不存在！");
+		
+		detail.setStatus(status);
+		
+		this.planDetailDao.update(detail);
+	}
+	
+	/**
+	 * 未成功记录
+	 */
+	private int getUnsuccessfulCount(String planId,String planDetailId ){
+		ListPage<PlanDetail> page = new ListPage<PlanDetail>(0);
+		SearchCondition sc = new SearchCondition();
+		sc.equal("plan.id", planId);
+		sc.notEqual("id", planDetailId);
+		sc.notEqual("status", Status.SUCCESS );
+		
+		page = planDetailDao.list(page, sc);
+		
+		return page.getAllSize();
+	}
+	
+	/**
+	 * 更新明细状态
+	 */
+	public void updateDetailStatus(String detailId,boolean success,String errMsg){
+		PlanDetail detail = getDetail(detailId);
+		if( detail == null )
+			throw new ApplicationException("执行计划明细["+detailId+"]对应数据不存在！");
+		
+		PlanDetail.Status oldStatus = detail.getStatus();
+		if( PlanDetail.Status.WAITING_FOR_REPLY.equals(detail.getStatus()) 
+				|| PlanDetail.Status.NEW.equals(detail.getStatus())
+				|| PlanDetail.Status.FAILURE.equals(detail.getStatus())
+				|| PlanDetail.Status.EXCEPTION.equals(detail.getStatus()) ){
+			
+			detail.setStatus(success?PlanDetail.Status.SUCCESS:PlanDetail.Status.FAILURE);
+			detail.setFinishTime( Calendar.getInstance() );
+			if( StringUtils.isEmpty(errMsg))
+				detail.setDescription("回调结果["+(success?"成功":"失败")+"]");
+			else
+				detail.setDescription( TextFormater.format(errMsg,197,true) );
+				
+			this.planDetailDao.update(detail);
+			
+			log.info("执行计划明细["+detailId+"]状态["
+					+oldStatus+"]更新为["+detail.getStatus()+"]！");
+			
+			if( success ){
+				String planId = detail.getPlan().getId();
+				int count = getUnsuccessfulCount( planId,detail.getId());
+				if( count == 0 ){
+					updateFinishTime( planId,Calendar.getInstance());
+					log.info("执行计划明细[{}]执行完成，整个任务完成！",detail.getId());
+				}
+			}
+			
+			//执行依赖任务
+			List<PlanDetail> replyOnList = planDetailDao.listRelyOnUnsuccessful(detailId);
+			if( replyOnList == null || replyOnList.isEmpty() )
+				return;
+			
+			//TODO 线程池处理
+			for( PlanDetail item:replyOnList ){
+				if( item.getPlan()==null || item.getPlan().getType() == null ){
+					log.warn("上级任务执行[{}]依赖任务[{}]无法调用执行，类型为空！",detailId,item.getId());
+					continue;
+				}else if( success ){
+					log.info("回调任务[{}]执行成功,执行依赖任务[{}]。",detailId,item.getId());
+					jobQueueManager.jobInQueue(item.getPlan().getType().getId(),item.getId(),1);
+				}else{
+					item.setStatus(Status.FAILURE);
+					item.setDescription("依赖任务["+detailId+"]执行返回失败！");
+					
+					planDetailDao.update(item);
+				}
+			}
+			
+		}else{
+			log.warn("执行计划明细["+detailId
+					+"]状态已改变为["+detail.getStatus()+"]不能进行更新！");
+		}
+		
 	}
 	
 	/**
@@ -192,7 +288,7 @@ public class PlanManagerImpl extends BaseManagerImpl<Plan> implements PlanManage
 		
 		Plan plan = dao.read(id);
 		if( plan != null ){
-			if( plan.getFinishTime() != null )
+			if( plan.getFinishTime() == null )
 				plan.setFinishTime(finishTime);
 			plan.setFinished(Boolean.TRUE);
 			
@@ -201,9 +297,16 @@ public class PlanManagerImpl extends BaseManagerImpl<Plan> implements PlanManage
 	}
 	
 	/**
+	 * 查询依赖未完成任务
+	 */
+	public List<PlanDetail> listRelyOnUnsuccessful( String id ){
+		return this.planDetailDao.listRelyOnUnsuccessful(id);
+	}
+	
+	/**
 	 * 更新数据状态
 	 */
-	public void updateStatus(Collection<Result> results){
+	public void updateDetailStatus(Collection<Result> results){
 		if( results == null || results.isEmpty() )
 			return;
 		
@@ -213,15 +316,25 @@ public class PlanManagerImpl extends BaseManagerImpl<Plan> implements PlanManage
 				if( detail.getFireTime() == null )
 					detail.setFireTime(Calendar.getInstance());
 				
-				if( result.isSuccess() ){
+				PlanDetail.Status newStatus = PlanDetail.Status.WAITING_FOR_REPLY;
+				
+				if( result.isInvokeSuccess()){
+					newStatus = detail.isSynTask()?PlanDetail.Status
+							.WAITING_FOR_REPLY:PlanDetail.Status.SUCCESS;
 					detail.setFinishTime( Calendar.getInstance() );
-					detail.setStatus(PlanDetail.Status.SUCCESS);
 				}else{
-					detail.setStatus(PlanDetail.Status.FAILURE);
-					detail.setErrMsg( TextFormater.format(result.getMessage(),197,true) );
+					newStatus = result.isException()
+						?PlanDetail.Status.EXCEPTION:PlanDetail.Status.FAILURE;
+					detail.setErrMsg( TextFormater.format(result.getMessage(),497,true) );
 					detail.incFailureCount( );
 				}
-				planDetailDao.update(detail);
+				
+				//detail.setStatus(newStatus);
+				//planDetailDao.update(detail);
+				
+				//int i = planDetailDao.update(detail.getId(),PlanDetail.Status.NEW, newStatus);
+				int i =planDetailDao.update("id",detail.getId(),"status",detail.getStatus(), newStatus);
+				log.info("计划任务[{}]状态更新{}",detail.getId(),i);
 			}
 		}//end for
 	}

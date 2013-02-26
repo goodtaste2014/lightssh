@@ -4,14 +4,13 @@ import javax.servlet.ServletContextEvent;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoaderListener;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.google.code.lightssh.project.config.ProjectConfig;
 import com.google.code.lightssh.project.scheduler.service.SchedulerManager;
 import com.google.code.lightssh.project.security.service.LoginAccountManager;
 import com.google.code.lightssh.project.security.shiro.ConfigConstants;
+import com.google.code.lightssh.project.util.SpringContextHelper;
 
 /**
  * container startup listener
@@ -33,22 +32,24 @@ public class StartupListener extends ContextLoaderListener{
 		
 		chooseFreemarkLoger();
 		
-        ApplicationContext ctx = WebApplicationContextUtils
-        	.getRequiredWebApplicationContext(sce.getServletContext());
+        //ApplicationContext ctx = WebApplicationContextUtils
+        //	.getRequiredWebApplicationContext(sce.getServletContext());
+        
+        SpringContextHelper.init(sce.getServletContext());
         
 		log.debug( "系统初始化..." );
-		initScheduler( ctx );
-		initRootUser( ctx );
-		initSystemProperty( ctx );
+		initScheduler( );
+		initRootUser( );
+		initSystemProperty( );
 	}
 
 	/**
 	 * 初始系统账户
 	 */
-	private void initRootUser( ApplicationContext ctx ){
+	private void initRootUser( ){
         try{
-	        LoginAccountManager laMgr = (LoginAccountManager) ctx.getBean(
-	        		"loginAccountManager");
+	        LoginAccountManager laMgr = (LoginAccountManager)
+	        	SpringContextHelper.getBean("loginAccountManager");
 	        laMgr.initLoginAccount();
         }catch( Exception e ){
         	log.error( e.getMessage() );
@@ -58,10 +59,10 @@ public class StartupListener extends ContextLoaderListener{
 	/**
 	 * 初始化定时任务
 	 */
-	private void initScheduler( ApplicationContext ctx ){
+	private void initScheduler( ){
 		try{
-			SchedulerManager schedulerManager = (SchedulerManager) ctx.getBean(
-	        		"schedulerManager");
+			SchedulerManager schedulerManager = (SchedulerManager)
+				SpringContextHelper.getBean("schedulerManager");
 			if( schedulerManager == null )
 				return;
 			
@@ -88,9 +89,10 @@ public class StartupListener extends ContextLoaderListener{
 	/**
 	 * CAS启动设置keystore
 	 */
-	public void initSystemProperty( ApplicationContext ctx ){
+	public void initSystemProperty( ){
 		try{
-			ProjectConfig systemConfig = (ProjectConfig)ctx.getBean("systemConfig");
+			ProjectConfig systemConfig = (ProjectConfig)
+				SpringContextHelper.getBean("systemConfig");
 			
 			if( systemConfig != null && "true".equalsIgnoreCase(
 	    			systemConfig.getProperty( ConfigConstants.CAS_ENABLED_KEY, "false")) ){

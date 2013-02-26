@@ -2,6 +2,11 @@ package com.google.code.lightssh.project.mail;
 
 public interface MailConfigConstants {
 	
+	/**
+	 * 邮件连接参数组
+	 */
+	public static final String PARAM_GROUP_EMAIL = "EMAIL_SERVER_PROFILE";
+	
 	/** SSL */
 	public static final String EMAIL_SSL_KEY = "email.ssl";
 	

@@ -46,7 +46,7 @@
 						<th><label for="ip">IP</label></th>
 						<td><s:textfield id="ip" name="access.ip"/></td>
 						
-						<td colspan="2"><input type="submit" class="action search" value="查询"/></td>
+						<td colspan="2"><input type="submit" class="action search right" value="查询"/></td>
 					</tr>
 				</tbody>
 			</table>

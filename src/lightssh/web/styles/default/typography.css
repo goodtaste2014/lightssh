@@ -12,6 +12,12 @@ div {
 	display: block;
 }
 
+div.clear{
+	clear:both;
+	line-height:0;
+	height:0;
+	margin-bottom: -1em;
+}
 
 head {
 	display: none;
@@ -82,7 +88,7 @@ select{
     line-height:16px;
     height:20px;
     font-family:'Verdana'; 
-    
+    margin:2px 0 2px 0;
 	outline:none;
 }
 
@@ -118,8 +124,8 @@ input[type=button], input[type=submit], input[type=reset]{
 input.action{
 	height:26px;
 	line-height:24px;
-    padding:0 6px 0 22px;
-    overflow:visible; /* fixed IE bug */
+    padding:0 5px 0 22px;
+    vertical-align: middle;
 }
 
 input.right{
@@ -199,6 +205,21 @@ input.audit.reject{
 	background: #f2f2f2 url("../../images/background/icon_audit_reject.png") no-repeat 4px center;
 }
 
+input.back{
+	background: #f2f2f2 url("../../images/background/icon_back.png") no-repeat 4px center;
+}
+
+input.online{
+	background: #f2f2f2 url("../../images/background/icon_online.png") no-repeat 4px center;
+}
+
+input.offline{
+	background: #f2f2f2 url("../../images/background/icon_offline.png") no-repeat 4px center;
+}
+
+input.enterprise{
+	background: #f2f2f2 url("../../images/background/icon_enterprise.png") no-repeat 4px center;
+}
 
 input.action:hover,input.action:active
 ,input.save:hover,input.save:active
@@ -397,12 +418,20 @@ table.profile{
 	/*border: #CCC solid 1px;*/
 }
 
+table.profile caption{
+	border-top: 2px solid #206F96;
+	font-weight:bold;
+	padding-left:22px;
+	background: transparent url("../../images/background/icon_caption.png") no-repeat 4px center;
+}
+
 table.profile tr{
 	vertical-align: middle;
 }
 
 table.profile th,table.profile td{
-	line-height: 23px;
+	height: 26px;
+	line-height: 24px;
 	text-align:left;
 	font-weight: normal;
 	font-size:12px;
@@ -413,7 +442,7 @@ table.profile th,table.profile td{
 
 
 table.profile th{
-	width:100px;
+	width:120px;
 	background-color: #F9F9F9;
 }
 
@@ -459,9 +488,9 @@ table.profile th{
 
 .popup-menu-layer li a {
 	text-decoration: none;
-	background-position: 5px 3px;
 	background-repeat: no-repeat;
-	padding:.2em 0 .2em 1.5em;
+	background-position:5px center;
+	padding:.2em 0 .2em 26px;
 	display: block;
 	color: #333;
 }
@@ -474,10 +503,43 @@ table.profile th{
 .popup-menu-layer li.disabled a {
 	color: #DDD;
 	cursor: default;
+	background-image: url("../../images/background/icon_disabled.png");
 }
 
 .popup-menu-layer li.disabled:hover a {
 	background-color:#DDD;
 	color: white;
 	cursor: default;
+}
+
+/** 弹出窗口菜单图标 */
+.popup-menu-layer li.view a{
+	background-image: url("../../images/background/icon_view.png");
+}
+.popup-menu-layer li.list a{
+	background-image: url("../../images/background/icon_list.png");
+}
+.popup-menu-layer li.refresh a{
+	background-image: url("../../images/background/icon_refresh.png");
+}
+.popup-menu-layer li.edit a{
+	background-image: url("../../images/background/icon_edit.png");
+}
+.popup-menu-layer li.remove a{
+	background-image: url("../../images/background/icon_remove.png");
+}
+.popup-menu-layer li.freeze a{
+	background-image: url("../../images/background/icon_freeze.png");
+}
+.popup-menu-layer li.unfreeze a{
+	background-image: url("../../images/background/icon_unfreeze.png");
+}
+.popup-menu-layer li.audit a{
+	background-image: url("../../images/background/icon_audit.png");
+}
+.popup-menu-layer li.password a{
+	background-image: url("../../images/background/icon_password.png");
+}
+.popup-menu-layer li.unlock a{
+	background-image: url("../../images/background/icon_unlock.png");
 }

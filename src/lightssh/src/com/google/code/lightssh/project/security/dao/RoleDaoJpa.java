@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.Query;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import com.google.code.lightssh.common.dao.jpa.JpaAnnotationDao;
@@ -25,10 +26,14 @@ public class RoleDaoJpa extends JpaAnnotationDao<Role> implements RoleDao{
 		
 		hql.append( " FROM " + entityClass.getName() + " AS m " );
 		hql.append( " WHERE 1=1 ");
-		if( t.getName() != null && t.getName().trim() != null 
-				&& !"".equals(t.getName().trim())){
+		if( !StringUtils.isEmpty(t.getName())){
 			hql.append( " AND m.name like ? " );
 			params.add( "%" + t.getName().trim() + "%");
+		}
+		
+		if( t.getStatus() != null ){
+			hql.append( " AND m.status = ? " );
+			params.add( t.getStatus() );
 		}
 		
 		return super.query(page, hql.toString(), params.toArray( ) );

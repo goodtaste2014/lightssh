@@ -43,7 +43,7 @@
 							name="uom.active" value="uom.getActive()" id="active"/>
 					</td>
 					
-					<td colspan="2"><input type="submit" class="action search" value="查询"/></td>
+					<td colspan="2"><input type="submit" class="action search right" value="查询"/></td>
 				</tr>
 			</tbody>
 		</table>

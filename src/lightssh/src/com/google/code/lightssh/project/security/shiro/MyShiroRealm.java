@@ -41,12 +41,13 @@ public class MyShiroRealm extends AuthorizingRealm{
 			if( la != null && la.getRoles() != null ){
 				SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 				for( Role each:la.getRoles() ){
+					if( !each.isEffective() )
+						continue;
 					if( each.getName() != null )
 						info.addRole(each.getName());
 					Collection<String> pers = each.getPermissionsAsString();
 					if( pers != null )
 						info.addStringPermissions( pers );
-					
 				}
 				
 				return info;

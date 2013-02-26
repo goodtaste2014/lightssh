@@ -76,8 +76,6 @@ public class AccessManagerImpl extends BaseManagerImpl<Access> implements Access
 			this.identityManager.create(classIdentity);
 		}
 		access.setClassIdentity(classIdentity);
-		if( access.getDescription()==null )
-			access.setDescription( p.getClass().getCanonicalName() );
 		
 		History history = new History(access,originalModel,newModel);
 		history.setCreateDate( access.getTime() );		

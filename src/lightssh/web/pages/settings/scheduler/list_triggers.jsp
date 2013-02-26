@@ -7,54 +7,71 @@
 	
 		<title>定时任务</title>
 		
+		<script type="text/javascript">
+			function toggle(name,group,pause){
+				var url = '<s:url value="/settings/scheduler/toggle.do"/>';
+				url = url + '?name='+name+'&group='+group;
+				if( confirm('确认'+(pause?'启动':'暂停')+'定时任务?') )
+					location.href=url;
+			}
+		</script>
 	</head>
 	
 	<body>
 		<ul class="path">
 			<li>基础管理</li>
-			<li>定时任务</li>
-			<li>任务列表</li>
+			<li>计划任务</li>
+			<li>时钟列表</li>
 		</ul>
 		
 		<%@ include file="/pages/common/messages.jsp" %>
 		
-		<table class="list">
-			<colgroup>
-				<col class="element" width="50px"/>
-				<col class="element" width="160px"/>
-				<col class="element" width="200px"/>
-				<col class="element" width="30px"/>
-				<col class="element" width="190px"/>
-				<col class="element" />
-				<col class="element" width="50px"/>
-			</colgroup>
-			<thead>
-				<tr>
-					<th>序号</th>
-					<th>名称</th>
-					<th>CRON表达式</th>
-					<th>状态</th>
-					<th>上/下次运行时间</th>
-					<th>描述</th>
-					<th>操作</th>
-				</tr>
-			</thead>
+		<mys:table cssClass="list" value="page" status="loop">
+			<mys:column title="序号"  width="50px">
+				<s:property value="#loop.index+1"/>
+			</mys:column>
 			
-			<s:iterator value="#request.list" status="loop">
-			<tr class="<s:property value="#loop.odd?\"odd\":\"even\""/>">
-				<td><s:property value="#loop.index+1"/></td>
-				<td><s:property value="name"/></td>
-				<td><s:property value="cronExpression"/></td>
-				<td><s:property value="pause?'暂停':'运行'"/></td>
-				<td>
-					[上次] <s:property value="@com.google.code.lightssh.common.util.TextFormater@format(previousFireTime,'yyyy-MM-dd HH:mm:ss')"/>
-					<br/>[下次] <s:property value="@com.google.code.lightssh.common.util.TextFormater@format(nextFireTime,'yyyy-MM-dd HH:mm:ss')"/>
-				</td>
-				<td><s:property value="description"/></td>
-				<td><a href="<s:url value="/settings/scheduler/toggle.do?name=%{name}"/>"><s:property value="pause?'启用':'停用'"/></a></td>
-			</tr>
-			</s:iterator>
-			</table>
+			<%-- 
+			<mys:column title="名称" value="name" width="300px"/>
+			--%>
+			<mys:column title="组名" value="group" width="100px"/>
+			<mys:column title="CRON表达式" value="cronExpression" width="180px"/>
+			<mys:column title="状态" width="20px">
+				<s:property value="pause?'暂停':'运行'"/>
+			</mys:column>
+			<mys:column title="上/下次运行时间" width="190px">
+				<font color="#CCCCCD">
+				[上次] <s:property value="@com.google.code.lightssh.common.util.TextFormater@format(previousFireTime,'yyyy-MM-dd HH:mm:ss')"/>
+				</font>
+				<br/>
+				[下次] <s:property value="@com.google.code.lightssh.common.util.TextFormater@format(nextFireTime,'yyyy-MM-dd HH:mm:ss')"/>
+			</mys:column>
+			<mys:column title="描述">
+				<font color="#CCCCCD"><s:property value="name"/></font><br/>
+				<s:property value="description"/>
+			</mys:column>
+			<mys:column title="操作" width="40px" cssClass="action">
+				<span>&nbsp;</span>
+				<div class="popup-menu-layer">
+					<ul class="dropdown-menu">
+						<li class="<s:property value="pause?'unfreeze':'freeze'"/>">
+							<a href="#" onclick="toggle('<s:property value="name"/>','<s:property value="group"/>',<s:property value="pause?'false':'true'"/>)">
+								<s:property value="pause?'启用时钟':'停用时钟'"/>
+							</a>
+						</li>
+						<s:if test="pause">
+							<li class="disabled"><a href="#">刷新时钟</a></li>
+						</s:if>
+						<s:else>
+							<li class="refresh"><a href="<s:url value="refresh.do?name=%{name}&group=%{group}"/>">刷新时钟</a></li>
+						</s:else>
+						
+						<li class="section"/>
+						<li class="edit"><a href="<s:url value="edit.do?name=%{name}&group=%{group}"/>">更改时钟</a></li>
+					</ul>
+				</div>
+			</mys:column>
+		</mys:table>
 			
 	</body>
 </html>

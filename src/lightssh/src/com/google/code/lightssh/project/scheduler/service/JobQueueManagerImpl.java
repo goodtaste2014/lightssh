@@ -8,6 +8,8 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.google.code.lightssh.common.ApplicationException;
@@ -27,6 +29,8 @@ import com.google.code.lightssh.project.scheduler.entity.SchedulerType;
 public class JobQueueManagerImpl extends BaseManagerImpl<JobQueue> implements JobQueueManager{
 
 	private static final long serialVersionUID = 3580422383287494752L;
+	
+	private static Logger log = LoggerFactory.getLogger(JobQueueManagerImpl.class);
 	
 	/**默认队列最大执行次数*/
 	public static final int DEFAULT_MAX_EXECUTE_COUNT = 10;
@@ -125,22 +129,7 @@ public class JobQueueManagerImpl extends BaseManagerImpl<JobQueue> implements Jo
 	 * 任务入队列
 	 */
 	public void jobInQueue( String jobType,String refId,int maxSendCount ){
-		if( StringUtils.isEmpty(refId) || StringUtils.isEmpty(jobType) )
-			return;
-		
-		SchedulerType type = schedulerTypeManager.get(jobType);
-		if( type == null )
-			throw new ApplicationException("工作任务类型["+jobType+"]不存在！");
-		
-		JobQueue queue = new JobQueue();
-		queue.setType(type);
-		queue.setRefId(refId);
-		queue.setCreatedTime( Calendar.getInstance() );
-		queue.setMaxSendCount(maxSendCount);
-		queue.setFailureCount(0);
-		queue.setStatus(JobQueue.Status.NEW);
-		
-		getDao().create(queue);
+		jobInQueue(jobType,null,maxSendCount,new String[]{refId});
 	}
 	
 	/**
@@ -166,6 +155,12 @@ public class JobQueueManagerImpl extends BaseManagerImpl<JobQueue> implements Jo
 		
 		List<JobQueue> queues = new ArrayList<JobQueue>();
 		for(String refId:refIds ){
+			JobQueue exists = getDao().get(jobType,refId);
+			if( exists != null ){
+				log.warn("任务[类型={}][关联ID={}]已存在队列！",jobType,refId);
+				continue;
+			}
+			
 			JobQueue queue = new JobQueue();
 			queue.setType(type);
 			queue.setRefId(refId);

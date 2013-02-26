@@ -1,21 +1,26 @@
 package com.google.code.lightssh.project.security.service;
 
 import java.util.Collection;
+import java.util.HashSet;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import com.google.code.lightssh.common.ApplicationException;
 import com.google.code.lightssh.common.dao.DaoException;
+import com.google.code.lightssh.common.dao.SearchCondition;
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.service.BaseManager;
 import com.google.code.lightssh.common.service.BaseManagerImpl;
-import com.google.code.lightssh.project.log.entity.Access;
+import com.google.code.lightssh.project.log.entity.EntityChange;
 import com.google.code.lightssh.project.security.dao.RoleDao;
+import com.google.code.lightssh.project.security.entity.LoginAccount;
 import com.google.code.lightssh.project.security.entity.Navigation;
 import com.google.code.lightssh.project.security.entity.Permission;
 import com.google.code.lightssh.project.security.entity.Role;
+import com.google.code.lightssh.project.util.constant.AuditStatus;
 
 /**
  * Role Manager 实现
@@ -28,13 +33,16 @@ public class RoleManagerImpl extends BaseManagerImpl<Role> implements RoleManage
 	private static final long serialVersionUID = 5340905466451969796L;
 
 	/** 系统超级管理员角色  */
-	public static final String SUPER_ROLE = "Super Role";
+	public static final String SUPER_ROLE = "SUPER_ROLE";
 	
 	@Resource(name="navigationManager")
 	private NavigationManager navigationManager;
 	
 	@Resource(name="permissionManager")
 	private BaseManager<Permission> permissionManager;
+	
+	@Resource(name="roleChangeManager")
+	private RoleChangeManager roleChangeManager;
 	
 	@Resource(name="roleDao")
 	public void setRoleDao( RoleDao roleDao ){
@@ -70,29 +78,73 @@ public class RoleManagerImpl extends BaseManagerImpl<Role> implements RoleManage
 			
 			db_role.setName( role.getName() );
 			db_role.setDescription( role.getDescription() );
+			//修改审核拒绝的角色进入待审核列表
+			if(AuditStatus.AUDIT_REJECT.equals(db_role.getStatus()))
+				db_role.setStatus(AuditStatus.NEW);
 			dao.update( db_role );
 		}else{
+			role.setStatus(AuditStatus.NEW);
 			dao.create( role );
 		}
+		
 	}
 
 	@Override
-	public void addPermission(Role role, Collection<Navigation> colls) {
+	public void save(Role role,Collection<Navigation> colls,LoginAccount user) {
 		if( role == null )
-			return;
+			throw new ApplicationException("参数为空！");
 		
 		Role db_role = get(role);
-		if( db_role == null )
-			throw new ApplicationException("角色信息在系统不存在！");
+		Role originalRole = null,newRole = role;
+		if( db_role == null ){
+			db_role = role;
+		}else{
+			originalRole = db_role.clone();
+			if( !db_role.isEffective() ){
+				db_role.setName(role.getName());
+				db_role.setDescription(role.getDescription());
+			}
+		}
+		
+		//新角色赋值用于序列化
+		newRole.setStatus(db_role.getStatus());
+		newRole.setCreatedTime(db_role.getCreatedTime());
+		newRole.setReadonly(db_role.getReadonly());
 		
 		//update permission
 		Collection<Permission> pers = navigationManager.listPermission(colls);
-		db_role.setPermissions( null );
-		db_role.addPermission(pers);
+		newRole.setPermissions(pers);
+		if( !db_role.isEffective() ){
+			db_role.setPermissions( pers );
+		}
 		
-		//db_role.setName( role.getName() );
+		if( !db_role.isEffective() )//有效状态不能直接发起变更
+			save( db_role );
+			
+		//变更记录
+		String remark = null;
+		AuditStatus status = db_role.getStatus();
+		EntityChange.Type type = EntityChange.Type.CREATE;
+		if( AuditStatus.NEW.equals( status )){
+			type = EntityChange.Type.CREATE;
+		}else if(AuditStatus.EFFECTIVE.equals(status) ){
+			type = EntityChange.Type.UPDATE;
+			remark = "角色变更，审核通过后生效！";
+		}
+		roleChangeManager.save(user, type, originalRole, newRole,remark);
+	}
+	
+	public void remove(Role role,LoginAccount operator,String remark) {
+		Role dbRole = dao.read(role.getId());
+		if( dbRole == null )
+			throw new ApplicationException("角色不存在！");
 		
-		save( db_role );
+		if( remark == null )
+			remark = "删除角色";
+		Role newRole = dbRole.clone();
+		newRole.setStatus(AuditStatus.DELETE);
+		roleChangeManager.save(operator
+				,EntityChange.Type.DELETE,dbRole, newRole,remark);
 	}
 
 	@Override
@@ -107,6 +159,7 @@ public class RoleManagerImpl extends BaseManagerImpl<Role> implements RoleManage
 			role.setDescription("系统初始化创建超级用户.");
 			role.setName("超级管理角色");
 			role.setReadonly( Boolean.TRUE );
+			role.setStatus(AuditStatus.EFFECTIVE);
 		}
 		//是否更新角色权限
 		
@@ -114,20 +167,31 @@ public class RoleManagerImpl extends BaseManagerImpl<Role> implements RoleManage
 		ListPage<Permission> page = new ListPage<Permission>(Integer.MAX_VALUE);
 		page = permissionManager.list(page);
 		if( no_role || forceUpdatePermission ){
-			role.addPermission( page.getList() );
+			role.setPermissions( new HashSet<Permission>( page.getList() ) );
 		}
 		
-		getRoleDao().create( role );
+		if( no_role )
+			create(role);
+		else
+			update(role );
 		
 		return role;
 	}
 
-	public void addPermission(Role role, Collection<Navigation> colls,Access log){
-		this.addPermission(role, colls);
-		
-		if( log != null ){
-			//accessManager.save(log);
+	/**
+	 * 待审核列表
+	 */
+	public ListPage<Role> listTodoAudit(ListPage<Role> page,Role role){
+		SearchCondition sc = new SearchCondition();
+		if( role != null ){
+			if( !StringUtils.isEmpty(role.getName()) ){
+				sc.like("name", role.getName());
+			}
+			
 		}
+		//sc.in("status",Role.Status.NEW.name(),Role.Status.AUDIT_REJECT.name());
+		sc.equal("status",AuditStatus.NEW);
+		
+		return getRoleDao().list(page,sc);
 	}
-
 }

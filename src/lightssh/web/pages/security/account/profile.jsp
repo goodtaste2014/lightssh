@@ -45,9 +45,9 @@
 			//$( popup ).html( '<div><img id=\'loading\' src=\'<%= request.getContextPath() %>/images/loading.gif\'/>' );
 			$( popup ).dialog({
 				resizable: true,modal: true,height:500,width: 700,
-				close: function(event, ui) {$(this).dialog('destroy').html(''); },				
+				close: function(event, ui) {$(this).dialog('destroy'); },				
 				buttons: {				
-					"关闭": function() {$(this).dialog('destroy').html('');}
+					"关闭": function() {$(this).dialog('destroy');}
 				}
 			});
 			
@@ -64,6 +64,62 @@
 			$("#party_clazz").val( party.clazz );
 			$("#party_popup").dialog('destroy').html('');
 			$("label[for='party_id']").remove(); //移除样式
+		}
+
+		/**
+		 * 选择角色
+		 */		
+		function popupRole(){
+			var popup = $("#role_popup");
+			$(popup).dialog({
+				resizable: true,
+				height:400,
+				width: 700,
+				modal: true,
+				close: function(event, ui) { $(this).dialog('destroy'); },				
+				buttons: {					
+					"关闭": function() {
+						$(this).dialog('destroy');
+					}
+					,"选择": selectRoles
+				}
+			});
+			
+			var req_url = '<s:url value="/security/role/popup.do"/>';
+			$.post(req_url,{'page.size':'1024','role.status':'EFFECTIVE'}
+				,function(json){showRoleList( $(popup),json.page.list )});
+
+			/**
+			 * 显示角色列表
+			 */
+			function showRoleList( popup,list ){
+				$(popup).html('');
+				var table = $("<table class='list'><tr><th></th><th>名称</th><th>描述</th></tr></table>");
+				$(popup).append(table)
+				$.each( list , function( index,role ){
+					var item = "<td><input type='checkbox' value='"+role.id+"' rolename='"+role.name+"'/></td>"
+					item += "<td>"+role.name+"</td>";
+					item += "<td>" + (role.description==null?'':role.description) + "</td>";
+					$(table).append( "<tr>"+ item + "</tr>"  );
+				});
+				
+				$("#loading").fadeOut();
+			}
+			
+			/**
+			 * 选择角色
+			 */
+			function selectRoles( ){
+				$("#selected_roles").html('');
+				$("input[name='account.roles']").remove();
+				$.each( $("input:checked"), function( index, checkbox ){
+					var rolename = $(checkbox).attr('rolename');
+					$("#selected_roles").append( (index==0?'':' , ')+ rolename );
+					$("#selected_roles").append("<input type='hidden' name='account.roles' value='"+$(checkbox).attr('value')+"'/>" );
+				});
+				$(this).dialog('destroy');
+				$("input[type=submit]").removeAttr("disabled");
+			}
 		}
 	</script>
 </head>
@@ -108,12 +164,6 @@
 					</td>
 				</tr>
 				<tr>
-					<th><label for="account_enabled">是否可用</label></th>
-					<td>
-						<s:select id="account_enabled" name="account.enabled" list="#{true:'是',false:'否'}"/>
-					</td>
-				</tr>
-				<tr>
 					<th><label for="account_start_date">有效期</label></th>
 					<td>
 						<s:textfield name="account.period.start" id="account_start_date" size="10" /> -
@@ -123,6 +173,19 @@
 				<tr>
 					<th><label for="email">电子邮箱</label></th>
 					<td><s:textfield id="email" name="account.email" size="40"/></td>
+				</tr>
+				<tr>
+					<th><label for="role">权限</label></th>
+					<td>
+						<span class="popup" onclick="popupRole();">&nbsp;</span>
+						
+						<span id="selected_roles">
+							<s:iterator value="account.roles" status="loop">
+								<s:hidden name="account.roles" value="%{id}"/>
+								<s:property value="#loop.first?'':' , '"/><s:property value="name"/>
+							</s:iterator>
+						</span>
+					</td>
 				</tr>
 				<tr>
 					<th><label for="desc">描述</label></th>
@@ -142,4 +205,5 @@
 	</s:form>
 
 	<div id="party_popup" title="会员" style="display: none;">&nbsp;</div>
+	<div id="role_popup" title="角色列表" style="display: none;">&nbsp;</div>
 </body>

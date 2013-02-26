@@ -41,56 +41,64 @@
 						<td><s:textfield id="name" name="account.loginName" value="%{cachedParams['account.loginName']}" size="30" maxlength="100"/></td>
 						<th><label for="name">状态</label></th>
 						<td>
-							<s:select name="account.enabled" value="account.getEnabled()" 
-								list="#{'true':'是','false':'否'}" headerKey="" headerValue=""/>
+							<s:select name="account.status" value="account.status.name()"
+								list="@com.google.code.lightssh.project.util.constant.AuditStatus@values()"
+								listKey="name()" listValue="getValue()" headerKey="" headerValue=""/>
+							<input type="submit" class="action search right" value="查询"/>
 						</td>
-						<td colspan="2"><input type="submit" class="action search right" value="查询"/></td>
 					</tr>
 				</tbody>
 			</table>
 		</s:form>
 		
 		<mys:table cssClass="list" value="page" status="loop">
-			<mys:column title="序号" width="50px">
+			<mys:column title="序号" width="30px">
 				<s:property value="#loop.index + 1"/>
 			</mys:column>
 			<mys:column title="登录账号" value="loginName" sortable="true" width="150px"/>
-			<mys:column title="会员" value="party.name" sortable="false" width="150px"/>
-			<mys:column title="有效" sortable="true" width="50px" sortKey="enabled">
-				<s:property value="%{enabled?'是':'否'}"/>
+			<mys:column title="所属关系" sortKey="partyId" sortable="true" width="150px">
+				<s:property value="@com.google.code.lightssh.project.party.service.PartyHelper@getParty(partyId).name"/>
 			</mys:column>
-			<mys:column title="创建日期" value="createDate" sortable="true" width="90px"/>
 			<mys:column title="有效期(起)" value="period.start" sortable="true" width="90px" />
 			<mys:column title="有效期(止)" value="period.end" sortable="true" width="90px"/>
+			<mys:column title="状态" value="status" sortable="true" width="50px"/>
 			<mys:column title="角色" width="200px">
-				<s:iterator value="roles">
-					<s:property value="%{name}"/>
+				<s:iterator value="roles" status="loop">
+					<font style="color:<s:property value="effective?'green':''"/>;">
+						<s:property value="#loop.first?'':' , '"/><s:property value="%{name}"/>
+					</font>
 				</s:iterator>
 			</mys:column>
 			<mys:column title="描述" value="description"/>
+			<mys:column title="创建日期" value="createDate" sortable="true" width="90px"/>
 			<mys:column title="操作" width="40px" cssClass="action">
 				<span>&nbsp;</span>
 				<div class="popup-menu-layer">
 					<ul class="dropdown-menu">
-						<li>
+						<li class="view">
+							<a href="<s:url value="view.do?account.id=%{id}"/>">帐号详情</a>
+						</li>
+						
+						<li class="section"/>
+						<li class="edit">
 							<a href="<s:url value="/security/account/edit.do?account.id=%{id}"/>">编辑帐号</a>
 						</li>
 						
 						<s:if test="loginName != @com.google.code.lightssh.project.security.service.LoginAccountManagerImpl@ROOT_LOGIN_NAME">
-						<li>
-							<a href="#" onclick="javascript:doRemove('<s:property value="%{id}"/>','<s:property value="%{loginName}"/>')">删除帐号</a>
-						</li>
+							<s:if test="removed">
+								<li class="disabled">
+									<a href="#">删除帐号</a>
+								</li>
+							</s:if>
+							<s:else>
+								<li class="remove">
+									<a href="#" onclick="javascript:doRemove('<s:property value="%{id}"/>','<s:property value="%{loginName}"/>')">删除帐号</a>
+								</li>
+							</s:else>
 						</s:if>
 						
 						<li class="section"></li>
-						
-						<li>
-							<a href="<s:url value="/security/account/view.do?account.loginName=%{loginName}"/>">帐号详情</a>
-						</li>
-						
-						<li class="section"></li>
-						
-						<li>
+						<li class="password">
 							<a href="<s:url value="/security/account/prereset.do?account.loginName=%{loginName}"/>">重设密码</a>
 						</li>
 						
@@ -98,15 +106,10 @@
 							<a href="#">禁用帐号</a>
 						</li>
 						
-						<li>
+						<li class="unlock">
 							<a href="<s:url value="releaselock.do?account.id=%{id}"/>">释放登录锁</a>
 						</li>
 						
-						<li class="section"></li>
-						
-						<li>
-							<a href="<s:url value="/security/account/edit.do?account.id=%{id}&role=update"/>">设置权限</a>
-						</li>
 					</ul>
 				</div>
 			</mys:column>

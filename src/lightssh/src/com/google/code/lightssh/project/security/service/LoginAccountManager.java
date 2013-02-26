@@ -36,14 +36,14 @@ public interface LoginAccountManager extends BaseManager<LoginAccount>{
 	public LoginAccount getWithParty( String name );
 	
 	/**
-	 * 带日志的删除
-	 */
-	public void save( LoginAccount account ,Access access );
-	
-	/**
 	 * 初始化系统管理员登录账号
 	 */
 	public void initLoginAccount( );
+	
+	/**
+	 * 保存登录帐号
+	 */
+	public void save( LoginAccount account,LoginAccount operator );
 	
 	/**
 	 * 更新密码
@@ -58,15 +58,6 @@ public interface LoginAccountManager extends BaseManager<LoginAccount>{
 	public void resetPassword( String name,String newPassword );
 	
 	/**
-	 * 更新角色
-	 */
-	public void updateRole( LoginAccount account );
-	/**
-	 * 更新角色 并添加日志
-	 */
-	public void updateRole( LoginAccount account, Access log );
-
-	/**
 	 * 查询交易所管理员
 	 */
 	public List<LoginAccount> listAdmin( );
@@ -79,11 +70,6 @@ public interface LoginAccountManager extends BaseManager<LoginAccount>{
 	 * 查询 拥有某个权限的 登录账户
 	 */
 	public List<LoginAccount> listByPermission(String permission );
-	
-	/**
-	 * 带日志的删除
-	 */
-	public void remove(LoginAccount t,Access log);
 	
 	/**
 	 * 启用或禁用CA登录
@@ -103,4 +89,10 @@ public interface LoginAccountManager extends BaseManager<LoginAccount>{
 	 * 解除登录失败锁定时间
 	 */
 	public void releaseLockTime( LoginAccount la );
+	
+	/**
+	 * 删除登录帐号
+	 */
+	public void remove(LoginAccount account,LoginAccount operator,String remark);
+
 }

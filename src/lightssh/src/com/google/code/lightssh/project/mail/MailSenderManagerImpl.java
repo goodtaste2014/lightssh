@@ -11,6 +11,7 @@ import com.google.code.lightssh.common.mail.MailAddress;
 import com.google.code.lightssh.common.mail.MailContent;
 import com.google.code.lightssh.common.mail.sender.MailSender;
 import com.google.code.lightssh.common.model.ConnectionConfig;
+import com.google.code.lightssh.project.param.service.SystemParamManager;
 import com.google.code.lightssh.project.security.entity.LoginAccount;
 
 /**
@@ -26,30 +27,44 @@ public class MailSenderManagerImpl implements MailSenderManager{
 	@Resource(name="systemConfig")
 	private SystemConfig systemConfig;
 	
-
+	/** 
+	 * 系统参数 
+	 */
+	@Resource(name="systemParamManager")
+	private SystemParamManager systemParamManager;
+	
 	@Resource(name="mailSender")
 	private MailSender mailSender;
 	
 	protected ConnectionConfig getEmailConnectionConfig( ){
+		ConnectionConfig config = null;
+		
+		if( systemParamManager != null ){
+			config = systemParamManager.getEmailConnectionConfig();
+		}
+		
 		if( systemConfig == null )
-			return null;
+			return config;
 		
-		ConnectionConfig config = new ConnectionConfig();
+		if( config == null ){
+			config = new ConnectionConfig();
+			
+			config.setHost( this.systemConfig.getProperty( 
+					MailConfigConstants.EMAIL_HOST_KEY ) );
+			
+			config.setPort( this.systemConfig.getProperty( 
+					MailConfigConstants.EMAIL_PORT_KEY ) );
+			
+			config.setUsername( this.systemConfig.getProperty( 
+					MailConfigConstants.EMAIL_USERNAME_KEY ) );
+			
+			config.setPassword( this.systemConfig.getProperty( 
+					MailConfigConstants.EMAIL_PASSWORD_KEY ) );
+			
+			config.setSsl( "true".equalsIgnoreCase(systemConfig.getProperty( 
+					MailConfigConstants.EMAIL_SSL_KEY ) ));
+		}
 		
-		config.setHost( this.systemConfig.getProperty( 
-				MailConfigConstants.EMAIL_HOST_KEY ) );
-		
-		config.setPort( this.systemConfig.getProperty( 
-				MailConfigConstants.EMAIL_PORT_KEY ) );
-		
-		config.setUsername( this.systemConfig.getProperty( 
-				MailConfigConstants.EMAIL_USERNAME_KEY ) );
-		
-		config.setPassword( this.systemConfig.getProperty( 
-				MailConfigConstants.EMAIL_PASSWORD_KEY ) );
-		
-		config.setSsl( "true".equalsIgnoreCase(systemConfig.getProperty( 
-				MailConfigConstants.EMAIL_SSL_KEY ) ));
 		return config;
 	}
 

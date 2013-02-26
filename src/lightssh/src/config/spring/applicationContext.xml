@@ -31,8 +31,7 @@
 	<!-- Transaction -->
     <aop:config>
         <aop:advisor id="managerTx" advice-ref="txAdvice" pointcut="execution(* com.google.code.lightssh..*.*Manager.*(..))"/>    	
-        <aop:advisor id="managerTx2" advice-ref="txAdvice" pointcut="execution(* com.ylink.ylpay.project.mp..*.*Manager.*(..))"/>   
-        
+
         <aop:aspect id="LogAspect" ref="systemLogAspect">
         	<aop:pointcut id="businessService" expression="(execution(* com..*.BaseManager+.save(com.google.code.lightssh.common.entity.Persistence+))) OR (execution(* com..*.BaseManager+.remove(..))) "/>
         	<aop:after pointcut-ref="businessService" method="doAfter"/>
@@ -50,6 +49,7 @@
 			
             <tx:method name="*"/>
             <tx:method name="writeSystemLog" propagation="REQUIRES_NEW"/>
+            <tx:method name="newTransaction*" propagation="REQUIRES_NEW"/>
         </tx:attributes>
     </tx:advice>
     
@@ -97,6 +97,19 @@
 		<property name="charset" value="UTF-8"/>
 	</bean>
 	
+	<!-- thread pool -->
+	<bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="10" />
+		<property name="maxPoolSize" value="30" />
+		<property name="queueCapacity" value="70" />
+	</bean>
+	
+	<!-- secondary thread pool -->
+	<bean id="secondaryTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="5" />
+		<property name="maxPoolSize" value="20" />
+		<property name="queueCapacity" value="40" />
+	</bean>
 	<!-- WEBLOGIC NOT ALLOWED -->
 	<!--  
 	<import resource="applicationContext-no-annotation.xml"/>

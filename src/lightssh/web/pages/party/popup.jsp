@@ -28,7 +28,7 @@
 				<tr>
 					<th><label for="name">名称</label></th>
 					<td><s:textfield id="popup_party_name" name="party.name" size="40" maxlength="100"/></td>
-					<td colspan="2"><input type="submit" value="查询"/></td>
+					<td colspan="2"><input type="submit" class="action search" value="查询"/></td>
 				</tr>
 			</tbody>
 		</table>

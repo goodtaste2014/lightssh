@@ -4,6 +4,18 @@ DELETE FROM T_REF_ROLE_PERMISSION;
 DELETE FROM T_SECURITY_PERMISSION;
 
 --插入权限
+Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('系统管理','SYS_MGR','');
+
+Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('企业资料','ORG_MGR','');
+Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('企业资料查看','SETTINGS_ORGANIZATION_VIEWPARENT','/settings/organization/viewparent.do*');
+Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('企业资料设置','SETTINGS_ORGANIZATION_INITPARENT','/settings/organization/initparent.do*');
+
+Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('部门机构管理','PARTY_MGR','');
+Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('新建部门机构','PARTY_ORGANIZATION_EDIT','/party/organization/edit.do*');
+Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('部门机构删除','PARTY_ORGANIZATION_REMOVE','/party/organization/remove.do*');
+Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('部门机构查询','PARTY_ORGANIZATION_LIST','/party/organization/list.do*');
+
+Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('登录账号','LOGIN_ACCOUNT_MGR','');
 Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('编辑登录账户','SECURITY_ACCOUNT_EDIT','/security/account/edit.do*');
 Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('保存登录账户','SECURITY_ACCOUNT_SAVE','/security/account/save.do*');
 Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('搜索登录账户','SECURITY_ACCOUNT_LIST','/security/account/list.do*');

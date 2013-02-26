@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.google.code.lightssh.common.model.CronExpression;
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.web.action.BaseAction;
 import com.google.code.lightssh.project.scheduler.entity.TriggerWrap;
@@ -97,6 +98,36 @@ public class SchedulerAction extends BaseAction{
 			schedulerManager.refresh(name,group);
 		}catch( Exception e ){
 			this.saveErrorMessage("刷新定时任务["+name+","+group+"]异常：" + e.getMessage() );
+		}
+		return SUCCESS;
+	}
+	
+	/**
+	 * 编辑触发器
+	 */
+	public String editTrigger(){
+		try{
+			request.setAttribute("trigger", schedulerManager.get(group, name) );
+		}catch( Exception e ){
+			this.saveErrorMessage("获取时钟异常："+e.getMessage());
+			return INPUT;
+		}
+		return SUCCESS;
+	}
+	
+	/**
+	 * 更新触发器
+	 */
+	public String saveTrigger(){
+		String hour = request.getParameter("hour");
+		String minute = request.getParameter("minute");
+		try{
+			CronExpression exp = new CronExpression("0",minute,hour,"?","*","*");
+			schedulerManager.updateCronExp(name,group,exp);
+			this.saveSuccessMessage("更新时钟成功！");
+		}catch( Exception e ){
+			this.addActionError("更新时钟异常："+e.getMessage());
+			return INPUT;
 		}
 		return SUCCESS;
 	}

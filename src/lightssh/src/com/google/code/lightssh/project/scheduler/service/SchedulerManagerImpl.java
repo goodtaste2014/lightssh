@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.code.lightssh.common.ApplicationException;
+import com.google.code.lightssh.common.model.CronExpression;
 import com.google.code.lightssh.common.util.StringUtil;
 import com.google.code.lightssh.project.scheduler.entity.JobInterval;
 import com.google.code.lightssh.project.scheduler.entity.TriggerWrap;
@@ -41,6 +42,54 @@ public class SchedulerManagerImpl implements SchedulerManager{
 	public void setQuartzScheduler(
 			StdScheduler scheduler) {
 		this.scheduler = scheduler;
+	}
+	
+	
+	/**
+	 * 获取触发器
+	 */
+	public TriggerWrap get(String group,String name){
+		TriggerWrap wrap = null;
+		try {
+			Trigger trigger = scheduler.getTrigger( TriggerKey.triggerKey(name, group) );
+			wrap = new TriggerWrap( trigger );
+			wrap.setState(getTriggerState(trigger.getKey()));
+		} catch (SchedulerException e) {
+			return null;
+		}
+		
+		return wrap;
+	}
+	
+	/**
+	 * 更新时钟
+	 */
+	public void updateCronExp( String name,String group,CronExpression cronExp ){
+		Trigger trigger = null;
+		try{
+			trigger = scheduler.getTrigger( TriggerKey.triggerKey(name, group) );
+		}catch(Exception e ){
+			throw new ApplicationException(e);
+		}
+		if( trigger == null )
+			throw new ApplicationException("时钟["+group+"]["+name+"]不存在！");
+		
+		boolean enabled = !TriggerState.PAUSED.equals(getTriggerState(trigger.getKey()));
+		JobInterval jobInterval = jobIntervalManager.get( name );
+		boolean insert = false;
+		if( jobInterval == null ){
+			jobInterval = new JobInterval();
+			jobInterval.setTriggerName(name);
+			insert = true;
+		}
+		jobInterval.setCronExpression(cronExp.toString());
+		jobInterval.setEnabled(enabled);
+		if( insert )
+			this.jobIntervalManager.create(jobInterval);
+		else
+			this.jobIntervalManager.update(jobInterval);
+		
+		freshTrigger(trigger,enabled,cronExp.toString());
 	}
 	
 	/**

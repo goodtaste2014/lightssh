@@ -16,16 +16,23 @@ import org.springframework.stereotype.Component;
 
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.util.CryptographyUtil;
+import com.google.code.lightssh.common.util.IoSerialUtil;
 import com.google.code.lightssh.common.util.StringUtil;
 import com.google.code.lightssh.common.web.SessionKey;
 import com.google.code.lightssh.project.mail.MailSenderManager;
+import com.google.code.lightssh.project.party.service.PartyManager;
 import com.google.code.lightssh.project.security.entity.LoginAccount;
-import com.google.code.lightssh.project.security.entity.Role;
+import com.google.code.lightssh.project.security.entity.LoginAccountAudit;
+import com.google.code.lightssh.project.security.entity.LoginAccountChange;
+import com.google.code.lightssh.project.security.service.LoginAccountAuditManager;
+import com.google.code.lightssh.project.security.service.LoginAccountChangeManager;
 import com.google.code.lightssh.project.security.service.LoginAccountManager;
+import com.google.code.lightssh.project.util.constant.AuditResult;
 import com.google.code.lightssh.project.web.action.GenericAction;
 
 /**
- * LoginAccount Action 
+ * LoginAccount Action
+ * 
  * @author YangXiaojin
  *
  */
@@ -37,36 +44,51 @@ public class LoginAccountAction extends GenericAction<LoginAccount>{
 
 	private static Logger log = LoggerFactory.getLogger(LoginAccountAction.class);
 	
-	@Resource(name="mailSenderManager")
+	@Resource( name = "partyManager" )
+	private PartyManager partyManager;
+
+	@Resource( name = "mailSenderManager" )
 	private MailSenderManager mailSenderManager;
 	
+	@Resource( name = "loginAccountChangeManager" )
+	private LoginAccountChangeManager loginAccountChangeManager;
+	
+	@Resource( name = "loginAccountAuditManager" )
+	private LoginAccountAuditManager loginAccountAuditManager;
+
 	private LoginAccount account;
 	
+	private LoginAccountChange accountChange;
+	
+	private LoginAccountAudit accountAudit;
+	
 	private List<String> passwords = new ArrayList<String>();
-	
-	private String ids;
-	
+
 	private boolean passed;
+	
+	private ListPage<LoginAccountChange> lacPage;
+	
+	private ListPage<LoginAccountAudit> laaPage;
 
 	/**
-	 * 安全值 
+	 * 安全值
 	 */
 	private String safeMessage;
-	
-	@Resource( name="loginAccountManager" )
-	public void setLoginAccountManager( LoginAccountManager manager ){
+
+	@Resource( name = "loginAccountManager" )
+	public void setLoginAccountManager( LoginAccountManager manager ) {
 		super.manager = manager;
 	}
-	
-	public LoginAccountManager getManager( ){
-		return (LoginAccountManager)super.manager;
+
+	public LoginAccountManager getManager() {
+		return ( LoginAccountManager ) super.manager;
 	}
 
 	public List<String> getPasswords() {
 		return passwords;
 	}
 
-	public void setPasswords(List<String> passwords) {
+	public void setPasswords( List<String> passwords ) {
 		this.passwords = passwords;
 	}
 
@@ -75,24 +97,16 @@ public class LoginAccountAction extends GenericAction<LoginAccount>{
 		return account;
 	}
 
-	public void setAccount(LoginAccount account) {
+	public void setAccount( LoginAccount account ) {
 		this.account = account;
 		super.model = this.account;
-	}
-	
-	public String getIds() {
-		return ids;
-	}
-
-	public void setIds(String ids) {
-		this.ids = ids;
 	}
 
 	public String getSafeMessage() {
 		return safeMessage;
 	}
 
-	public void setSafeMessage(String safeMessage) {
+	public void setSafeMessage( String safeMessage ) {
 		this.safeMessage = safeMessage;
 	}
 
@@ -105,6 +119,38 @@ public class LoginAccountAction extends GenericAction<LoginAccount>{
 		this.passed = passed;
 	}
 
+	public ListPage<LoginAccountChange> getLacPage() {
+		return lacPage;
+	}
+
+	public void setLacPage(ListPage<LoginAccountChange> lacPage) {
+		this.lacPage = lacPage;
+	}
+
+	public LoginAccountChange getAccountChange() {
+		return accountChange;
+	}
+
+	public void setAccountChange(LoginAccountChange accountChange) {
+		this.accountChange = accountChange;
+	}
+
+	public LoginAccountAudit getAccountAudit() {
+		return accountAudit;
+	}
+
+	public void setAccountAudit(LoginAccountAudit accountAudit) {
+		this.accountAudit = accountAudit;
+	}
+
+	public ListPage<LoginAccountAudit> getLaaPage() {
+		return laaPage;
+	}
+
+	public void setLaaPage(ListPage<LoginAccountAudit> laaPage) {
+		this.laaPage = laaPage;
+	}
+
 	public String list() {
 		if ( page == null )
 			page = new ListPage<LoginAccount>();
@@ -112,24 +158,24 @@ public class LoginAccountAction extends GenericAction<LoginAccount>{
 
 		if ( this.isPost() )
 			cacheRequestParams();
-		return super.list();
+		
+		page = manager.list( page , account );
+		
+		return SUCCESS;
 	}
-	
-	public String edit( ){
-		if( request.getParameter("password") != null )
-    		return "password";
-		else if( request.getParameter("role") != null 
-				&& account != null && account.getId() != null ){
-			setAccount( this.getManager().get(account) );
-			if( account == null ){
-				saveErrorMessage("添加角色异常，系统找不到相关账号！");
-				return ERROR;
+
+	public String edit() {
+		if ( request.getParameter( "password" ) != null )
+			return "password";
+
+		if( account != null && account.getId() != null ){
+			setAccount(this.getManager().get(account));
+			if( account != null && !StringUtils.isEmpty(account.getPartyId()) ){
+				account.setParty(partyManager.get( account.getPartyId() ));
 			}
-			
-			return "role";
 		}
 		
-		return super.edit();
+		return SUCCESS;
 	}
 	
 	/**
@@ -150,33 +196,128 @@ public class LoginAccountAction extends GenericAction<LoginAccount>{
 		
 		return SUCCESS;
 	}
-	
-	public String save( ){
-		if( this.account != null && this.account.getPeriod() != null 
-				&& this.account.getPeriod().getEnd() != null ){
-			//结束时间 yyyy-MM-dd 23:59:59
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTime( account.getPeriod().getEnd() );
-			calendar.add(Calendar.DAY_OF_MONTH, 1);
-			calendar.add(Calendar.MILLISECOND, -1);
-			this.account.getPeriod().setEnd( calendar.getTime() );
+
+	public String save() {
+		if( account == null ){
+			this.addActionError("参数错误！");
+			return INPUT;
 		}
 		
-		if( account != null && account.getParty() != null 
-				&& StringUtils.isEmpty(account.getParty().getId())){
-			account.setParty(null);
-		}else{
-			account.setPartyId( account.getParty().getId() );
+		if ( account.getPeriod() != null ) {
+			if( account.getPeriod().getEnd() != null ){
+				// 结束时间 yyyy-MM-dd 23:59:59
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime( account.getPeriod().getEnd() );
+				calendar.add( Calendar.DAY_OF_MONTH, 1 );
+				calendar.add( Calendar.MILLISECOND, -1 );
+				account.getPeriod().setEnd( calendar.getTime() );
+			}
+			
+			if( account.getPeriod().getStart() == null 
+					&& account.getPeriod().getEnd() == null )
+				account.setPeriod(null);
 		}
+
+		if ( account.getParty() != null )
+			account.setPartyId( account.getParty().getId() );
+		
 		try{
-			this.getManager().save(account);
+			this.getManager().save(account,getLoginAccount());
 		}catch( Exception e ){
+			addActionError("保存异常："+e.getMessage());
 			return INPUT;
 		}
 		
 		return SUCCESS;
 	}
 	
+    public String delete( ){
+        if( account == null || account.getIdentity() == null ){
+        	this.saveErrorMessage("参数错误！");
+            return INPUT;
+        }
+       
+        try{
+        	this.getManager().remove( account,getLoginAccount(),null );
+        	saveSuccessMessage( "删除操作已受理，审核通过后生效！" );
+        }catch( Exception e ){ 
+            saveErrorMessage( "删除发生异常：" + e.getMessage() );
+            return INPUT;
+        } 
+       
+        return SUCCESS;
+    }
+	
+	/**
+	 * 待审核列表
+	 */
+	public String todoAuditList(){
+		if(lacPage == null )
+			lacPage = new ListPage<LoginAccountChange>();
+		
+		lacPage.addDescending("createdTime");
+		lacPage = loginAccountChangeManager.listTodoAudit(lacPage,accountChange);
+		return SUCCESS;
+	}
+	
+	/**
+	 * 待审核
+	 */
+	public String todoAudit(){
+		this.accountChange = loginAccountChangeManager.get(accountChange);
+		if( accountChange == null ){
+			this.saveErrorMessage("参数错误，无法查找到变更信息！");
+			return INPUT;
+		}
+		this.setAccount(accountChange.getLoginAccount());
+		
+		byte[] originalObject = accountChange.getOriginalObject();
+		if( originalObject != null )
+			request.setAttribute("originalObject", IoSerialUtil.deserialize(originalObject));
+		byte[] newObject = accountChange.getNewObject();
+		if( newObject != null )
+			request.setAttribute("newObject", IoSerialUtil.deserialize(newObject));
+		
+		return this.edit();
+	}
+	
+	/**
+	 * 审核
+	 */
+	public String audit(){
+		if( accountAudit == null || accountAudit == null ){
+			this.saveErrorMessage("审核参数为空！");
+			return ERROR;
+		}
+		
+		accountAudit.setLoginAccountChange(accountChange);//关联角色变更
+		
+		accountAudit.setUser(this.getLoginAccount());
+		boolean passed = request.getParameter("passed")!=null;
+		accountAudit.setResult(passed?AuditResult.LAST_AUDIT_PASSED:AuditResult.LAST_AUDIT_REJECT);
+		
+		try{
+			this.loginAccountAuditManager.audit(accountAudit,accountChange);
+		}catch(Exception e ){
+			this.saveErrorMessage("审核操作异常："+e.getMessage());
+			return INPUT;
+		}
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * 审核结果
+	 */
+	public String auditList( ){
+		if( laaPage == null )
+			laaPage = new ListPage<LoginAccountAudit>();
+		
+		laaPage.addDescending("createdTime");
+		loginAccountAuditManager.list(laaPage,accountAudit);
+		return SUCCESS;
+	}
+
 	/**
 	 * update password
 	 */
@@ -199,32 +340,7 @@ public class LoginAccountAction extends GenericAction<LoginAccount>{
 		
 		return INPUT;
 	}
-	
-	/**
-	 * 修改用户角色
-	 * @return
-	 */
-	public String role( ){
-		if( account != null && account.getId() != null ){
-			if( ids != null ){
-				for( String id:ids.split(",") ){
-					Role role = new Role();
-					role.setId( id );
-					account.addRole( role );
-				}//end for
-			}
-			
-			try{
-				getManager().updateRole(account);
-				saveSuccessMessage("成功更改用户角色！");
-			}catch( Exception e ){
-				saveErrorMessage( "更新角色异常：" + e.getMessage() );
-			}
-		}
-		
-		return SUCCESS;
-	}
-	
+
 	/**
 	 * 查询当前登录帐号信息
 	 */
@@ -441,7 +557,7 @@ public class LoginAccountAction extends GenericAction<LoginAccount>{
 			
 			if( account != null ){
 				//send username to email address
-				mailSenderManager.forgotUsername(account.getUsername(),email);
+				mailSenderManager.forgotUsername(account.getLoginName(),email);
 			}
 		}catch( Exception e ){
 			log.warn("找回用户名过程出现异常：",e);
@@ -466,6 +582,7 @@ public class LoginAccountAction extends GenericAction<LoginAccount>{
 		
 		return SUCCESS;
 	}
+	
 	/**
 	 * 校验当前登录用户密码
 	 */
