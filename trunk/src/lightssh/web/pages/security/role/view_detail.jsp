@@ -22,37 +22,32 @@
 				<li>
 					<s:set name="roles_perm_set" value="role.permissions.{token}"/>
 					<s:set name="inRole" value="%{(#roles_perm_set.size>0)?true:false}"/>
-					<%-- 
-					<input type="checkbox" value="null" id="null" parent="empty" onclick="selectResource(this);" <s:property value="%{#inRole?\"checked\":\"\"}"/>/>
-					--%>
 					<span class="<s:property value="%{#inRole?\"has\":\"none\"}"/>">系统权限</span>
 					<ul>
 					<s:set name="sortedList" value="@com.google.code.lightssh.project.security.entity.Navigation@sort(navigation)"/>
 					<s:iterator value="#sortedList" status="loop" >
 						<li>
 							<s:set name="inRole" value="%{(permission.token in #roles_perm_set)?true:false}"/>
-							<%-- 
-							<input type="checkbox" value="<s:property value="%{id}"/>" id="<s:property value="%{id}"/>" parent="null" onclick="selectResource(this);" <s:property value="%{#inRole?\"checked\":\"\"}"/>/>
-							--%>
 							<span class="<s:property value="%{#inRole?\"has\":\"none\"}"/>"><s:property value="%{name}"/></span>
 							<s:iterator value="@com.google.code.lightssh.project.security.entity.Navigation@sort(children)" status="loop2">
 								<s:if test="#loop2.first"><ul></s:if>
 								<li>
 									<s:set name="inRole" value="%{(permission.token in #roles_perm_set)?true:false}"/>
-									<%-- 
-									<input type="checkbox" value="<s:property value="%{id}"/>" id="<s:property value="%{id}"/>" 
-										parent="<s:property value="%{parent.id}"/>" onclick="selectResource(this);" <s:property value="%{#inRole?\"checked\":\"\"}"/>/>
-									--%>
 									<span class="<s:property value="%{#inRole?\"has\":\"none\"}"/>"><s:property value="%{name}"/></span>
 									<s:iterator value="@com.google.code.lightssh.project.security.entity.Navigation@sort(children)" status="loop3">
 										<s:if test="#loop3.first"><ul></s:if>
 										<li>
 											<s:set name="inRole" value="%{(permission.token in #roles_perm_set)?true:false}"/>
-											<%-- 
-											<input type="checkbox" value="<s:property value="%{id}"/>" id="<s:property value="%{id}"/>" 
-												parent="<s:property value="%{parent.id}"/>" onclick="selectResource(this);" <s:property value="%{#inRole?\"checked\":\"\"}"/>/>
-											--%>
 											<span class="<s:property value="%{#inRole?\"has\":\"none\"}"/>"><s:property value="%{name}"/></span>
+										
+											<s:iterator value="@com.google.code.lightssh.project.security.entity.Navigation@sort(children)" status="loop4">
+												<s:if test="#loop4.first"><ul></s:if>
+												<li>
+													<s:set name="inRole" value="%{(permission.token in #roles_perm_set)?true:false}"/>
+													<span class="<s:property value="%{#inRole?\"has\":\"none\"}"/>"><s:property value="%{name}"/></span>
+												</li>
+												<s:if test="#loop4.last"></ul></s:if>
+											</s:iterator>
 										</li>
 										<s:if test="#loop3.last"></ul></s:if>
 									</s:iterator>

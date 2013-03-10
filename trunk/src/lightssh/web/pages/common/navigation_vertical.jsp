@@ -66,9 +66,7 @@
 							<li><a href="<s:url value="/security/account/edit.do?password=update"/>" target="main_frame"><s:text name="project.nav.changepassword"/></a></li>
 							--%>
 							<%-- 新增用户--%>
-							<shiro:hasPermission name="SECURITY_ACCOUNT_EDIT">
 							<li><a href="<s:url value="/security/account/edit.do"/>" target="main_frame"><s:text name="project.nav.newaccount"/></a></li>
-							</shiro:hasPermission>
 							<%-- 用户列表--%>
 							<li><a href="<s:url value="/security/account/list.do"/>" target="main_frame"><s:text name="project.nav.listaccount"/></a></li>
 							
@@ -122,8 +120,19 @@
 							<li><a href="<s:url value="/settings/log/list.do"/>" target="main_frame"><s:text name="project.nav.syslog"/></a></li>
 						</ul>
 					</li>
-					<%-- 定时任务 --%>
-					<li><a href="<s:url value="/settings/scheduler/list.do"/>" target="main_frame">定时任务</a></li>
+					
+					<%-- 计划任务 --%>
+					<li>
+						<a href="#">计划任务</a>
+						<ul id="settings_scheduler">
+							<li><a href="<s:url value="/settings/scheduler/list.do"/>" target="main_frame">时钟列表</a></li>
+							<li><a href="<s:url value="/settings/plan/list.do"/>" target="main_frame">批处理计划</a></li>
+						</ul>
+					</li>
+					
+					<%-- 邮件内容 --%>
+					<li><a href="<s:url value="/settings/email/list.do"/>" target="main_frame">邮件内容</a></li>
+							
 					<%-- 计量单位 --%>
 					<li><a href="<s:url value="/settings/uom/list.do"/>" target="main_frame">计量单位</a></li>
 					<%-- 地理区域--%>
