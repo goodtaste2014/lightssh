@@ -1,4 +1,4 @@
-package com.google.code.lightssh.project.mail;
+package com.google.code.lightssh.project.mail.service;
 
 import javax.annotation.Resource;
 
@@ -11,15 +11,24 @@ import com.google.code.lightssh.common.mail.MailAddress;
 import com.google.code.lightssh.common.mail.MailContent;
 import com.google.code.lightssh.common.mail.sender.MailSender;
 import com.google.code.lightssh.common.model.ConnectionConfig;
+import com.google.code.lightssh.common.util.TextFormater;
+import com.google.code.lightssh.project.mail.MailConfigConstants;
+import com.google.code.lightssh.project.mail.entity.EmailContent;
 import com.google.code.lightssh.project.param.service.SystemParamManager;
 import com.google.code.lightssh.project.security.entity.LoginAccount;
 
-/**
- * 邮件发送
- *
+/** 
+ * @author YangXiaojin
+ * @date 2013-1-17
+ * @description：TODO
  */
-@Component("mailSenderManager")
-public class MailSenderManagerImpl implements MailSenderManager{
+@Component("emailSendManager")
+public class EmailSendManagerImpl implements EmailSendManager{
+
+	private static final long serialVersionUID = 5592731164104327648L;
+	
+	@Resource(name="mailSender")
+	private MailSender mailSender;
 	
 	/** 
 	 * 系统参数 
@@ -27,14 +36,11 @@ public class MailSenderManagerImpl implements MailSenderManager{
 	@Resource(name="systemConfig")
 	private SystemConfig systemConfig;
 	
-	/** 
-	 * 系统参数 
-	 */
 	@Resource(name="systemParamManager")
 	private SystemParamManager systemParamManager;
 	
-	@Resource(name="mailSender")
-	private MailSender mailSender;
+	@Resource(name="emailContentManager")
+	private EmailContentManager emailContentManager;
 	
 	protected ConnectionConfig getEmailConnectionConfig( ){
 		ConnectionConfig config = null;
@@ -68,6 +74,38 @@ public class MailSenderManagerImpl implements MailSenderManager{
 		return config;
 	}
 
+	
+	/**
+	 * 发邮件
+	 */
+	public void send(EmailContent ec ){
+		ConnectionConfig config = getEmailConnectionConfig();
+		
+		MailAddress mailAddress = new MailAddress( );
+		mailAddress.setFrom(config.getUsername(),config.getUsername());
+		
+		for( String item:ec.getAddressees())
+			mailAddress.addTo(item, "");
+		
+		if( !StringUtils.isEmpty(ec.getCc()) ){
+			for( String item:ec.getCcs())
+				mailAddress.addCc(item, "");
+		}
+		
+		boolean success = false;
+		try{
+			mailSender.sendHtml(config,mailAddress
+					,new MailContent(ec.getSubject(),ec.getContent()));
+			success = true;
+		}catch( Exception e ){
+			ec.setErrMsg( TextFormater.format(e.getMessage(),197,true) );
+		}
+		
+		ec.setSender( config.getUsername() );
+		
+		emailContentManager.updateStatus(success,ec);
+	}
+	
 	/**
 	 * 忘记用户名
 	 */
@@ -109,4 +147,5 @@ public class MailSenderManagerImpl implements MailSenderManager{
 				,new MailContent("用户帮助-找回登录密码",content.toString()));
 
 	}
+
 }

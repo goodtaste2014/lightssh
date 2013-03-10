@@ -19,7 +19,7 @@ import com.google.code.lightssh.common.util.CryptographyUtil;
 import com.google.code.lightssh.common.util.IoSerialUtil;
 import com.google.code.lightssh.common.util.StringUtil;
 import com.google.code.lightssh.common.web.SessionKey;
-import com.google.code.lightssh.project.mail.MailSenderManager;
+import com.google.code.lightssh.project.mail.service.EmailSendManager;
 import com.google.code.lightssh.project.party.service.PartyManager;
 import com.google.code.lightssh.project.security.entity.AuthorizedTicket;
 import com.google.code.lightssh.project.security.entity.LoginAccount;
@@ -54,8 +54,8 @@ public class LoginAccountAction extends GenericAction<LoginAccount>{
 	@Resource( name = "partyManager" )
 	private PartyManager partyManager;
 
-	@Resource( name = "mailSenderManager" )
-	private MailSenderManager mailSenderManager;
+	@Resource( name = "emailSendManager" )
+	private EmailSendManager emailSendManager;
 	
 	@Resource( name = "loginAccountChangeManager" )
 	private LoginAccountChangeManager loginAccountChangeManager;
@@ -503,7 +503,7 @@ public class LoginAccountAction extends GenericAction<LoginAccount>{
 		url.append("&message=");
 		url.append(CryptographyUtil.hashSha1Hex(account.getEmail()+account.getPassword()));
 		try{
-			mailSenderManager.forgotPassword(url.toString(),account);
+			emailSendManager.forgotPassword(url.toString(),account);
 		}catch( Exception e ){
 			this.addActionError("找回密码异常："+e.getMessage());
 			return INPUT;
@@ -602,7 +602,7 @@ public class LoginAccountAction extends GenericAction<LoginAccount>{
 			
 			if( account != null ){
 				//send username to email address
-				mailSenderManager.forgotUsername(account.getLoginName(),email);
+				emailSendManager.forgotUsername(account.getLoginName(),email);
 			}
 		}catch( Exception e ){
 			log.warn("找回用户名过程出现异常：",e);

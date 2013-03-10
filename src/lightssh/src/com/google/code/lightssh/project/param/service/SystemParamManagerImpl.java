@@ -139,7 +139,7 @@ public class SystemParamManagerImpl extends BaseManagerImpl<SystemParam> impleme
 		List<SystemParam> params = listByGroup( 
 				MailConfigConstants.PARAM_GROUP_EMAIL );
 		
-		if( params == null )
+		if( params == null || params.isEmpty() )
 			return null;
 		
 		Map<String,SystemParam> paramMap = new HashMap<String,SystemParam>();
