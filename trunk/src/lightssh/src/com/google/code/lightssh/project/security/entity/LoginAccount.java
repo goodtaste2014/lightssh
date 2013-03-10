@@ -1,6 +1,8 @@
 package com.google.code.lightssh.project.security.entity;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -232,6 +234,7 @@ public class LoginAccount extends BaseModel implements Cloneable,Loggable{
 		
 		return sb.toString();
 	}
+	
 	/**
 	 * 是否拥有某个角色
 	 */
@@ -244,6 +247,26 @@ public class LoginAccount extends BaseModel implements Cloneable,Loggable{
 			if( role.getName().equals( roleName ) )
 				return true;
 		}
+		
+		return false;
+	}
+	
+	/**
+	 * 是否拥有某个权限
+	 */
+	public boolean hasPermission( String per ){
+		if( per == null || this.getRoles() == null 
+				|| this.getRoles().isEmpty() )
+			return false;
+		
+		Collection<String> allPers = new ArrayList<String>();
+		for( Role role:this.roles ){
+			allPers.addAll(role.getPermissionsAsString());
+		}
+		
+		for( String item:allPers )
+			if( item.equals(per) )
+				return true;
 		
 		return false;
 	}

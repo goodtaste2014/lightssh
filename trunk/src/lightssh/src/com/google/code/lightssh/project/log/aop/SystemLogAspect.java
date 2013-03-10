@@ -36,7 +36,8 @@ public class SystemLogAspect {
 		if( request != null ){
 			LoginAccount user = (LoginAccount)request.getSession()
 			.getAttribute( SessionKey.LOGIN_ACCOUNT );
-			access = new Access( request );
+			access = new Access( );
+			access.init(request);
 			access.setOperator( user.getLoginName() );
 		}
 		

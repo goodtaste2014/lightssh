@@ -67,16 +67,18 @@ public class LoginAccountAuditManagerImpl extends BaseManagerImpl<LoginAccountAu
 			throw new ApplicationException("数据异常，变更登录帐户信息为空！");
 		
 		boolean passed = AuditResult.LAST_AUDIT_PASSED.equals(audit.getResult());
-		if( EntityChange.Type.DELETE.equals(dbChange.getType()) ){//删除
+		if( passed && EntityChange.Type.DELETE.equals(dbChange.getType()) ){//删除
 			dbAcc.setStatus( AuditStatus.DELETE );
-		}else if( AuditStatus.NEW.equals(newAcc.getStatus())){//新建
-			dbAcc.setStatus( passed?AuditStatus.EFFECTIVE:AuditStatus.AUDIT_REJECT  );
 		}else if( passed && AuditStatus.EFFECTIVE.equals(newAcc.getStatus())){
 			dbAcc.setPartyId( newAcc.getPartyId() );
 			dbAcc.setPeriod(newAcc.getPeriod());
 			dbAcc.setEmail( newAcc.getEmail());
 			dbAcc.setRoles( newAcc.getRoles());
 			dbAcc.setDescription( newAcc.getDescription() );
+		}else if( passed ){
+			dbAcc.setStatus( AuditStatus.EFFECTIVE );
+		}else if( !passed && AuditStatus.NEW.equals( newAcc.getStatus() )){
+			dbAcc.setStatus( AuditStatus.AUDIT_REJECT );
 		}
 		
 		loginAccountManager.update(dbAcc);

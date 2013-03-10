@@ -166,7 +166,8 @@ public class RoleManagerImpl extends BaseManagerImpl<Role> implements RoleManage
 		//list all permission
 		ListPage<Permission> page = new ListPage<Permission>(Integer.MAX_VALUE);
 		page = permissionManager.list(page);
-		if( no_role || forceUpdatePermission ){
+		if( (no_role || forceUpdatePermission) && 
+				page.getList() != null && !page.getList().isEmpty() ){
 			role.setPermissions( new HashSet<Permission>( page.getList() ) );
 		}
 		

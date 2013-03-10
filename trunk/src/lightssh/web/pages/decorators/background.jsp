@@ -13,6 +13,7 @@
 		
 		<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/plugins/validate/jquery.validate.js"></script>
 		<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/plugins/validate/i18n/messages_<s:property value="locale"/>.js"></script>
+		<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/plugins/cryptography/jquery.md5.js"></script>
 		
 		<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/my/util.js"></script>
 		<script type="text/javascript">

@@ -69,15 +69,25 @@ jQuery.lightssh={
 	/**
 	 * 显示提示信息
 	 */
-	,showActionError:function( msg ){
-		if($("div.messages").length == 0 ){
-			$('table').before("<div class='messages'></div>")
+	,showActionError: function( msg ) {
+		$.lightssh.showActionMessage(msg,'error');
+	}
+	
+	/**
+	 * 显示提示信息
+	 */
+	,showActionMessage: function( msg,clazz ) {
+		if( $( "div.messages" ).length == 0 ) {
+			$( 'table' ).before( "<div class='messages'></div>" )
 		}
 		
-		if( $('.messages > .error').length == 0 ){
-			$('.messages').append("<div class='error'>"+msg+"</div>") 
-		}else{
-			$('.error').text( msg );
+		if( clazz == null )
+			clazz = 'success';
+		
+		if( $( ".messages > ."+clazz ).length == 0 ) {
+			$( '.messages' ).append( "<div class='"+clazz+"'>" + msg + "</div>" )
+		} else {
+			$( '.error' ).text( msg );
 		}
 	}
 	
@@ -87,69 +97,223 @@ jQuery.lightssh={
 	,checkPassword:function( opts,callback ){
 		var dialog = 'dialog-check-password';
 		var url = '/security/account/validatepassword.do';
-		var title = '登录密码';
-		if(opts != null ){
+		var title = '验证登录密码';
+		var password_label = '登录密码';
+		if( opts != null ) {
 			if( opts.url != null )
 				url = opts.url;
+			else if( opts.contextPath != null )
+				url = opts.contextPath + url;
+				
 			if( opts.title != null )
 				title = opts.title;
 		}
 		
 		var password = '';
 		var options = {
-			title: '验证登录密码',
-			resizable: false,
-			width: 300,
-			height: 160,
-			modal: true,
-			zIndex: 9999,
+			title: title,
+			resizable: false,modal: true,
+			width: 320, height: 180,zIndex: 9999,
 			buttons: {
 				'确定': function() {
-					password = $("#password").val();
-					//$( this ).remove();
-					$.lightssh.callbackCheckPassword(
-							{'dialog':dialog,'result':true,'password':$.md5(password),'url':url},callback );
+					password = $( "#password" ).val();
+					// $( this ).remove();
+					$.lightssh.callbackCheckPassword( {
+						'dialog': dialog,
+						'result': true,
+						'password': $.md5( password ),
+						'url': url
+					}, callback );
 				},
 				'取消': function() {
 					$( this ).remove();
-					$.lightssh.callbackCheckPassword({'result':false});
+					$.lightssh.callbackCheckPassword( {
+						'result': false
+					} );
 				}
 			},
 			close: function() {
 				$( this ).remove();
-				$.lightssh.callbackCheckPassword({'result':false});
+				$.lightssh.callbackCheckPassword( {
+					'result': false
+				} );
 			}
 		};
-		
-		var el = "<div id='"+dialog+"' style='display:none;'>"
-			+"<div class='error'></div><p><label>"+title+"：</label>"
-			+"<input type='password' id='password' size='30'/>"
-			+"</p></div>";
+
+		var el = "<div id='" + dialog + "' style='display:none;'>" 
+			+ "<div id='dialog-check-password-hint' style='height:20px;margin:2px 0 5px 0;'></div>"
+			+ "<p><label>" + password_label + "：</label>" 
+			+ "<input type='password' id='password' size='30'/>" + "</p></div>";
 		$( 'body' ).append( el );
 
-		$( 'div#dialog-check-password' ).dialog( options );
+		$( 'div#'+dialog ).dialog( options );
 	}
 
-	,callbackCheckPassword:function( opts ,callback){
+	/**
+	 * 显示对话框提示信息
+	 */
+	,showDialogMessage: function( id,msg,focus,field ) {
+		var hint = $('#'+id);
+		$(hint).html( msg  );
+		$(hint).addClass('error');
+		$(hint).animate({
+			backgroundColor: "#FCF8E3",
+			color: "#F30"
+		}, 3000 );
+		
+		if( focus != null && field != null && focus )
+			$('#'+field).focus();
+	}
+	
+	,callbackCheckPassword: function( opts, callback ) {
 		var result = false;
-		if( opts.result && opts.url != null ){
-			var param =  {'password':opts.password,'rand':Math.random()};
-			$.post(opts.url,param,function(json){
+		if( opts.result && opts.url != null ) {
+			var param = {
+				'password': opts.password,
+				'rand': Math.random()
+			};
+			$.post( opts.url, param, function( json ) {
 				result = json.passed;
-				if( !result ){
-					$('.error').html('密码错误！');
-					//alert('密码错误！');
-					$('.error').animate({
-	                    backgroundColor: "#FCF8E3",
-	                    color: "#F30"
-	                }, 3000 );
-				}else{
-					$('#'+opts.dialog ).remove();
+				if( !result ) {
+					$.lightssh.showDialogMessage('dialog-check-password-hint','密码不正确！');
+				} else {
+					$( '#' + opts.dialog ).remove();
 				}
 				callback( result );
 			});
 		}
 
 		return result;
+	}
+	
+	/**
+	 * 检查授权
+	 */
+	,checkAuth: function( opts, callback ) {
+		var url = '/security/account/validateauth.do';
+		var authUrl = '/security/account/authresource.do';
+		var forceSubmit = true,checkPassword=true;
+		var noneAuthMsg = '无权限访问该资源！';
+		if( opts != null ) {
+			if( opts.url != null )
+				url = opts.url;
+			else if( opts.contextPath != null )
+				url = opts.contextPath + url;
+			
+			if( opts.authUrl != null )
+				authUrl = opts.authUrl;
+			else if( opts.contextPath != null )
+				authUrl = opts.contextPath + authUrl;
+			
+			if( opts.forceSubmit != null )
+				forceSubmit = opts.forceSubmit;
+			
+			if( opts.checkPassword != null )
+				checkPassword = opts.checkPassword;
+			
+			if( opts.noneAuthMsg != null )
+				noneAuthMsg = opts.noneAuthMsg;
+		}
+		
+		var param = {
+			'targetUrl': opts.targetUrl
+			,'rand': Math.random()
+		};
+		
+		$.post(url, param, function( json ) {
+			//alert( json.authType + '\n'+ json.message )
+			if( 'hasAuth' == json.authType ){
+				if( checkPassword ) //校验密码
+					$.lightssh.checkPassword({'contextPath':opts.contextPath},callback );
+				else
+					callback(true)
+			}else if('genAuth' == json.authType ){ //已经授权
+				$.lightssh.showActionMessage('授权可继续使用！');
+				callback(true,json.ticket); 
+			}else if('noneAuth' == json.authType ){//无权限也提交
+				if( !forceSubmit )
+					$.lightssh.showActionError( noneAuthMsg );
+				callback( forceSubmit ); //无权限也提交
+			}else if('canAuth' == json.authType){
+				$.lightssh.showActionError('需要授权……');
+				$.lightssh.showAuthDialog({
+					'targetUrl': opts.targetUrl
+					,'authUrl': authUrl
+				},callback);
+			}
+		});
+	}
+	
+	/**
+	 * 授权资源对话框
+	 */
+	,showAuthDialog: function( opts, callback ) {
+		var dialog = 'dialog-authorize-resource';
+		var title = '用户授权',username_label='用户名',password_label='密码';
+		
+		var options = {
+				title: title,
+				resizable: false,modal: true,
+				width: 360, height: 220,zIndex: 9999,
+				buttons: {
+					'确定': function() {
+						$.lightssh.authResource({
+							'password': $( "#password" ).val()
+							,'username': $( "#username" ).val()
+							,'authUrl': opts.authUrl
+							,'targetUrl': opts.targetUrl
+							,'dialog': dialog
+						},callback);
+					},
+					'取消': function() {
+						$( this ).remove();
+					}
+				},
+				close: function() {
+					$( this ).remove();
+				}
+			};
+		
+		var el = "<div id='" + dialog + "' style='display:none;'>" 
+			+ "<div id='"+dialog+"-hint' style='height:20px;margin:2px 0 5px 0;'></div>"
+			+ "<label for='username' style='float:left;width:100px'>" + username_label+ "：</label>" 
+			+ "<input type='text' id='username' size='30'/><br/>" 
+			+ "<label for='password' style='float:left;width:100px'>" + password_label+ "：</label>" 
+			+ "<input type='password' id='password' size='30'/><br/>" 
+			+ "</div>";
+		$( 'body' ).append( el );
+	
+		$( 'div#'+dialog ).dialog( options );
+	}
+	
+	/**
+	 * 授权资源
+	 */
+	,authResource: function( opts, callback ) {
+		var hint_id = 'dialog-authorize-resource-hint';//提示DIV
+		if( opts==null || opts.username == null || opts.username == ''){
+			$.lightssh.showDialogMessage(hint_id,'用户名不能为空！',true,'username');
+			return;
+		}else if( opts==null || opts.password == null || opts.password == ''){
+			$.lightssh.showDialogMessage(hint_id,'密码不能为空！',true,'password');
+			return;
+		}
+		
+		var param = {
+				'targetUrl': opts.targetUrl
+				,'username': opts.username
+				,'password': $.md5(opts.password)
+				,'rand': Math.random()
+			};
+		
+		$.post(opts.authUrl, param, function( json ) {
+			//alert( json.passed + '\n' + json.ticket + '\n'+ json.message )
+			if( !json.passed ) {
+				$.lightssh.showDialogMessage(hint_id,json.message);
+			} else {
+				$( '#' + opts.dialog ).remove();
+			}
+			callback( json.passed,json.ticket,json.message );
+		});
 	}
 };

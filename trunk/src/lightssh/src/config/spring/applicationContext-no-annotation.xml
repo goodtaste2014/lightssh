@@ -58,14 +58,6 @@
         <!--<property name="entityManagerFactory" ref="entityManagerFactory"/>-->
 	</bean>
 	
-	<!-- DAO|security permission -->
-	<bean id="permissionDao" class="com.google.code.lightssh.common.dao.jpa.JpaDao">
-		<constructor-arg>
-    		<value>com.google.code.lightssh.project.security.entity.Permission</value>
-    	</constructor-arg>    
-        <!--<property name="entityManagerFactory" ref="entityManagerFactory"/>-->
-	</bean>
-	
 	<!-- DAO|tree node -->
 	<bean id="nodeDao" class="com.google.code.lightssh.common.dao.jpa.JpaDao">
 		<constructor-arg>
@@ -88,11 +80,6 @@
 			<value>com.google.code.lightssh.project.security.entity.LoginFailure</value>
     	</constructor-arg>
         <!--<property name="entityManagerFactory" ref="entityManagerFactory"/>-->
-	</bean>
-	
-	<!-- SERVICE|security permission -->
-	<bean id="permissionManager" class="com.google.code.lightssh.common.service.BaseManagerImpl">
-		<property name="dao" ref="permissionDao" />
 	</bean>
 	
 	<!-- DAO|system param -->

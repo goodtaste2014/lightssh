@@ -10,7 +10,7 @@
 	
 	<!-- shiroFilter 与 web.xml 对应 -->
 	<!--<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">-->
-	<bean id="shiroFilter" class="com.google.code.lightssh.project.security.shiro.MyShiroFilterFactoryBean">
+	<bean id="shiroFilter" class="com.google.code.lightssh.common.support.shiro.MyShiroFilterFactoryBean">
 	    <property name="regexPathMatcher" value="true"/><!-- true表示正则匹配 -->
 	    <property name="securityManager" ref="securityManager"/>
 	    <property name="loginUrl" value="/login.do"/>
@@ -76,9 +76,15 @@
 		<property name="onlineUserCache" ref="onlineUserCache"/>
 	</bean>
 	
-	<bean id="myPermsFilter" class="com.google.code.lightssh.project.security.shiro.MyPermissionsAuthorizationFilter">
+	<!-- 授权服务  -->
+	<bean id="tempAuthService" class="com.google.code.lightssh.project.security.shiro.MyTemporaryAuthorizationService">
+		<property name="authorizedTicketManager" ref="authorizedTicketManager"/>
+	</bean>
+	
+	<bean id="myPermsFilter" class="com.google.code.lightssh.common.support.shiro.MyPermissionsAuthorizationFilter">
 		<!-- true表示使用正则表达式 -->
 		<constructor-arg><value>true</value></constructor-arg>
+		<property name="tempAuthService" ref="tempAuthService"/>
 	</bean>
 
 	<!--  

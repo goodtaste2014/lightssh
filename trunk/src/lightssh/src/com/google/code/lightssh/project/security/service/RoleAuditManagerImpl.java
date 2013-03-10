@@ -66,14 +66,16 @@ public class RoleAuditManagerImpl extends BaseManagerImpl<RoleAudit> implements 
 			throw new ApplicationException("数据异常，变更角色信息为空！");
 		
 		boolean passed = AuditResult.LAST_AUDIT_PASSED.equals(ra.getResult());
-		if( EntityChange.Type.DELETE.equals(rc.getType()) ){//删除
+		if( passed && EntityChange.Type.DELETE.equals(rc.getType()) ){//删除
 			db_role.setStatus( AuditStatus.DELETE );
-		}else if( AuditStatus.NEW.equals(newRole.getStatus())){//新建
-			db_role.setStatus( passed?AuditStatus.EFFECTIVE:AuditStatus.AUDIT_REJECT  );
 		}else if( passed && AuditStatus.EFFECTIVE.equals(newRole.getStatus())){
 			db_role.setName( newRole.getName() );
 			db_role.setDescription( newRole.getDescription() );
 			db_role.setPermissions( newRole.getPermissions() );
+		}else if( passed ){
+			db_role.setStatus( AuditStatus.EFFECTIVE );
+		}else if( !passed && AuditStatus.NEW.equals( newRole.getStatus() )){
+			db_role.setStatus( AuditStatus.AUDIT_REJECT );
 		}
 		
 		roleManager.update(db_role);

@@ -109,7 +109,7 @@ public class LoginAccountManagerImpl extends BaseManagerImpl<LoginAccount>
 			root.setType(LoginAccountType.ADMIN);
 			Role superRole = roleManager.initRole(true); //TODO
 			root.addRole(superRole); 
-			root.setPassword(CryptographyUtil.hashSha1Hex(DEFAULT_PASSWORD ) );
+			root.setPassword(CryptographyUtil.hashMd5Hex(DEFAULT_PASSWORD ) );
 			root.setDescription("系统初始化自动创建。");
 			
 			try{

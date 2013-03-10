@@ -47,12 +47,24 @@
 				<a href="#"><s:text name="project.nav.sysmgr"/></a>
 				<ul id="system_mgr">
 					<li><a href="<s:url value="/settings/organization/viewparent.do"/>" target="main_frame">企业资料</a></li>
+					
+					<li>
+						<%-- 组织机构管理--%>
+						<a href="#"><s:text name="project.nav.org"/></a>
+						<ul id="org_mgr">
+							<li><a href="<s:url value="/party/organization/edit.do"/>" target="main_frame"><s:text name="project.nav.neworg"/></a></li>
+							<%-- 组织机构列表 --%>
+							<li><a href="<s:url value="/party/organization/list.do"/>" target="main_frame"><s:text name="project.nav.listorg"/></a></li>
+						</ul>
+					</li>
+					
 					<li>
 						<%-- 登录账号--%>
 						<a href="#"><s:text name="project.nav.loginaccount"/></a>
 						<ul id="login_account">
-							<%-- 修改密码--%>
+							<%-- 
 							<li><a href="<s:url value="/security/account/edit.do?password=update"/>" target="main_frame"><s:text name="project.nav.changepassword"/></a></li>
+							--%>
 							<%-- 新增用户--%>
 							<shiro:hasPermission name="SECURITY_ACCOUNT_EDIT">
 							<li><a href="<s:url value="/security/account/edit.do"/>" target="main_frame"><s:text name="project.nav.newaccount"/></a></li>
@@ -82,18 +94,9 @@
 			</li>
 			
 			<li>
-				<%-- 人员机构管理--%>
+				<%-- 人员管理--%>
 				<a href="#"><s:text name="project.nav.partymgr"/></a>
 				<ul id="party_mgr">
-					<li>
-						<%-- 组织机构管理--%>
-						<a href="#"><s:text name="project.nav.org"/></a>
-						<ul id="org_mgr">
-							<li><a href="<s:url value="/party/organization/edit.do"/>" target="main_frame"><s:text name="project.nav.neworg"/></a></li>
-							<%-- 组织机构列表 --%>
-							<li><a href="<s:url value="/party/organization/list.do"/>" target="main_frame"><s:text name="project.nav.listorg"/></a></li>
-						</ul>
-					</li>
 					<li>
 						<%-- 人员管理--%>
 						<a href="#"><s:text name="project.nav.person"/></a>
@@ -111,7 +114,6 @@
 				<%-- 基础管理--%>
 				<a href="#"><s:text name="project.nav.settings"/></a>
 				<ul id="settings_mgr">
-					<li><a href="<s:url value="/settings/organization/viewparent.do"/>" target="main_frame">企业资料</a></li>
 					<%-- 系统日志--%>
 					<li>
 						<a href="#"><s:text name="project.nav.syslog"/></a>

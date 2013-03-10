@@ -24,7 +24,24 @@
 						if( !ajaxCheck( ) ){ 
 							this.showErrors({"param.name": "参数组+名称已存在,请改用其它名称！"});
 						}else{
-							form.submit();
+							//检查是否可授权
+							$.lightssh.checkAuth(
+								{'contextPath':'<%= request.getContextPath() %>'
+								,'checkPassword': true
+								,'targetUrl':'<s:url value="/settings/param/save.do"/>'}
+								,function(succes,ticket,msg){ 
+									if( !succes )
+										return;
+
+									if( ticket != null || ticket != '' ){
+										$('<input>').attr({
+										    type:'hidden',name:'auth.ticket',value: ticket,
+										}).appendTo( form );
+									}
+									
+									form.submit(); 
+								}
+							);//end $.lightssh.checkAuth
 						}
 					}
 				});
