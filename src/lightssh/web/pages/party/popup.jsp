@@ -16,7 +16,8 @@
 	function postQuery( ){
 		<s:url var="root_url"/>
 		var url = '<s:property value="%{root_url}"/>';
-		popupParty( url ,{'party.name':$('#popup_party_name').val()} );
+		var clazz=$('#popup_party_type').val();
+		popupParty( url ,{'party.name':$('#popup_party_name').val(),"party":clazz,"party_type":clazz} );
 		return false;
 	}
 </script>
@@ -27,7 +28,10 @@
 			<tbody>
 				<tr>
 					<th><label for="name">名称</label></th>
-					<td><s:textfield id="popup_party_name" name="party.name" size="40" maxlength="100"/></td>
+					<td>
+						<s:hidden name="party_type" id="popup_party_type" value="%{#parameters['party_type'][0]}"/>
+						<s:textfield id="popup_party_name" name="party.name" size="40" maxlength="100"/>
+					</td>
 					<td colspan="2"><input type="submit" class="action search" value="查询"/></td>
 				</tr>
 			</tbody>

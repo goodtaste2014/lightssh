@@ -21,12 +21,17 @@ import com.google.code.lightssh.common.util.StringUtil;
 import com.google.code.lightssh.common.web.SessionKey;
 import com.google.code.lightssh.project.mail.MailSenderManager;
 import com.google.code.lightssh.project.party.service.PartyManager;
+import com.google.code.lightssh.project.security.entity.AuthorizedTicket;
 import com.google.code.lightssh.project.security.entity.LoginAccount;
 import com.google.code.lightssh.project.security.entity.LoginAccountAudit;
 import com.google.code.lightssh.project.security.entity.LoginAccountChange;
+import com.google.code.lightssh.project.security.entity.Permission;
+import com.google.code.lightssh.project.security.service.AuthorizedResourceManager;
+import com.google.code.lightssh.project.security.service.AuthorizedTicketManager;
 import com.google.code.lightssh.project.security.service.LoginAccountAuditManager;
 import com.google.code.lightssh.project.security.service.LoginAccountChangeManager;
 import com.google.code.lightssh.project.security.service.LoginAccountManager;
+import com.google.code.lightssh.project.security.service.PermissionManager;
 import com.google.code.lightssh.project.util.constant.AuditResult;
 import com.google.code.lightssh.project.web.action.GenericAction;
 
@@ -42,7 +47,9 @@ public class LoginAccountAction extends GenericAction<LoginAccount>{
 	
 	private static final long serialVersionUID = 2391150894472042768L;
 
-	private static Logger log = LoggerFactory.getLogger(LoginAccountAction.class);
+	private static Logger log = LoggerFactory.getLogger( LoginAccountAction.class );
+	
+	private final String[] AUTH_TYPE_VALUES={"hasAuth","noneAuth","canAuth","genAuth"};
 	
 	@Resource( name = "partyManager" )
 	private PartyManager partyManager;
@@ -55,7 +62,16 @@ public class LoginAccountAction extends GenericAction<LoginAccount>{
 	
 	@Resource( name = "loginAccountAuditManager" )
 	private LoginAccountAuditManager loginAccountAuditManager;
-
+	
+	@Resource( name = "permissionManager" )
+	private PermissionManager permissionManager;
+	
+	@Resource( name = "authorizedResourceManager" )
+	private AuthorizedResourceManager authorizedResourceManager;
+	
+	@Resource( name = "authorizedTicketManager" )
+	private AuthorizedTicketManager authorizedTicketManager;
+	
 	private LoginAccount account;
 	
 	private LoginAccountChange accountChange;
@@ -71,10 +87,15 @@ public class LoginAccountAction extends GenericAction<LoginAccount>{
 	private ListPage<LoginAccountAudit> laaPage;
 
 	/**
-	 * 安全值
+	 * 安全值,提示信息(JSON)
 	 */
 	private String safeMessage;
-
+	
+	/**
+	 * 授权JSON返回
+	 */
+	private String authType,ticket;
+	
 	@Resource( name = "loginAccountManager" )
 	public void setLoginAccountManager( LoginAccountManager manager ) {
 		super.manager = manager;
@@ -102,6 +123,7 @@ public class LoginAccountAction extends GenericAction<LoginAccount>{
 		super.model = this.account;
 	}
 
+	@JSON(name="message")
 	public String getSafeMessage() {
 		return safeMessage;
 	}
@@ -149,6 +171,24 @@ public class LoginAccountAction extends GenericAction<LoginAccount>{
 
 	public void setLaaPage(ListPage<LoginAccountAudit> laaPage) {
 		this.laaPage = laaPage;
+	}
+
+	@JSON(name="authType")
+	public String getAuthType() {
+		return authType;
+	}
+
+	public void setAuthType(String authType) {
+		this.authType = authType;
+	}
+
+	@JSON(name="ticket")
+	public String getTicket() {
+		return ticket;
+	}
+
+	public void setTicket(String ticket) {
+		this.ticket = ticket;
 	}
 
 	public String list() {
@@ -228,7 +268,12 @@ public class LoginAccountAction extends GenericAction<LoginAccount>{
 			return INPUT;
 		}
 		
-		return SUCCESS;
+		String saveAndNext = request.getParameter("saveAndNext");
+        if( saveAndNext != null && !"".equals( saveAndNext.trim() ) ){
+        	return NEXT;
+        }else{        	
+        	return SUCCESS;
+        }
 	}
 	
     public String delete( ){
@@ -595,4 +640,90 @@ public class LoginAccountAction extends GenericAction<LoginAccount>{
 		
 		return SUCCESS;
 	}
+	
+	/**
+	 * 验证授权
+	 */
+	public String validateAuth(){
+		String targetUrl = request.getParameter("targetUrl");
+		//{"hasAuth"(存在权限),"noneAuth"无权限,"canAuth"可以授权,"genAuth"已授权}
+		safeMessage = "";
+		authType = AUTH_TYPE_VALUES[1];
+		
+		if( !StringUtils.isEmpty(targetUrl)){
+			Permission permission = permissionManager.getByUrlWithRegexp(targetUrl);
+			if( permission != null){
+				String token = permission.getToken();
+				if(SecurityUtils.getSubject().isPermitted( token ) ){
+					authType = AUTH_TYPE_VALUES[0];
+				}else if( authorizedResourceManager.canAuthorized(targetUrl) ){
+					authType = AUTH_TYPE_VALUES[2];
+					
+					//是否已存在授权
+					AuthorizedTicket ticket = authorizedTicketManager.get(
+							token,targetUrl,request.getSession().getId() );
+					if( ticket != null && ticket.isEffective() ){
+						authType = AUTH_TYPE_VALUES[3];
+						this.ticket = ticket.getId();
+					}
+				}
+			}
+		}
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * 授权资源
+	 */
+	public String authResource(){
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+		String targetUrl = request.getParameter("targetUrl");
+		if( StringUtils.isEmpty(username) || StringUtils.isEmpty(password) ){
+			this.safeMessage = "用户名或密码为空！";
+			return SUCCESS;
+		}
+		
+		if( StringUtils.isEmpty(targetUrl) ){
+			this.safeMessage = "授权资源为空！";
+			return SUCCESS;
+		}
+		Permission per = permissionManager.getByUrlWithRegexp(targetUrl);
+		if( per == null ){
+			this.safeMessage = "授权资源为非保护，可直接访问！";
+			this.passed = true;
+			return SUCCESS;
+		}
+		
+		account = getManager().get(username);
+		if( account == null || !account.getPassword().equals(password) ){
+			this.safeMessage = "错误的用户或密码！";
+			return SUCCESS;
+		}
+		
+		if(!account.isEffective() || !account.isExpired() ){
+			this.safeMessage = "用户被禁用或已过期！";
+			return SUCCESS;
+		}
+		
+		//是否有权限
+		if( account.hasPermission(per.getToken()) ){
+			this.passed = true; 
+			try{
+				AuthorizedTicket ticket = authorizedTicketManager.authTicket(
+						targetUrl,username,per.getToken(),AuthorizedTicket.Scope.ONCE
+						,request.getSession().getId(),getLoginUser() );
+				this.ticket = ticket.getId();
+			}catch( Exception e ){
+				this.safeMessage = "授权异常：" + e.getMessage();
+			}
+		}else{
+			this.safeMessage = "授权用户无权限！";
+		}
+		
+		return SUCCESS;
+	}
+
+
 }

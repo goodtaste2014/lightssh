@@ -1,6 +1,7 @@
 package com.google.code.lightssh.project.log.dao;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -45,8 +46,12 @@ public class AccessDaoJpa extends JpaAnnotationDao<Access> {
 			}
 			
 			if( end != null ){
+				Calendar cal_end = Calendar.getInstance();
+				cal_end.setTime(end);
+				cal_end.add(Calendar.DAY_OF_MONTH, 1);
+				cal_end.add(Calendar.SECOND, -1);
 				hql.append( " AND m.time < ? " );
-				params.add( end );
+				params.add( cal_end.getTime() );
 			}
 		}
 		

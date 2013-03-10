@@ -18,6 +18,27 @@
 				messages:{
 					"passwords[1]": {equalTo:"'重复密码'必须与'新密码'相同！"}
 				}
+				,submitHandler:function(form) {
+					//检查是否可授权
+					$.lightssh.checkAuth(
+						{'contextPath':'<%= request.getContextPath() %>'
+						,'checkPassword': false
+						,'targetUrl':'<s:url value="/security/account/resetpassword.do"/>'}
+						,function(succes,ticket,msg){ 
+							if( !succes )
+								return;
+
+							if( ticket != null || ticket != '' ){
+								$('<input>').attr({
+								    type:'hidden',name:'auth.ticket',value: ticket,
+								}).appendTo( form );
+							}
+							
+							form.submit(); 
+						}
+					);//end $.lightssh.checkAuth
+					
+				}
 			});
 		});
 	</script>

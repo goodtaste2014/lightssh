@@ -100,14 +100,6 @@ public class Access extends UUIDModel{
         setAction( request.getRequestURI() );
 	}
 	
-	public Access( HttpServletRequest request ){
-		setTime( new Date() );
-		setIp( RequestUtil.getIpAddr(request) );
-		setOperator( request.getRemoteUser() );
-		setAction( request.getRequestURI() );
-		this.type = AccessType.GENERAL;
-	}
-	
 	public String getOperator() {
 		return operator;
 	}

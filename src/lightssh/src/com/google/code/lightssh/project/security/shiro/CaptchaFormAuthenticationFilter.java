@@ -23,6 +23,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.code.lightssh.common.config.SystemConfig;
+import com.google.code.lightssh.common.support.shiro.CaptchaUsernamePasswordToken;
+import com.google.code.lightssh.common.support.shiro.ShiroBadCaptchaException;
+import com.google.code.lightssh.common.support.shiro.TimeLockedException;
 import com.google.code.lightssh.common.web.SessionKey;
 import com.google.code.lightssh.project.log.service.LoginLogManager;
 import com.google.code.lightssh.project.security.entity.LoginAccount;

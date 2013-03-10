@@ -1,8 +1,7 @@
 <%@page language="java" pageEncoding ="UTF-8" contentType="text/html;charset=utf-8"%>
 
-<%@page import="com.google.code.lightssh.project.security.service.BadCaptchaException"%>
-<%@page import="com.google.code.lightssh.project.security.shiro.TimeLockedException"%>
-<%@page import="com.google.code.lightssh.project.security.shiro.OnlineUserExistException"%>
+<%@page import="ccom.google.code.lightssh.common.support.shiro.*"%>
+<%@page import="com.google.code.lightssh.project.security.shiro.*"%>
 <%@page import="com.google.code.lightssh.project.security.entity.OnlineUser"%>
 <%@page import="com.google.code.lightssh.common.util.TextFormater"%>
 <%@page import="org.apache.shiro.SecurityUtils"%>
@@ -19,7 +18,7 @@
 		
 		if(authExp instanceof UnknownAccountException || authExp instanceof IncorrectCredentialsException){
 			expMsg="错误的用户账号或密码！";
-		}else if( authExp instanceof BadCaptchaException){
+		}else if( authExp instanceof ShiroBadCaptchaException ){
 			expMsg="验证码错误！";
 		}else if( obj instanceof LockedAccountException ){
 			expMsg= "用户账号已禁用！";

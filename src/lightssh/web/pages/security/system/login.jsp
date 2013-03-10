@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <%@ page language ="java" pageEncoding = "UTF-8" contentType="text/html;charset=utf-8" %> 
-<%@ page import ="org.springframework.security.authentication.*"%>
+<%@ page import ="com.google.code.lightssh.common.support.shiro.*"%>
 <%@ include file="/pages/common/taglibs.jsp" %>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -9,11 +9,9 @@
 <head>	
 	<title>系统登录</title>
 	<link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/styles/<mys:theme />/theme.css" />
-	<script language="javascript" src="<%= request.getContextPath() %>/scripts/jquery/jquery.min.js"></script>
-	<script language="javascript" src="<%= request.getContextPath() %>/scripts/jquery/plugins/cryptography/jquery.md5.js"></script>
-
-	<meta http-equiv="X-UA-Compatible" content="IE=9" />
-	
+	<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/plugins/cryptography/jquery.md5.js"></script>
+		
 	<script type="text/javascript">
 		$(document).ready(function(){
 			if( top != self ){

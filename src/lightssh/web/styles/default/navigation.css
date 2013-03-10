@@ -256,19 +256,19 @@ ul.vertical-menu li a span{
 }
 
 ul.vertical-menu li a.expand span{
-	padding-left:12px;
+	padding-left:10px;
 	background-image:url("../../images/background/icon_expanded.gif");
 	background-repeat: no-repeat;
-	background-position: 2px center;
+	/*background-position: 2px center;*/
 	line-height:18px;
 	height:18px;
 }
 
 ul.vertical-menu li a.collapse span{
-	padding-left:12px;
+	padding-left:10px;
 	background-image:url("../../images/background/icon_collapsed.gif");
 	background-repeat: no-repeat;
-	background-position: 2px center;
+	/*background-position: 2px center;*/
 	line-height:18px;
 	height:18px;
 }

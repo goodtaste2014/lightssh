@@ -102,6 +102,18 @@
 			</result>
 		</action>
 		
+		<action name="validateauth" class="loginAccountAction" method="validateAuth">
+			<result name="success" type="json">
+				<param name="includeProperties">authType,ticket,message</param>
+			</result>
+		</action>
+		
+		<action name="authresource" class="loginAccountAction" method="authResource">
+			<result name="success" type="json">
+				<param name="includeProperties">passed,ticket,message</param>
+			</result>
+		</action>
+		
 	</package>
 	
 	<package name="security_password" extends="default" namespace="/security/recovery">
