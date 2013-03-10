@@ -233,4 +233,19 @@
 			<result name="success">/pages/settings/param/list.jsp</result>	
         </action>
 	</package>
+	
+	<package name="settings_email" extends="default" namespace="/settings/email">
+	    <action name="list" class="emailContentAction" method="list">
+			<result name="success">/pages/settings/email/list.jsp</result>
+		</action>
+		
+	    <action name="view" class="emailContentAction" method="edit">
+			<result name="success">/pages/settings/email/view.jsp</result>
+		</action>
+		
+	    <action name="resend" class="emailContentAction" method="resend">
+			<result name="input" type="redirectAction">list</result>
+			<result name="success" type="redirectAction">list</result>
+		</action>
+	</package>
 </struts>
