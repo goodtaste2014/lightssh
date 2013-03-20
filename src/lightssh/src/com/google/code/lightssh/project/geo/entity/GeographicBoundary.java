@@ -95,6 +95,12 @@ public class GeographicBoundary implements Persistence<String>,Sequenceable{
 	private int sequence;
 	
 	/**
+	 * 包含的类型
+	 */
+	@Transient
+	private List<GeoType> _includes;
+	
+	/**
 	 * 添加孩子结点
 	 */
 	public void addChild( GeographicBoundary child ){
@@ -124,6 +130,24 @@ public class GeographicBoundary implements Persistence<String>,Sequenceable{
 	 */
 	public boolean isActive(){
 		return Boolean.TRUE.equals( this.active );
+	}
+	
+	/**
+	 * 字符转成 GeoType
+	 */
+	public static List<GeoType> parse(String types ){
+		if( types == null )
+			return null;
+		
+		String[] arr = types.split(",");
+		List<GeoType> result = new ArrayList<GeoType>(arr.length);
+		for( String item:arr ){
+			try{
+				result.add(GeoType.valueOf(item));
+			}catch(Exception e ){}
+		}
+		
+		return result;
 	}
 	
 	@Override
@@ -252,6 +276,14 @@ public class GeographicBoundary implements Persistence<String>,Sequenceable{
 	@Override
 	public String toString() {
 		return this.code;
+	}
+
+	public List<GeoType> get_includes() {
+		return _includes;
+	}
+
+	public void set_includes(List<GeoType> includes) {
+		_includes = includes;
 	}
 
 	@Override

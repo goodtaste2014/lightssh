@@ -540,6 +540,9 @@ table.profile th{
 .popup-menu-layer li.password a{
 	background-image: url("../../images/background/icon_password.png");
 }
+.popup-menu-layer li.redo a{
+	background-image: url("../../images/background/icon_redo.png");
+}
 .popup-menu-layer li.unlock a{
 	background-image: url("../../images/background/icon_unlock.png");
 }

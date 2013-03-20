@@ -31,17 +31,28 @@ jQuery.lightssh={
 			posx = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
 			posy = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
 		}
-		var left = posx - $(popupMenu).width();
-		var top = posy;
-		$( popupMenu ).css("left",left + "px");
-		$( popupMenu ).css("top",top + "px");
+		
+		var td_element = $( popupMenu ).parent();
+		var tr_element = $( td_element ).parent();
+		var tr_width = $(tr_element).width();
+		var tr_top = tr_element.offset().top;
+		var td_width = $( td_element ).outerWidth(); //td.action width
+		var td_height = $( td_element ).outerHeight(); //td.action height
+		
+		var left = tr_width - $( popupMenu ).width() - td_width;
+		var top = tr_top + (td_height/2);
+		if( (tr_top + $( popupMenu ).height()-(td_height/2)) > $(document.body).outerHeight() )
+			top = tr_top - $( popupMenu ).height() + (td_height/2);
+		
+		$( popupMenu ).css( "left", left + "px" );
+		$( popupMenu ).css( "top", top + "px" );
 		$( popupMenu ).show();
 	
 		//$("td").removeClass("action");
 		//$(event).addClass("action");//事件目标
 		
-		$("tr").removeClass("focused");
-		$(popupMenu).parent().parent().addClass("focused");//事件目标父结点
+		$( "tr" ).removeClass( "focused" );
+		$( tr_element ).addClass( "focused" );// 事件目标父结点
 	}
 
 	 /**
@@ -314,6 +325,27 @@ jQuery.lightssh={
 				$( '#' + opts.dialog ).remove();
 			}
 			callback( json.passed,json.ticket,json.message );
+		});
+	}
+	
+	/**
+	 * 滚动到页首
+	 */
+	,scrollTop: function( ) {
+		$(window).scroll(function () {
+			if ($(this).scrollTop() > 100) {
+				$('#back-top').fadeIn();
+			} else {
+				$('#back-top').fadeOut();
+			}
+		});
+
+		// scroll body to 0px on click
+		$('#back-top a').click(function () {
+			$('body,html').animate({
+				scrollTop: 0
+			}, 500);
+			return false;
 		});
 	}
 };

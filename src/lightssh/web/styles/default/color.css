@@ -271,3 +271,52 @@ span.compare.modify{
 span.compare.delete{
 	background-image: url("../../images/background/icon_compare_delete.png");
 }
+
+/* back to top */
+#back-top {
+	position: fixed;
+	bottom: 30px;
+	left: 30px;
+	/*margin-left: -150px;*/
+}
+
+#back-top a {
+	width: 28px;
+	display: block;
+	text-align: center;
+	font: 11px/100% Arial, Helvetica, sans-serif;
+	text-transform: uppercase;
+	text-decoration: none;
+	color: #bbb;
+
+	/* transition */
+	-webkit-transition: 1s;
+	-moz-transition: 1s;
+	transition: 1s;
+}
+
+#back-top a:hover {
+	color: #000;
+}
+
+/* arrow icon (span tag) */
+#back-top span {
+	width: 28px;
+	height: 28px;
+	display: block;
+	margin-bottom: 7px;
+	background: #ddd url("../../images/background/icon_backtotop.png") no-repeat center center;
+
+	/* rounded corners */
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+
+	/* transition */
+	-webkit-transition: 1s;
+	-moz-transition: 1s;
+	transition: 1s;
+}
+#back-top a:hover span {
+	background-color: #777;
+}

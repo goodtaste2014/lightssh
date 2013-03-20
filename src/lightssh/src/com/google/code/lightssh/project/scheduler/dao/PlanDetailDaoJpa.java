@@ -1,5 +1,7 @@
 package com.google.code.lightssh.project.scheduler.dao;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.Query;
@@ -45,6 +47,41 @@ public class PlanDetailDaoJpa extends JpaDao<PlanDetail> implements PlanDetailDa
 		String hql = " UPDATE PlanDetail AS m SET m.status = '" +newStatus.name()
 			+ "' WHERE m.id = '"+id+"' AND m.status = '"+originalStatus.name()+"'" ;
 		Query query = getEntityManager().createQuery(hql);
+		return query.executeUpdate();
+	}
+	
+	/**
+	 * 定时任务调用完成更新状态
+	 * 如果异步回执已更新状态为'成功'或'失败'则不进行状态更新
+	 */
+	public int updateStatusAfterInvoke(String id,PlanDetail.Status newValue ){
+		String hql = "UPDATE " + this.entityClass.getName() 
+			+ " AS m SET m.status = ? WHERE m.id = ? AND m.status not in (?,?) " ;
+		
+		List<Object> params = new ArrayList<Object>( );
+		params.add( newValue );
+		params.add( id );
+		params.add(PlanDetail.Status.SUCCESS );
+		params.add(PlanDetail.Status.FAILURE );
+		
+		Query query = getEntityManager().createQuery(hql);
+		this.addQueryParams(query, params);
+		return query.executeUpdate();
+	}
+	
+	/**
+	 * 定时任务调用完成更新'开始执行时间'
+	 */
+	public int updateFireTimeAfterInvoke(String id,Calendar fireTime ){
+		String hql = "UPDATE " + this.entityClass.getName() 
+		+ " AS m SET m.fireTime = ? WHERE m.id = ? AND m.fireTime IS NULL " ;
+		
+		List<Object> params = new ArrayList<Object>( );
+		params.add( fireTime );
+		params.add( id );
+		
+		Query query = getEntityManager().createQuery(hql);
+		this.addQueryParams(query, params);
 		return query.executeUpdate();
 	}
 

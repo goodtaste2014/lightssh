@@ -63,13 +63,26 @@
 			geo_code = $(eTarget).val();
 		}
 		
+		if( (geo_code == null || geo_code == '') && geo_url.indexOf('geo.code') != -1 ){
+			//geo_code = geo_url.substring(geo_url.indexOf('geo.code')+'geo.code'.length,geo_url.length);
+			geo_code =  decodeURI((RegExp('geo.code' + '=' + '(.+?)(&|$)').exec(geo_url)||[,null])[1]);
+			geo_url = geo_url.substring(0,geo_url.indexOf('?'));
+		}
+		
+		var types = param['geo_selectors'][level-1].types ;
+		var types_val = '';
+		if( types != null )
+			for(var i=0;i<types.length;i++ )
+				types_val += (i>0?',':'')+types[i] ;
+		var data = {'geo.active':param['geo_active'],'geo.code':geo_code,'types':types_val};
+		
 		$.ajax({
 			url: geo_url
 			,dataType:"json",type:"post",async:false
-			,data:{'geo.active':param['geo_active'],'geo.code':geo_code }
+			,data:data
 	        ,error:function(){  }
 	        ,success: function(json){
-	        	buildGeoSelect( json.list,geo_select,param,level );
+	        	buildGeoSelect( json.list,geo_select,param,level,param['geo_selectors'][level-1].value );
 	        }
 		});
 	}
@@ -77,7 +90,7 @@
 	/**
 	 * 构造显示元素
 	 */
-	function buildGeoSelect( list,geo_select,param,level ){
+	function buildGeoSelect( list,geo_select,param,level,value ){
 		if( list == null ){
 			$(geo_select).remove();
 			return;
@@ -86,11 +99,14 @@
 		$(geo_select).empty();
 		$(geo_select).append( "<option value=''></option>" );
 		$.each(list,function(index,item){
-				var opt = "<option value='"+item.code+"'>"+item.name+"</option>";
+				var opt = $("<option value='"+item.code+"'>"+item.name+"</option>");
 				$(geo_select).append( opt );
 			});
 		
-		//$( geo_select ).change(function(){showGeo(null,param,level+1);});
+		$(geo_select).hide(); //Fixed ie issue
+		$(geo_select).show(); //Fixed ie issue
+		
+		$(geo_select).val(value); //选中
 		
 		$(geo_select).bind('change',function(event){
 			showGeo(event,param,level+1);
