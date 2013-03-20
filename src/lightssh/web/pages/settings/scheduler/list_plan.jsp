@@ -4,10 +4,16 @@
 <html>
 	<head>
 		<meta name="decorator" content="background"/>
+		
+		<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/ui/i18n/jquery.ui.datepicker_<s:property value="locale"/>.js"></script>
 	
 		<title>执行计划</title>
 		
 		<script type="text/javascript">
+			$(document).ready(function(){
+				$("#pft_start").datepicker( );
+				$("#pft_end").datepicker( );
+			});
 		</script>
 	</head>
 	
@@ -20,12 +26,31 @@
 		
 		<%@ include file="/pages/common/messages.jsp" %>
 		
+		<s:form action="list" method="post">
+			<table class="profile">
+				<tr>
+					<th><label for="id">任务编号</label></th>
+					<td><s:textfield id="id" name="plan.id" /></td>
+					<th><label for="pft_start">计划执行时间</label></th>
+					<td>
+						<s:textfield id="pft_start" name="plan._pftPeriod.start" size="10" />
+						<s:textfield id="pft_end" name="plan._pftPeriod.end" size="10" />
+					</td>
+					<td>
+						<s:submit cssClass="action search right" value="查询"/>
+						
+						<input type="button" class="action refresh right" value="刷新页面" onclick="window.location.reload()"/>
+					</td>
+				</tr>
+			</table>
+		</s:form>
+				
 		<mys:table cssClass="list" value="page" status="loop">
 			<mys:column title="序号"  width="50px">
 				<s:property value="#loop.index+1"/>
 			</mys:column>
 			
-			<mys:column title="编号" value="identity" sortable="true" sortKey="id" width="120px"/>
+			<mys:column title="任务编号" value="identity" sortable="true" sortKey="id" width="120px"/>
 			<mys:column title="计划执行时间" value="planFireTime" sortable="true" width="150px"/>
 			<mys:column title="实际执行时间" value="fireTime" sortable="false" width="150px"/>
 			<mys:column title="执行完成时间" value="finishTime" sortable="false" width="150px"/>
