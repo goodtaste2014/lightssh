@@ -37,6 +37,7 @@
 					'geo_active':'true',
 					'geo_selectors':[
 						{'name':'party.country.code','value':'<s:property value="%{party.country.code}"/>'},
+						//{'name':'party.secondaryGeo.code','value':'<s:property value="%{party.secondaryGeo.code}"/>','types':['PROVINCE','MUNICIPALITY','AUTONOMOUS_REGION','SPECIAL_ADMINISTRATIVE_REGION']},
 						{'name':'party.secondaryGeo.code','value':'<s:property value="%{party.secondaryGeo.code}"/>'},
 						{'name':'party.thirdGeo.code','value':'<s:property value="%{party.thirdGeo.code}"/>'},
 						{'name':'party.fourthGeo.code','value':'<s:property value="%{party.fourthGeo.code}"/>'}]

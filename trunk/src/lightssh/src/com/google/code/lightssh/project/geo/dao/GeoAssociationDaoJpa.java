@@ -28,6 +28,16 @@ implements GeoAssociationDao{
 		final StringBuilder hql = new StringBuilder(" FROM ");
 		hql.append( super.entityClass.getName() );
 		hql.append(  " AS m WHERE m.toGeo = ? " );
+		if( geo.get_includes() != null && !geo.get_includes().isEmpty() ){
+			for( int i=0;i<geo.get_includes().size();i++ ){
+				if( i== 0 )
+					hql.append( " AND m.fromGeo.type IN ( ");
+				hql.append( ((i==0)?"":",") + "'"+ geo.get_includes().get(i).name() +"'" );
+				if( i==geo.get_includes().size()-1 )
+					hql.append(" )");
+			}//end for
+		}
+		hql.append(" ORDER BY m.sequence ASC ");
 		final Object[] params = new Object[]{geo};
 		
 		String select_jpql = " SELECT m.fromGeo ";

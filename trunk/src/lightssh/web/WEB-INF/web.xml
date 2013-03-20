@@ -18,8 +18,8 @@
 			,classpath:config/spring/applicationContext-cache.xml
 			,classpath:config/spring/applicationContext-security.xml
 			,classpath:config/spring/applicationContext-webservice.xml
-			<!--  
 			,classpath:config/spring/applicationContext-scheduler.xml
+			<!--  
 			,classpath:config/spring/applicationContext-remoting.xml
 			,classpath:config/spring/applicationContext-workflow.xml
 			-->

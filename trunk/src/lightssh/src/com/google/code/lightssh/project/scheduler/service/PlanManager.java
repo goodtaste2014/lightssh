@@ -64,6 +64,11 @@ public interface PlanManager extends BaseManager<Plan>{
 	public void save( Plan plan,List<PlanDetail> details );
 	
 	/**
+	 * 保存执行计划
+	 */
+	public void save( Plan plan,List<PlanDetail> details,boolean putAllInQueue );
+	
+	/**
 	 * 明细入任务队列
 	 */
 	public void detailInQueue(PlanDetail pd);

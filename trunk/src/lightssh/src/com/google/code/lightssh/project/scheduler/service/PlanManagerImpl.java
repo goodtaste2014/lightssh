@@ -3,6 +3,7 @@ package com.google.code.lightssh.project.scheduler.service;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -54,6 +55,35 @@ public class PlanManagerImpl extends BaseManagerImpl<Plan> implements PlanManage
 	
 	public PlanDao getDao(){
 		return (PlanDao)this.dao;
+	}
+	
+	public ListPage<Plan> list(ListPage<Plan> page,Plan t ){
+		SearchCondition sc = new SearchCondition();
+		if( t != null ){
+			if( !StringUtils.isEmpty(t.getId()) )
+				sc.like( "id",t.getId() );
+			
+			if( t.get_pftPeriod() != null ){
+				Calendar cal = Calendar.getInstance();
+				Date start = t.get_pftPeriod().getStart();
+				Date end = t.get_pftPeriod().getEnd();
+				
+				if( start != null ){
+					cal.setTime(start);
+					sc.greateThanOrEqual("planFireTime",cal);
+				}
+				
+				if( end != null ){
+					Calendar cal_end = Calendar.getInstance();
+					cal_end.setTime(end);
+					cal_end.add(Calendar.DAY_OF_MONTH, 1);
+					cal_end.add(Calendar.SECOND, -1);
+					sc.lessThanOrEqual("planFireTime",cal_end);
+				}
+			}
+		}
+		
+		return super.list(page, sc);
 	}
 	
 	/**
@@ -225,6 +255,13 @@ public class PlanManagerImpl extends BaseManagerImpl<Plan> implements PlanManage
 	 * 保存执行计划
 	 */
 	public void save( Plan plan,List<PlanDetail> details ){
+		this.save(plan, details, true );
+	}
+	
+	/**
+	 * 保存执行计划
+	 */
+	public void save( Plan plan,List<PlanDetail> details,boolean putAllInQueue ){
 		if( plan == null || details == null )
 			throw new ApplicationException("参数为空！");
 		
@@ -236,7 +273,11 @@ public class PlanManagerImpl extends BaseManagerImpl<Plan> implements PlanManage
 		for( PlanDetail item:details ){
 			item.setId( plan.getId() + "-" + item.getSequence() );
 			item.setPlan(plan);
-			refIds.add(item.getId());
+			
+			//putAllInQueue=true,所有任务进入执行队行
+			//putAllInQueue=false,只有没有依赖的任务才进入执行队列
+			if( putAllInQueue || !item.isRelyOn() )
+				refIds.add(item.getId());
 		}
 		planDetailDao.create(details);
 		
@@ -332,9 +373,15 @@ public class PlanManagerImpl extends BaseManagerImpl<Plan> implements PlanManage
 				//detail.setStatus(newStatus);
 				//planDetailDao.update(detail);
 				
+				planDetailDao.updateFireTimeAfterInvoke(detail.getId(),detail.getFireTime());
+				
 				//int i = planDetailDao.update(detail.getId(),PlanDetail.Status.NEW, newStatus);
-				int i =planDetailDao.update("id",detail.getId(),"status",detail.getStatus(), newStatus);
-				log.info("计划任务[{}]状态更新{}",detail.getId(),i);
+				//int i =planDetailDao.update("id",detail.getId(),"status",detail.getStatus(), newStatus);
+				
+				int i = planDetailDao.updateStatusAfterInvoke(detail.getId(),newStatus);
+				
+				log.info("计划任务[{}]状态从["+detail.getStatus()+"]更新为["
+						+newStatus+"]-[{}]",detail.getId(),i>0?"成功":"失败");
 			}
 		}//end for
 	}

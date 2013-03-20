@@ -20,6 +20,8 @@
 		
 		<%@ include file="/pages/common/messages.jsp" %>
 		
+		<input type="button" class="action refresh" value="刷新页面" onclick="window.location.reload()"/>
+		
 		<mys:table cssClass="list" value="#request.list" status="loop">
 			<mys:column title="序号"  width="30px">
 				<s:property value="#loop.index+1"/>
@@ -49,12 +51,12 @@
 				<span>&nbsp;</span>
 				<div class="popup-menu-layer">
 					<ul class="dropdown-menu">
-						<li>
+						<li class="view">
 							<a href="<s:url value="viewdetail.do?plan.id=%{plan.id}&planDetail.id=%{id}"/>">信息详细</a>
 						</li>
 						<s:if test="!finished && preconditionFinished">
 							<li class="section"/>
-							<li>
+							<li class="redo">
 								<a href="<s:url value="detailinqueue.do?plan.id=%{plan.id}&planDetail.id=%{id}"/>">重新执行</a>
 							</li>
 						</s:if>

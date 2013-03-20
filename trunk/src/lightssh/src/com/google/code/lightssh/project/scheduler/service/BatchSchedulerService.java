@@ -52,6 +52,13 @@ public abstract class BatchSchedulerService extends AbstractSchedulerService{
 		PlanDetail relyOn = detail.getPrecondition();
 		if( relyOn != null ){
 			String relyOnKey = relyOn.getId();
+			//从数据库中取最新记录
+			PlanDetail dbRelyOn = planManager.getDetail(relyOnKey);
+			if( dbRelyOn != null && dbRelyOn.getStatus() != null 
+					&& !dbRelyOn.getStatus().equals( relyOn.getStatus() )){
+				relyOn = dbRelyOn;
+				detail.setPrecondition( dbRelyOn );
+			}
 			boolean relyOnFinished = relyOn.isFinished();//已经完成
 			boolean exeRelyOnFinished = mapResults.get(relyOnKey)!=null 
 				&& mapResults.get(relyOnKey).isSuccess(); //当前批次执行完成

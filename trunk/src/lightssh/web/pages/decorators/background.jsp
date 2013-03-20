@@ -17,7 +17,12 @@
 		
 		<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/my/util.js"></script>
 		<script type="text/javascript">
+			var path = '<%=request.getContextPath() %>';
 			$(document).ready(function(){
+				//hide #back-top 
+				//$("#back-top").hide();
+				$.lightssh.scrollTop( );
+				
 				$(document).bind('click',function(event){
 					$.lightssh.popupMenu( event );
 				});
@@ -30,5 +35,9 @@
     
 	<body <decorator:getProperty property="body.class" writeEntireProperty="true"/>>
 		<decorator:body/>
+		
+		<p id="back-top" style="display: none;">
+			<a href="#top"><span></span>TOP</a>
+		</p>
 	</body>
 </html>

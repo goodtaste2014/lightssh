@@ -12,8 +12,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.google.code.lightssh.common.entity.Persistence;
+import com.google.code.lightssh.common.model.Period;
 import com.google.code.lightssh.common.model.Sequenceable;
 
 /**
@@ -84,6 +86,12 @@ public class Plan implements Persistence<String>,Sequenceable{
 	@Column(name="CREATED_TIME",columnDefinition="DATE")
 	@Temporal( TemporalType.TIMESTAMP )
 	private Calendar createdTime;
+	
+	/**
+	 * 时间区间用于查询
+	 */
+	@Transient
+	private Period _pftPeriod;
 
 	public Calendar getPlanFireTime() {
 		return planFireTime;
@@ -181,6 +189,14 @@ public class Plan implements Persistence<String>,Sequenceable{
 	@Override
 	public int getSequenceStep() {
 		return 1;
+	}
+
+	public Period get_pftPeriod() {
+		return _pftPeriod;
+	}
+
+	public void set_pftPeriod(Period pftPeriod) {
+		_pftPeriod = pftPeriod;
 	}
 
 }
