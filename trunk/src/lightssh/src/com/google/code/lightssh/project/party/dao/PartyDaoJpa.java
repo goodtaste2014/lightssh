@@ -71,7 +71,7 @@ public class PartyDaoJpa extends JpaAnnotationDao<Party> implements PartyDao{
 		return super.list(clazz, page, t, properties);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Party read(Class clazz, Party party) {
 		if( party == null )

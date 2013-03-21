@@ -66,7 +66,7 @@ public class WorkflowManagerImpl implements WorkflowManager{
 	/**
 	 * 查询
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected ListPage<?> query(Query query, ListPage<?> page ){
 		if( page == null )
 			page = new ListPage();

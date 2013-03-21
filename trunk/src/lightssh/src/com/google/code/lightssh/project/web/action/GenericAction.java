@@ -66,7 +66,7 @@ public class GenericAction<T extends Persistence<?>> extends com.google.code.lig
 	/**
 	 * 缓存参数
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected void cacheRequestParams( ){
 		Map<String,Map> cachedParamMap = (Map<String,Map>)request.getSession()
 			.getAttribute( SessionKey.REQUEST_PARAMETERS );
@@ -89,7 +89,7 @@ public class GenericAction<T extends Persistence<?>> extends com.google.code.lig
 	/**
 	 * 获取缓存的参数
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Map getCachedParams( ){
 		Map<String,Map> cachedParamMap = (Map<String,Map>)request.getSession()
 			.getAttribute( SessionKey.REQUEST_PARAMETERS );

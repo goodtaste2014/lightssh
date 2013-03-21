@@ -13,8 +13,6 @@ import org.quartz.Trigger.TriggerState;
  */
 public class TriggerWrap {
 
-	private static final long serialVersionUID = -6368089938691033645L;
-	
 	private Trigger trigger;
 	
 	private TriggerState state;

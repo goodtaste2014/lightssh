@@ -15,7 +15,7 @@ import com.google.code.lightssh.project.security.entity.Role;
 
 public class RoleConverter extends StrutsTypeConverter{
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public Object convertFromString(Map context, String[] values, Class toClass){
 		if( values != null ){
 			Role role = new Role();
@@ -25,7 +25,7 @@ public class RoleConverter extends StrutsTypeConverter{
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public String convertToString(Map context, Object o) {
 		return o==null?null:o.toString();
 	}

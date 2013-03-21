@@ -18,7 +18,7 @@ public class ContactMechanismConverter  extends StrutsTypeConverter {
 	private final String POSTAL_ADDRESS = "postaladdress";
 	private final String TELEPHONE_NUMBER = "telephonenumber";
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public Object convertFromString(Map context, String[] values, Class toClass){
 		if( values == null || values[0] == null || CONTACT_MECHANISM.equals(values[0]))
 			return new ContactMechanism();
@@ -30,7 +30,7 @@ public class ContactMechanismConverter  extends StrutsTypeConverter {
 		return new ContactMechanism();
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public String convertToString(Map context, Object o) {
 		return o==null?null:o.toString();
 	}
