@@ -29,7 +29,7 @@ import com.google.code.lightssh.project.workflow.service.WorkflowManager;
  * @author YangXiaojin
  *
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 @Component( "workflowAction" )
 @Scope("prototype")
 public class WorkflowAction extends GenericAction{

@@ -17,7 +17,7 @@ public class PartyConverter extends StrutsTypeConverter {
 	//private final String PERSON = "person";
 	private final String ORG = "organization";
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public Object convertFromString(Map context, String[] values, Class toClass){
 		if( values == null || values[0] == null || values[0].equals(ORG))
 			return new Organization();
@@ -25,7 +25,7 @@ public class PartyConverter extends StrutsTypeConverter {
 		return new Person();
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "rawtypes" })
 	public String convertToString(Map context, Object o) {
 		return o==null?null:o.toString();
 	}
