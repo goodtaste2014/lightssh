@@ -107,7 +107,7 @@
 	
 	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
 	
-	<bean id="singleUserLoginFilter" class="com.google.code.lightssh.project.security.shiro.SingleUserLoginFilter">
+	<bean id="singleUserLoginFilter" class="com.google.code.lightssh.common.support.shiro.SingleUserLoginFilter">
 		<property name="logoutUrl" value="/logout.do"/>
 		<property name="onlineUserCache" ref="onlineUserCache"/>
 	</bean>
@@ -143,15 +143,14 @@
 		<property name="cacheManager" ref="cacheManager"/>
 	</bean>
 	
-	<bean id="captchaFormAuthenticationFilter" class="com.google.code.lightssh.project.security.shiro.CaptchaFormAuthenticationFilter">
+	<bean id="captchaFormAuthenticationFilter" class="com.google.code.lightssh.project.security.shiro.MyFormAuthenticationFilter">
 		<property name="usernameParam" value="j_username"/>
 		<property name="passwordParam" value="j_password"/>
 		<property name="captchaParam" value="j_captcha"/>
 		<property name="rememberMeParam" value="j_rememberme"/>
-		<property name="accountManager" ref="loginAccountManager"/>
-		<property name="loginLogManager" ref="loginLogManager"/>
-		<property name="loginFailureManager" ref="loginFailureManager"/>
 		<property name="systemConfig" ref="systemConfig"/>
+		
+		<property name="userService" ref="userService"/>
 		<property name="onlineUserCache" ref="onlineUserCache"/>
 	</bean>
 	

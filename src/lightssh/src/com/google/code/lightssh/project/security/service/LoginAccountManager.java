@@ -83,7 +83,7 @@ public interface LoginAccountManager extends BaseManager<LoginAccount>{
 	/**
 	 * 登录失败锁定时间
 	 */
-	public void updateLockTime( LoginAccount la );
+	public boolean updateLockTime( Long id );
 
 	/**
 	 * 解除登录失败锁定时间

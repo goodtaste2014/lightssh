@@ -49,6 +49,6 @@ public interface LoginAccountDao extends Dao<LoginAccount>{
 	/**
 	 * 更新登录锁定时间
 	 */
-	public int updateLockTime( LoginAccount la,Calendar time);
+	public int updateLockTime( Long userId,Calendar time);
 	
 }

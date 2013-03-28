@@ -8,6 +8,7 @@ import org.apache.shiro.cas.CasRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 
 import com.google.code.lightssh.common.config.SystemConfig;
+import com.google.code.lightssh.common.support.shiro.ConfigConstants;
 import com.google.code.lightssh.project.security.entity.LoginAccount;
 import com.google.code.lightssh.project.security.entity.Role;
 import com.google.code.lightssh.project.security.service.LoginAccountManager;
