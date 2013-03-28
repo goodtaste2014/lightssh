@@ -6,10 +6,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.context.ContextLoaderListener;
 
+import com.google.code.lightssh.common.support.shiro.ConfigConstants;
 import com.google.code.lightssh.project.config.ProjectConfig;
 import com.google.code.lightssh.project.scheduler.service.SchedulerManager;
 import com.google.code.lightssh.project.security.service.LoginAccountManager;
-import com.google.code.lightssh.project.security.shiro.ConfigConstants;
 import com.google.code.lightssh.project.util.SpringContextHelper;
 
 /**
@@ -97,6 +97,7 @@ public class StartupListener extends ContextLoaderListener{
 			if( systemConfig != null && "true".equalsIgnoreCase(
 	    			systemConfig.getProperty( ConfigConstants.CAS_ENABLED_KEY, "false")) ){
 				String keystore = systemConfig.getProperty(ConfigConstants.CAS_SERVER_KEYSTORE_KEY);
+				
 				log.info("设置系统属性javax.net.ssl.trustStore:[{}]",keystore);
 				System.setProperty("javax.net.ssl.trustStore",keystore);
 			}

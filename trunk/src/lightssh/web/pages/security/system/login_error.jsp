@@ -2,7 +2,6 @@
 
 <%@page import="ccom.google.code.lightssh.common.support.shiro.*"%>
 <%@page import="com.google.code.lightssh.project.security.shiro.*"%>
-<%@page import="com.google.code.lightssh.project.security.entity.OnlineUser"%>
 <%@page import="com.google.code.lightssh.common.util.TextFormater"%>
 <%@page import="org.apache.shiro.SecurityUtils"%>
 <%@page import="org.apache.shiro.subject.Subject"%>

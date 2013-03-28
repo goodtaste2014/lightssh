@@ -264,26 +264,16 @@ public class LoginAccountDaoJpa extends JpaAnnotationDao<LoginAccount>
 	/**
 	 * 更新登录锁定时间
 	 */
-	public int updateLockTime( LoginAccount la ,Calendar time){
-		if( la == null || la.getIdentity() == null )
-			return 0;
-		/*
+	public int updateLockTime( Long id ,Calendar time){
+		if(time == null)
+			time = Calendar.getInstance();
+		
 		String hql = "UPDATE " + this.entityClass.getName() 
 			+ " SET lastLoginLockTime = ? WHERE id = ? ";
 		
 		Query query = getEntityManager().createQuery(hql);
-		this.addQueryParams(query,new Object[]{
-				Calendar.getInstance(),la.getIdentity()});
+		this.addQueryParams(query,new Object[]{time,id});
 		
 		return query.executeUpdate();
-		*/
-		LoginAccount old = read(la);
-		if( old != null ){
-			old.setLastLoginLockTime( time );
-			this.update( old );
-			return 1;
-		}
-			
-		return 0;
 	}
 }

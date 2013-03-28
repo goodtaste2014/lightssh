@@ -24,6 +24,7 @@ import javax.persistence.Transient;
 import com.google.code.lightssh.common.entity.base.BaseModel;
 import com.google.code.lightssh.common.model.Loggable;
 import com.google.code.lightssh.common.model.Period;
+import com.google.code.lightssh.common.support.shiro.User;
 import com.google.code.lightssh.project.party.entity.Party;
 import com.google.code.lightssh.project.util.constant.AuditStatus;
 
@@ -34,7 +35,7 @@ import com.google.code.lightssh.project.util.constant.AuditStatus;
  */
 @Entity
 @Table( name="T_SECURITY_LOGINACCOUNT" )
-public class LoginAccount extends BaseModel implements Cloneable,Loggable{
+public class LoginAccount extends BaseModel implements User,Cloneable,Loggable{
 
 	private static final long serialVersionUID = 8280727772996743600L;
 	
@@ -157,6 +158,13 @@ public class LoginAccount extends BaseModel implements Cloneable,Loggable{
 	@Temporal( TemporalType.TIMESTAMP )
 	private Calendar lastLoginLockTime;
 	
+	/**
+	 * 最近一次登录时间
+	 */
+	@Column( name="LAST_LOGIN_TIME",columnDefinition="DATE" )
+	@Temporal( TemporalType.TIMESTAMP )
+	private Calendar lastLoginTime;
+	
 	public LoginAccount() {
 		super();
 	}
@@ -165,13 +173,21 @@ public class LoginAccount extends BaseModel implements Cloneable,Loggable{
 		this.loginName = name;
 		this.id = id;
 	}
+	
+	public String getUserId(){
+		return this.getIdentity().toString();
+	}
+	
+	public String getUserName(){
+		return this.getLoginName();
+	}
 
 	/**
 	 * 是否过期
 	 * @return 过期返回false
 	 */
 	public boolean isExpired( ){
-		return period==null || period.isExpired(new Date() );
+		return period!=null && period.isExpired(new Date() );
 	}
 	
 	/**
@@ -406,6 +422,14 @@ public class LoginAccount extends BaseModel implements Cloneable,Loggable{
 
 	public void setStatus(AuditStatus status) {
 		this.status = status;
+	}
+
+	public Calendar getLastLoginTime() {
+		return lastLoginTime;
+	}
+
+	public void setLastLoginTime(Calendar lastLoginTime) {
+		this.lastLoginTime = lastLoginTime;
 	}
 
 	@Override

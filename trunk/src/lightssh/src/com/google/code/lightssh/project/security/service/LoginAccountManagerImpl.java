@@ -23,9 +23,9 @@ import com.google.code.lightssh.project.log.entity.EntityChange;
 import com.google.code.lightssh.project.party.entity.Party;
 import com.google.code.lightssh.project.security.dao.LoginAccountDao;
 import com.google.code.lightssh.project.security.entity.LoginAccount;
+import com.google.code.lightssh.project.security.entity.LoginAccount.LoginAccountType;
 import com.google.code.lightssh.project.security.entity.Permission;
 import com.google.code.lightssh.project.security.entity.Role;
-import com.google.code.lightssh.project.security.entity.LoginAccount.LoginAccountType;
 import com.google.code.lightssh.project.util.constant.AuditStatus;
 
 /**
@@ -323,11 +323,11 @@ public class LoginAccountManagerImpl extends BaseManagerImpl<LoginAccount>
 	/**
 	 * 登录失败锁定时间
 	 */
-	public void updateLockTime( LoginAccount la ){
-		if( la == null || la.getIdentity() == null )
+	public boolean updateLockTime( Long id ){
+		if( id == null)
 			throw new ApplicationException("参数错误！");
 		
-		this.getDao().updateLockTime(la,Calendar.getInstance());
+		return getDao().updateLockTime(id,Calendar.getInstance()) > 0;
 	}
 	
 	/**
@@ -337,6 +337,6 @@ public class LoginAccountManagerImpl extends BaseManagerImpl<LoginAccount>
 		if( la == null || la.getIdentity() == null )
 			throw new ApplicationException("参数错误！");
 		
-		this.getDao().updateLockTime(la,null);
+		this.getDao().updateLockTime(la.getId(),null);
 	}
 }

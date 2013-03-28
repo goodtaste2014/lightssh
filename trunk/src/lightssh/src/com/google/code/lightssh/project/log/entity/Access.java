@@ -15,9 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.google.code.lightssh.common.entity.base.UUIDModel;
 import com.google.code.lightssh.common.model.Period;
+import com.google.code.lightssh.common.util.RequestUtil;
 import com.google.code.lightssh.project.identity.entity.Identity;
 import com.google.code.lightssh.project.identity.entity.IdentityType;
-import com.google.code.lightssh.project.util.RequestUtil;
 
 /**
  * 访问日志
@@ -95,7 +95,7 @@ public class Access extends UUIDModel{
 	
 	public void init( HttpServletRequest request ){
 		setTime( new Date() );
-        setIp( RequestUtil.getIpAddr(request) );
+        setIp( RequestUtil.getRealRemoteAddr(request) );
         setOperator( request.getRemoteUser() );
         setAction( request.getRequestURI() );
 	}

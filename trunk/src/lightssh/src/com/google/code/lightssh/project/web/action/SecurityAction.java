@@ -8,9 +8,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.google.code.lightssh.common.config.SystemConfig;
+import com.google.code.lightssh.common.support.shiro.ConfigConstants;
 import com.google.code.lightssh.common.web.SessionKey;
 import com.google.code.lightssh.common.web.action.BaseAction;
-import com.google.code.lightssh.project.security.shiro.ConfigConstants;
 
 /**
  * 

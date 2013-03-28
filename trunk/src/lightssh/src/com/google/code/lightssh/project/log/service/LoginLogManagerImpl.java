@@ -13,7 +13,6 @@ import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.service.BaseManagerImpl;
 import com.google.code.lightssh.common.util.StringUtil;
 import com.google.code.lightssh.project.log.entity.LoginLog;
-import com.google.code.lightssh.project.security.entity.LoginAccount;
 
 /**
  * 登录日志业务处理
@@ -62,12 +61,12 @@ public class LoginLogManagerImpl extends BaseManagerImpl<LoginLog> implements Lo
 		return dao.list(page,sc);
 	}
 	
-	public void login(Date date,String ip, LoginAccount la ) {
-		if( la == null )
+	public void login(Date date,String ip, String username ) {
+		if( username == null )
 			return;
 		
 		LoginLog log = new LoginLog();
-		log.setOperator(la.getLoginName());
+		log.setOperator( username );
 		log.setIp(ip);
 		
 		dao.create( log );	
