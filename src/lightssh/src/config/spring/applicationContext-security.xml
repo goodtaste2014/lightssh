@@ -102,7 +102,7 @@
 	</bean>
 		
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
-	    <property name="realm" ref="myShiroRealm"/>
+	    <property name="realm" ref="shiroRealm"/>
 	</bean>
 	
 	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
@@ -123,21 +123,29 @@
 		<property name="tempAuthService" ref="tempAuthService"/>
 	</bean>
 
-	<!--  
-	-->
-	<bean id="myShiroRealm" class="com.google.code.lightssh.project.security.shiro.MyShiroRealm">
+	<!-- JDBC Realm -->
+	<bean id="jdbcShiroRealm" class="com.google.code.lightssh.project.security.shiro.MyShiroRealm">
 		<property name="accountManager" ref="loginAccountManager"/>
 		<property name="cacheManager" ref="shiroCacheManager"/>
 	</bean>
 	
 	<!-- CAS Realm -->
-	<!--  
-	<bean id="myShiroRealm" class="com.google.code.lightssh.project.security.shiro.MyCasRealm">
+	<bean id="casShiroRealm" class="com.google.code.lightssh.project.security.shiro.MyCasRealm">
 		<property name="accountManager" ref="loginAccountManager"/>
 		<property name="cacheManager" ref="shiroCacheManager"/>
 		<property name="systemConfig" ref="systemConfig"/>
 	</bean>
-	-->
+	
+	<bean id="shiroRealm" factory-bean="shiroRealmFactory" factory-method="createRealm" />
+	<bean id="shiroRealmFactory" class="com.google.code.lightssh.project.security.shiro.RealmFactory">
+		<property name="systemConfig" ref="systemConfig"/>
+		<property name="realms">
+			<map>
+				<entry key="jdbc" value-ref="jdbcShiroRealm" /> <!-- JDBC Realm -->
+				<entry key="cas" value-ref="casShiroRealm" /> <!-- CAS Realm -->
+			</map>
+		</property>
+	</bean>
 	
 	<bean id="shiroCacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
 		<property name="cacheManager" ref="cacheManager"/>
