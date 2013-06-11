@@ -23,7 +23,8 @@
 		</ul>
 		
 		<input type="button" class="action new" value="新增账号" onclick="location.href='<s:url value="edit.do"/>'"/>
-		
+		<input type="button" class="action pdf" value="PDF" onclick="location.href='<s:url value="report.do?type=PDF"/>'"/>
+	
 		<%@ include file="/pages/common/messages.jsp" %>
 		
 		<s:form name="list" namespace="/system/account" method="post">
@@ -117,9 +118,5 @@
 	
 		<mys:pagination value="page" />
 	
-		<s:url var="report_url_param" value="/security/account/report.do"/>
-		<s:set name="REPORT_URL" value="%{report_url_param}"/>
-		<jsp:include page="/pages/common/report.jsp"/>
-			
 	</body>
 </html>

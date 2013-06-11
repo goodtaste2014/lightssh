@@ -28,7 +28,15 @@ public class NavigationDaoJpa extends JpaAnnotationDao<Navigation> implements Na
 		
 		Query query = this.getEntityManager().createQuery(hql);
 		return query.getResultList();
-		//return super.getJpaTemplate().find(hql);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Navigation> listMenu() {
+		String hql = " SELECT n FROM Navigation AS n WHERE n.parent IS NULL AND n.isMenu = ? ";
+		
+		Query query = addQueryParams(getEntityManager().createQuery(hql), Boolean.TRUE);
+		return query.getResultList();
 	}
 
 	@SuppressWarnings("unchecked")

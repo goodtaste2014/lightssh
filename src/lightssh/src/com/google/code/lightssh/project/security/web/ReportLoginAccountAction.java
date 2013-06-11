@@ -1,7 +1,5 @@
 package com.google.code.lightssh.project.security.web;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -10,15 +8,14 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.google.code.lightssh.common.model.page.ListPage;
-import com.google.code.lightssh.common.report.jr.DynamicColumn;
-import com.google.code.lightssh.common.report.jr.ReportParameter;
-import com.google.code.lightssh.common.web.action.NonTemplateReportAction;
+import com.google.code.lightssh.common.report.jr.JasperEngine;
+import com.google.code.lightssh.common.web.action.ReportAction;
 import com.google.code.lightssh.project.security.entity.LoginAccount;
 import com.google.code.lightssh.project.security.service.LoginAccountManager;
 
 @Component( "reportLoginAccountAction" )
 @Scope("prototype")
-public class ReportLoginAccountAction extends NonTemplateReportAction<LoginAccount>{
+public class ReportLoginAccountAction extends ReportAction<LoginAccount>{
 	
 	private static final long serialVersionUID = 3862513833381074305L;
 	
@@ -48,27 +45,14 @@ public class ReportLoginAccountAction extends NonTemplateReportAction<LoginAccou
 	public void setPage(ListPage<LoginAccount> page) {
 		this.page = page;
 	}
-
-	static List<DynamicColumn> REPORT_COLUMNS=new ArrayList<DynamicColumn>();
-	static{
-		REPORT_COLUMNS.add(new DynamicColumn("loginName","登录名",String.class,200,20));
-		REPORT_COLUMNS.add(new DynamicColumn("party.name","会员",String.class,100,20));
-		REPORT_COLUMNS.add(new DynamicColumn("createDate","创建时间",Date.class,100,20));
-		REPORT_COLUMNS.add(new DynamicColumn("period.start","有效期(起)",Date.class,100,20));
-		REPORT_COLUMNS.add(new DynamicColumn("period.end","有效期(至)",Date.class,100,20));
-	}
-
-	@Override
-	public ReportParameter buildReportParameter() {
-		ReportParameter reportParm = new ReportParameter();
-		reportParm.setTitle("用户登录账户");
-		reportParm.setDynamicColumns(REPORT_COLUMNS);
-		return reportParm;
+	
+	public ReportLoginAccountAction() {
+		super.jasperEngine = new JasperEngine();
 	}
 
 	@Override
 	public String getTemplateFileName() {
-		return ReportLoginAccountAction.class.getCanonicalName();
+		return "security_login_account";
 	}
 
 	@Override

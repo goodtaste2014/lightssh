@@ -337,6 +337,6 @@ public class LoginAccountManagerImpl extends BaseManagerImpl<LoginAccount>
 		if( la == null || la.getIdentity() == null )
 			throw new ApplicationException("参数错误！");
 		
-		this.getDao().updateLockTime(la.getId(),null);
+		this.getDao().cleanLockTime(la.getId());
 	}
 }

@@ -12,6 +12,8 @@
 	<!--<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">-->
 	<bean id="shiroFilter" class="com.google.code.lightssh.common.support.shiro.MyShiroFilterFactoryBean">
 	    <property name="regexPathMatcher" value="true"/><!-- true表示正则匹配 -->
+	    <property name="urlsSectionType" value="INI_DB"/><!-- INI,DB,INI_DB -->
+	    <property name="urlsSectionService" ref="urlsSectionService"/>
 	    <property name="securityManager" ref="securityManager"/>
 	    <property name="loginUrl" value="/login.do"/>
 	    <property name="successUrl" value="/welcome.do"/>
@@ -60,7 +62,7 @@
 	            #/security/account/save.do=authc,perms[SECURITY_ACCOUNT_SAVE]
 	            
 	            <!--系统管理-->
-				/settings/organization/viewparent.do=authc,perms[SETTINGS_ORGANIZATION_VIEWPARENT]
+				/settings/organization/viewparent.do=perms[SETTINGS_ORGANIZATION_VIEWPARENT]
 				/settings/organization/initparent.do=authc,perms[SETTINGS_ORGANIZATION_INITPARENT]
 				
 				/party/organization/edit.do=authc,perms[PARTY_ORGANIZATION_EDIT]
@@ -115,6 +117,10 @@
 	<!-- 授权服务  -->
 	<bean id="tempAuthService" class="com.google.code.lightssh.project.security.shiro.MyTemporaryAuthorizationService">
 		<property name="authorizedTicketManager" ref="authorizedTicketManager"/>
+	</bean>
+	
+	<bean id="urlsSectionService" class="com.google.code.lightssh.project.security.shiro.MyUrlsSectionService">
+		<property name="navigationManager" ref="navigationManager"/>
 	</bean>
 	
 	<bean id="myPermsFilter" class="com.google.code.lightssh.common.support.shiro.MyPermissionsAuthorizationFilter">

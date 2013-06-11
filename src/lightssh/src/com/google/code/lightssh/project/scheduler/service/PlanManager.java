@@ -29,6 +29,11 @@ public interface PlanManager extends BaseManager<Plan>{
 	public PlanDetail getDetail( String id );
 	
 	/**
+	 * 所有明细执行完成后更新计划任务状态
+	 */
+	public void updateStatus( String detailId );
+	
+	/**
 	 * 更新明细状态
 	 */
 	public void updateDetailStatus(String detailId,Status status );
@@ -37,6 +42,11 @@ public interface PlanManager extends BaseManager<Plan>{
 	 * 更新明细状态
 	 */
 	public void updateDetailStatus(String detailId,boolean success,String errMsg );
+	
+	/**
+	 * 执行依赖任务
+	 */
+	public void executeRelyOnPlanDetail(boolean success,String detailId );
 	
 	/**
 	 * 执行计划明细

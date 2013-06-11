@@ -142,6 +142,7 @@ public class OrganizationAction extends CrudAction<Organization>{
 		boolean isInsert = party.isInsert();
         Access access = new Access(  );
         access.init(request);
+        access.setDescription("编辑企业信息");
         //access.setOperator( SecurityUtil.getPrincipal() );
         
         try{

@@ -276,4 +276,17 @@ public class LoginAccountDaoJpa extends JpaAnnotationDao<LoginAccount>
 		
 		return query.executeUpdate();
 	}
+	
+	/**
+	 * 清除登录锁定时间
+	 */
+	public int cleanLockTime( Long id ){
+		String hql = "UPDATE " + this.entityClass.getName() 
+				+ " SET lastLoginLockTime = NULL WHERE id = ? ";
+		
+		Query query = getEntityManager().createQuery(hql);
+		this.addQueryParams(query,new Object[]{id});
+		
+		return query.executeUpdate();
+	}
 }

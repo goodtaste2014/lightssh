@@ -11,4 +11,9 @@ import com.google.code.lightssh.project.scheduler.entity.Plan;
  */
 public interface PlanDao extends Dao<Plan>{
 
+	/**
+	 * 所有明细执行完成后更新计划任务状态
+	 */
+	public boolean updateStatusIfAllDetailFinished( String id );
+	
 }

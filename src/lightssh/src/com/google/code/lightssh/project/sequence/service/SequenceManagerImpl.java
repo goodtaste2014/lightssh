@@ -65,6 +65,11 @@ public class SequenceManagerImpl implements SequenceManager{
 		return sa.getSequenceKey() + nextSerialNumber( sa );
 	}
 	
+	@Override
+	public String newTransactionNextSequenceNumber(Sequenceable sa) {
+		return nextSequenceNumber( sa );
+	}
+	
 	public String nextSerialNumber(Sequenceable sa) {
 		Sequence seq = nextSequence( sa );
 		if( seq == null )
@@ -72,6 +77,7 @@ public class SequenceManagerImpl implements SequenceManager{
 		
 		return seq.getFormatLastNumber( sa.getSequenceLength() );
 	}
+	
 	@Override
 	public long nextDatabaseSerialNumber(String seqName) {
 		return dao.nextDatabaseSequenceNumber(seqName);

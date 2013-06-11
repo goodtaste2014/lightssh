@@ -112,7 +112,8 @@ public class PlanManagerImpl extends BaseManagerImpl<Plan> implements PlanManage
 	/**
 	 * 未成功记录
 	 */
-	private int getUnsuccessfulCount(String planId,String planDetailId ){
+	@Deprecated
+	protected int getUnsuccessfulCount(String planId,String planDetailId ){
 		ListPage<PlanDetail> page = new ListPage<PlanDetail>(0);
 		SearchCondition sc = new SearchCondition();
 		sc.equal("plan.id", planId);
@@ -122,6 +123,13 @@ public class PlanManagerImpl extends BaseManagerImpl<Plan> implements PlanManage
 		page = planDetailDao.list(page, sc);
 		
 		return page.getAllSize();
+	}
+	
+	public void updateStatus(String detailId ){
+		PlanDetail detail = getDetail(detailId);
+		if( detail != null && detail.getPlan() != null && 
+				getDao().updateStatusIfAllDetailFinished( detail.getPlan().getId() ))
+			log.info("计划任务在明细[{}]完成执行后，进行状态更新！",detail);
 	}
 	
 	/**
@@ -150,6 +158,8 @@ public class PlanManagerImpl extends BaseManagerImpl<Plan> implements PlanManage
 			log.info("执行计划明细["+detailId+"]状态["
 					+oldStatus+"]更新为["+detail.getStatus()+"]！");
 			
+			//TODO 并发可能导致 计划任务状态 不能成功更新
+			/*
 			if( success ){
 				String planId = detail.getPlan().getId();
 				int count = getUnsuccessfulCount( planId,detail.getId());
@@ -158,8 +168,11 @@ public class PlanManagerImpl extends BaseManagerImpl<Plan> implements PlanManage
 					log.info("执行计划明细[{}]执行完成，整个任务完成！",detail.getId());
 				}
 			}
+			*/
 			
+			//TODO 可能导致并发问题
 			//执行依赖任务
+			/*
 			List<PlanDetail> replyOnList = planDetailDao.listRelyOnUnsuccessful(detailId);
 			if( replyOnList == null || replyOnList.isEmpty() )
 				return;
@@ -178,13 +191,37 @@ public class PlanManagerImpl extends BaseManagerImpl<Plan> implements PlanManage
 					
 					planDetailDao.update(item);
 				}
-			}
+			}*/
 			
 		}else{
 			log.warn("执行计划明细["+detailId
 					+"]状态已改变为["+detail.getStatus()+"]不能进行更新！");
 		}
 		
+	}
+	
+	public void executeRelyOnPlanDetail(boolean success,String detailId ){
+		//执行依赖任务
+		List<PlanDetail> replyOnList = planDetailDao.listRelyOnUnsuccessful(detailId);
+		if( replyOnList == null || replyOnList.isEmpty() )
+			return;
+		
+		//TODO 线程池处理
+		for( PlanDetail item:replyOnList ){
+			if( item.getPlan()==null || item.getPlan().getType() == null ){
+				log.warn("上级任务执行[{}]依赖任务[{}]无法调用执行，类型为空！",detailId,item.getId());
+				continue;
+			}else if( success ){
+				log.info("回调任务[{}]执行成功,执行依赖任务[{}]。",detailId,item.getId());
+				jobQueueManager.jobInQueue(item.getPlan().getType().getId()
+						,item.getId(),1,item.getPlan().getPlanFireTime());
+			}else{
+				item.setStatus(Status.FAILURE);
+				item.setDescription("依赖任务["+detailId+"]执行返回失败！");
+				
+				planDetailDao.update(item);
+			}
+		}
 	}
 	
 	/**
@@ -282,7 +319,7 @@ public class PlanManagerImpl extends BaseManagerImpl<Plan> implements PlanManage
 		planDetailDao.create(details);
 		
 		jobQueueManager.jobInQueue(plan.getType().getId()
-				,1,refIds.toArray(new String[0]));
+				,1,refIds.toArray(new String[0]),plan.getPlanFireTime());
 	}
 	
 	/**
@@ -297,7 +334,7 @@ public class PlanManagerImpl extends BaseManagerImpl<Plan> implements PlanManage
 			throw new ApplicationException("明细数据["+pd.getId()+"]不完整！");
 		
 		jobQueueManager.jobInQueue(
-				detail.getPlan().getType().getId(),detail.getId(),1);
+				detail.getPlan().getType().getId(),detail.getId(),1,detail.getPlan().getPlanFireTime());
 	}
 	
 	/**

@@ -29,6 +29,7 @@ body {
 	font-family:Lucida Grande, Verdana, Bitstream Vera Sans, Arial, sans-serif;
 	font-size:12px;
 	line-height: 22px;
+	min-height:200px;
 	
 	leftmargin:0;
 	marginwidth:0;
@@ -220,6 +221,19 @@ input.offline{
 input.enterprise{
 	background: #f2f2f2 url("../../images/background/icon_enterprise.png") no-repeat 4px center;
 }
+
+input.refresh{
+	background: #f2f2f2 url("../../images/background/icon_refresh.png") no-repeat 4px center;
+}
+
+input.money{
+	background: #f2f2f2 url("../../images/background/icon_money.png") no-repeat 4px center;
+}
+
+input.print{
+	background: #f2f2f2 url("../../images/background/icon_print.png") no-repeat 4px center;
+}
+
 
 input.action:hover,input.action:active
 ,input.save:hover,input.save:active
@@ -537,6 +551,9 @@ table.profile th{
 .popup-menu-layer li.audit a{
 	background-image: url("../../images/background/icon_audit.png");
 }
+.popup-menu-layer li.audit.reject a{
+	background-image: url("../../images/background/icon_audit_reject.png");
+}
 .popup-menu-layer li.password a{
 	background-image: url("../../images/background/icon_password.png");
 }
@@ -545,4 +562,13 @@ table.profile th{
 }
 .popup-menu-layer li.unlock a{
 	background-image: url("../../images/background/icon_unlock.png");
+}
+.popup-menu-layer li.money a{
+	background-image: url("../../images/background/icon_money.png");
+}
+.popup-menu-layer li.notice a{
+	background-image: url("../../images/background/icon_notice.png");
+}
+.popup-menu-layer li.print a{
+	background-image: url("../../images/background/icon_print.png");
 }

@@ -23,7 +23,7 @@ import com.google.code.lightssh.common.entity.base.UUIDModel;
 
 
 /**
- * 导航
+ * 导航菜单
  * @author YangXiaojin
  *
  */
@@ -44,6 +44,12 @@ public class Navigation extends UUIDModel{
 	 */
 	@Column( name="NAME",length=100 )
 	private String name;
+	
+	/**
+	 * 是否菜单
+	 */
+	@Column( name="IS_MENU")
+	private Boolean isMenu;
 	
 	/**
 	 * 描述
@@ -76,6 +82,13 @@ public class Navigation extends UUIDModel{
 	 */
 	@Transient
 	private boolean exists;
+	
+	/**
+	 * 是否菜单
+	 */
+	public boolean isMenu(){
+		return Boolean.TRUE.equals(this.isMenu);
+	}
 	
 	/**
 	 * 标记存在
@@ -257,6 +270,14 @@ public class Navigation extends UUIDModel{
 
 	public void setExists(boolean exists) {
 		this.exists = exists;
+	}
+
+	public Boolean getIsMenu() {
+		return isMenu;
+	}
+
+	public void setIsMenu(Boolean isMenu) {
+		this.isMenu = isMenu;
 	}
 
 }

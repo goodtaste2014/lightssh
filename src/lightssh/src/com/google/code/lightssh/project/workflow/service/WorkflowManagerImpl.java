@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 
 import org.activiti.engine.FormService;
 import org.activiti.engine.HistoryService;
+import org.activiti.engine.IdentityService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
@@ -29,6 +30,7 @@ import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.runtime.ProcessInstanceQuery;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import com.google.code.lightssh.common.ApplicationException;
@@ -54,8 +56,8 @@ public class WorkflowManagerImpl implements WorkflowManager{
 	@Resource(name="repositoryService")
 	private RepositoryService repositoryService;
 	
-	//@Resource(name="identityService")
-	//private IdentityService identityService;
+	@Resource(name="identityService")
+	private IdentityService identityService;
 	
 	@Resource(name="historyService")
 	private HistoryService historyService;
@@ -229,6 +231,19 @@ public class WorkflowManagerImpl implements WorkflowManager{
 	}
 	
 	/**
+	 * 启动流程
+	 * @param processKey 流程key
+	 * @param bizKey 业务key
+	 */
+	public ProcessInstance start( String processKey,String bizKey,String userId){
+		//用来设置启动流程的人员ID，引擎会自动把用户ID保存到activiti:initiator中
+		if( !StringUtils.isEmpty(userId) )
+			identityService.setAuthenticatedUserId(userId);
+	    
+		return runtimeService.startProcessInstanceByKey( processKey,bizKey );
+	}
+	
+	/**
 	 * 查询任务
 	 */
 	public Task getTask( String taskId ){
@@ -284,7 +299,7 @@ public class WorkflowManagerImpl implements WorkflowManager{
 			if( "endTime".equals(orderBy.getProperty()) )
 				query.orderByHistoricTaskInstanceEndTime();
 			else if( "startTime".equals(orderBy.getProperty()) )
-				query.orderByHistoricActivityInstanceStartTime();
+				query.orderByHistoricTaskInstanceStartTime();
 		}
 		
 		return (ListPage<HistoricTaskInstance>)query(query,page);

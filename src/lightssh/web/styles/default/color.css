@@ -251,6 +251,7 @@ span.view{
 }
 
 span.compare{
+	cursor: pointer;
 	display:inline-block;
 	font-weight:normal;
 	height:20px;

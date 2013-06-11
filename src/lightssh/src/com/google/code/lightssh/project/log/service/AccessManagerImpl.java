@@ -92,7 +92,7 @@ public class AccessManagerImpl extends BaseManagerImpl<Access> implements Access
 	}
 	
 	/**
-	 * дϵͳ��־
+	 * 写系统日志
 	 */
 	public void writeSystemLog(Access t){
 		if( t == null )

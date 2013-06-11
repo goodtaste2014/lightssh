@@ -1,6 +1,7 @@
 package com.google.code.lightssh.project.scheduler.entity;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -10,6 +11,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
@@ -63,6 +66,13 @@ public class JobQueue extends UUIDModel{
 	 */
 	@Column(name="REF_ID",length=100,nullable=false)
 	private String refId;
+	
+	/**
+	 * 执行时间
+	 */
+	@Column(name="INVOKE_TIME",columnDefinition="DATE")
+	@Temporal( TemporalType.TIMESTAMP )
+	protected Calendar invokeTime;
 	
 	/**
 	 * 状态
@@ -179,6 +189,14 @@ public class JobQueue extends UUIDModel{
 
 	public void setRefId(String refId) {
 		this.refId = refId;
+	}
+
+	public Calendar getInvokeTime() {
+		return invokeTime;
+	}
+
+	public void setInvokeTime(Calendar invokeTime) {
+		this.invokeTime = invokeTime;
 	}
 
 	public List<Status> get_inQueryStatus() {
