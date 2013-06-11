@@ -16,9 +16,19 @@ import com.google.code.lightssh.project.security.entity.Permission;
 public interface NavigationManager extends BaseManager<Navigation>{
 	
 	/**
+	 * 查询所有
+	 */
+	public List<Navigation> listAll();
+	
+	/**
 	 * 查询最上层Navigation
 	 */
 	public List<Navigation> listTop( );
+	
+	/**
+	 * 查询菜单
+	 */
+	public List<Navigation> listMenu();
 	
 	/**
 	 * 查询导航对应的权限集

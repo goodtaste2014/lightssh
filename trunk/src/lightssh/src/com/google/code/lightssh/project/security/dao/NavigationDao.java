@@ -15,6 +15,11 @@ public interface NavigationDao extends Dao<Navigation>{
 	public List<Navigation> listTop( );
 	
 	/**
+	 * 查询菜单
+	 */
+	public List<Navigation> listMenu();
+	
+	/**
 	 * 查询导航对应的权限集
 	 */
 	public Collection<Permission> listPermission(Collection<Navigation> colls);

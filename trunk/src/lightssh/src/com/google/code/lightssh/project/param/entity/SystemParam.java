@@ -102,7 +102,7 @@ public class SystemParam extends UUIDModel{
 	 * 是否过期
 	 */
 	public boolean isExpired( ){
-		return period==null || period.isExpired(new Date() );
+		return period==null || !period.isExpired(new Date() );
 	}
 
 	public String getGroup() {

@@ -5,9 +5,12 @@
 	<head>
 		<title>index page</title>
 		<link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/styles/<mys:theme />/theme.css" />
-	
+	    <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/scripts/jquery/styles/theme.css" />
+	        
 		<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/jquery.min.js"></script>
 		<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/jquery.cookie.js"></script>
+		<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/ui/jquery-ui.custom.min.js"></script>
+		
 		<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/plugins/timers/jquery.timers-1.2.js"></script>
 	
 		<script type="text/javascript">
@@ -19,6 +22,10 @@
 			    		$.cookie( "REFRESH-HEADER",'',{path:'<%= request.getContextPath() %>'});
 			    		//location.reload();
 			    	}
+				});
+				
+				$(document).ready(function(){
+					$( "#header-tabs" ).tabs();
 				});
 			});
 			
@@ -97,6 +104,7 @@
 				</div>
 				<div class="left">&nbsp;</div>
 			</div>
+			
 		</div>
 		
 		<div class="line">

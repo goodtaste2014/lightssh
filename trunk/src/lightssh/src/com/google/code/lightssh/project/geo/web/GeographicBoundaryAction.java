@@ -85,6 +85,9 @@ public class GeographicBoundaryAction extends CrudAction<GeographicBoundary>{
 	 */
 	public String listchildren( ){
 		if( geo != null && StringUtil.hasText( geo.getCode() ) ){
+			geo.set_includes(GeographicBoundary.parse( 
+					request.getParameter("types") )) ;
+			
 			list = this.getManager().listGeoByParent(geo);
 		}
 		

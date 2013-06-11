@@ -74,6 +74,13 @@ public interface WorkflowManager extends Manager{
 	public ProcessInstance start( String processKey);
 	
 	/**
+	 * 启动流程
+	 * @param processKey 流程key
+	 * @param bizKey 业务key
+	 */
+	public ProcessInstance start( String processKey,String bizKey,String userId );
+	
+	/**
 	 * 认领任务
 	 */
 	public void claim( String taskId,String userId );

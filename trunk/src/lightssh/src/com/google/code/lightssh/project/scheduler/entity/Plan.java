@@ -88,6 +88,12 @@ public class Plan implements Persistence<String>,Sequenceable{
 	private Calendar createdTime;
 	
 	/**
+	 * 工作日期
+	 */
+	@Column(name="WORKDATE",length=8)
+	private String workdate;
+	
+	/**
 	 * 时间区间用于查询
 	 */
 	@Transient
@@ -155,6 +161,14 @@ public class Plan implements Persistence<String>,Sequenceable{
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getWorkdate() {
+		return workdate;
+	}
+
+	public void setWorkdate(String workdate) {
+		this.workdate = workdate;
 	}
 
 	@Override

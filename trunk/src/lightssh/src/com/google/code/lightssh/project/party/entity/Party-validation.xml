@@ -8,6 +8,12 @@
 		<field-validator type="requiredstring">
             <message>“名称”不能为空！</message>
         </field-validator>
+        <field-validator type="fieldexpression" >
+            <param name="expression">
+				( name.length() &lt; 100)
+            </param>
+            <message>长度不能大于100字符！</message>
+        </field-validator>
 	</field>
 	
 	<field name="description" >

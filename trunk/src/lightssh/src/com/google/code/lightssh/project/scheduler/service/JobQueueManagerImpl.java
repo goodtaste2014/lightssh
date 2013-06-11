@@ -121,28 +121,28 @@ public class JobQueueManagerImpl extends BaseManagerImpl<JobQueue> implements Jo
 	/**
 	 * 任务入队列
 	 */
-	public void jobInQueue( String jobType,String refId ){
-		jobInQueue( jobType,refId,DEFAULT_MAX_EXECUTE_COUNT);
+	public void jobInQueue( String jobType,String refId ,Calendar invokeTime ){
+		jobInQueue( jobType,refId,DEFAULT_MAX_EXECUTE_COUNT,invokeTime);
 	}
 	
 	/**
 	 * 任务入队列
 	 */
-	public void jobInQueue( String jobType,String refId,int maxSendCount ){
-		jobInQueue(jobType,null,maxSendCount,new String[]{refId});
+	public void jobInQueue( String jobType,String refId,int maxSendCount,Calendar invokeTime  ){
+		jobInQueue(jobType,null,maxSendCount,new String[]{refId},invokeTime);
 	}
 	
 	/**
 	 * 任务入队列
 	 */
-	public void jobInQueue( String jobType,int maxSendCount,String[] refIds ){
-		jobInQueue(jobType,null,maxSendCount,refIds);
+	public void jobInQueue( String jobType,int maxSendCount,String[] refIds,Calendar invokeTime  ){
+		jobInQueue(jobType,null,maxSendCount,refIds,invokeTime);
 	}
 	
 	/**
 	 * 任务入队列
 	 */
-	public void jobInQueue( String jobType,String jobName,int maxSendCount,String[] refIds ){
+	public void jobInQueue( String jobType,String jobName,int maxSendCount,String[] refIds,Calendar invokeTime ){
 		SchedulerType type = null;
 		if( !StringUtils.isEmpty(jobType) && !StringUtils.isEmpty(jobName) ){
 			type = schedulerTypeManager.safeGet(jobType,jobName);
@@ -168,6 +168,7 @@ public class JobQueueManagerImpl extends BaseManagerImpl<JobQueue> implements Jo
 			queue.setMaxSendCount(maxSendCount);
 			queue.setFailureCount(0);
 			queue.setStatus(JobQueue.Status.NEW);
+			queue.setInvokeTime(invokeTime);
 			
 			queues.add(queue);
 		}

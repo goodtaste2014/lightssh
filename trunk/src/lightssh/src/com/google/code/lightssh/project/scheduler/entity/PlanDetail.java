@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Version;
 
 import com.google.code.lightssh.common.entity.Persistence;
 
@@ -168,6 +169,13 @@ public class PlanDetail implements Persistence<String>{
 	@Column(name="CREATED_TIME",columnDefinition="DATE")
 	@Temporal( TemporalType.TIMESTAMP )
 	private Calendar createdTime;
+	
+	/**
+	 * 版本号
+	 */
+	@Version
+	@Column( name="VERSION" )
+	private Integer version; 
 	
 	/**
 	 * 是否异步任务
@@ -359,6 +367,14 @@ public class PlanDetail implements Persistence<String>{
 	@Override
 	public void preInsert() {
 		this.createdTime = Calendar.getInstance();		
+	}
+
+	public Integer getVersion() {
+		return version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
 	}
 
 }

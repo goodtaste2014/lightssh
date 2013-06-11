@@ -26,6 +26,12 @@ public interface SequenceManager extends Manager{
 	 */
 	public String nextSequenceNumber( Sequenceable sa );
 	
+	
+	/**
+	 * 下一个序列号码
+	 */
+	public String newTransactionNextSequenceNumber(Sequenceable sa);
+	
 	/**
 	 * 下一个格式化的流水号
 	 */

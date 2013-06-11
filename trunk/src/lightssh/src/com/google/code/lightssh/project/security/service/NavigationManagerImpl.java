@@ -139,5 +139,17 @@ public class NavigationManagerImpl extends BaseManagerImpl<Navigation> implement
 		
 		return listFilteringNavigation( partyAllPers );
 	}
+	
+	/**
+	 * 查询所有
+	 */
+	public List<Navigation> listAll() {
+		return this.navigationDao.listAll();
+	}
+
+	@Override
+	public List<Navigation> listMenu() {
+		return this.navigationDao.listMenu();
+	}
 
 }

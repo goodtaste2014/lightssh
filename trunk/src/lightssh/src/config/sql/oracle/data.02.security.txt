@@ -9,50 +9,50 @@ Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('系统管理'
 
 --企业
 Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('企业资料','ORG_MGR','');
-Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('企业资料查看','SETTINGS_ORGANIZATION_VIEWPARENT','/settings/organization/viewparent.do*');
-Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('企业资料设置','SETTINGS_ORGANIZATION_INITPARENT','/settings/organization/initparent.do*');
+Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('企业资料查看','SETTINGS_ORGANIZATION_VIEWPARENT','/settings/organization/viewparent.do');
+Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('企业资料设置','SETTINGS_ORGANIZATION_INITPARENT','/settings/organization/initparent.do');
 
 --部门
 Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('组织机构','PARTY_MGR','');
-Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('新建组织机构','PARTY_ORGANIZATION_EDIT','/party/organization/edit.do*');
-Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('保存组织机构','PARTY_ORGANIZATION_SAVE','/party/organization/save.do*');
-Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('删除组织机构','PARTY_ORGANIZATION_REMOVE','/party/organization/remove.do*');
-Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('查询组织机构','PARTY_ORGANIZATION_LIST','/party/organization/list.do*');
+Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('新建组织机构','PARTY_ORGANIZATION_EDIT','/party/organization/edit.do');
+Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('保存组织机构','PARTY_ORGANIZATION_SAVE','/party/organization/save.do');
+Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('删除组织机构','PARTY_ORGANIZATION_REMOVE','/party/organization/remove.do');
+Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('查询组织机构','PARTY_ORGANIZATION_LIST','/party/organization/list.do');
 
 --登录帐号
 Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('登录账号','LOGIN_ACCOUNT_MGR','');
-Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('查看登录账户','SECURITY_ACCOUNT_VIEW','/security/account/view.do*');
-Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('编辑登录账户','SECURITY_ACCOUNT_EDIT','/security/account/edit.do*');
-Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('保存登录账户','SECURITY_ACCOUNT_SAVE','/security/account/save.do*');
-Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('搜索登录账户','SECURITY_ACCOUNT_LIST','/security/account/list.do*');
-Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('进入重设密码','SECURITY_ACCOUNT_PRERESET','/security/account/prereset.do*');
-Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('重设密码','SECURITY_ACCOUNT_RESETPASSWORD','/security/account/resetpassword.do*');
-Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('删除登录账户','SECURITY_ACCOUNT_REMOVE','/security/account/remove.do*');
-Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('释放登录时间锁','SECURITY_ACCOUNT_RELEASELOCK','/security/account/releaselock.do*');
+Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('查看登录账户','SECURITY_ACCOUNT_VIEW','/security/account/view.do');
+Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('编辑登录账户','SECURITY_ACCOUNT_EDIT','/security/account/edit.do');
+Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('保存登录账户','SECURITY_ACCOUNT_SAVE','/security/account/save.do');
+Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('搜索登录账户','SECURITY_ACCOUNT_LIST','/security/account/list.do');
+Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('进入重设密码','SECURITY_ACCOUNT_PRERESET','/security/account/prereset.do');
+Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('重设密码','SECURITY_ACCOUNT_RESETPASSWORD','/security/account/resetpassword.do');
+Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('删除登录账户','SECURITY_ACCOUNT_REMOVE','/security/account/remove.do');
+Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('释放登录时间锁','SECURITY_ACCOUNT_RELEASELOCK','/security/account/releaselock.do');
 
-Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('待审核列表','SECURITY_ACCOUNT_TODOAUDITLIST','/security/account/todoauditlist.do*');
-Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('进入审核','SECURITY_ACCOUNT_TODOAUDIT','/security/account/todoaudit.do*');
-Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('审核登录帐户','SECURITY_ACCOUNT_AUDIT','/security/account/audit.do*');
-Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('审核结果','SECURITY_ACCOUNT_AUDITLIST','/security/account/auditlist.do*');
+Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('待审核列表','SECURITY_ACCOUNT_TODOAUDITLIST','/security/account/todoauditlist.do');
+Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('进入审核','SECURITY_ACCOUNT_TODOAUDIT','/security/account/todoaudit.do');
+Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('审核登录帐户','SECURITY_ACCOUNT_AUDIT','/security/account/audit.do');
+Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('审核结果','SECURITY_ACCOUNT_AUDITLIST','/security/account/auditlist.do');
 
 --角色
 Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('角色管理','SECURITY_ROLE_MGR','');
-Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('查看角色','SECURITY_ROLE_VIEW','/security/role/view.do*');
-Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('编辑角色','SECURITY_ROLE_EDIT','/security/role/edit.do*');
-Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('保存角色','SECURITY_ROLE_SAVE','/security/role/save.do*');
-Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('搜索角色','SECURITY_ROLE_LIST','/security/role/list.do*');
-Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('删除角色','SECURITY_ROLE_REMOVE','/security/role/remove.do*');
+Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('查看角色','SECURITY_ROLE_VIEW','/security/role/view.do');
+Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('编辑角色','SECURITY_ROLE_EDIT','/security/role/edit.do');
+Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('保存角色','SECURITY_ROLE_SAVE','/security/role/save.do');
+Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('搜索角色','SECURITY_ROLE_LIST','/security/role/list.do');
+Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('删除角色','SECURITY_ROLE_REMOVE','/security/role/remove.do');
 
-Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('待审核列表','SECURITY_ROLE_TODOAUDITLIST','/security/role/todoauditlist.do*');
-Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('进入审核','SECURITY_ROLE_TODOAUDIT','/security/role/todoaudit.do*');
-Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('审核登录帐户','SECURITY_ROLE_AUDIT','/security/role/audit.do*');
-Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('审核结果','SECURITY_ROLE_AUDITLIST','/security/role/auditlist.do*');
+Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('待审核列表','SECURITY_ROLE_TODOAUDITLIST','/security/role/todoauditlist.do');
+Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('进入审核','SECURITY_ROLE_TODOAUDIT','/security/role/todoaudit.do');
+Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('审核登录帐户','SECURITY_ROLE_AUDIT','/security/role/audit.do');
+Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('审核结果','SECURITY_ROLE_AUDITLIST','/security/role/auditlist.do');
 
 --基础管理
 Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('基础管理','SETTINGS_MGR','');
 Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('日志管理','SETTINGS_LOG_MGR','');
-Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('系统日志','SETTINGS_LOG_LIST','/settings/log/list.do*');
-Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('登录日志','SETTINGS_LOINLOG_LIST','/settings/log/loginlist.do*');
+Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('系统日志','SETTINGS_LOG_LIST','/settings/log/list.do');
+Insert into T_SECURITY_PERMISSION (DESCRIPTION,TOKEN,URL) values ('登录日志','SETTINGS_LOINLOG_LIST','/settings/log/loginlist.do');
 
 
 --插入权限导航 ==================================================================================================================================
