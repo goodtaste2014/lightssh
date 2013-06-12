@@ -39,7 +39,7 @@
 			<span>&nbsp;</span>
 			<div class="popup-menu-layer">
 				<ul class="dropdown-menu">
-					<li><a href="undeploy.do?deploymentId=<s:property value="id"/>">删除部署</a></li>
+					<li class="remove"><a href="undeploy.do?deploymentId=<s:property value="id"/>">删除部署</a></li>
 				</ul>
 			</div>
 		</mys:column>

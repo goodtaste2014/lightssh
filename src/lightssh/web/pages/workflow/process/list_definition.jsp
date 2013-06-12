@@ -71,16 +71,16 @@
 					
 					<li class="section"/>
 					
-					<li>
+					<li class="disabled">
 						<a href="#">详情</a>
 					</li>
-					<li>
+					<li class="disabled">
 						<a href="#">流程图</a>
 					</li>
 					
 					<li class="section"/>
 					
-					<li>
+					<li class="disabled">
 						<a href="#">历史版本</a>
 					</li>
 				</ul>
