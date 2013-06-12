@@ -70,10 +70,13 @@
 			<span>&nbsp;</span>
 			<div class="popup-menu-layer">
 				<ul class="dropdown-menu">
-					<li>
+					<li class="disabled">
 						<a href="#">详情</a>
 					</li>
-					<li>
+					
+					<li class="section"/>
+					
+					<li class="disabled">
 						<a href="#">流程图</a>
 					</li>
 				</ul>

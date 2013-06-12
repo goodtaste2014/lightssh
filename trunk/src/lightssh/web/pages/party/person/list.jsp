@@ -59,16 +59,17 @@
 				<span>&nbsp;</span>
 				<div class="popup-menu-layer">
 					<ul class="dropdown-menu">
-						<li>
-							<a href="<s:url value="/party/person/edit.do?party=person&party.id=%{id}"/>">编辑信息</a>
-						</li>
-						<li>
+						<li class="view">
 							<a href="<s:url value="/party/person/view.do?party=person&party.id=%{id}"/>">查看人员</a>
 						</li>
 						
 						<li class="section"/>
 						
-						<li>
+						<li class="edit">
+							<a href="<s:url value="/party/person/edit.do?party=person&party.id=%{id}"/>">编辑信息</a>
+						</li>
+						
+						<li class="remove">
 							<a href="#" onclick="javascript:doRemove('<s:property value="%{id}"/>','<s:property value="%{name}"/>')">删除</a>
 						</li>
 					</ul>

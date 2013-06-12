@@ -50,8 +50,8 @@
 			<span>&nbsp;</span>
 			<div class="popup-menu-layer">
 				<ul class="dropdown-menu">
-					<li>
-						<a href="#">&nbsp;</a>
+					<li class="disabled">
+						<a href="#">详情</a>
 					</li>
 				</ul>
 			</div>
