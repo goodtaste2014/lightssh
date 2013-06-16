@@ -24,19 +24,24 @@
 		
 		<%@ include file="/pages/common/messages.jsp" %>
 		
-		<%-- 
-		<s:form name="list" namespace="/party/organization" method="post">
+		<s:form name="list" method="post">
 			<table class="profile">
 				<tbody>
 					<tr>
+						<th><label for="id">编号</label></th>
+						<td>
+							<s:hidden name="party" class="person"/>
+							<s:textfield id="id" name="party.id" size="10" maxlength="100"/>
+						</td>
 						<th><label for="name">名称</label></th>
-						<td><s:textfield id="name" name="organization.name" size="40" maxlength="100"/></td>
-						<td colspan="2"><input type="submit" value="查询"/></td>
+						<td>
+							<s:textfield id="name" name="party.name" size="20" maxlength="100"/>
+						</td>
+						<td colspan="2"><input type="submit" class="action search" value="查询"/></td>
 					</tr>
 				</tbody>
 			</table>
 		</s:form>
-		--%>
 		
 		<mys:table cssClass="list" value="page" status="loop">
 			<mys:column title="序号" width="40px">
