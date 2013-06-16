@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import com.google.code.lightssh.common.dao.jpa.JpaAnnotationDao;
@@ -31,8 +32,12 @@ public class PartyDaoJpa extends JpaAnnotationDao<Party> implements PartyDao{
 		hql.append( " WHERE 1=1 ");
 		
 		if( t != null ){
-			if( t.getName() != null && t.getName().trim() != null 
-					&& !"".equals(t.getName().trim())){
+			if( !StringUtils.isEmpty(t.getId()) ){
+				hql.append( " AND m.id = ? " );
+				params.add( t.getId().trim() );
+			}
+			
+			if( !StringUtils.isEmpty(t.getName())){
 				hql.append( " AND m.name like ? " );
 				params.add( "%" + t.getName().trim() + "%");
 			}
