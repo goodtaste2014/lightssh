@@ -65,7 +65,8 @@
 							<li class="remove">
 								<a href="#" onclick="javascript:doRemove('<s:property value="%{id}"/>','<s:property value="%{name}"/>')">删除角色</a>
 							</li>
-						</s:else>					</ul>
+						</s:else>					
+					</ul>
 				</div>
 			</mys:column>
 		</mys:table>

@@ -27,6 +27,7 @@
 				<s:property value="#loop.index+1"/>
 			</mys:column>
 			
+			<mys:column title="类型" value="type.name"/>
 			<mys:column title="任务编号" value="identity" width="150px"/>
 			<mys:column title="组名" value="group" width="50px"/>
 			<mys:column title="前置任务" value="precondition.id" width="150px"/>
@@ -36,9 +37,10 @@
 				<s:property value="synTask?'异步':'同步'"/>
 			</mys:column>
 			<mys:column title="状态" width="60px">
+				<font color="<s:property value="%{warning?'red':(finished?'green':'')}"/>">
 				<s:property value="status"/>
+				</font>
 			</mys:column>
-			<mys:column title="类型" value="type.name"/>
 			<%-- 
 			<mys:column title="异常信息">
 				<s:property value="@com.google.code.lightssh.common.util.TextFormater@format(errMsg,100,true)"/>

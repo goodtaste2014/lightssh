@@ -24,6 +24,15 @@ public class PlanDetailDaoJpa extends JpaDao<PlanDetail> implements PlanDetailDa
 	private static final long serialVersionUID = 2299825707757948995L;
 	
 	/**
+	 * 带锁的查询
+	 */
+	public PlanDetail readWithLock( String id ){
+		String sql = "select * from t_scheduler_plan_detail where id = ? for update";
+		Query query = getEntityManager().createNativeQuery(sql,PlanDetail.class);
+		return (PlanDetail)addQueryParams(query, id).getSingleResult();
+	}
+	
+	/**
 	 * 查询依赖未完成任务
 	 */
 	@SuppressWarnings("unchecked")
@@ -56,13 +65,13 @@ public class PlanDetailDaoJpa extends JpaDao<PlanDetail> implements PlanDetailDa
 	 */
 	public int updateStatusAfterInvoke(String id,PlanDetail.Status newValue ){
 		String hql = "UPDATE " + this.entityClass.getName() 
-			+ " AS m SET m.status = ? WHERE m.id = ? AND m.status not in (?,?) " ;
+			+ " AS m SET m.status = ? WHERE m.id = ? AND m.status not in (?) " ;
 		
 		List<Object> params = new ArrayList<Object>( );
 		params.add( newValue );
 		params.add( id );
 		params.add(PlanDetail.Status.SUCCESS );
-		params.add(PlanDetail.Status.FAILURE );
+		//params.add(PlanDetail.Status.FAILURE ); //取消失败
 		
 		Query query = getEntityManager().createQuery(hql);
 		this.addQueryParams(query, params);

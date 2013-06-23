@@ -192,6 +192,13 @@ public class PlanDetail implements Persistence<String>{
 	}
 	
 	/**
+	 * 是否告警
+	 */
+	public boolean isWarning(){
+		return Status.EXCEPTION.equals(status) || Status.FAILURE.equals(status);
+	}
+	
+	/**
 	 * 依赖是否完成
 	 */
 	public boolean isPreconditionFinished(){

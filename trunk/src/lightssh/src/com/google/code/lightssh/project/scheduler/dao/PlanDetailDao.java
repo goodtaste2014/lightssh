@@ -15,6 +15,11 @@ import com.google.code.lightssh.project.scheduler.entity.PlanDetail;
 public interface PlanDetailDao extends Dao<PlanDetail>{
 	
 	/**
+	 * 带锁的查询
+	 */
+	public PlanDetail readWithLock( String id );
+	
+	/**
 	 * 查询依赖未完成任务
 	 */
 	public List<PlanDetail> listRelyOnUnsuccessful( String id );
@@ -26,7 +31,7 @@ public interface PlanDetailDao extends Dao<PlanDetail>{
 	
 	/**
 	 * 定时任务调用完成更新状态
-	 * 如果异步回执已更新状态为'成功'或'失败'则不进行状态更新
+	 * 如果异步回执已更新状态为'成功'则不进行状态更新
 	 */
 	public int updateStatusAfterInvoke(String id,PlanDetail.Status newValue );
 	
