@@ -89,16 +89,17 @@ jQuery.lightssh={
 	 */
 	,showActionMessage: function( msg,clazz ) {
 		if( $( "div.messages" ).length == 0 ) {
-			$( 'table' ).before( "<div class='messages'></div>" )
+			$( 'table' ).before( "<div class='messages'></div>" );
 		}
 		
 		if( clazz == null )
 			clazz = 'success';
 		
 		if( $( ".messages > ."+clazz ).length == 0 ) {
-			$( '.messages' ).append( "<div class='"+clazz+"'>" + msg + "</div>" )
+			$( '.messages' ).append( "<div class='"+clazz+"'>" + msg + "</div>" );
 		} else {
-			$( '.error' ).text( msg );
+			$( '.messages' ).empty();
+			$( '.messages' ).append( "<div class='"+clazz+"'>" + msg + "</div>" );
 		}
 	}
 	
@@ -237,7 +238,7 @@ jQuery.lightssh={
 				if( checkPassword ) //校验密码
 					$.lightssh.checkPassword({'contextPath':opts.contextPath},callback );
 				else
-					callback(true)
+					callback(true);
 			}else if('genAuth' == json.authType ){ //已经授权
 				$.lightssh.showActionMessage('授权可继续使用！');
 				callback(true,json.ticket); 

@@ -97,6 +97,16 @@ public class PlanManagerImpl extends BaseManagerImpl<Plan> implements PlanManage
 	}
 	
 	/**
+	 * 计划明细
+	 */
+	public PlanDetail getDetailWithLock( String id ){
+		if( StringUtils.isEmpty(id) )
+			return null;
+		
+		return this.planDetailDao.readWithLock(id);
+	}
+	
+	/**
 	 * 更新明细状态
 	 */
 	public void updateDetailStatus(String detailId,Status status ){
@@ -136,7 +146,7 @@ public class PlanManagerImpl extends BaseManagerImpl<Plan> implements PlanManage
 	 * 更新明细状态
 	 */
 	public void updateDetailStatus(String detailId,boolean success,String errMsg){
-		PlanDetail detail = getDetail(detailId);
+		PlanDetail detail = getDetailWithLock(detailId);
 		if( detail == null )
 			throw new ApplicationException("执行计划明细["+detailId+"]对应数据不存在！");
 		
@@ -388,8 +398,9 @@ public class PlanManagerImpl extends BaseManagerImpl<Plan> implements PlanManage
 		if( results == null || results.isEmpty() )
 			return;
 		
+		String anyTaskId = null;
 		for( Result result:results ){
-			PlanDetail detail = planDetailDao.read( result.getKey() );
+			PlanDetail detail = planDetailDao.readWithLock( result.getKey() );
 			if( detail != null ){
 				if( detail.getFireTime() == null )
 					detail.setFireTime(Calendar.getInstance());
@@ -419,8 +430,13 @@ public class PlanManagerImpl extends BaseManagerImpl<Plan> implements PlanManage
 				
 				log.info("计划任务[{}]状态从["+detail.getStatus()+"]更新为["
 						+newStatus+"]-[{}]",detail.getId(),i>0?"成功":"失败");
+				
+				anyTaskId = detail.getId();
 			}
 		}//end for
+		
+		//如果计划任务明细执行完成，确认完成标志更新成功
+		updateStatus( anyTaskId );
 	}
 
 }

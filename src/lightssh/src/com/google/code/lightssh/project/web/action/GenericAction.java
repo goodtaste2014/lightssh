@@ -4,10 +4,10 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.catalina.Globals;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.struts2.ServletActionContext;
 
 import com.google.code.lightssh.common.entity.Persistence;
 import com.google.code.lightssh.common.web.SessionKey;
@@ -97,7 +97,7 @@ public class GenericAction<T extends Persistence<?>> extends com.google.code.lig
 		if( cachedParamMap == null )
 			return null;
 		
-		return cachedParamMap.get(request.getAttribute( Globals.FORWARD_REQUEST_URI_ATTR ));
+		return cachedParamMap.get( ServletActionContext.getRequest().getRequestURI() );
 	}
 	
 	/**

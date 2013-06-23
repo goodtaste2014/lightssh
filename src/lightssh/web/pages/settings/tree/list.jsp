@@ -59,7 +59,7 @@
 						<s:textfield name="tree.name" id="name"/>
 					</td>
 					
-					<td colspan="2"><input type="submit" class="action search" value="查询"/></td>
+					<td colspan="2"><input type="submit" class="action search right" value="查询"/></td>
 				</tr>
 			</tbody>
 		</table>

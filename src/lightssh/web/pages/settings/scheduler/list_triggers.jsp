@@ -11,7 +11,7 @@
 			function toggle(name,group,pause){
 				var url = '<s:url value="/settings/scheduler/toggle.do"/>';
 				url = url + '?name='+name+'&group='+group;
-				if( confirm('确认'+(pause?'启动':'暂停')+'定时任务?') )
+				if( confirm('确认'+(pause?'暂停':'启动')+'定时任务?') )
 					location.href=url;
 			}
 		</script>

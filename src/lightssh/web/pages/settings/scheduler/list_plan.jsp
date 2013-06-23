@@ -51,11 +51,14 @@
 			</mys:column>
 			
 			<mys:column title="任务编号" value="identity" sortable="true" sortKey="id" width="120px"/>
+			<mys:column title="工作日" value="workdate" sortable="false" width="50px"/>
 			<mys:column title="计划执行时间" value="planFireTime" sortable="true" width="150px"/>
 			<mys:column title="实际执行时间" value="fireTime" sortable="false" width="150px"/>
 			<mys:column title="执行完成时间" value="finishTime" sortable="false" width="150px"/>
 			<mys:column title="状态" width="50px">
-				<s:property value="finished?'完成':'未完成'"/>
+				<font color="<s:property value="%{finished?'green':'red'}"/>">
+					<s:property value="finished?'完成':'未完成'"/>
+				</font>
 			</mys:column>
 			<%-- 
 			--%>
