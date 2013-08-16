@@ -139,15 +139,27 @@
 					<li><a href="<s:url value="/settings/geo/list.do"/>" target="main_frame">地理区域</a></li>
 					<%-- 分类树--%>
 					<li><a href="<s:url value="/settings/tree/list.do"/>" target="main_frame">分类树</a></li>
-					<%-- 工作流--%>
+				</ul>
+			</li>
+			
+			<li>
+				<a href="#">工作流管理</a>
+				<ul id="workflow_mgr">
+					<li><a href="<s:url value="/workflow/deployment/list.do"/>" target="main_frame">部署列表</a></li>
+					<li><a href="<s:url value="/workflow/process/definitionlist.do"/>" target="main_frame">流程类型</a></li>
 					<li>
-						<a href="#">工作流</a>
-						<ul id="workflow">
-							<li><a href="<s:url value="/workflow/deployment/list.do"/>" target="main_frame">部署列表</a></li>
-							<li><a href="<s:url value="/workflow/process/definitionlist.do"/>" target="main_frame">流程类型</a></li>
+						<a href="#">流程管理</a>
+						<ul id="workflow_process">
 							<li><a href="<s:url value="/workflow/process/instancelist.do"/>" target="main_frame">未完成流程</a></li>
-							<li><a href="<s:url value="/workflow/process/historylist.do"/>" target="main_frame">已完成流程</a></li>
+							<li><a href="<s:url value="/workflow/process/list.do"/>" target="main_frame">流程查询</a></li>
+							<li><a href="<s:url value="/workflow/process/my.do"/>" target="main_frame">我的流程</a></li>
+						</ul>
+					</li>
+					<li>
+						<a href="#">任务管理</a>
+						<ul id="workflow_task">
 							<li><a href="<s:url value="/workflow/task/list.do"/>" target="main_frame">任务列表</a></li>
+							<li><a href="<s:url value="/workflow/task/mytodolist.do"/>" target="main_frame">我的待办任务</a></li>
 						</ul>
 					</li>
 				</ul>

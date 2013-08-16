@@ -16,6 +16,7 @@ import org.activiti.engine.task.Task;
 
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.service.Manager;
+import com.google.code.lightssh.project.workflow.entity.MyProcess;
 
 /**
  * 工作流业务接口
@@ -29,14 +30,32 @@ public interface WorkflowManager extends Manager{
 	public ListPage<ProcessDefinition> listProcessDefinition( ListPage<ProcessDefinition> page );
 	
 	/**
+	 * 查询流程定义
+	 * @param key 流程定义Key
+	 */
+	public ProcessDefinition getProcessDefinition( String key );
+	
+	/**
 	 * 查询流程实例
 	 */
 	public ListPage<ProcessInstance> listProcessInstance( ListPage<ProcessInstance> page );
 	
 	/**
+	 * 查询流程实例
+	 */
+	public ProcessInstance getProcessInstance( String id );
+	
+	/**
 	 * 历史流程示例
 	 */
-	public ListPage<HistoricProcessInstance> listProcessHistory( ListPage<HistoricProcessInstance> page );
+	public ListPage<HistoricProcessInstance> listProcessHistory(
+			MyProcess process,ListPage<HistoricProcessInstance> page );
+	
+	/**
+	 * 查询与我相关的流程
+	 */
+	public ListPage<HistoricProcessInstance> listMyProcess(
+			MyProcess process,ListPage<HistoricProcessInstance> page );
 	
 	/**
 	 * 查询任务
@@ -44,9 +63,14 @@ public interface WorkflowManager extends Manager{
 	public Task getTask( String taskId );
 	
 	/**
+	 * 查询流程中活动的任务
+	 */
+	public Task getTaskByProcessId( String processId );
+	
+	/**
 	 * 查询任务
 	 */
-	public ListPage<Task> listTask( ListPage<Task> page );
+	public ListPage<Task> listTask(Task task, ListPage<Task> page );
 	
 	/**
 	 * 查询任务之前表单数据
@@ -78,7 +102,7 @@ public interface WorkflowManager extends Manager{
 	 * @param processKey 流程key
 	 * @param bizKey 业务key
 	 */
-	public ProcessInstance start( String processKey,String bizKey,String userId );
+	public ProcessInstance start( String processKey,String bizKey,String userId,Map<String,Object> variables );
 	
 	/**
 	 * 认领任务
@@ -89,6 +113,11 @@ public interface WorkflowManager extends Manager{
 	 * 完成任务
 	 */
 	public void complete( String taskId );
+	
+	/**
+	 * 完成任务
+	 */
+	public void complete( String taskId,String processInstanceId,String message );
 	
 	/**
 	 * 任务表单数据
