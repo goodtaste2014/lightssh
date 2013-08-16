@@ -57,7 +57,7 @@
 		</mys:column>
 		<mys:column title="流程定义ID" value="processDefinitionId" sortable="true" width="100px"/>
 		<mys:column title="流程实例ID" value="processInstanceId" sortable="true" width="100px"/>
-		<mys:column title="当前任务" value="activityId" sortable="true" width="200px"/>
+		<mys:column title="当前任务节点" value="activityId" sortable="true" width="200px"/>
 		<mys:column title="活动" sortable="false" width="50px">
 			<s:property value="active?'是':'否'"/>
 		</mys:column>

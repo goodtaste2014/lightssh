@@ -39,7 +39,7 @@
 	
 	<%@ include file="/pages/common/messages.jsp" %>
 	
-	<mys:table cssClass="list" value="task_page" status="loop" pageParamPrefix="task_page">
+	<mys:table cssClass="list" value="taskPage" status="loop" pageParamPrefix="task_page">
 		<mys:column title="序号" width="50px">
 			<s:property value="#loop.index + 1"/>
 		</mys:column>

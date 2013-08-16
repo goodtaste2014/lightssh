@@ -21,16 +21,20 @@
 	</package>
 	
 	<package name="workflow_process" extends="default" namespace="/workflow/process">
-		<action name="definitionlist" class="workflowAction" method="processDefinitionList">
+		<action name="definitionlist" class="workflowProcessAction" method="processDefinitionList">
 			<result name="success">/pages/workflow/process/list_definition.jsp</result>	
         </action>
         
-		<action name="instancelist" class="workflowAction" method="processInstanceList">
+		<action name="instancelist" class="workflowProcessAction" method="processInstanceList">
 			<result name="success">/pages/workflow/process/list_instance.jsp</result>	
         </action>
         
-		<action name="historylist" class="workflowAction" method="historyInstanceList">
-			<result name="success">/pages/workflow/process/list_history.jsp</result>	
+		<action name="list" class="workflowProcessAction" method="list">
+			<result name="success">/pages/workflow/process/list_process.jsp</result>	
+        </action>
+        
+		<action name="my" class="workflowProcessAction" method="myProcess">
+			<result name="success">/pages/workflow/process/my_process.jsp</result>	
         </action>
         
         <action name="start" class="workflowAction" method="start">
@@ -40,32 +44,36 @@
     </package>
     
 	<package name="workflow_task" extends="default" namespace="/workflow/task">
-		<action name="list" class="workflowAction" method="tasklist">
+		<action name="list" class="workflowTaskAction" method="list">
 			<result name="success">/pages/workflow/task/list.jsp</result>	
         </action>
         
-		<action name="claim" class="workflowAction" method="claim">
+		<action name="mytodolist" class="workflowTaskAction" method="myTodoList">
+			<result name="success">/pages/workflow/task/list.jsp</result>	
+        </action>
+        
+		<action name="claim" class="workflowTaskAction" method="claim">
 			<result name="success" type="redirectAction">list</result>	
         </action>
         
-		<action name="prepare" class="workflowAction" method="prepare">
+		<action name="prepare" class="workflowTaskAction" method="prepare">
 			<result name="input" type="chain">render</result>
 			<result name="success" type="chain">complete</result>
         </action>
         
-		<action name="render" class="workflowAction" method="render">
+		<action name="render" class="workflowTaskAction" method="render">
 			<result name="success">/pages/workflow/form/rendering.jsp</result>	
         </action>
         
-		<action name="submit" class="workflowAction" method="submit">
+		<action name="submit" class="workflowTaskAction" method="submit">
 			<result name="success" type="chain">view</result>
         </action>
         
-		<action name="view" class="workflowAction" method="view">
+		<action name="view" class="workflowTaskAction" method="view">
 			<result name="success">/pages/workflow/form/rendering.jsp</result>
         </action>
         
-		<action name="complete" class="workflowAction" method="complete">
+		<action name="complete" class="workflowTaskAction" method="complete">
 			<result name="success" type="redirectAction">list</result>	
         </action>
 	</package>
