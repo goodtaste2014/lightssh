@@ -21,7 +21,7 @@
 	</bean>
 	
 	<!-- hession remote client example -->
-	<bean id="remoteService" class="com.google.code.lightssh.project.remoting.hessian.MyHessianProxyFactoryBean">
+	<bean id="remoteService" class="com.google.code.lightssh.common.support.hessian.MyHessianProxyFactoryBean">
 		<property name="system" value="lightssh"/>
 		<property name="serviceUrl" value="/remoting/HessianExampleService"/>
 		<property name="serviceInterface" value="com.google.code.lightssh.project.example.service.RemotingManager"/>
