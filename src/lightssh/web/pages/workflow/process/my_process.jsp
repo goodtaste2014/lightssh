@@ -71,7 +71,7 @@
 			<s:property value="@com.google.code.lightssh.common.util.TextFormater@timeFormat(durationInMillis)"/>
 		</mys:column>
 		--%>
-		<mys:column title="流程编号" value="processInstanceId" sortable="true" width="80px"/>
+		<mys:column title="流程编号" value="processInstanceId" sortable="true" sortKey="PROC_INST_ID_" width="80px"/>
 		<mys:column title="流程类型" width="180px">
 			<s:set name="proDef" value="@com.google.code.lightssh.project.workflow.util.WorkflowHelper@getProcessDefinition(processDefinitionId)"/>
 			<s:property value="#proDef.name"/>
@@ -90,7 +90,7 @@
 			<font color="<s:property value="endTime==null?'green':'black'"/>"><s:property value="endTime==null?'活动':'结束'"/></font>
 		</mys:column>
 		<mys:column title="创建者" value="startUserId" sortable="false" width="100px"/>
-		<mys:column title="开始时间" sortable="true" sortKey="startTime" width="150px">
+		<mys:column title="开始时间" sortable="true" sortKey="START_TIME_" width="150px">
 			<s:property value="@com.google.code.lightssh.common.util.TextFormater@format(startTime,'yyyy-MM-dd HH:mm:ss')"/>
 		</mys:column>
 		
@@ -98,8 +98,8 @@
 			<span>&nbsp;</span>
 			<div class="popup-menu-layer">
 				<ul class="dropdown-menu">
-					<li class="disabled">
-						<a href="#">详情</a>
+					<li class="view">
+						<a href="<s:url value="view.do?process.processInstanceId=%{processInstanceId}"/>">流程详情</a>
 					</li>
 				</ul>
 			</div>

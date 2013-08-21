@@ -13,14 +13,19 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.google.code.lightssh.common.entity.base.UUIDModel;
+import com.google.code.lightssh.common.entity.Persistence;
+import com.google.code.lightssh.common.model.Sequenceable;
+import com.google.code.lightssh.common.util.StringUtil;
 import com.google.code.lightssh.project.util.constant.AuditStatus;
 
 /**
@@ -30,11 +35,17 @@ import com.google.code.lightssh.project.util.constant.AuditStatus;
  */
 @Entity
 @Table( name="T_SECURITY_ROLE")
-public class Role extends UUIDModel implements Cloneable{
+public class Role implements Persistence<String>,Sequenceable,Cloneable{
 
 	private static final long serialVersionUID = -2118356457067244665L;
 	
-
+	/**
+	 * ID
+	 */
+	@Id
+	@Column(name="ID")
+	protected String id;
+	
 	/**
 	 * 只读，用于系统初始化角色
 	 */
@@ -60,6 +71,13 @@ public class Role extends UUIDModel implements Cloneable{
 	 */
 	@Column( name="DESCRIPTION",length=200  )
 	private String description;
+	
+	/**
+	 * 创建日期
+	 */
+	@Column(name="CREATED_TIME",columnDefinition="DATE")
+	@Temporal( TemporalType.TIMESTAMP )
+	protected Calendar createdTime;
 	
 	/**
 	 * 角色对应权限
@@ -146,6 +164,35 @@ public class Role extends UUIDModel implements Cloneable{
 		 }
 	}
 	
+	@Override
+	public String getSequenceKey() {
+		return "SR";
+	}
+
+	@Override
+	public int getSequenceLength() {
+		return 5;
+	}
+
+	@Override
+	public int getSequenceStep() {
+		return 1;
+	}
+	
+	public boolean isInsert( ){
+		return StringUtil.clean(this.id) == null;
+	}
+	
+	@Override
+	public void postInsertFailure() {
+		this.id = null;
+	}
+
+	@Override
+	public String getIdentity() {
+		return this.id;
+	}
+	
 	//-- getters and setters --------------------------------------------------
 
 	public Boolean getReadonly() {
@@ -186,6 +233,22 @@ public class Role extends UUIDModel implements Cloneable{
 
 	public void setStatus(AuditStatus status) {
 		this.status = status;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public Calendar getCreatedTime() {
+		return createdTime;
+	}
+
+	public void setCreatedTime(Calendar createdTime) {
+		this.createdTime = createdTime;
 	}
 
 }

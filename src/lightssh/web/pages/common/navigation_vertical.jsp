@@ -150,7 +150,7 @@
 					<li>
 						<a href="#">流程管理</a>
 						<ul id="workflow_process">
-							<li><a href="<s:url value="/workflow/process/instancelist.do"/>" target="main_frame">未完成流程</a></li>
+							<%--<li><a href="<s:url value="/workflow/process/instancelist.do"/>" target="main_frame">未完成流程</a></li>--%>
 							<li><a href="<s:url value="/workflow/process/list.do"/>" target="main_frame">流程查询</a></li>
 							<li><a href="<s:url value="/workflow/process/my.do"/>" target="main_frame">我的流程</a></li>
 						</ul>
