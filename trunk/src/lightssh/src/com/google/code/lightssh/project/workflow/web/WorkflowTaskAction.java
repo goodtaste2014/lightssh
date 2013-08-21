@@ -99,11 +99,25 @@ public class WorkflowTaskAction extends GenericAction{
 	}
 	
 	/**
+	 * 代办认领人
+	 */
+	public String proxyClaim( ){
+		try{
+			String userId = request.getParameter("userId");
+			workflowManager.changeAssignee(taskId ,userId);
+		}catch( Exception e ){
+			this.saveErrorMessage( e.getMessage() );
+		}
+		return SUCCESS;
+	}
+	
+	/**
 	 * 预做任务
 	 */
 	public String prepare( ){
 		TaskFormData data = workflowManager.getTaskFormData(taskId);
-		if( data != null ){
+		if( data != null && data.getFormProperties() != null 
+				&& !data.getFormProperties().isEmpty() ){
 			request.setAttribute("task_form_data", data);
 			return INPUT;
 		}
@@ -162,9 +176,16 @@ public class WorkflowTaskAction extends GenericAction{
 		if( task == null )
 			this.saveErrorMessage("任务["+taskId+"]不存在！");
 		
+		Boolean passed =null;
+		if(request.getParameter("passed") !=null)
+			passed = "true".equalsIgnoreCase(request.getParameter("passed"));
+		
+		String message = request.getParameter("messsage");
+		
 		//TODO 检查提交流程是否与assignee相同
 		try{
-			workflowManager.complete( taskId ,task.getProcessInstanceId(),"测试XXXX^^&……");
+			workflowManager.complete( taskId ,task.getProcessInstanceId()
+					,getLoginUser(),passed,message);
 		}catch( Exception e ){
 			this.saveErrorMessage( e.getMessage() );
 		}

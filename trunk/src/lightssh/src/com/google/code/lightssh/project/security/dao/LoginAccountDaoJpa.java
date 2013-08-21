@@ -9,16 +9,18 @@ import java.util.List;
 
 import javax.persistence.Query;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import com.google.code.lightssh.common.ApplicationException;
-import com.google.code.lightssh.common.dao.jpa.JpaAnnotationDao;
+import com.google.code.lightssh.common.dao.jpa.JpaDao;
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.util.StringUtil;
 import com.google.code.lightssh.project.party.entity.Organization;
 import com.google.code.lightssh.project.party.entity.Party;
 import com.google.code.lightssh.project.security.entity.LoginAccount;
 import com.google.code.lightssh.project.security.entity.Permission;
+import com.google.code.lightssh.project.security.entity.Role;
 import com.google.code.lightssh.project.util.constant.AuditStatus;
 
 /**
@@ -27,7 +29,7 @@ import com.google.code.lightssh.project.util.constant.AuditStatus;
  *
  */
 @Repository("loginAccountDao")
-public class LoginAccountDaoJpa extends JpaAnnotationDao<LoginAccount> 
+public class LoginAccountDaoJpa extends JpaDao<LoginAccount> 
 	implements LoginAccountDao{
 
 	private static final long serialVersionUID = 4617159875674281868L;
@@ -258,7 +260,50 @@ public class LoginAccountDaoJpa extends JpaAnnotationDao<LoginAccount>
 			+ " left join T_REF_LOGINACCOUNT_ROLE ref_lr on sla.id = ref_lr.loginaccount_id " 
 			+ " where ref_lr.role_id in( " + roles + " ) order by sla.LOGIN_NAME asc ";
 		
-		return getEntityManager().createNativeQuery( sql, super.entityClass ).getResultList();
+		Query query = addQueryParams(getEntityManager().createNativeQuery(
+				sql.toString(), super.entityClass ), p.getToken() );
+		
+		return query.getResultList();
+	}
+	
+	/**
+	 * 根据角色ID或角色名称查询用户
+	 */
+	@SuppressWarnings("unchecked")
+	public List<LoginAccount> listByRole(AuditStatus status,final Role r ){
+		if( r == null || (StringUtils.isEmpty(r.getIdentity()) 
+				&& StringUtils.isEmpty(r.getName()) ))
+			return null;
+		
+		List<Object> params = new ArrayList<Object>();
+		StringBuffer roles = new StringBuffer(
+				"select sr.ID from T_SECURITY_ROLE sr where 1=1 ");
+		
+		if( StringUtils.isNotEmpty(r.getIdentity()) ){
+			roles.append(" AND sr.ID = ?");
+			params.add( r.getIdentity().trim());
+		}
+		
+		if( StringUtils.isNotEmpty(r.getName()) ){
+			roles.append(" AND sr.NAME = ?");
+			params.add( r.getName().trim());
+		}
+		
+		
+		String la_ids = "select distinct rlr.loginaccount_id from "
+				+"T_REF_LOGINACCOUNT_ROLE rlr where rlr.ROLE_ID in( "+roles+" )";
+		
+		StringBuffer sql = new StringBuffer(
+				"select * from T_SECURITY_LOGINACCOUNT where 1=1 AND id in( "+la_ids+" )");
+		if( status != null ){
+			sql.append(" AND STATUS = ? ");
+			params.add( status.name() );
+		}
+		
+		Query query = addQueryParams(getEntityManager().createNativeQuery(
+				sql.toString(), super.entityClass ), params);
+		
+		return query.getResultList();
 	}
 	
 	/**

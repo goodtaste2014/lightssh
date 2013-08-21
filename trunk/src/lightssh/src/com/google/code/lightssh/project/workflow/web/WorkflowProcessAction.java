@@ -1,10 +1,13 @@
 package com.google.code.lightssh.project.workflow.web;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Comment;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -91,9 +94,33 @@ public class WorkflowProcessAction extends GenericAction{
 	public String list( ){
 		if( process == null ){
 			process = new MyProcess();
-			process.setFinish( false );
+			//process.setFinish( false );
 		}
+		
+		if( hp_page == null )
+			hp_page = new ListPage<HistoricProcessInstance>();
+		
+		if( hp_page.getOrderByList() == null )
+			hp_page.addDescending("START_TIME_");
+		
 		hp_page = workflowManager.listProcessHistory(process,hp_page);
+		return SUCCESS;
+	}
+	
+	/**
+	 * 流程查询
+	 */
+	public String view( ){
+		if( process == null || process.getProcessInstanceId() == null )
+			return INPUT;
+		
+		HistoricProcessInstance proc = workflowManager.getProcessHistory(process.getProcessInstanceId());
+		if( proc == null ){
+			return INPUT;
+		}
+		
+		request.setAttribute("process", proc );
+		
 		return SUCCESS;
 	}
 	
@@ -109,8 +136,26 @@ public class WorkflowProcessAction extends GenericAction{
 			process.setFinish( false );
 		}
 		
+		if( hp_page == null )
+			hp_page = new ListPage<HistoricProcessInstance>();
+		
+		if( hp_page.getOrderByList() == null )
+			hp_page.addDescending("START_TIME_");
+		
 		process.setAssignee(this.getLoginUser());
 		hp_page = workflowManager.listMyProcess(process,hp_page);
 		return SUCCESS; 
+	}
+	
+	/**
+	 * 流程注释
+	 */
+	public String comment(){
+		if( this.process != null && process.getProcessInstanceId() != null ){
+			List<Comment> comments = workflowManager.getProcessInstanceComments( process.getProcessInstanceId());
+			request.setAttribute("proc_comments",comments);
+		}
+		
+		return SUCCESS;
 	}
 }

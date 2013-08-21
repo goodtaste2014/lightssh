@@ -15,6 +15,11 @@ public class MyProcess implements Serializable{
 	private static final long serialVersionUID = -929576196717544808L;
 	
 	/**
+	 * 流程ID/实例
+	 */
+	private String id;
+	
+	/**
 	 * 是否完成
 	 */
 	private Boolean finish;
@@ -103,6 +108,14 @@ public class MyProcess implements Serializable{
 
 	public void setAssignee(String assignee) {
 		this.assignee = assignee;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 }

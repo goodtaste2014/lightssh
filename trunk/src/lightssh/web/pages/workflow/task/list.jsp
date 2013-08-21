@@ -20,7 +20,7 @@
 				resizable: true,modal: true,height:300,width: 600,
 				close: function(event, ui) { $(this).dialog('destroy'); },				
 				buttons: {				
-					"确认":function(){ location.href='claim.do?taskId='+taskId+'&userId='+$("input[name='userId']").val();}
+					"确认":function(){ location.href='proxyclaim.do?taskId='+taskId+'&userId='+$("input[name='userId']").val();}
 					,"关闭": function() {$(this).dialog('destroy');}
 				}
 			});
@@ -58,17 +58,19 @@
 			<div class="popup-menu-layer">
 				<ul class="dropdown-menu">
 					<li><a href="claim.do?taskId=<s:property value="id"/>">由我认领</a></li>
+					<%--<li><a href="candidateclaim.do?taskId=<s:property value="id"/>">候选者认领</a></li>--%>
 					<li><a href="#" onclick="popup('<s:property value="id"/>');">分配任务</a></li>
 					
 					<li class="section"/>
 					
-					<li><a href="prepare.do?taskId=<s:property value="id"/>">提交流程</a></li>
+					<li><a href="prepare.do?taskId=<s:property value="id"/>&passed=true">提交流程(通过)</a></li>
+					<li><a href="prepare.do?taskId=<s:property value="id"/>&passed=false">提交流程(拒绝)</a></li>
 				</ul>
 			</div>
 		</mys:column>
 	</mys:table>
 
-	<mys:pagination value="task_page"  pageParamPrefix="task_page"/>
+	<mys:pagination value="taskPage"  pageParamPrefix="taskPage"/>
 	
 	<div id="popup" title="认领任务" style="display: none;">
 		<table class="profile">

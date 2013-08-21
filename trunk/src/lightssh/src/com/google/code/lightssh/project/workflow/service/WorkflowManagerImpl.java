@@ -3,6 +3,7 @@ package com.google.code.lightssh.project.workflow.service;
 import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +26,7 @@ import org.activiti.engine.history.HistoricProcessInstanceQuery;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricTaskInstanceQuery;
 import org.activiti.engine.history.NativeHistoricProcessInstanceQuery;
+import org.activiti.engine.query.NativeQuery;
 import org.activiti.engine.query.Query;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.DeploymentQuery;
@@ -32,6 +34,7 @@ import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.repository.ProcessDefinitionQuery;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.runtime.ProcessInstanceQuery;
+import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
 import org.apache.commons.lang3.StringUtils;
@@ -40,6 +43,7 @@ import org.springframework.stereotype.Component;
 import com.google.code.lightssh.common.ApplicationException;
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.model.page.OrderBy;
+import com.google.code.lightssh.common.model.page.ListPage.OrderType;
 import com.google.code.lightssh.common.util.StringUtil;
 import com.google.code.lightssh.project.workflow.entity.MyProcess;
 
@@ -54,8 +58,10 @@ public class WorkflowManagerImpl implements WorkflowManager{
 	
 	private static final String SQL_SELECT_COUNT = "SELECT COUNT(1) ";
 	
-	private static final String SQL_SELECT = "SELECT * ";
-
+	private static final String SQL_SELECT_DATA = "SELECT * ";
+	
+	private static String ORACLE_PAGINATION_SQL = " SELECT * FROM ( SELECT A.*, ROWNUM RN FROM ( #{SQL}) A WHERE ROWNUM <= #{row_end} ) WHERE RN >= #{row_start}";
+	
 	@Resource(name="runtimeService")
 	private RuntimeService runtimeService;
 	
@@ -76,6 +82,53 @@ public class WorkflowManagerImpl implements WorkflowManager{
 	
 	@Resource(name="managementService")
 	private ManagementService managementService;
+	
+	/**
+	 * 本地查询
+	 * TODO 考虑其它数据库
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	protected ListPage<?> query(String from_sql,NativeQuery query, ListPage<?> page ){
+		if( page == null )
+			page = new ListPage();
+		
+		//TODO 只实现oracle，待完善
+		String pagenation_sql = ORACLE_PAGINATION_SQL.replace("#{SQL}"
+				,SQL_SELECT_DATA + from_sql + addOrderBy(page));
+		
+		int count = (int)query.sql( SQL_SELECT_COUNT + from_sql.toString() ).count();
+		int start = page.getStart();
+		if( page.getStart() > count ){
+			start = (page.getAllPage()-1)*page.getSize() 
+				+ ((count>page.getSize())?((count%page.getSize())-1):0);
+			page.setNumber( page.getAllPage() );
+		}
+		
+		query.parameter("row_start", start );
+		query.parameter("row_end", page.getEnd() - 1 );
+		
+		page.setAllSize( count  );
+		page.setList( query.sql( pagenation_sql ).list() );
+		
+		return page;
+	}
+	
+	protected String addOrderBy( ListPage<?> page ){
+		//add order
+		StringBuffer orderby = new StringBuffer("");
+		List<OrderBy> orderByList = page.listAllOrderBy();
+		if( orderByList != null && !orderByList.isEmpty() ){
+			for(OrderBy each:orderByList ){
+				if( each == null )
+					continue;
+				orderby.append("".equals(orderby.toString())?" ORDER BY ":" ,");
+				orderby.append( " " + each.getProperty() 
+					+ (OrderType.ASCENDING.equals( each.getType() )?" ASC ":" DESC ") );
+			}
+		}
+		
+		return orderby.toString();
+	}
 	
 	/**
 	 * 查询
@@ -229,6 +282,18 @@ public class WorkflowManagerImpl implements WorkflowManager{
 	/**
 	 * 历史流程实例
 	 */
+	public HistoricProcessInstance getProcessHistory(String procId ){
+		if( StringUtils.isEmpty(procId) )
+			return null;
+		
+		return historyService.createHistoricProcessInstanceQuery()
+				.processInstanceId(procId).singleResult();
+	}
+	
+	/**
+	 * 历史流程实例
+	 * TODO 重构，使用本地查询
+	 */
 	@SuppressWarnings("unchecked")
 	public ListPage<HistoricProcessInstance> listProcessHistory(MyProcess process,ListPage<HistoricProcessInstance> page ){
 		if( page == null )
@@ -322,6 +387,7 @@ public class WorkflowManagerImpl implements WorkflowManager{
 	/**
 	 * 查询与我相关的流程
 	 */
+	@SuppressWarnings("unchecked")
 	public ListPage<HistoricProcessInstance> listMyProcess(MyProcess process,ListPage<HistoricProcessInstance> page ){
 		if( page == null )
 			page = new ListPage<HistoricProcessInstance>();
@@ -329,6 +395,19 @@ public class WorkflowManagerImpl implements WorkflowManager{
 		NativeHistoricProcessInstanceQuery query = historyService.createNativeHistoricProcessInstanceQuery();
 		StringBuffer sql = new StringBuffer(" FROM " + managementService.getTableName(HistoricProcessInstance.class) + " t where 1=1 ");
 		if( process != null ){
+			
+			//流程实例ID
+			if( StringUtils.isNotEmpty(process.getProcessInstanceId()) ){
+				sql.append(" AND t.PROC_INST_ID_ = #{proc_inst_id}");
+				query.parameter("proc_inst_id", process.getProcessInstanceId().trim());
+			}
+			
+			//流程类型ID
+			if( StringUtils.isNotEmpty(process.getProcessDefinitionId()) ){
+				sql.append(" AND t.PROC_DEF_ID_ = #{proc_def_id}");
+				query.parameter("proc_def_id", process.getProcessDefinitionId().trim());
+			}
+			
 			boolean includeOwner = StringUtils.isNotEmpty(process.getOwner());
 			
 			//与“操作人”相关的流水
@@ -349,12 +428,45 @@ public class WorkflowManagerImpl implements WorkflowManager{
 				sql.append(" AND t.START_USER_ID_ = #{owner}");
 				query.parameter("owner", process.getOwner().trim());
 			}
+			
+			//是否完成
+			if( process.getFinish() != null ){
+				if( process.getFinish() )
+					sql.append(" AND t.END_TIME_ IS NOT NULL ");
+				else
+					sql.append(" AND t.END_TIME_ IS NULL ");
+			}
+			
+			//流程开始时间
+			if( process.getStartPeriod() != null ){
+				Date start = process.getStartPeriod().getStart();
+				Date end = process.getStartPeriod().getEnd();
+				
+				if( start != null ){
+					sql.append(" AND t.START_TIME_ >= #{st_start} ");
+					query.parameter("st_start", start);
+				}
+				
+				if( end != null ){
+					Calendar cal_end = Calendar.getInstance();
+					cal_end.setTime(end);
+					cal_end.add(Calendar.DAY_OF_MONTH, 1);
+					cal_end.add(Calendar.SECOND, -1);
+					
+					sql.append(" AND t.START_TIME_ <= #{st_end} ");
+					query.parameter("st_end", cal_end.getTime());
+				}
+			}
 		}
 		
-		page.setAllSize( (int)query.sql( SQL_SELECT_COUNT + sql.toString() ).count() );
-		page.setList( query.sql( SQL_SELECT + sql.toString() ).list() );
+		if( page.getOrderByList() != null && !page.getOrderByList().isEmpty() ){
+			
+		}
 		
-		return page;
+		//page.setAllSize( (int)query.sql( SQL_SELECT_COUNT + sql.toString() ).count() );
+		//page.setList( query.sql( SQL_SELECT + sql.toString() ).list() );
+		
+		return (ListPage<HistoricProcessInstance>) query(sql.toString(),query,page);
 	}
 	
 	/**
@@ -453,6 +565,21 @@ public class WorkflowManagerImpl implements WorkflowManager{
 	}
 	
 	/**
+	 * 查询流程的上一执行任务
+	 * @param processInstanceId 流程实例
+	 */
+	@SuppressWarnings("unchecked")
+	public HistoricTaskInstance getLastTask(String processInstanceId){
+		ListPage<HistoricTaskInstance> page = new ListPage<HistoricTaskInstance>(1);
+		HistoricTaskInstanceQuery query = historyService.createHistoricTaskInstanceQuery();
+		query.finished(); //已完成任务
+		query.processInstanceId(processInstanceId);
+		query.orderByHistoricTaskInstanceEndTime().desc();
+		
+		return ((ListPage<HistoricTaskInstance>)query(query,page)).getFirst();
+	}
+	
+	/**
 	 * 查询任务之前表单数据
 	 */
 	public List<HistoricDetail> listHistoricDetail( String taskId ){
@@ -484,12 +611,21 @@ public class WorkflowManagerImpl implements WorkflowManager{
 		if( task == null )
 			throw new ApplicationException("任务["+taskId+"]不存在！");
 		
-		if( StringUtil.hasText( task.getAssignee() ) ){
-			//throw new ApplicationException("任务["+taskId+"]已被用户["+task.getAssignee()+"]认领！");
+		if( StringUtil.hasText( task.getAssignee() ) )
+			throw new ApplicationException("任务["+taskId+"]已被用户["+task.getAssignee()+"]认领！");
 		
-			taskService.setAssignee(taskId, userId);
-		}
-		//taskService.claim(taskId, userId);
+		taskService.claim(taskId, userId);
+	}
+	
+	/**
+	 * 变更认领人
+	 */
+	public void changeAssignee( String taskId,String userId ){
+		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+		if( task == null )
+			throw new ApplicationException("任务["+taskId+"]不存在！");
+		
+		taskService.setAssignee(taskId, userId);
 	}
 	
 	/**
@@ -502,10 +638,33 @@ public class WorkflowManagerImpl implements WorkflowManager{
 	/**
 	 * 完成任务
 	 */
-	public void complete( String taskId,String processInstanceId,String message ){
-		taskService.addComment(taskId, processInstanceId, message);
+	public void complete( String taskId,String processInstanceId,String user,Boolean passed,String message ){
+		this.identityService.setAuthenticatedUserId( user ); 
+		if( StringUtils.isNotBlank(message) )
+			taskService.addComment(taskId, processInstanceId, message);
 		
-		taskService.complete(taskId);
+		if( passed != null ){
+			Map<String,Object> variables = new HashMap<String,Object>();
+			variables.put("passed", passed);
+		
+			taskService.complete(taskId,variables); //提交
+		}else{
+			taskService.complete(taskId); //提交
+		}
+	}
+	
+	/**
+	 * 流程注释
+	 */
+	public List<Comment> getProcessInstanceComments(String processInstanceId){
+		return taskService.getProcessInstanceComments(processInstanceId);
+	}
+	
+	/**
+	 * 任务注释
+	 */
+	public List<Comment> getTaskComments(String taskId){
+		return taskService.getTaskComments(taskId);
 	}
 	
 	/**

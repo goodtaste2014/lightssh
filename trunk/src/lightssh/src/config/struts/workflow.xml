@@ -41,6 +41,13 @@
 			<result name="success" type="redirectAction">instancelist</result>	
         </action>
         
+        <action name="comment" class="workflowProcessAction" method="comment">
+			<result name="success">/pages/workflow/process/view_comments.jsp</result>	
+        </action>
+        
+        <action name="view" class="workflowProcessAction" method="view">
+			<result name="success">/pages/workflow/process/view.jsp</result>	
+        </action>
     </package>
     
 	<package name="workflow_task" extends="default" namespace="/workflow/task">
@@ -53,6 +60,10 @@
         </action>
         
 		<action name="claim" class="workflowTaskAction" method="claim">
+			<result name="success" type="redirectAction">list</result>	
+        </action>
+        
+		<action name="proxyclaim" class="workflowTaskAction" method="proxyClaim">
 			<result name="success" type="redirectAction">list</result>	
         </action>
         

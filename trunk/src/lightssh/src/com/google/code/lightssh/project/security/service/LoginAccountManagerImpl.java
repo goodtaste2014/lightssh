@@ -279,6 +279,19 @@ public class LoginAccountManagerImpl extends BaseManagerImpl<LoginAccount>
 		Permission p = new Permission(token);
 		return listByPermission( p );
 	}
+	
+	/**
+	 * 根据角色ID查询有效登录帐户
+	 * @param id 角色ID
+	 * @return 有效登录帐户
+	 */
+	public List<LoginAccount> listByRole(String id ){
+		Role role = new Role();
+		role.setId(id);
+		
+		return getDao().listByRole( AuditStatus.EFFECTIVE,role );
+	}
+	
 	@Override
 	public ListPage<LoginAccount> list(ListPage<LoginAccount> page,
 			LoginAccount la) {

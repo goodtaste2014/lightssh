@@ -20,6 +20,7 @@ import com.google.code.lightssh.project.security.entity.LoginAccount;
 import com.google.code.lightssh.project.security.entity.Navigation;
 import com.google.code.lightssh.project.security.entity.Permission;
 import com.google.code.lightssh.project.security.entity.Role;
+import com.google.code.lightssh.project.sequence.service.SequenceManager;
 import com.google.code.lightssh.project.util.constant.AuditStatus;
 
 /**
@@ -34,6 +35,9 @@ public class RoleManagerImpl extends BaseManagerImpl<Role> implements RoleManage
 
 	/** 系统超级管理员角色  */
 	public static final String SUPER_ROLE = "SUPER_ROLE";
+	
+	@Resource(name="sequenceManager")
+	private SequenceManager sequenceManager;
 	
 	@Resource(name="navigationManager")
 	private NavigationManager navigationManager;
@@ -83,6 +87,7 @@ public class RoleManagerImpl extends BaseManagerImpl<Role> implements RoleManage
 				db_role.setStatus(AuditStatus.NEW);
 			dao.update( db_role );
 		}else{
+			role.setId( sequenceManager.nextSequenceNumber(role) );
 			role.setStatus(AuditStatus.NEW);
 			dao.create( role );
 		}

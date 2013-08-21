@@ -7,6 +7,8 @@ import com.google.code.lightssh.common.dao.Dao;
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.project.security.entity.LoginAccount;
 import com.google.code.lightssh.project.security.entity.Permission;
+import com.google.code.lightssh.project.security.entity.Role;
+import com.google.code.lightssh.project.util.constant.AuditStatus;
 
 /**
  * LoginAccount Dao
@@ -40,6 +42,11 @@ public interface LoginAccountDao extends Dao<LoginAccount>{
 	 * 根据权限查询登录账户
 	 */
 	public List<LoginAccount> listByPermission(Permission p );
+	
+	/**
+	 * 根据角色ID或角色名称查询用户
+	 */
+	public List<LoginAccount> listByRole(AuditStatus status,final Role r );
 	
 	/**
 	 * 查询带Party ID

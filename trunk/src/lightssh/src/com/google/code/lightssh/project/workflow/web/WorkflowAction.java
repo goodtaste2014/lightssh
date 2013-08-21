@@ -2,8 +2,6 @@ package com.google.code.lightssh.project.workflow.web;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.annotation.Resource;
 

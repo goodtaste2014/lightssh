@@ -61,6 +61,7 @@ public interface LoginAccountManager extends BaseManager<LoginAccount>{
 	 * 查询交易所管理员
 	 */
 	public List<LoginAccount> listAdmin( );
+	
 	/**
 	 * 查询 拥有某个权限的 登录账户
 	 */
@@ -70,6 +71,13 @@ public interface LoginAccountManager extends BaseManager<LoginAccount>{
 	 * 查询 拥有某个权限的 登录账户
 	 */
 	public List<LoginAccount> listByPermission(String permission );
+	
+	/**
+	 * 根据角色ID查询有效登录帐户
+	 * @param id 角色ID
+	 * @return 有效登录帐户
+	 */
+	public List<LoginAccount> listByRole(String id );
 	
 	/**
 	 * 启用或禁用CA登录

@@ -9,9 +9,11 @@ import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.HistoricDetail;
 import org.activiti.engine.history.HistoricProcessInstance;
+import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
 
 import com.google.code.lightssh.common.model.page.ListPage;
@@ -46,6 +48,11 @@ public interface WorkflowManager extends Manager{
 	public ProcessInstance getProcessInstance( String id );
 	
 	/**
+	 * 历史流程实例
+	 */
+	public HistoricProcessInstance getProcessHistory(String procId );
+	
+	/**
 	 * 历史流程示例
 	 */
 	public ListPage<HistoricProcessInstance> listProcessHistory(
@@ -71,6 +78,12 @@ public interface WorkflowManager extends Manager{
 	 * 查询任务
 	 */
 	public ListPage<Task> listTask(Task task, ListPage<Task> page );
+	
+	/**
+	 * 查询流程的上一执行任务
+	 * @param processInstanceId 流程实例
+	 */
+	public HistoricTaskInstance getLastTask(String processInstanceId);
 	
 	/**
 	 * 查询任务之前表单数据
@@ -110,6 +123,11 @@ public interface WorkflowManager extends Manager{
 	public void claim( String taskId,String userId );
 	
 	/**
+	 * 变更认领人
+	 */
+	public void changeAssignee( String taskId,String userId );
+	
+	/**
 	 * 完成任务
 	 */
 	public void complete( String taskId );
@@ -117,7 +135,17 @@ public interface WorkflowManager extends Manager{
 	/**
 	 * 完成任务
 	 */
-	public void complete( String taskId,String processInstanceId,String message );
+	public void complete( String taskId,String processInstanceId,String user,Boolean passed,String message );
+	
+	/**
+	 * 流程注释
+	 */
+	public List<Comment> getProcessInstanceComments(String processInstanceId);
+	
+	/**
+	 * 任务注释
+	 */
+	public List<Comment> getTaskComments(String taskId);
 	
 	/**
 	 * 任务表单数据
