@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.engine.FormService;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.IdentityService;
@@ -26,6 +27,7 @@ import org.activiti.engine.history.HistoricProcessInstanceQuery;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricTaskInstanceQuery;
 import org.activiti.engine.history.NativeHistoricProcessInstanceQuery;
+import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.activiti.engine.query.NativeQuery;
 import org.activiti.engine.query.Query;
 import org.activiti.engine.repository.Deployment;
@@ -42,10 +44,11 @@ import org.springframework.stereotype.Component;
 
 import com.google.code.lightssh.common.ApplicationException;
 import com.google.code.lightssh.common.model.page.ListPage;
-import com.google.code.lightssh.common.model.page.OrderBy;
 import com.google.code.lightssh.common.model.page.ListPage.OrderType;
+import com.google.code.lightssh.common.model.page.OrderBy;
 import com.google.code.lightssh.common.util.StringUtil;
-import com.google.code.lightssh.project.workflow.entity.MyProcess;
+import com.google.code.lightssh.project.workflow.model.MyProcess;
+import com.google.code.lightssh.project.workflow.model.MyTask;
 
 /**
  * 工作流业务实现
@@ -232,15 +235,22 @@ public class WorkflowManagerImpl implements WorkflowManager{
 	
 	/**
 	 * 查询流程定义
-	 * @param key 流程定义Key
+	 * @param ID 流程定义Id
 	 */
-	public ProcessDefinition getProcessDefinition( String key ){
+	public ProcessDefinition getProcessDefinition( String id ){
 		ProcessDefinitionQuery query = repositoryService
 				.createProcessDefinitionQuery();
 		
-		query.processDefinitionId(key);
+		query.processDefinitionId(id);
 		
 		return query.singleResult();
+	}
+
+	/**
+	 * 获取BpmnModel 通过流程定义ID
+	 */
+	public BpmnModel getBpmnModel(String procDefId ){
+		return repositoryService.getBpmnModel(procDefId);
 	}
 	
 	/**
@@ -500,15 +510,56 @@ public class WorkflowManagerImpl implements WorkflowManager{
 	/**
 	 * 查询流程中活动的任务
 	 */
-	public Task getTaskByProcessId( String processId ){
-		return taskService.createTaskQuery().processInstanceId(processId).singleResult();
+	@SuppressWarnings("unchecked")
+	public ListPage<HistoricTaskInstance> listHistoricTask(
+			MyTask task,ListPage<HistoricTaskInstance> page){
+		if( page == null )
+			page = new ListPage<HistoricTaskInstance>();
+		
+		HistoricTaskInstanceQuery query = historyService.createHistoricTaskInstanceQuery();
+		if( task != null ){
+			//流程实例ID
+			if( StringUtils.isNotEmpty(task.getProcessInstanceId()) ){
+				query.processInstanceId(task.getProcessInstanceId().trim());
+			}
+			
+			//流程定义ID
+			if( StringUtils.isNotEmpty(task.getProcessDefinitionId()) ){
+				query.processDefinitionId(task.getProcessDefinitionId().trim());
+			}
+			
+			//签收人
+			if( !StringUtils.isEmpty(task.getAssignee()) )
+				query.taskAssignee(task.getAssignee());
+			
+			//任务是否完成
+			if( task.getFinish() != null ){
+				if( task.getFinish() )
+					query.finished();
+				else
+					query.unfinished();
+			}
+		} 
+		
+		return (ListPage<HistoricTaskInstance>) query(query,page);
+	}
+	
+	/**
+	 * 查询流程中活动的任务
+	 */
+	public List<Task> listTaskByProcessId( String processId ){
+		TaskQuery query = taskService.createTaskQuery();
+		query.active();
+		query.processInstanceId(processId);
+		
+		return query.list();
 	}
 	
 	/**
 	 * 查询任务
 	 */
 	@SuppressWarnings("unchecked")
-	public ListPage<Task> listTask(Task task, ListPage<Task> page ){
+	public ListPage<Task> listTask(MyTask task, ListPage<Task> page ){
 		if( page == null )
 			page = new ListPage<Task>();
 		
@@ -534,8 +585,8 @@ public class WorkflowManagerImpl implements WorkflowManager{
 		}
 		
 		if( task != null ){
-			if( !StringUtils.isEmpty(task.getAssignee()) )
-				query.taskAssignee(task.getAssignee());
+			if( StringUtils.isNotEmpty(task.getCandidateUser()) )
+				query.taskCandidateUser( task.getCandidateUser().trim() );
 		}
 		
 		return (ListPage<Task>)query(query,page);
@@ -629,6 +680,35 @@ public class WorkflowManagerImpl implements WorkflowManager{
 	}
 	
 	/**
+	 * 添加会签人
+	 */
+	public void addAssignee( String taskId,List<String> userIds ){
+		if( userIds == null || userIds.isEmpty() )
+			throw new ApplicationException("添加的会签人不能为空！");
+		
+		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+		if( task == null )
+			throw new ApplicationException("任务["+taskId+"]不存在！");
+		
+		if( StringUtils.isNotEmpty(task.getParentTaskId()) )
+			throw new ApplicationException("任务["+task.getName()+"]已是会签任务！");
+		
+		//taskService.
+		
+		for( String user:userIds ){
+			TaskEntity newTask = (TaskEntity) taskService.newTask(); //TODO 更改ID规则
+			
+			newTask.setAssignee(user);  
+			newTask.setName( task.getName() + "-[会签]");  
+			newTask.setProcessDefinitionId(task.getProcessDefinitionId());  
+			newTask.setProcessInstanceId(task.getProcessInstanceId() );  
+			newTask.setParentTaskId(taskId);  
+			newTask.setDescription( task.getName() + "-添加会签人["+user+"]");  
+            taskService.saveTask(newTask); 
+		}
+	}
+	
+	/**
 	 * 完成任务
 	 */
 	public void complete( String taskId ){
@@ -639,6 +719,12 @@ public class WorkflowManagerImpl implements WorkflowManager{
 	 * 完成任务
 	 */
 	public void complete( String taskId,String processInstanceId,String user,Boolean passed,String message ){
+		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+		if( task == null )
+			throw new ApplicationException("任务["+taskId+"]不存在！");
+		
+		//task.getParentTaskId();
+		
 		this.identityService.setAuthenticatedUserId( user ); 
 		if( StringUtils.isNotBlank(message) )
 			taskService.addComment(taskId, processInstanceId, message);

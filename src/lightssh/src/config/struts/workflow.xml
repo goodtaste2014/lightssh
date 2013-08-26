@@ -21,6 +21,10 @@
 	</package>
 	
 	<package name="workflow_process" extends="default" namespace="/workflow/process">
+		<result-types>
+        	<result-type name="myImage" class="com.google.code.lightssh.common.web.result.ImageBytesResult" />
+        </result-types>
+        
 		<action name="definitionlist" class="workflowProcessAction" method="processDefinitionList">
 			<result name="success">/pages/workflow/process/list_definition.jsp</result>	
         </action>
@@ -41,12 +45,17 @@
 			<result name="success" type="redirectAction">instancelist</result>	
         </action>
         
-        <action name="comment" class="workflowProcessAction" method="comment">
-			<result name="success">/pages/workflow/process/view_comments.jsp</result>	
+        <action name="tasksofproc" class="workflowProcessAction" method="tasksOfProc">
+			<result name="success">/pages/workflow/process/view_tasks_of_proc.jsp</result>	
         </action>
         
         <action name="view" class="workflowProcessAction" method="view">
 			<result name="success">/pages/workflow/process/view.jsp</result>	
+        </action>
+        
+        <action name="procDefImage" class="workflowProcessAction" method="procDefImage">
+			<result name="input" type="redirectAction">definitionlist</result>
+			<result name="success" type="myImage"/>	
         </action>
     </package>
     
@@ -56,14 +65,22 @@
         </action>
         
 		<action name="mytodolist" class="workflowTaskAction" method="myTodoList">
-			<result name="success">/pages/workflow/task/list.jsp</result>	
+			<result name="success">/pages/workflow/task/my_todo_list.jsp</result>	
+        </action>
+        
+		<action name="myassignlist" class="workflowTaskAction" method="myAssignList">
+			<result name="success">/pages/workflow/task/my_assign_list.jsp</result>	
         </action>
         
 		<action name="claim" class="workflowTaskAction" method="claim">
-			<result name="success" type="redirectAction">list</result>	
+			<result name="success" type="redirectAction">mytodolist</result>	
         </action>
         
 		<action name="proxyclaim" class="workflowTaskAction" method="proxyClaim">
+			<result name="success" type="redirectAction">list</result>	
+        </action>
+        
+		<action name="multiclaim" class="workflowTaskAction" method="multiClaim">
 			<result name="success" type="redirectAction">list</result>	
         </action>
         
@@ -85,7 +102,10 @@
         </action>
         
 		<action name="complete" class="workflowTaskAction" method="complete">
-			<result name="success" type="redirectAction">list</result>	
+			<result name="success" type="redirectAction">
+				<param name="namespace">/workflow/process</param>
+				<param name="actionName">my</param>
+			</result>	
         </action>
 	</package>
 	

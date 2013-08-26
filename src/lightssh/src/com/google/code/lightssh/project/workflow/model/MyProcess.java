@@ -1,4 +1,4 @@
-package com.google.code.lightssh.project.workflow.entity;
+package com.google.code.lightssh.project.workflow.model;
 
 import java.io.Serializable;
 
@@ -38,6 +38,11 @@ public class MyProcess implements Serializable{
 	 * 流程定义ID
 	 */
 	private String processDefinitionId;
+	
+	/**
+	 * 流程定义Key
+	 */
+	private String processDefinitionKey;
 	
 	/**
 	 * 流程ID
@@ -116,6 +121,14 @@ public class MyProcess implements Serializable{
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getProcessDefinitionKey() {
+		return processDefinitionKey;
+	}
+
+	public void setProcessDefinitionKey(String processDefinitionKey) {
+		this.processDefinitionKey = processDefinitionKey;
 	}
 
 }

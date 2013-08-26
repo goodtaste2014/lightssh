@@ -87,8 +87,10 @@
 		<%--<mys:column title="流程名称" />--%>
 		<mys:column title="流程节点">
 			<s:if test="endTime==null">
-				<s:set name="task" value="@com.google.code.lightssh.project.workflow.util.WorkflowHelper@getTaskByProcessId(getId())"/>
-				<s:property value="#task.name"/>
+				<s:set name="task" value="@com.google.code.lightssh.project.workflow.util.WorkflowHelper@listTaskByProcessId(getId())"/>
+				<s:iterator value="#task" status="loop">
+					<s:property value="#loop.first?'':','"/><s:property value="name"/>
+				</s:iterator>
 			</s:if>
 			<s:else>
 				流程已结束

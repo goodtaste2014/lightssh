@@ -43,6 +43,21 @@
 		
 		<ul id="vertical_navigation" class="menu vertical-menu">
 			<li>
+				<a href="#">消息及流程</a>
+				<ul id="msgwf_mgr">
+					<li><a href="#">未读消息</a></li>
+					
+					<li>
+						<a href="#">工作流程</a>
+						<ul id="msgwf_wf_mgr">
+							<li><a href="<s:url value="/workflow/task/mytodolist.do"/>" target="main_frame">待办事宜</a></li>
+							<li><a href="<s:url value="/workflow/task/myassignlist.do"/>" target="main_frame">待签流程</a></li>
+							<li><a href="<s:url value="/workflow/process/my.do"/>" target="main_frame">流程查询</a></li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+			<li>
 				<%-- 系统管理--%>
 				<a href="#"><s:text name="project.nav.sysmgr"/></a>
 				<ul id="system_mgr">
@@ -55,6 +70,17 @@
 							<li><a href="<s:url value="/party/organization/edit.do"/>" target="main_frame"><s:text name="project.nav.neworg"/></a></li>
 							<%-- 组织机构列表 --%>
 							<li><a href="<s:url value="/party/organization/list.do"/>" target="main_frame"><s:text name="project.nav.listorg"/></a></li>
+						</ul>
+					</li>
+					
+					<li>
+						<%-- 人员管理--%>
+						<a href="#"><s:text name="project.nav.person"/></a>
+						<ul id="member_mgr">
+							<%-- 新增人员--%>
+							<li><a href="<s:url value="/party/person/edit.do"/>" target="main_frame"><s:text name="project.nav.newperson"/></a></li>
+							<%-- 人员列表--%>
+							<li><a href="<s:url value="/party/person/list.do"/>" target="main_frame"><s:text name="project.nav.listperson"/></a></li>
 						</ul>
 					</li>
 					
@@ -88,23 +114,6 @@
 						</ul>
 					</li>
 					
-				</ul>
-			</li>
-			
-			<li>
-				<%-- 人员管理--%>
-				<a href="#"><s:text name="project.nav.partymgr"/></a>
-				<ul id="party_mgr">
-					<li>
-						<%-- 人员管理--%>
-						<a href="#"><s:text name="project.nav.person"/></a>
-						<ul id="member_mgr">
-							<%-- 新增人员--%>
-							<li><a href="<s:url value="/party/person/edit.do"/>" target="main_frame"><s:text name="project.nav.newperson"/></a></li>
-							<%-- 人员列表--%>
-							<li><a href="<s:url value="/party/person/list.do"/>" target="main_frame"><s:text name="project.nav.listperson"/></a></li>
-						</ul>
-					</li>
 				</ul>
 			</li>
 			
@@ -143,7 +152,7 @@
 			</li>
 			
 			<li>
-				<a href="#">工作流管理</a>
+				<a href="#">流程管理</a>
 				<ul id="workflow_mgr">
 					<li><a href="<s:url value="/workflow/deployment/list.do"/>" target="main_frame">部署列表</a></li>
 					<li><a href="<s:url value="/workflow/process/definitionlist.do"/>" target="main_frame">流程类型</a></li>
@@ -152,14 +161,12 @@
 						<ul id="workflow_process">
 							<%--<li><a href="<s:url value="/workflow/process/instancelist.do"/>" target="main_frame">未完成流程</a></li>--%>
 							<li><a href="<s:url value="/workflow/process/list.do"/>" target="main_frame">流程查询</a></li>
-							<li><a href="<s:url value="/workflow/process/my.do"/>" target="main_frame">我的流程</a></li>
 						</ul>
 					</li>
 					<li>
 						<a href="#">任务管理</a>
 						<ul id="workflow_task">
 							<li><a href="<s:url value="/workflow/task/list.do"/>" target="main_frame">任务列表</a></li>
-							<li><a href="<s:url value="/workflow/task/mytodolist.do"/>" target="main_frame">我的待办任务</a></li>
 						</ul>
 					</li>
 				</ul>
