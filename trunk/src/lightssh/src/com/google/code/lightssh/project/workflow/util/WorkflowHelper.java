@@ -1,5 +1,7 @@
 package com.google.code.lightssh.project.workflow.util;
 
+import java.util.List;
+
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
@@ -60,14 +62,14 @@ public class WorkflowHelper {
 	/**
 	 * 根据流程实例ID查询任务
 	 */
-	public static Task getTaskByProcessId(String id ){
+	public static List<Task> listTaskByProcessId(String id ){
 		if( StringUtils.isEmpty(id))
 			return null;
 		
 		WorkflowManager bean = (WorkflowManager)
 				SpringContextHelper.getBean(WORKFLOW_MANAGER_NAME);
 		
-		return bean.getTaskByProcessId( id );
+		return bean.listTaskByProcessId( id );
 	}
 	
 }

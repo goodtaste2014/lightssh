@@ -1,19 +1,26 @@
 package com.google.code.lightssh.project.workflow.web;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.engine.history.HistoricProcessInstance;
+import org.activiti.engine.history.HistoricTaskInstance;
+import org.activiti.engine.impl.bpmn.diagram.ProcessDiagramGenerator;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Comment;
+import org.apache.commons.io.IOUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.google.code.lightssh.common.model.page.ListPage;
+import com.google.code.lightssh.common.web.action.ImageBytesAction;
 import com.google.code.lightssh.project.web.action.GenericAction;
-import com.google.code.lightssh.project.workflow.entity.MyProcess;
+import com.google.code.lightssh.project.workflow.model.MyProcess;
+import com.google.code.lightssh.project.workflow.model.MyTask;
 import com.google.code.lightssh.project.workflow.service.WorkflowManager;
 
 /**
@@ -25,9 +32,13 @@ import com.google.code.lightssh.project.workflow.service.WorkflowManager;
 @SuppressWarnings("rawtypes")
 @Component( "workflowProcessAction" )
 @Scope("prototype")
-public class WorkflowProcessAction extends GenericAction{
+public class WorkflowProcessAction extends GenericAction implements ImageBytesAction{
 
 	private static final long serialVersionUID = 7371824285577363653L;
+	
+	private byte[] imageInBytes;
+	
+	private String imageContentType;
 	
 	private MyProcess process;
 	
@@ -70,6 +81,22 @@ public class WorkflowProcessAction extends GenericAction{
 
 	public void setProcess(MyProcess process) {
 		this.process = process;
+	}
+
+	public byte[] getImageInBytes() {
+		return imageInBytes;
+	}
+
+	public void setImageInBytes(byte[] imageInBytes) {
+		this.imageInBytes = imageInBytes;
+	}
+
+	public String getImageContentType() {
+		return imageContentType;
+	}
+
+	public void setImageContentType(String imageContentType) {
+		this.imageContentType = imageContentType;
 	}
 
 	/**
@@ -148,13 +175,58 @@ public class WorkflowProcessAction extends GenericAction{
 	}
 	
 	/**
+	 * 流程图
+	 */
+	public String procDefImage(){
+		if( process == null || process.getProcessDefinitionId() ==null ){
+			this.saveErrorMessage("参数错误！");
+			return INPUT;
+		}
+		
+		BpmnModel bmpnModel = workflowManager.getBpmnModel( process.getProcessDefinitionId() );
+		if( bmpnModel == null ){
+			this.saveErrorMessage("流程定义ID["+ process.getProcessDefinitionId()+"]对应BpmnModel数据不存在！");
+			return INPUT;
+		}
+		
+		try {
+			this.imageInBytes = IOUtils.toByteArray( ProcessDiagramGenerator.generatePngDiagram(bmpnModel) );
+			this.imageContentType = "image/png"; //PNG
+		} catch (IOException e) {
+			this.saveErrorMessage("数据转换异常："+e.getMessage() );
+			return INPUT;
+		}
+		
+		return SUCCESS;
+	}
+	
+	/**
 	 * 流程注释
 	 */
+	@Deprecated
 	public String comment(){
 		if( this.process != null && process.getProcessInstanceId() != null ){
-			List<Comment> comments = workflowManager.getProcessInstanceComments( process.getProcessInstanceId());
+			List<Comment> comments = workflowManager.getProcessInstanceComments( 
+					process.getProcessInstanceId());
 			request.setAttribute("proc_comments",comments);
 		}
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * 流程实例的所有任务
+	 */
+	public String tasksOfProc(){
+		if( process == null || process.getProcessInstanceId() == null )
+			return INPUT;
+		
+		MyTask task = new MyTask();
+		task.setProcessInstanceId( process.getProcessInstanceId() );
+		ListPage<HistoricTaskInstance> page = new ListPage<HistoricTaskInstance>(50);
+		
+		page = workflowManager.listHistoricTask(task, page);
+		request.setAttribute("tasksOfProc",page.getList() );
 		
 		return SUCCESS;
 	}

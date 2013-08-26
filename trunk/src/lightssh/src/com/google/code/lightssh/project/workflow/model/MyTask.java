@@ -1,0 +1,74 @@
+package com.google.code.lightssh.project.workflow.model;
+
+/**
+ * 
+ * @author YangXiojin
+ * @date 2013-8-22
+ * 
+ */
+public class MyTask {
+	/**
+	 * 签收用户
+	 */
+	private String assignee;
+	
+	/**
+	 * 待签用户
+	 */
+	private String candidateUser;
+	
+	/**
+	 * 是否完成
+	 */
+	private Boolean finish;
+	
+	/**
+	 * 流程定义ID
+	 */
+	private String processDefinitionId;
+	
+	/**
+	 * 流程ID
+	 */
+	private String processInstanceId;
+
+	public String getAssignee() {
+		return assignee;
+	}
+
+	public void setAssignee(String assignee) {
+		this.assignee = assignee;
+	}
+
+	public String getCandidateUser() {
+		return candidateUser;
+	}
+
+	public void setCandidateUser(String candidateUser) {
+		this.candidateUser = candidateUser;
+	}
+
+	public String getProcessDefinitionId() {
+		return processDefinitionId;
+	}
+
+	public void setProcessDefinitionId(String processDefinitionId) {
+		this.processDefinitionId = processDefinitionId;
+	}
+
+	public String getProcessInstanceId() {
+		return processInstanceId;
+	}
+
+	public void setProcessInstanceId(String processInstanceId) {
+		this.processInstanceId = processInstanceId;
+	}
+
+	public Boolean getFinish() {
+		return finish;
+	}
+
+	public void setFinish(Boolean finish) {
+		this.finish = finish;
+	}
+}

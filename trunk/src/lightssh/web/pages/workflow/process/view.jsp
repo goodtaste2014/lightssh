@@ -54,7 +54,7 @@
 		</tbody>
 	</table>
 	
-	<s:action name="comment" namespace="/workflow/process" executeResult="true" >
+	<s:action name="tasksofproc" namespace="/workflow/process" executeResult="true" >
 		<s:param name="process.processInstanceId" value="#proc.processInstanceId"/>
 	</s:action>
 

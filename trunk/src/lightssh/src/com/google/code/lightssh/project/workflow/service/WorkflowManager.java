@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
+import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.form.TaskFormData;
@@ -18,7 +19,8 @@ import org.activiti.engine.task.Task;
 
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.service.Manager;
-import com.google.code.lightssh.project.workflow.entity.MyProcess;
+import com.google.code.lightssh.project.workflow.model.MyProcess;
+import com.google.code.lightssh.project.workflow.model.MyTask;
 
 /**
  * 工作流业务接口
@@ -33,9 +35,14 @@ public interface WorkflowManager extends Manager{
 	
 	/**
 	 * 查询流程定义
-	 * @param key 流程定义Key
+	 * @param Id 流程定义ID
 	 */
-	public ProcessDefinition getProcessDefinition( String key );
+	public ProcessDefinition getProcessDefinition( String id );
+	
+	/**
+	 * 获取BpmnModel 通过流程定义ID
+	 */
+	public BpmnModel getBpmnModel(String procDefId );
 	
 	/**
 	 * 查询流程实例
@@ -72,18 +79,24 @@ public interface WorkflowManager extends Manager{
 	/**
 	 * 查询流程中活动的任务
 	 */
-	public Task getTaskByProcessId( String processId );
+	public List<Task> listTaskByProcessId( String processId );
 	
 	/**
 	 * 查询任务
 	 */
-	public ListPage<Task> listTask(Task task, ListPage<Task> page );
+	public ListPage<Task> listTask(MyTask task, ListPage<Task> page );
 	
 	/**
 	 * 查询流程的上一执行任务
 	 * @param processInstanceId 流程实例
 	 */
 	public HistoricTaskInstance getLastTask(String processInstanceId);
+	
+	/**
+	 * 查询流程中活动的任务
+	 */
+	public ListPage<HistoricTaskInstance> listHistoricTask(
+			MyTask task,ListPage<HistoricTaskInstance> page);
 	
 	/**
 	 * 查询任务之前表单数据
@@ -126,6 +139,11 @@ public interface WorkflowManager extends Manager{
 	 * 变更认领人
 	 */
 	public void changeAssignee( String taskId,String userId );
+	
+	/**
+	 * 添加会签人
+	 */
+	public void addAssignee( String taskId,List<String> userIds );
 	
 	/**
 	 * 完成任务

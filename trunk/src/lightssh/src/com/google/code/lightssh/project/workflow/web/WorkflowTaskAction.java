@@ -1,5 +1,6 @@
 package com.google.code.lightssh.project.workflow.web;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,7 +10,6 @@ import javax.annotation.Resource;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.HistoricDetail;
-import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.activiti.engine.task.Task;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.util.StringUtil;
 import com.google.code.lightssh.project.web.action.GenericAction;
+import com.google.code.lightssh.project.workflow.model.MyTask;
 import com.google.code.lightssh.project.workflow.service.WorkflowManager;
 
 /**
@@ -32,7 +33,7 @@ public class WorkflowTaskAction extends GenericAction{
 
 	private static final long serialVersionUID = 394568619904313580L;
 	
-	private TaskEntity task;
+	private MyTask task;
 	
 	private ListPage<Task> taskPage;
 	
@@ -57,11 +58,11 @@ public class WorkflowTaskAction extends GenericAction{
 		this.taskId = taskId;
 	}
 
-	public TaskEntity getTask() {
+	public MyTask getTask() {
 		return task;
 	}
 
-	public void setTask(TaskEntity task) {
+	public void setTask(MyTask task) {
 		this.task = task;
 	}
 
@@ -77,8 +78,20 @@ public class WorkflowTaskAction extends GenericAction{
 	 * 我的待办任务
 	 */
 	public String myTodoList(){
-		task = new TaskEntity();
+		task = new MyTask();
 		task.setAssignee( getLoginUser() ); //登录用户
+		
+		taskPage = workflowManager.listTask(task,taskPage);
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * 我的待签任务
+	 */
+	public String myAssignList(){
+		task = new MyTask();
+		task.setCandidateUser( getLoginUser() ); //当前登录用户
 		
 		taskPage = workflowManager.listTask(task,taskPage);
 		
@@ -92,6 +105,8 @@ public class WorkflowTaskAction extends GenericAction{
 		try{
 			String userId = request.getParameter("userId");
 			workflowManager.claim( taskId ,StringUtil.hasText(userId)?userId:getLoginUser());
+			
+			this.saveSuccessMessage("成功签收流程！");
 		}catch( Exception e ){
 			this.saveErrorMessage( e.getMessage() );
 		}
@@ -108,6 +123,23 @@ public class WorkflowTaskAction extends GenericAction{
 		}catch( Exception e ){
 			this.saveErrorMessage( e.getMessage() );
 		}
+		return SUCCESS;
+	}
+	
+	/**
+	 * 添加会签人
+	 */
+	public String multiClaim( ){
+		try{
+			//String userId = request.getParameter("userId");
+			List<String> users = new ArrayList<String>(); //TODO
+			users.add("aspen");
+			
+			workflowManager.addAssignee(taskId ,users);
+		}catch( Exception e ){
+			this.saveErrorMessage( e.getMessage() );
+		}
+		
 		return SUCCESS;
 	}
 	
