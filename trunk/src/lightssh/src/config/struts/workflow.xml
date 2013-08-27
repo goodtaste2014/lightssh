@@ -21,10 +21,6 @@
 	</package>
 	
 	<package name="workflow_process" extends="default" namespace="/workflow/process">
-		<result-types>
-        	<result-type name="myImage" class="com.google.code.lightssh.common.web.result.ImageBytesResult" />
-        </result-types>
-        
 		<action name="definitionlist" class="workflowProcessAction" method="processDefinitionList">
 			<result name="success">/pages/workflow/process/list_definition.jsp</result>	
         </action>
@@ -55,7 +51,7 @@
         
         <action name="procDefImage" class="workflowProcessAction" method="procDefImage">
 			<result name="input" type="redirectAction">definitionlist</result>
-			<result name="success" type="myImage"/>	
+			<result name="success" type="image"/>	
         </action>
     </package>
     

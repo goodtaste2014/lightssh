@@ -25,6 +25,10 @@
     <include file="config/struts/workflow.xml"/>
 
     <package name="default" extends="json-default" namespace="/">
+    	<result-types>
+        	<result-type name="image" class="com.google.code.lightssh.common.web.result.ImageResult" />
+        </result-types>
+        
         <interceptors>
         	<interceptor name="runningTime" class="com.google.code.lightssh.project.web.interceptor.RunningTimeInterceptor"/>
         	<interceptor name="trim" class="com.google.code.lightssh.common.web.interceptor.TrimInterceptor"/>
@@ -68,11 +72,10 @@
 				<interceptor-ref name="mytoken"/>
 				<interceptor-ref name="simpleDefaultStack" />
             </interceptor-stack>
-            
         </interceptors>
         
         <default-interceptor-ref name="simpleDefaultStack"/>
-
+        
         <global-results>
             <result name="login" type="redirectAction">login</result>
             <result name="unknownException">/pages/security/system/error.jsp</result>
