@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.google.code.lightssh.common.model.page.ListPage;
-import com.google.code.lightssh.common.web.action.ImageBytesAction;
+import com.google.code.lightssh.common.web.action.ImageAction;
 import com.google.code.lightssh.project.web.action.GenericAction;
 import com.google.code.lightssh.project.workflow.model.MyProcess;
 import com.google.code.lightssh.project.workflow.model.MyTask;
@@ -32,7 +32,7 @@ import com.google.code.lightssh.project.workflow.service.WorkflowManager;
 @SuppressWarnings("rawtypes")
 @Component( "workflowProcessAction" )
 @Scope("prototype")
-public class WorkflowProcessAction extends GenericAction implements ImageBytesAction{
+public class WorkflowProcessAction extends GenericAction implements ImageAction{
 
 	private static final long serialVersionUID = 7371824285577363653L;
 	
