@@ -33,7 +33,7 @@
         <title><decorator:title/></title>
     </head>
     
-	<body <decorator:getProperty property="body.class" writeEntireProperty="true"/> style="min-height:200px;">
+	<body <decorator:getProperty property="body.class" writeEntireProperty="true"/>>
 		<decorator:body/>
 		
 		<p id="back-top" style="display: none;">

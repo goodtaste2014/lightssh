@@ -8,6 +8,15 @@
 	
 	<script type="text/javascript">
 		$(document).ready(function(){
+			//$( "#tabs" ).tabs();
+			$( "#tabs" ).tabs({
+				beforeLoad: function( event, ui ) {
+					ui.jqXHR.error(function() {
+						alert('error');
+					});
+				}
+			});
+			
 		});
 	</script>
 	
@@ -21,41 +30,15 @@
 	</ul>
 	
 	<%@ include file="/pages/common/messages.jsp" %>
-		
-	<s:set name="proc" value="#request.process"/>
-	<table class="profile">
-		<caption>流程信息</caption>
-		<colgroup>
-			<col width="100px"/>
-			<col width="50%"/>
-			<col width="10%"/>
-			<col />
-		</colgroup>
-		<tbody>
-			<tr>
-				<%--<th>流程编号</th>--%>
-				<th>
-					<s:property value="#proc.processInstanceId"/>
-				</th>
-				<%--<th><label >流程类型</label></th>--%>
-				<td>
-					<s:set name="proDef" value="@com.google.code.lightssh.project.workflow.util.WorkflowHelper@getProcessDefinition(#proc.processDefinitionId)"/>
-					<s:property value="#proDef.name"/>
-				</td>
-				<%--<th><label >创建者</label></th>--%>
-				<td>
-					<s:property value="#proc.startUserId"/>
-				</td>
-				<%--<th><label >创建时间</label></th>--%>
-				<td>
-					<s:property value="@com.google.code.lightssh.common.util.TextFormater@format(#proc.startTime,'yyyy-MM-dd HH:mm:ss')"/>
-				</td>
-			</tr>
-		</tbody>
-	</table>
 	
-	<s:action name="tasksofproc" namespace="/workflow/process" executeResult="true" >
-		<s:param name="process.processInstanceId" value="#proc.processInstanceId"/>
-	</s:action>
-
+	<div id="tabs"> 
+		<ul> 	
+			<li><a href="#tabs-1">流程详情</a></li> 	
+			<li><a href="<s:url value="/workflow/process/image.do?process.processInstanceId=%{process.processInstanceId}"/>">流程图</a></li>
+		</ul>
+		<div id="tabs-1" style="padding:5px;">
+			<%@ include file="view_profile.jsp" %>
+		</div>
+	</div>
+	
 </body>

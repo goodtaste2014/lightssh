@@ -103,6 +103,7 @@
 					<li class="view">
 						<a href="<s:url value="view.do?process.processInstanceId=%{processInstanceId}"/>">流程详情</a>
 					</li>
+					
 				</ul>
 			</div>
 		</mys:column>

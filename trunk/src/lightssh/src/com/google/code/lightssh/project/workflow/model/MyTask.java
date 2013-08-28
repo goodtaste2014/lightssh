@@ -7,6 +7,7 @@ package com.google.code.lightssh.project.workflow.model;
  * 
  */
 public class MyTask {
+	
 	/**
 	 * 签收用户
 	 */
@@ -31,6 +32,11 @@ public class MyTask {
 	 * 流程ID
 	 */
 	private String processInstanceId;
+	
+	/**
+	 * 消息
+	 */
+	private String message;
 
 	public String getAssignee() {
 		return assignee;
@@ -70,5 +76,13 @@ public class MyTask {
 
 	public void setFinish(Boolean finish) {
 		this.finish = finish;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 }

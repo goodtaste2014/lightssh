@@ -68,6 +68,8 @@
 					
 					<li class="section"/>
 					<li><a href="multiclaim.do?taskId=<s:property value="id"/>">添加会签人</a></li>
+					<li class="section"/>
+					<li><a href="<s:url value="/workflow/process/procactiveimage.do?process.processInstanceId=%{processInstanceId}"/>">流程图(活动)</a></li>
 				</ul>
 			</div>
 		</mys:column>

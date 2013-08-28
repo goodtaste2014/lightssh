@@ -49,9 +49,18 @@
 			<result name="success">/pages/workflow/process/view.jsp</result>	
         </action>
         
-        <action name="procDefImage" class="workflowProcessAction" method="procDefImage">
+        <action name="procdefimage" class="workflowProcessAction" method="procDefImage">
 			<result name="input" type="redirectAction">definitionlist</result>
 			<result name="success" type="image"/>	
+        </action>
+        
+        <action name="procactiveimage" class="workflowProcessAction" method="procActiveImage">
+			<result name="input" type="redirectAction">definitionlist</result>
+			<result name="success" type="image"/>	
+        </action>
+        
+        <action name="image" class="workflowProcessAction" method="image">
+			<result name="success">/pages/workflow/process/view_image.jsp</result>
         </action>
     </package>
     
