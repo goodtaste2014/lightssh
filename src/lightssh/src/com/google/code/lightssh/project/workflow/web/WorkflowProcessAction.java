@@ -1,26 +1,28 @@
 package com.google.code.lightssh.project.workflow.web;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import javax.annotation.Resource;
 
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.engine.history.HistoricProcessInstance;
-import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.impl.bpmn.diagram.ProcessDiagramGenerator;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Comment;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.web.action.ImageAction;
 import com.google.code.lightssh.project.web.action.GenericAction;
+import com.google.code.lightssh.project.workflow.entity.TaskLog;
 import com.google.code.lightssh.project.workflow.model.MyProcess;
-import com.google.code.lightssh.project.workflow.model.MyTask;
+import com.google.code.lightssh.project.workflow.service.TaskLogManager;
 import com.google.code.lightssh.project.workflow.service.WorkflowManager;
 
 /**
@@ -50,6 +52,9 @@ public class WorkflowProcessAction extends GenericAction implements ImageAction{
 	
 	@Resource(name="workflowManager")
 	private WorkflowManager workflowManager;
+	
+	@Resource(name="taskLogManager")
+	private TaskLogManager taskLogManager;
 	
 	public ListPage<ProcessDefinition> getPd_page() {
 		return pd_page;
@@ -175,7 +180,7 @@ public class WorkflowProcessAction extends GenericAction implements ImageAction{
 	}
 	
 	/**
-	 * 流程图
+	 * 流程图-流程定义
 	 */
 	public String procDefImage(){
 		if( process == null || process.getProcessDefinitionId() ==null ){
@@ -183,20 +188,85 @@ public class WorkflowProcessAction extends GenericAction implements ImageAction{
 			return INPUT;
 		}
 		
-		BpmnModel bmpnModel = workflowManager.getBpmnModel( process.getProcessDefinitionId() );
-		if( bmpnModel == null ){
+		BpmnModel bpmnModel = workflowManager.getBpmnModel( process.getProcessDefinitionId() );
+		if( bpmnModel == null ){
 			this.saveErrorMessage("流程定义ID["+ process.getProcessDefinitionId()+"]对应BpmnModel数据不存在！");
 			return INPUT;
 		}
 		
 		try {
-			this.imageInBytes = IOUtils.toByteArray( ProcessDiagramGenerator.generatePngDiagram(bmpnModel) );
+			this.imageInBytes = IOUtils.toByteArray( ProcessDiagramGenerator.generatePngDiagram(bpmnModel) );
 			this.imageContentType = "image/png"; //PNG
 		} catch (IOException e) {
 			this.saveErrorMessage("数据转换异常："+e.getMessage() );
 			return INPUT;
 		}
 		
+		return SUCCESS;
+	}
+	
+	/**
+	 * 流程图-活动节点
+	 */
+	public String procActiveImage(){
+		if( process == null || process.getProcessInstanceId() ==null ){
+			this.saveErrorMessage("参数错误！");
+			return INPUT;
+		}
+		
+		String procInstId = process.getProcessInstanceId();
+		
+		ProcessInstance procIntance = workflowManager.getProcessInstance(
+				process.getProcessInstanceId() );
+		if( procIntance == null ){
+			this.saveErrorMessage("流程实例["+process.getProcessInstanceId()+"]不存在！");
+			return INPUT;
+		}
+		
+		BpmnModel bpmnModel = workflowManager.getBpmnModel( procIntance.getProcessDefinitionId() );
+		if( bpmnModel == null ){
+			this.saveErrorMessage("流程定义ID["+ 
+					process.getProcessDefinitionId()+"]对应BpmnModel数据不存在！");
+			return INPUT;
+		}
+		
+		boolean showFlow = "true".equals(request.getParameter("showFlow"));
+		
+		List<String> highLightedFlows = null;
+		InputStream is = null;
+		
+		try {
+			if( showFlow )
+				highLightedFlows = workflowManager.getHighLightedFlows( procInstId );
+			if( highLightedFlows != null && !highLightedFlows.isEmpty() ){
+				is = ProcessDiagramGenerator.generateDiagram(bpmnModel,"png",
+						workflowManager.getActiveActivityIds( procInstId )
+						,highLightedFlows);
+			}else{
+				is = ProcessDiagramGenerator.generateDiagram(bpmnModel,"png",
+						workflowManager.getActiveActivityIds( procInstId ));
+			}
+			
+			this.imageInBytes = IOUtils.toByteArray( is );
+			this.imageContentType = "image/png"; //PNG
+		} catch (IOException e) {
+			this.saveErrorMessage("数据转换异常："+e.getMessage() );
+			return INPUT;
+		}
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * 显示图片
+	 */
+	public String image(){
+		if( process == null || StringUtils.isEmpty(process.getProcessInstanceId()) )
+			this.addActionError("参数为空！");
+		else{
+			HistoricProcessInstance hpi = workflowManager.getProcessHistory( process.getProcessInstanceId() );
+			request.setAttribute("processHistory", hpi);
+		}
 		return SUCCESS;
 	}
 	
@@ -221,12 +291,8 @@ public class WorkflowProcessAction extends GenericAction implements ImageAction{
 		if( process == null || process.getProcessInstanceId() == null )
 			return INPUT;
 		
-		MyTask task = new MyTask();
-		task.setProcessInstanceId( process.getProcessInstanceId() );
-		ListPage<HistoricTaskInstance> page = new ListPage<HistoricTaskInstance>(50);
-		
-		page = workflowManager.listHistoricTask(task, page);
-		request.setAttribute("tasksOfProc",page.getList() );
+		List<TaskLog> logs = taskLogManager.list( process.getProcessInstanceId(),100 );
+		request.setAttribute("tasklogOfProc", logs );
 		
 		return SUCCESS;
 	}

@@ -75,7 +75,7 @@
 						<a href="#">详情</a>
 					</li>
 					<li>
-						<a href="<s:url value="procDefImage.do?process.processDefinitionId=%{getId()}"/>">流程图</a>
+						<a href="<s:url value="procdefimage.do?process.processDefinitionId=%{getId()}"/>">流程图</a>
 					</li>
 					
 					<li class="section"/>

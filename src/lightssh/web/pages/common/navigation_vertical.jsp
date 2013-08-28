@@ -139,6 +139,16 @@
 						</ul>
 					</li>
 					
+					<li>
+						<a href="#">工作流</a>
+						<ul id="workflow_mgr">
+							<li><a href="<s:url value="/workflow/deployment/list.do"/>" target="main_frame">部署列表</a></li>
+							<li><a href="<s:url value="/workflow/process/definitionlist.do"/>" target="main_frame">流程类型</a></li>
+							<li><a href="<s:url value="/workflow/process/list.do"/>" target="main_frame">流程查询</a></li>
+							<li><a href="<s:url value="/workflow/task/list.do"/>" target="main_frame">任务列表</a></li>
+						</ul>
+					</li>
+					
 					<%-- 邮件内容 --%>
 					<li><a href="<s:url value="/settings/email/list.do"/>" target="main_frame">邮件内容</a></li>
 							
@@ -151,26 +161,6 @@
 				</ul>
 			</li>
 			
-			<li>
-				<a href="#">流程管理</a>
-				<ul id="workflow_mgr">
-					<li><a href="<s:url value="/workflow/deployment/list.do"/>" target="main_frame">部署列表</a></li>
-					<li><a href="<s:url value="/workflow/process/definitionlist.do"/>" target="main_frame">流程类型</a></li>
-					<li>
-						<a href="#">流程管理</a>
-						<ul id="workflow_process">
-							<%--<li><a href="<s:url value="/workflow/process/instancelist.do"/>" target="main_frame">未完成流程</a></li>--%>
-							<li><a href="<s:url value="/workflow/process/list.do"/>" target="main_frame">流程查询</a></li>
-						</ul>
-					</li>
-					<li>
-						<a href="#">任务管理</a>
-						<ul id="workflow_task">
-							<li><a href="<s:url value="/workflow/task/list.do"/>" target="main_frame">任务列表</a></li>
-						</ul>
-					</li>
-				</ul>
-			</li>
 		</ul>
 		
 		<div class="spliter">

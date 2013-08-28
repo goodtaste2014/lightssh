@@ -1,6 +1,7 @@
 package com.google.code.lightssh.project.workflow.service;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -20,6 +21,7 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.form.TaskFormData;
+import org.activiti.engine.history.HistoricActivityInstance;
 import org.activiti.engine.history.HistoricDetail;
 import org.activiti.engine.history.HistoricDetailQuery;
 import org.activiti.engine.history.HistoricProcessInstance;
@@ -27,7 +29,11 @@ import org.activiti.engine.history.HistoricProcessInstanceQuery;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricTaskInstanceQuery;
 import org.activiti.engine.history.NativeHistoricProcessInstanceQuery;
+import org.activiti.engine.impl.RepositoryServiceImpl;
+import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
 import org.activiti.engine.impl.persistence.entity.TaskEntity;
+import org.activiti.engine.impl.pvm.PvmTransition;
+import org.activiti.engine.impl.pvm.process.ActivityImpl;
 import org.activiti.engine.query.NativeQuery;
 import org.activiti.engine.query.Query;
 import org.activiti.engine.repository.Deployment;
@@ -47,6 +53,7 @@ import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.model.page.ListPage.OrderType;
 import com.google.code.lightssh.common.model.page.OrderBy;
 import com.google.code.lightssh.common.util.StringUtil;
+import com.google.code.lightssh.project.workflow.entity.TaskLog;
 import com.google.code.lightssh.project.workflow.model.MyProcess;
 import com.google.code.lightssh.project.workflow.model.MyTask;
 
@@ -85,6 +92,9 @@ public class WorkflowManagerImpl implements WorkflowManager{
 	
 	@Resource(name="managementService")
 	private ManagementService managementService;
+	
+	@Resource(name="taskLogManager")
+	private TaskLogManager taskLogManager;
 	
 	/**
 	 * 本地查询
@@ -251,6 +261,83 @@ public class WorkflowManagerImpl implements WorkflowManager{
 	 */
 	public BpmnModel getBpmnModel(String procDefId ){
 		return repositoryService.getBpmnModel(procDefId);
+	}
+	
+	/**
+	 * 根据流程实例ID查询活动的Activity ID
+	 */
+	public List<String> getActiveActivityIds(String procInstId ){
+		return this.runtimeService.getActiveActivityIds( procInstId );
+	}
+	
+	/**
+	 * 根据流程实例ID查询结束的Activity ID
+	 */
+	public List<String> getHighLightedFlows(String procInstId ){
+		//流程实例
+		HistoricProcessInstance procInst = this.getProcessHistory(procInstId);
+		if( procInst == null )
+			return null;
+		
+		//流程定义
+		ProcessDefinitionEntity procDef = (ProcessDefinitionEntity)
+				((RepositoryServiceImpl) repositoryService)
+                .getDeployedProcessDefinition( procInst.getProcessDefinitionId() );
+		if( procDef == null )
+			return null;
+		
+		List<HistoricActivityInstance> haiList = historyService.createHistoricActivityInstanceQuery()
+				.processInstanceId(procInstId)
+				.orderByHistoricActivityInstanceStartTime().asc()
+				.list();
+		
+		Map<String,HistoricActivityInstance> haiMap = new HashMap<String,HistoricActivityInstance>();
+		for (HistoricActivityInstance hai : haiList) {
+			haiMap.put(hai.getActivityId(),hai);
+		}
+		
+		return getHighLightedFlows(haiMap,procDef.getActivities() );
+	}
+	
+	/**
+	 * 获取高亮流程节点
+	 */
+	protected List<String> getHighLightedFlows(Map<String,HistoricActivityInstance> haiMap,List<ActivityImpl> activities ){
+		if( activities == null || activities.isEmpty() 
+				|| haiMap == null || haiMap.isEmpty() )
+			return null;
+		
+		List<String> results = new ArrayList<String>();
+		
+		for(ActivityImpl item:activities){
+			Object type = item.getProperty("type");
+			if( type.equals("subProcess") ){
+				List<String> subs = getHighLightedFlows(haiMap,item.getActivities() );
+				if( subs != null && !subs.isEmpty() )
+					results.addAll(subs);
+			}
+			
+			String srcId = item.getId();
+			if( haiMap.containsKey( srcId ) ){
+				List<PvmTransition> pvmTrans = item.getOutgoingTransitions(); //某个节点出来的所有线路
+				if( pvmTrans == null || pvmTrans.isEmpty() )
+					continue;
+				
+				for( PvmTransition pvm:pvmTrans){
+					String destFlowId = pvm.getDestination().getId();
+					if( haiMap.containsKey( destFlowId ) ){
+						//判断进入了哪个节点
+	                    if ("exclusiveGateway".equals( type )){
+	                    	//TODO 待实现
+	                    }else{
+	                    	results.add( pvm.getId() );
+	                    }
+					}
+				}
+			}//end if 
+		}
+		
+		return results;
 	}
 	
 	/**
@@ -587,6 +674,9 @@ public class WorkflowManagerImpl implements WorkflowManager{
 		if( task != null ){
 			if( StringUtils.isNotEmpty(task.getCandidateUser()) )
 				query.taskCandidateUser( task.getCandidateUser().trim() );
+			
+			if( StringUtils.isNotEmpty(task.getAssignee()) )
+				query.taskAssignee(task.getAssignee().trim());
 		}
 		
 		return (ListPage<Task>)query(query,page);
@@ -718,25 +808,21 @@ public class WorkflowManagerImpl implements WorkflowManager{
 	/**
 	 * 完成任务
 	 */
-	public void complete( String taskId,String processInstanceId,String user,Boolean passed,String message ){
+	public void complete( String taskId,String user,Boolean passed,String message ){
 		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
 		if( task == null )
 			throw new ApplicationException("任务["+taskId+"]不存在！");
 		
 		//task.getParentTaskId();
+		//identityService.setAuthenticatedUserId( user ); 
 		
-		this.identityService.setAuthenticatedUserId( user ); 
-		if( StringUtils.isNotBlank(message) )
-			taskService.addComment(taskId, processInstanceId, message);
+		TaskLog.Type type = Boolean.TRUE.equals(passed)?TaskLog.Type.SUBMIT:TaskLog.Type.REVOKE;
+		taskLogManager.save(task.getProcessInstanceId(),task.getId(),type,user, message);
 		
-		if( passed != null ){
-			Map<String,Object> variables = new HashMap<String,Object>();
-			variables.put("passed", passed);
+		Map<String,Object> variables = new HashMap<String,Object>();
+		variables.put("passed", passed);
 		
-			taskService.complete(taskId,variables); //提交
-		}else{
-			taskService.complete(taskId); //提交
-		}
+		taskService.complete(taskId,variables); //提交
 	}
 	
 	/**

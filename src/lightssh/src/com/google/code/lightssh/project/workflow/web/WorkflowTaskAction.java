@@ -204,10 +204,6 @@ public class WorkflowTaskAction extends GenericAction{
 		if( this.getLoginAccount() == null )
 			return LOGIN;
 		
-		Task task = workflowManager.getTask(taskId);
-		if( task == null )
-			this.saveErrorMessage("任务["+taskId+"]不存在！");
-		
 		Boolean passed =null;
 		if(request.getParameter("passed") !=null)
 			passed = "true".equalsIgnoreCase(request.getParameter("passed"));
@@ -216,8 +212,7 @@ public class WorkflowTaskAction extends GenericAction{
 		
 		//TODO 检查提交流程是否与assignee相同
 		try{
-			workflowManager.complete( taskId ,task.getProcessInstanceId()
-					,getLoginUser(),passed,message);
+			workflowManager.complete(taskId,getLoginUser(),passed,message);
 		}catch( Exception e ){
 			this.saveErrorMessage( e.getMessage() );
 		}

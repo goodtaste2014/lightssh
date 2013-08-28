@@ -29,7 +29,7 @@ body {
 	font-family:Lucida Grande, Verdana, Bitstream Vera Sans, Arial, sans-serif;
 	font-size:12px;
 	line-height: 22px;
-	min-height:200px;
+	min-height:300px;
 	
 	leftmargin:0;
 	marginwidth:0;
@@ -282,7 +282,7 @@ input[type=radio] {
 }
 
 input[type=text].calendar{
-	width: 8em;
+	width: 80px;
 }
 
 span{

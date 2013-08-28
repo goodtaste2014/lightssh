@@ -18,8 +18,8 @@
 	
 <body>
 	<ul class="path">
-		<li>工作流管理</li>
-		<li>流程管理</li>
+		<li>基础管理</li>
+		<li>工作流</li>
 		<li>流程查询</li>
 	</ul>
 	

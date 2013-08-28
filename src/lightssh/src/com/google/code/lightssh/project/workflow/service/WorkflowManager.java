@@ -45,6 +45,16 @@ public interface WorkflowManager extends Manager{
 	public BpmnModel getBpmnModel(String procDefId );
 	
 	/**
+	 * 根据流程实例ID查询活动的Activity ID
+	 */
+	public List<String> getActiveActivityIds(String procInstId );
+	
+	/**
+	 * 根据流程实例ID查询结束的Activity ID
+	 */
+	public List<String> getHighLightedFlows(String procInstId );
+	
+	/**
 	 * 查询流程实例
 	 */
 	public ListPage<ProcessInstance> listProcessInstance( ListPage<ProcessInstance> page );
@@ -153,7 +163,7 @@ public interface WorkflowManager extends Manager{
 	/**
 	 * 完成任务
 	 */
-	public void complete( String taskId,String processInstanceId,String user,Boolean passed,String message );
+	public void complete( String taskId,String user,Boolean passed,String message );
 	
 	/**
 	 * 流程注释
