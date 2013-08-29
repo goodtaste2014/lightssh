@@ -41,26 +41,40 @@
 			<result name="success" type="redirectAction">instancelist</result>	
         </action>
         
-        <action name="tasksofproc" class="workflowProcessAction" method="tasksOfProc">
-			<result name="success">/pages/workflow/process/view_tasks_of_proc.jsp</result>	
-        </action>
-        
         <action name="view" class="workflowProcessAction" method="view">
 			<result name="success">/pages/workflow/process/view.jsp</result>	
         </action>
         
+        <action name="viewproc" class="workflowProcessAction" method="viewProc">
+			<result name="success">/pages/workflow/process/view_profile.jsp</result>
+        </action>
+        
+        <action name="viewtasklog" class="workflowProcessAction" method="viewTasklog">
+			<result name="success">/pages/workflow/process/view_tasklog.jsp</result>	
+        </action>
+        
+        <action name="viewimage" class="workflowProcessAction" method="viewImage">
+			<result name="success">/pages/workflow/process/view_image.jsp</result>
+        </action>
+        
         <action name="procdefimage" class="workflowProcessAction" method="procDefImage">
-			<result name="input" type="redirectAction">definitionlist</result>
+        	<result name="input">/pages/workflow/process/view_error.jsp</result>
 			<result name="success" type="image"/>	
         </action>
         
         <action name="procactiveimage" class="workflowProcessAction" method="procActiveImage">
-			<result name="input" type="redirectAction">definitionlist</result>
+			<result name="input">/pages/workflow/process/view_error.jsp</result>
 			<result name="success" type="image"/>	
         </action>
         
-        <action name="image" class="workflowProcessAction" method="image">
-			<result name="success">/pages/workflow/process/view_image.jsp</result>
+        <action name="viewbizdata" class="workflowProcessAction" method="viewBizData">
+			<result name="input">/pages/workflow/process/view_error.jsp</result>
+			<!--<result name="success">/pages/workflow/process/view_error.jsp</result>  -->
+			<result name="success" type="redirectAction">
+				<param name="namespace">${#request.bizNamespace}</param>
+				<param name="actionName">${#request.bizActionName}</param>
+				<param name="workflowBizKey">%{#request.bizKey}</param>
+			</result>
         </action>
     </package>
     
@@ -90,23 +104,22 @@
         </action>
         
 		<action name="prepare" class="workflowTaskAction" method="prepare">
-			<result name="input" type="chain">render</result>
-			<result name="success" type="chain">complete</result>
+			<result name="input" type="redirectAction">mytodolist</result>
+			<result name="success">/pages/workflow/process/view.jsp</result>
         </action>
         
-		<action name="render" class="workflowTaskAction" method="render">
-			<result name="success">/pages/workflow/form/rendering.jsp</result>	
-        </action>
-        
+        <!-- Deprecated -->
 		<action name="submit" class="workflowTaskAction" method="submit">
 			<result name="success" type="chain">view</result>
         </action>
         
+        <!-- Deprecated -->
 		<action name="view" class="workflowTaskAction" method="view">
 			<result name="success">/pages/workflow/form/rendering.jsp</result>
         </action>
         
 		<action name="complete" class="workflowTaskAction" method="complete">
+			<result name="input" type="redirectAction">mytodolist</result>
 			<result name="success" type="redirectAction">
 				<param name="namespace">/workflow/process</param>
 				<param name="actionName">my</param>

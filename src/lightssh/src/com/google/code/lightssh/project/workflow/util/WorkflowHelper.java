@@ -2,8 +2,8 @@ package com.google.code.lightssh.project.workflow.util;
 
 import java.util.List;
 
+import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.repository.ProcessDefinition;
-import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.StringUtils;
 
@@ -36,14 +36,14 @@ public class WorkflowHelper {
 	/**
 	 * 根据ID查询流程实例
 	 */
-	public static ProcessInstance getProcessInstance(String id ){
+	public static HistoricProcessInstance getProcessInstance(String id ){
 		if( StringUtils.isEmpty(id))
 			return null;
 		
 		WorkflowManager bean = (WorkflowManager)
 				SpringContextHelper.getBean(WORKFLOW_MANAGER_NAME);
 		
-		return bean.getProcessInstance( id );
+		return bean.getProcessHistory( id );
 	}
 	
 	/**

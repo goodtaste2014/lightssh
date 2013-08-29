@@ -7,6 +7,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
 import com.google.code.lightssh.common.entity.base.UUIDModel;
+import com.google.code.lightssh.project.workflow.model.ExecutionType;
 
 /**
  * 任务日志
@@ -19,33 +20,6 @@ import com.google.code.lightssh.common.entity.base.UUIDModel;
 public class TaskLog extends UUIDModel{
 
 	private static final long serialVersionUID = -2347566895886457457L;
-	
-	/**
-	 * 类型
-	 */
-	public enum Type{
-		EDIT("编辑")	
-		,REMOVE("删除")	
-		,SUBMIT("提交")	
-		,REVOKE("退回")	
-		,NOTICE("转发")	
-		,CONFIRM("确认")	
-		,SIGN("会签");	
-		
-		private String value;
-		
-		Type( String value ){
-			this.value = value;
-		}
-
-		public String getValue() {
-			return value;
-		}
-		
-		public String toString(){
-			return this.value;
-		}
-	}
 	
 	/**
 	 * 流程实例ID
@@ -70,7 +44,7 @@ public class TaskLog extends UUIDModel{
 	 */
 	@Column( name="TYPE",length=20 )
 	@Enumerated(value=EnumType.STRING)
-	private Type type;
+	private ExecutionType type;
 	
 	/**
 	 * 描述
@@ -110,12 +84,13 @@ public class TaskLog extends UUIDModel{
 		this.description = description;
 	}
 
-	public Type getType() {
+	public ExecutionType getType() {
 		return type;
 	}
 
-	public void setType(Type type) {
+	public void setType(ExecutionType type) {
 		this.type = type;
 	}
+
 
 }

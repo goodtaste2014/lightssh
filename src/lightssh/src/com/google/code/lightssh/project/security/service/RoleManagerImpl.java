@@ -20,8 +20,10 @@ import com.google.code.lightssh.project.security.entity.LoginAccount;
 import com.google.code.lightssh.project.security.entity.Navigation;
 import com.google.code.lightssh.project.security.entity.Permission;
 import com.google.code.lightssh.project.security.entity.Role;
+import com.google.code.lightssh.project.security.entity.RoleChange;
 import com.google.code.lightssh.project.sequence.service.SequenceManager;
 import com.google.code.lightssh.project.util.constant.AuditStatus;
+import com.google.code.lightssh.project.workflow.service.WorkflowManager;
 
 /**
  * Role Manager 实现
@@ -47,6 +49,9 @@ public class RoleManagerImpl extends BaseManagerImpl<Role> implements RoleManage
 	
 	@Resource(name="roleChangeManager")
 	private RoleChangeManager roleChangeManager;
+	
+	@Resource(name="workflowManager")
+	private WorkflowManager workflowManager;
 	
 	@Resource(name="roleDao")
 	public void setRoleDao( RoleDao roleDao ){
@@ -136,7 +141,11 @@ public class RoleManagerImpl extends BaseManagerImpl<Role> implements RoleManage
 			type = EntityChange.Type.UPDATE;
 			remark = "角色变更，审核通过后生效！";
 		}
-		roleChangeManager.save(user, type, originalRole, newRole,remark);
+		
+		RoleChange rc = roleChangeManager.save(user, type, originalRole, newRole,remark);
+		
+		//启动工作流
+		workflowManager.start("security_role_audit",rc.getId(),user.getLoginName(),null);
 	}
 	
 	public void remove(Role role,LoginAccount operator,String remark) {
@@ -200,4 +209,6 @@ public class RoleManagerImpl extends BaseManagerImpl<Role> implements RoleManage
 		
 		return getRoleDao().list(page,sc);
 	}
+
+
 }

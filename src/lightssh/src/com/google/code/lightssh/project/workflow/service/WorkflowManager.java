@@ -163,7 +163,7 @@ public interface WorkflowManager extends Manager{
 	/**
 	 * 完成任务
 	 */
-	public void complete( String taskId,String user,Boolean passed,String message );
+	public void complete( MyTask myTask,String user );
 	
 	/**
 	 * 流程注释
