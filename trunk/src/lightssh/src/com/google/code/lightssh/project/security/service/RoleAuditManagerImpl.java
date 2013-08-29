@@ -17,6 +17,7 @@ import com.google.code.lightssh.project.security.entity.RoleAudit;
 import com.google.code.lightssh.project.security.entity.RoleChange;
 import com.google.code.lightssh.project.util.constant.AuditResult;
 import com.google.code.lightssh.project.util.constant.AuditStatus;
+import com.google.code.lightssh.project.workflow.model.ExecutionType;
 
 /**
  * 
@@ -79,7 +80,7 @@ public class RoleAuditManagerImpl extends BaseManagerImpl<RoleAudit> implements 
 		}
 		
 		roleManager.update(db_role);
-		dao.create(ra);
+		//dao.create(ra); TODO
 		
 		roleChangeManager.updateStatus(rc.getId()
 				,EntityChange.Status.NEW,EntityChange.Status.FINISHED);
@@ -99,6 +100,22 @@ public class RoleAuditManagerImpl extends BaseManagerImpl<RoleAudit> implements 
 		}
 		
 		return dao.list(page, sc);
+	}
+	
+	@Override
+	public void process(ExecutionType type, String procDefKey,
+			String procInstId, String bizKey) {
+		
+		RoleChange rc = this.roleChangeManager.get(bizKey);
+		
+		RoleAudit roleAudit = new RoleAudit();
+		roleAudit.setRoleChange(rc);//关联角色变更
+		
+		roleAudit.setUser( null );
+		boolean passed = ExecutionType.SUBMIT.equals(type);
+		roleAudit.setResult(passed?AuditResult.LAST_AUDIT_PASSED:AuditResult.LAST_AUDIT_REJECT);
+		
+		this.audit(roleAudit, rc);
 	}
 
 }

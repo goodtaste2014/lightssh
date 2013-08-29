@@ -9,6 +9,11 @@ package com.google.code.lightssh.project.workflow.model;
 public class MyTask {
 	
 	/**
+	 * Task id
+	 */
+	private String id;
+	
+	/**
 	 * 签收用户
 	 */
 	private String assignee;
@@ -37,6 +42,11 @@ public class MyTask {
 	 * 消息
 	 */
 	private String message;
+	
+	/**
+	 * 类型
+	 */
+	private ExecutionType type;
 
 	public String getAssignee() {
 		return assignee;
@@ -84,5 +94,21 @@ public class MyTask {
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public ExecutionType getType() {
+		return type;
+	}
+
+	public void setType(ExecutionType type) {
+		this.type = type;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 }

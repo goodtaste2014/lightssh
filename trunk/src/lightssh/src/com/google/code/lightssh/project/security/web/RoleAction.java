@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.json.annotations.JSON;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -20,6 +21,7 @@ import com.google.code.lightssh.project.security.service.RoleChangeManager;
 import com.google.code.lightssh.project.security.service.RoleManager;
 import com.google.code.lightssh.project.util.constant.AuditResult;
 import com.google.code.lightssh.project.util.constant.AuditStatus;
+import com.google.code.lightssh.project.util.constant.WorkflowConstant;
 import com.google.code.lightssh.project.web.action.GenericAction;
 
 /**
@@ -127,6 +129,31 @@ public class RoleAction extends GenericAction<Role>{
 
 	public void setRaPage(ListPage<RoleAudit> raPage) {
 		this.raPage = raPage;
+	}
+	
+	/**
+	 * 工作流显示业务数据
+	 */
+	public String workflowView(){
+		String bizKey = request.getParameter( WorkflowConstant.BIZ_KEY_NAME );
+		
+		//this.setRole( this.getManager().get(bizKey));
+		if( StringUtils.isEmpty(bizKey) ){
+			this.addActionError("业务参数为空！");
+			return SUCCESS;
+		}
+		
+		RoleChange rc = roleChangeManager.get(bizKey);
+		if( rc == null ){
+			this.addActionError("业务数据["+bizKey+"]不存在！");
+			return SUCCESS;
+		}
+		
+		//TODO
+		this.setRoleChange(rc);
+		todoAudit();
+		
+		return SUCCESS;
 	}
 
 	public String save( ){

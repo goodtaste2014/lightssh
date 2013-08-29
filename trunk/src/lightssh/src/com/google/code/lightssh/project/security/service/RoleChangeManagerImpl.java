@@ -38,7 +38,7 @@ public class RoleChangeManagerImpl extends BaseManagerImpl<RoleChange> implement
 		return (RoleChangeDao)this.dao;
 	}
 	
-	public void save(LoginAccount user,EntityChange.Type type
+	public RoleChange save(LoginAccount user,EntityChange.Type type
 			,Role originalRole,Role newRole,String remark){
 		if( originalRole == null && newRole == null )
 			throw new ApplicationException("原始角色或新角色为空！");
@@ -61,6 +61,8 @@ public class RoleChangeManagerImpl extends BaseManagerImpl<RoleChange> implement
 			rc.setOriginalObject(IoSerialUtil.serialize(originalRole) );
 		
 		dao.create(rc);
+		
+		return rc;
 	}
 	
 	public ListPage<RoleChange> listTodoAudit(ListPage<RoleChange> page,RoleChange t ){

@@ -7,26 +7,35 @@
 		<caption>流程信息</caption>
 		<colgroup>
 			<col width="100px"/>
-			<col width="50%"/>
-			<col width="10%"/>
+			<col width="30%"/>
+			<col width="100px"/>
 			<col />
 		</colgroup>
 		<tbody>
 			<tr>
-				<%--<th>流程编号</th>--%>
-				<th>
+				<th><label>流程名称</label></th>
+				<td colspan="3">
 					<s:property value="#proc.processInstanceId"/>
-				</th>
-				<%--<th><label >流程类型</label></th>--%>
+				</td>
+			</tr>
+			
+			<tr>
+				<th><label>流程编号</label></th>
+				<td>
+					<s:property value="#proc.processInstanceId"/>
+				</td>
+				<th><label>流程类型</label></th>
 				<td>
 					<s:set name="proDef" value="@com.google.code.lightssh.project.workflow.util.WorkflowHelper@getProcessDefinition(#proc.processDefinitionId)"/>
 					<s:property value="#proDef.name"/>
 				</td>
-				<%--<th><label >创建者</label></th>--%>
+			</tr>
+			<tr>
+				<th><label >创建者</label></th>
 				<td>
 					<s:property value="#proc.startUserId"/>
 				</td>
-				<%--<th><label >创建时间</label></th>--%>
+				<th><label >创建时间</label></th>
 				<td>
 					<s:property value="@com.google.code.lightssh.common.util.TextFormater@format(#proc.startTime,'yyyy-MM-dd HH:mm:ss')"/>
 				</td>
@@ -34,6 +43,3 @@
 		</tbody>
 	</table>
 
-	<s:action name="tasksofproc" namespace="/workflow/process" executeResult="true" >
-		<s:param name="process.processInstanceId" value="#proc.processInstanceId"/>
-	</s:action>

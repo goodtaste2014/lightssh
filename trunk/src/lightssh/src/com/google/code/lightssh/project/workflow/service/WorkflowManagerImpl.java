@@ -53,7 +53,8 @@ import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.model.page.ListPage.OrderType;
 import com.google.code.lightssh.common.model.page.OrderBy;
 import com.google.code.lightssh.common.util.StringUtil;
-import com.google.code.lightssh.project.workflow.entity.TaskLog;
+import com.google.code.lightssh.project.util.constant.WorkflowConstant;
+import com.google.code.lightssh.project.workflow.model.ExecutionType;
 import com.google.code.lightssh.project.workflow.model.MyProcess;
 import com.google.code.lightssh.project.workflow.model.MyTask;
 
@@ -808,19 +809,35 @@ public class WorkflowManagerImpl implements WorkflowManager{
 	/**
 	 * 完成任务
 	 */
-	public void complete( String taskId,String user,Boolean passed,String message ){
-		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+	public void complete( MyTask myTask,String user ){
+		if( myTask == null || StringUtils.isEmpty(user) )
+			throw new ApplicationException("参数为空！");
+		
+		String taskId = myTask.getId();
+		if( StringUtils.isEmpty(taskId) )
+			throw new ApplicationException("任务编号不能为空！");
+		
+		ExecutionType type = myTask.getType();
+		if( type == null )
+			throw new ApplicationException("任务操作类型不能为空！");
+		
+		String message = myTask.getMessage();
+		if( StringUtils.isEmpty(message)  )
+			throw new ApplicationException("流转意见不能为空！");
+		
+		Task task = taskService.createTaskQuery().taskId(myTask.getId()).singleResult();
 		if( task == null )
-			throw new ApplicationException("任务["+taskId+"]不存在！");
+			throw new ApplicationException("任务["+myTask.getId()+"]不存在！");
 		
 		//task.getParentTaskId();
 		//identityService.setAuthenticatedUserId( user ); 
 		
-		TaskLog.Type type = Boolean.TRUE.equals(passed)?TaskLog.Type.SUBMIT:TaskLog.Type.REVOKE;
+		//保存操作日志
 		taskLogManager.save(task.getProcessInstanceId(),task.getId(),type,user, message);
 		
 		Map<String,Object> variables = new HashMap<String,Object>();
-		variables.put("passed", passed);
+		variables.put(WorkflowConstant.TASK_ACTIOIN_VARIABLE_NAME,type.name());
+		variables.put("passed", ExecutionType.SUBMIT.equals(type)); //TODO
 		
 		taskService.complete(taskId,variables); //提交
 	}

@@ -42,26 +42,26 @@
 		<mys:column title="序号" width="50px">
 			<s:property value="#loop.index + 1"/>
 		</mys:column>
-		<mys:column title="编号" value="getId()" sortKey="id" sortable="true" width="40px"/>
-		<mys:column title="优先级" value="priority" sortable="true" width="40px"/>
-		<mys:column title="修订" value="revision" sortable="false" width="60px"/>
-		<mys:column title="名称" value="name" sortable="true" width="220px"/>
-		<mys:column title="创建时间" value="@com.google.code.lightssh.common.util.TextFormater@format(createTime,'yyyy-MM-dd HH:hh:ss')" 
-			sortKey="createTime" sortable="true" width="150px"/>
-		<mys:column title="签收人" value="assignee" sortable="true" width="80px"/>
-		<mys:column title="描述" value="description" />
-		<%-- 
-		--%>
+		<mys:column title="流程编号" value="processInstanceId" width="80px"/>
+		<mys:column title="流程类型" width="100px">
+			<s:set name="procInst" value="@com.google.code.lightssh.project.workflow.util.WorkflowHelper@getProcessInstance(processInstanceId)"/>
+			<s:set name="procDef" value="@com.google.code.lightssh.project.workflow.util.WorkflowHelper@getProcessDefinition(processDefinitionId)"/>
+			<s:property value="#procDef.name"/>
+		</mys:column>
+		<mys:column title="流程名称" value="description" />
+		<mys:column title="流程节点" value="name" sortable="false" width="160px"/>
+		<mys:column title="创建人" value="#procInst.startUserId" sortable="false" width="80px"/>
+		<mys:column title="创建时间" value="@com.google.code.lightssh.common.util.TextFormater@format(#procInst.startTime,'yyyy-MM-dd HH:hh:ss')" 
+			sortable="false" width="150px"/>
+		<mys:column title="到达时间" value="@com.google.code.lightssh.common.util.TextFormater@format(createTime,'yyyy-MM-dd HH:hh:ss')" 
+			sortKey="createTime" sortable="false" width="150px"/>
 		<mys:column title="操作" width="40px" cssClass="action">
 			<span>&nbsp;</span>
 			<div class="popup-menu-layer">
 				<ul class="dropdown-menu">
-					<li><a href="#" onclick="popup('<s:property value="id"/>');">签转代办</a></li>
-					
+					<li><a href="prepare.do?taskId=<s:property value="id"/>">处理流程</a></li>
 					<li class="section"/>
-					
-					<li><a href="prepare.do?taskId=<s:property value="id"/>&passed=true">提交流程(通过)</a></li>
-					<li><a href="prepare.do?taskId=<s:property value="id"/>&passed=false">提交流程(拒绝)</a></li>
+					<li class="disabled"><a href="#" onclick="popup('<s:property value="id"/>');">签转代办</a></li>
 				</ul>
 			</div>
 		</mys:column>

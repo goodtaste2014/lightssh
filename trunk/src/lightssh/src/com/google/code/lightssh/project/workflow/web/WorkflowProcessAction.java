@@ -11,12 +11,12 @@ import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.impl.bpmn.diagram.ProcessDiagramGenerator;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
-import org.activiti.engine.task.Comment;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.google.code.lightssh.common.config.SystemConfig;
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.web.action.ImageAction;
 import com.google.code.lightssh.project.web.action.GenericAction;
@@ -49,6 +49,12 @@ public class WorkflowProcessAction extends GenericAction implements ImageAction{
 	private ListPage<ProcessInstance> pi_page;
 	
 	private ListPage<HistoricProcessInstance> hp_page;
+	
+	/**
+	 * 系统参数
+	 */
+	@Resource(name="systemConfig")
+	private SystemConfig systemConfig;
 	
 	@Resource(name="workflowManager")
 	private WorkflowManager workflowManager;
@@ -140,23 +146,6 @@ public class WorkflowProcessAction extends GenericAction implements ImageAction{
 	}
 	
 	/**
-	 * 流程查询
-	 */
-	public String view( ){
-		if( process == null || process.getProcessInstanceId() == null )
-			return INPUT;
-		
-		HistoricProcessInstance proc = workflowManager.getProcessHistory(process.getProcessInstanceId());
-		if( proc == null ){
-			return INPUT;
-		}
-		
-		request.setAttribute("process", proc );
-		
-		return SUCCESS;
-	}
-	
-	/**
 	 * 我的流程
 	 */
 	public String myProcess(){
@@ -180,6 +169,48 @@ public class WorkflowProcessAction extends GenericAction implements ImageAction{
 	}
 	
 	/**
+	 * 流程查询
+	 */
+	public String view( ){
+		if( process == null || process.getProcessInstanceId() == null )
+			return INPUT;
+		
+		request.setAttribute("procInstId",process.getProcessInstanceId());
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * 显示图片
+	 */
+	public String viewProc(){
+		HistoricProcessInstance proc = workflowManager.getProcessHistory(
+				process.getProcessInstanceId());
+		if( proc == null ){
+			return INPUT;
+		}
+		
+		request.setAttribute("process", proc );
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * 显示图片
+	 */
+	public String viewImage(){
+		if( process == null || StringUtils.isEmpty(process.getProcessInstanceId()) )
+			this.addActionError("参数为空！");
+		else{
+			HistoricProcessInstance hpi = workflowManager.getProcessHistory(
+					process.getProcessInstanceId() );
+			request.setAttribute("processHistory", hpi);
+		}
+		
+		return SUCCESS;
+	}
+	
+	/**
 	 * 流程图-流程定义
 	 */
 	public String procDefImage(){
@@ -188,14 +219,17 @@ public class WorkflowProcessAction extends GenericAction implements ImageAction{
 			return INPUT;
 		}
 		
-		BpmnModel bpmnModel = workflowManager.getBpmnModel( process.getProcessDefinitionId() );
+		BpmnModel bpmnModel = workflowManager.getBpmnModel(
+				process.getProcessDefinitionId() );
 		if( bpmnModel == null ){
-			this.saveErrorMessage("流程定义ID["+ process.getProcessDefinitionId()+"]对应BpmnModel数据不存在！");
+			this.saveErrorMessage("流程定义ID["+
+					process.getProcessDefinitionId()+"]对应BpmnModel数据不存在！");
 			return INPUT;
 		}
 		
 		try {
-			this.imageInBytes = IOUtils.toByteArray( ProcessDiagramGenerator.generatePngDiagram(bpmnModel) );
+			this.imageInBytes = IOUtils.toByteArray( 
+					ProcessDiagramGenerator.generatePngDiagram(bpmnModel) );
 			this.imageContentType = "image/png"; //PNG
 		} catch (IOException e) {
 			this.saveErrorMessage("数据转换异常："+e.getMessage() );
@@ -258,41 +292,52 @@ public class WorkflowProcessAction extends GenericAction implements ImageAction{
 	}
 	
 	/**
-	 * 显示图片
+	 * 流程实例操作日志
 	 */
-	public String image(){
-		if( process == null || StringUtils.isEmpty(process.getProcessInstanceId()) )
-			this.addActionError("参数为空！");
-		else{
-			HistoricProcessInstance hpi = workflowManager.getProcessHistory( process.getProcessInstanceId() );
-			request.setAttribute("processHistory", hpi);
-		}
-		return SUCCESS;
-	}
-	
-	/**
-	 * 流程注释
-	 */
-	@Deprecated
-	public String comment(){
-		if( this.process != null && process.getProcessInstanceId() != null ){
-			List<Comment> comments = workflowManager.getProcessInstanceComments( 
-					process.getProcessInstanceId());
-			request.setAttribute("proc_comments",comments);
-		}
-		
-		return SUCCESS;
-	}
-	
-	/**
-	 * 流程实例的所有任务
-	 */
-	public String tasksOfProc(){
+	public String viewTasklog(){
 		if( process == null || process.getProcessInstanceId() == null )
 			return INPUT;
 		
 		List<TaskLog> logs = taskLogManager.list( process.getProcessInstanceId(),100 );
 		request.setAttribute("tasklogOfProc", logs );
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * 显示业务数据
+	 */
+	public String viewBizData(){
+		if( process == null || process.getProcessInstanceId() == null ){
+			this.addActionError("流程实例参数为空！");
+			return INPUT;
+		}
+		
+		String procInstId = process.getProcessInstanceId();
+		HistoricProcessInstance hisProc = workflowManager.getProcessHistory( procInstId );
+		if( hisProc == null ){
+			this.addActionError("流程["+procInstId+"]数据不存在！");
+			return INPUT;
+		}
+		
+		String bizKey = hisProc.getBusinessKey();
+		if( StringUtils.isEmpty(bizKey) ){
+			//this.addActionError("流程["+procInstId+"]无业务数据关联！");
+			//return INPUT;
+		}
+		
+		ProcessDefinition procDef = workflowManager.getProcessDefinition(
+				hisProc.getProcessDefinitionId());
+		if( procDef == null ){
+			this.addActionError("流程定义["+hisProc.getProcessDefinitionId()+"]数据不存在！");
+			return INPUT;
+		}
+		
+		//String procDefKey = procDef.getKey();
+		//request.setAttribute("bizParamName", "role.id");
+		request.setAttribute("bizKey", bizKey);
+		request.setAttribute("bizNamespace", "/security/role");
+		request.setAttribute("bizActionName", "workflowview");
 		
 		return SUCCESS;
 	}

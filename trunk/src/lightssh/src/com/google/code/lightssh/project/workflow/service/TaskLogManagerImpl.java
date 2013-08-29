@@ -14,6 +14,7 @@ import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.service.BaseManagerImpl;
 import com.google.code.lightssh.project.workflow.dao.TaskLogDao;
 import com.google.code.lightssh.project.workflow.entity.TaskLog;
+import com.google.code.lightssh.project.workflow.model.ExecutionType;
 
 /**
  * 
@@ -81,7 +82,7 @@ public class TaskLogManagerImpl extends BaseManagerImpl<TaskLog> implements Task
 	 * @param message 备注
 	 */
 	public void save( String procInstId,String taskInstId
-			,TaskLog.Type type,String operator,String message){
+			,ExecutionType type,String operator,String message){
 		this.save(procInstId, taskInstId, type, operator, message, null);
 	}
 	
@@ -95,7 +96,7 @@ public class TaskLogManagerImpl extends BaseManagerImpl<TaskLog> implements Task
 	 * @param time 时间 
 	 */
 	public void save( String procInstId,String taskInstId
-			,TaskLog.Type type,String operator,String message,Calendar time ){
+			,ExecutionType type,String operator,String message,Calendar time ){
 		
 		if( StringUtils.isEmpty(procInstId) )
 			throw new ApplicationException("流程实例Id不能为空！");

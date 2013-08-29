@@ -150,16 +150,21 @@
 	</package>
 
 	<package name="security_role" extends="default" namespace="/security/role">
-        	<action name="edit" class="roleAction" method="edit">
+        <action name="edit" class="roleAction" method="edit">
 			<result name="success">/pages/security/role/profile.jsp</result>	
-        	</action>
+        </action>
+        
 		<action name="view" class="roleAction" method="edit">
 			<result name="input" type="redirectAction">list</result>
 			<result name="success">/pages/security/role/view.jsp</result>
 		</action>
+		
+		<action name="workflowview" class="roleAction" method="workflowView">
+			<result name="success">/pages/security/role/workflow_view.jsp</result>
+		</action>
         
         <action name="save" class="roleAction" method="save">
-        		<interceptor-ref name="crudStack"/>
+        	<interceptor-ref name="crudStack"/>
 			<result name="input" >/pages/security/role/profile.jsp</result>
 			<result name="success" type="redirectAction">list</result>
 			<result name="authorize" type="redirectAction">

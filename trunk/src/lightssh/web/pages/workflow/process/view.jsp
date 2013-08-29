@@ -8,13 +8,8 @@
 	
 	<script type="text/javascript">
 		$(document).ready(function(){
-			//$( "#tabs" ).tabs();
 			$( "#tabs" ).tabs({
-				beforeLoad: function( event, ui ) {
-					ui.jqXHR.error(function() {
-						alert('error');
-					});
-				}
+				cache:true
 			});
 			
 		});
@@ -31,14 +26,31 @@
 	
 	<%@ include file="/pages/common/messages.jsp" %>
 	
+	<%-- 
+	<s:action name="viewproc" namespace="/workflow/process" executeResult="true">
+		<s:param name="process.processInstanceId" value="#request.procInstId"></s:param>
+	</s:action>
+	--%>
+	
 	<div id="tabs"> 
 		<ul> 	
-			<li><a href="#tabs-1">流程详情</a></li> 	
-			<li><a href="<s:url value="/workflow/process/image.do?process.processInstanceId=%{process.processInstanceId}"/>">流程图</a></li>
+			<s:if test="#request.task != null">
+			<li><a href="#tabs-task-submit">处理流程</a></li>
+			</s:if>
+			<s:else>
+			<li><a href="<s:url value="/workflow/process/viewproc.do?process.processInstanceId=%{#request.procInstId}"/>">流程信息</a></li>
+			</s:else>
+			
+			<li><a href="<s:url value="/workflow/process/viewbizdata.do?process.processInstanceId=%{#request.procInstId}"/>">业务数据</a></li>
+			<li><a href="<s:url value="/workflow/process/viewtasklog.do?process.processInstanceId=%{#request.procInstId}"/>">操作日志</a></li>
+			<li><a href="<s:url value="/workflow/process/viewimage.do?process.processInstanceId=%{#request.procInstId}"/>">流程图</a></li>
 		</ul>
-		<div id="tabs-1" style="padding:5px;">
-			<%@ include file="view_profile.jsp" %>
+		
+		<s:if test="#request.task != null">
+		<div id="tabs-task-submit">
+			<%@ include file="/pages/workflow/task/profile.jsp" %>
 		</div>
+		</s:if>
 	</div>
 	
 </body>

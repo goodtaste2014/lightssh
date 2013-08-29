@@ -18,7 +18,10 @@ import com.google.code.lightssh.project.security.entity.RoleChange;
 
 public interface RoleChangeManager extends BaseManager<RoleChange>{
 	
-	public void save(LoginAccount user,EntityChange.Type type
+	/**
+	 * 保存
+	 */
+	public RoleChange save(LoginAccount user,EntityChange.Type type
 			,Role originalRole,Role newRole,String remark);
 	
 	/**

@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.google.code.lightssh.common.service.BaseManager;
 import com.google.code.lightssh.project.workflow.entity.TaskLog;
+import com.google.code.lightssh.project.workflow.model.ExecutionType;
 
 /**
  * 
@@ -23,7 +24,7 @@ public interface TaskLogManager extends BaseManager<TaskLog>{
 	 * @param message 备注
 	 */
 	public void save( String procInstId,String taskInstId
-			,TaskLog.Type type,String operator,String message);
+			,ExecutionType type,String operator,String message);
 	
 	/**
 	 * 保存
@@ -35,7 +36,7 @@ public interface TaskLogManager extends BaseManager<TaskLog>{
 	 * @param time 时间 
 	 */
 	public void save( String procInstId,String taskInstId
-			,TaskLog.Type type,String operator,String message,Calendar time );
+			,ExecutionType type,String operator,String message,Calendar time );
 	
 	/**
 	 * 查询所有日志，最多100条

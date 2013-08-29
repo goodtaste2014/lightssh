@@ -11,6 +11,7 @@ import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.HistoricDetail;
 import org.activiti.engine.task.Task;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -147,13 +148,29 @@ public class WorkflowTaskAction extends GenericAction{
 	 * 预做任务
 	 */
 	public String prepare( ){
-		TaskFormData data = workflowManager.getTaskFormData(taskId);
-		if( data != null && data.getFormProperties() != null 
-				&& !data.getFormProperties().isEmpty() ){
-			request.setAttribute("task_form_data", data);
+		if( getLoginUser() == null )
+			return LOGIN;
+		
+		if( StringUtils.isEmpty(taskId) ){
+			this.saveErrorMessage("任务号为空！");
 			return INPUT;
 		}
 		
+		Task task = workflowManager.getTask(taskId);
+		if( task == null ){
+			this.saveErrorMessage("流程任务["+taskId+"]不存在！");
+			return INPUT;
+		}
+		
+		if( !getLoginUser().equals( task.getAssignee() ) ){
+			this.saveErrorMessage("当前用户不是任务签收人["
+					+task.getAssignee()+"],不允许操作!");
+			return INPUT;
+		}
+		
+		request.setAttribute("procInstId",task.getProcessInstanceId() );
+		request.setAttribute("task",task );
+			
 		return SUCCESS;
 	}
 	
@@ -178,6 +195,7 @@ public class WorkflowTaskAction extends GenericAction{
 	 */
 	public String submit( ){
 		TaskFormData data = workflowManager.getTaskFormData(taskId);
+		
 		if( data != null && data.getFormProperties() != null ){
 			Map<String,String> properties = new HashMap<String,String>();
 			for(FormProperty item: data.getFormProperties() )
@@ -204,15 +222,14 @@ public class WorkflowTaskAction extends GenericAction{
 		if( this.getLoginAccount() == null )
 			return LOGIN;
 		
-		Boolean passed =null;
-		if(request.getParameter("passed") !=null)
-			passed = "true".equalsIgnoreCase(request.getParameter("passed"));
-		
-		String message = request.getParameter("messsage");
+		if( task == null || task.getId() == null ){
+			this.saveErrorMessage("参数为空！");
+			return INPUT;
+		}
 		
 		//TODO 检查提交流程是否与assignee相同
 		try{
-			workflowManager.complete(taskId,getLoginUser(),passed,message);
+			workflowManager.complete(task,getLoginUser());
 		}catch( Exception e ){
 			this.saveErrorMessage( e.getMessage() );
 		}
