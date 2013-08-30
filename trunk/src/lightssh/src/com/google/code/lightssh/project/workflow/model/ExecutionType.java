@@ -7,8 +7,8 @@ package com.google.code.lightssh.project.workflow.model;
  * 
  */
 public enum ExecutionType {
-
 	EDIT("编辑")	
+	,CLAIM("认领")	
 	,REMOVE("删除")	
 	,SUBMIT("提交")	
 	,REVOKE("退回")	

@@ -9,7 +9,7 @@
         <activiti:taskListener event="create" delegateExpression="${groupAssignmentHandler}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="last_audit" name="终审" activiti:exclusive="false" activiti:assignee="root">
+    <userTask id="last_audit" name="终审" activiti:exclusive="false" activiti:candidateUsers="root,aspen">
       <extensionElements>
         <activiti:taskListener event="create" delegateExpression="${groupAssignmentHandler}"></activiti:taskListener>
       </extensionElements>

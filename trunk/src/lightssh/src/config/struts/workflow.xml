@@ -25,6 +25,10 @@
 			<result name="success">/pages/workflow/process/list_definition.jsp</result>	
         </action>
         
+		<action name="popupdef" class="workflowProcessAction" method="processDefinitionList">
+			<result name="success">/pages/workflow/process/popup_definition.jsp</result>	
+        </action>
+        
 		<action name="instancelist" class="workflowProcessAction" method="processInstanceList">
 			<result name="success">/pages/workflow/process/list_instance.jsp</result>	
         </action>

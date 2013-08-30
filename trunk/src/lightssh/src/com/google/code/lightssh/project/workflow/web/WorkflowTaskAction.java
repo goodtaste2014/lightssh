@@ -16,7 +16,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.google.code.lightssh.common.model.page.ListPage;
-import com.google.code.lightssh.common.util.StringUtil;
 import com.google.code.lightssh.project.web.action.GenericAction;
 import com.google.code.lightssh.project.workflow.model.MyTask;
 import com.google.code.lightssh.project.workflow.service.WorkflowManager;
@@ -79,7 +78,8 @@ public class WorkflowTaskAction extends GenericAction{
 	 * 我的待办任务
 	 */
 	public String myTodoList(){
-		task = new MyTask();
+		if( task == null )
+			task = new MyTask();
 		task.setAssignee( getLoginUser() ); //登录用户
 		
 		taskPage = workflowManager.listTask(task,taskPage);
@@ -91,7 +91,8 @@ public class WorkflowTaskAction extends GenericAction{
 	 * 我的待签任务
 	 */
 	public String myAssignList(){
-		task = new MyTask();
+		if( task == null )
+			task = new MyTask();
 		task.setCandidateUser( getLoginUser() ); //当前登录用户
 		
 		taskPage = workflowManager.listTask(task,taskPage);
@@ -103,14 +104,17 @@ public class WorkflowTaskAction extends GenericAction{
 	 * 认领流程
 	 */
 	public String claim( ){
+		if( getLoginUser() == null )
+			return LOGIN;
+		
 		try{
-			String userId = request.getParameter("userId");
-			workflowManager.claim( taskId ,StringUtil.hasText(userId)?userId:getLoginUser());
+			workflowManager.claim( taskId ,getLoginUser() );
 			
 			this.saveSuccessMessage("成功签收流程！");
 		}catch( Exception e ){
 			this.saveErrorMessage( e.getMessage() );
 		}
+		
 		return SUCCESS;
 	}
 	
