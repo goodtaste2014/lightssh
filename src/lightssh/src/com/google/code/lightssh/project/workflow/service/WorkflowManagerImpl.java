@@ -25,7 +25,6 @@ import org.activiti.engine.history.HistoricActivityInstance;
 import org.activiti.engine.history.HistoricDetail;
 import org.activiti.engine.history.HistoricDetailQuery;
 import org.activiti.engine.history.HistoricProcessInstance;
-import org.activiti.engine.history.HistoricProcessInstanceQuery;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricTaskInstanceQuery;
 import org.activiti.engine.history.NativeHistoricProcessInstanceQuery;
@@ -397,104 +396,10 @@ public class WorkflowManagerImpl implements WorkflowManager{
 	}
 	
 	/**
-	 * 历史流程实例
-	 * TODO 重构，使用本地查询
-	 */
-	@SuppressWarnings("unchecked")
-	public ListPage<HistoricProcessInstance> listProcessHistory(MyProcess process,ListPage<HistoricProcessInstance> page ){
-		if( page == null )
-			page = new ListPage<HistoricProcessInstance>();
-		
-		HistoricProcessInstanceQuery query = historyService.createHistoricProcessInstanceQuery();
-		
-		if(process != null ){
-			//流程创建者
-			if( StringUtils.isNotEmpty(process.getOwner()) ){
-				query.startedBy(process.getOwner().trim());
-			}
-			
-			//是否完成
-			if( process.getFinish() != null ){
-				if( process.getFinish() )
-					query.finished();
-				else
-					query.unfinished();
-			}
-			
-			//流程定义ID
-			if( StringUtils.isNotEmpty(process.getProcessDefinitionId()) ){
-				query.processDefinitionId(process.getProcessDefinitionId().trim());
-			}
-			
-			//流程实例ID
-			if( StringUtils.isNotEmpty(process.getProcessInstanceId()) ){
-				query.processInstanceId(process.getProcessInstanceId().trim());
-			}
-			
-			//流程开始时间
-			if( process.getStartPeriod() != null ){
-				Date start = process.getStartPeriod().getStart();
-				Date end = process.getStartPeriod().getEnd();
-				
-				if( start != null ){
-					query.startedAfter( start );
-				}
-				
-				if( end != null ){
-					Calendar cal_end = Calendar.getInstance();
-					cal_end.setTime(end);
-					cal_end.add(Calendar.DAY_OF_MONTH, 1);
-					cal_end.add(Calendar.SECOND, -1);
-					
-					query.startedBefore( cal_end.getTime() );
-				}
-			}
-			
-			//流程结束时间
-			if( process.getEndPeriod() != null ){
-				Date start = process.getEndPeriod().getStart();
-				Date end = process.getEndPeriod().getEnd();
-				
-				if( start != null ){
-					query.finishedAfter( start );
-				}
-				
-				if( end != null ){
-					Calendar cal_end = Calendar.getInstance();
-					cal_end.setTime(end);
-					cal_end.add(Calendar.DAY_OF_MONTH, 1);
-					cal_end.add(Calendar.SECOND, -1);
-					
-					query.finishedBefore( cal_end.getTime() );
-				}
-			}
-		}
-		
-		OrderBy orderBy = page.getOrderBy();
-		if( orderBy != null ){
-			if( "processDefinitionId".equals(orderBy.getProperty()) )
-				query.orderByProcessDefinitionId();
-			else if( "processInstanceId".equals(orderBy.getProperty()) )
-				query.orderByProcessInstanceId();
-			else if( "businessKey".equals(orderBy.getProperty()) )
-				query.orderByProcessInstanceBusinessKey();
-			else if( "duration".equals(orderBy.getProperty()) )
-				query.orderByProcessInstanceDuration();
-			else if( "startTime".equals(orderBy.getProperty()) )
-				query.orderByProcessInstanceStartTime();
-			else if( "endTime".equals(orderBy.getProperty()) )
-				query.orderByProcessInstanceEndTime();
-			
-		}
-		
-		return (ListPage<HistoricProcessInstance>)query(query,page);
-	}
-	
-	/**
 	 * 查询与我相关的流程
 	 */
 	@SuppressWarnings("unchecked")
-	public ListPage<HistoricProcessInstance> listMyProcess(MyProcess process,ListPage<HistoricProcessInstance> page ){
+	public ListPage<HistoricProcessInstance> listProcess(MyProcess process,ListPage<HistoricProcessInstance> page ){
 		if( page == null )
 			page = new ListPage<HistoricProcessInstance>();
 		

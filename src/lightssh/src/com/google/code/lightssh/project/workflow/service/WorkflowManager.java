@@ -70,15 +70,9 @@ public interface WorkflowManager extends Manager{
 	public HistoricProcessInstance getProcessHistory(String procId );
 	
 	/**
-	 * 历史流程示例
-	 */
-	public ListPage<HistoricProcessInstance> listProcessHistory(
-			MyProcess process,ListPage<HistoricProcessInstance> page );
-	
-	/**
 	 * 查询与我相关的流程
 	 */
-	public ListPage<HistoricProcessInstance> listMyProcess(
+	public ListPage<HistoricProcessInstance> listProcess(
 			MyProcess process,ListPage<HistoricProcessInstance> page );
 	
 	/**

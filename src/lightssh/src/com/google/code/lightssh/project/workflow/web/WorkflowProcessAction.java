@@ -134,7 +134,7 @@ public class WorkflowProcessAction extends GenericAction implements ImageAction{
 		if( hp_page.getOrderByList() == null )
 			hp_page.addDescending("START_TIME_");
 		
-		hp_page = workflowManager.listProcessHistory(process,hp_page);
+		hp_page = workflowManager.listProcess(process,hp_page);
 		return SUCCESS;
 	}
 	
@@ -157,7 +157,7 @@ public class WorkflowProcessAction extends GenericAction implements ImageAction{
 			hp_page.addDescending("START_TIME_");
 		
 		process.setAssignee(this.getLoginUser());
-		hp_page = workflowManager.listMyProcess(process,hp_page);
+		hp_page = workflowManager.listProcess(process,hp_page);
 		return SUCCESS; 
 	}
 	
