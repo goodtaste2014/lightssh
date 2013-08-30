@@ -45,9 +45,19 @@ public class MyProcess implements Serializable{
 	private String processDefinitionKey;
 	
 	/**
+	 * 流程定义Name
+	 */
+	private String processDefinitionName;
+	
+	/**
 	 * 流程ID
 	 */
 	private String processInstanceId;
+	
+	/**
+	 * 流程属性名
+	 */
+	private String processAttributeName;
 	
 	/**
 	 * 流程创建时间区间
@@ -129,6 +139,22 @@ public class MyProcess implements Serializable{
 
 	public void setProcessDefinitionKey(String processDefinitionKey) {
 		this.processDefinitionKey = processDefinitionKey;
+	}
+
+	public String getProcessAttributeName() {
+		return processAttributeName;
+	}
+
+	public void setProcessAttributeName(String processAttributeName) {
+		this.processAttributeName = processAttributeName;
+	}
+
+	public String getProcessDefinitionName() {
+		return processDefinitionName;
+	}
+
+	public void setProcessDefinitionName(String processDefinitionName) {
+		this.processDefinitionName = processDefinitionName;
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.google.code.lightssh.project.workflow.model;
 
+import com.google.code.lightssh.common.model.Period;
+
 /**
  * 
  * @author YangXiojin
@@ -24,6 +26,16 @@ public class MyTask {
 	private String candidateUser;
 	
 	/**
+	 * 拥有者
+	 */
+	private String owner;
+	
+	/**
+	 * 流程启动人
+	 */
+	private String procInstStartUser;
+	
+	/**
 	 * 是否完成
 	 */
 	private Boolean finish;
@@ -34,9 +46,24 @@ public class MyTask {
 	private String processDefinitionId;
 	
 	/**
+	 * 流程定义Key
+	 */
+	private String processDefinitionKey;
+	
+	/**
+	 * 流程定义名称
+	 */
+	private String processDefinitionName;
+	
+	/**
 	 * 流程ID
 	 */
 	private String processInstanceId;
+	
+	/**
+	 * 流程属性名
+	 */
+	private String processAttributeName;
 	
 	/**
 	 * 消息
@@ -47,6 +74,16 @@ public class MyTask {
 	 * 类型
 	 */
 	private ExecutionType type;
+	
+	/**
+	 * 任务到达时间
+	 */
+	private Period startPeriod;
+	
+	/**
+	 * 流程开始时间
+	 */
+	private Period procStartPeriod;
 
 	public String getAssignee() {
 		return assignee;
@@ -110,5 +147,61 @@ public class MyTask {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getProcessAttributeName() {
+		return processAttributeName;
+	}
+
+	public void setProcessAttributeName(String processAttributeName) {
+		this.processAttributeName = processAttributeName;
+	}
+
+	public String getProcessDefinitionName() {
+		return processDefinitionName;
+	}
+
+	public void setProcessDefinitionName(String processDefinitionName) {
+		this.processDefinitionName = processDefinitionName;
+	}
+
+	public String getProcessDefinitionKey() {
+		return processDefinitionKey;
+	}
+
+	public void setProcessDefinitionKey(String processDefinitionKey) {
+		this.processDefinitionKey = processDefinitionKey;
+	}
+
+	public String getOwner() {
+		return owner;
+	}
+
+	public void setOwner(String owner) {
+		this.owner = owner;
+	}
+
+	public String getProcInstStartUser() {
+		return procInstStartUser;
+	}
+
+	public void setProcInstStartUser(String procInstStartUser) {
+		this.procInstStartUser = procInstStartUser;
+	}
+
+	public Period getStartPeriod() {
+		return startPeriod;
+	}
+
+	public void setStartPeriod(Period startPeriod) {
+		this.startPeriod = startPeriod;
+	}
+
+	public Period getProcStartPeriod() {
+		return procStartPeriod;
+	}
+
+	public void setProcStartPeriod(Period procStartPeriod) {
+		this.procStartPeriod = procStartPeriod;
 	}
 }

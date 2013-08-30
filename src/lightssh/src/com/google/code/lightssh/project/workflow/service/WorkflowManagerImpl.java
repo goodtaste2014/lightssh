@@ -43,6 +43,7 @@ import org.activiti.engine.repository.ProcessDefinitionQuery;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.runtime.ProcessInstanceQuery;
 import org.activiti.engine.task.Comment;
+import org.activiti.engine.task.NativeTaskQuery;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
 import org.apache.commons.lang3.StringUtils;
@@ -507,10 +508,27 @@ public class WorkflowManagerImpl implements WorkflowManager{
 				query.parameter("proc_inst_id", process.getProcessInstanceId().trim());
 			}
 			
+			//流程属性名称
+			if( StringUtils.isNotEmpty(process.getProcessAttributeName()) ){
+				sql.append(" AND t.PROC_INST_ID_ IN ( ");
+				sql.append(" SELECT DISTINCT ACT_PROC_INST_ID FROM T_FLOW_PROCESS_ATTR ");
+				sql.append(" WHERE BIZ_NAME LIKE #{proc_attr_name} )");
+				query.parameter("proc_attr_name", "%"+process.getProcessAttributeName().trim()+"%");
+			}
+			
 			//流程类型ID
 			if( StringUtils.isNotEmpty(process.getProcessDefinitionId()) ){
 				sql.append(" AND t.PROC_DEF_ID_ = #{proc_def_id}");
 				query.parameter("proc_def_id", process.getProcessDefinitionId().trim());
+			}
+			
+			//流程类型Key
+			if( StringUtils.isNotEmpty(process.getProcessDefinitionKey()) ){
+				sql.append(" AND t.PROC_DEF_ID_ IN ( ");
+				sql.append(" SELECT DISTINCT ID_ FROM ");
+				sql.append( managementService.getTableName( ProcessDefinition.class) );
+				sql.append(" WHERE KEY_ = #{proc_def_key} )");
+				query.parameter("proc_def_key", process.getProcessDefinitionKey().trim());
 			}
 			
 			boolean includeOwner = StringUtils.isNotEmpty(process.getOwner());
@@ -680,36 +698,125 @@ public class WorkflowManagerImpl implements WorkflowManager{
 		if( page == null )
 			page = new ListPage<Task>();
 		
-		TaskQuery query = taskService.createTaskQuery();
-		OrderBy orderBy = page.getOrderBy();
-		if( orderBy != null ){
-			if( "name".equals(orderBy.getProperty()) )
-				query.orderByTaskName();
-			else if( "id".equals(orderBy.getProperty()) )
-				query.orderByTaskId();
-			else if( "createTime".equals(orderBy.getProperty()) )
-				query.orderByTaskCreateTime();
-			else if( "priority".equals(orderBy.getProperty()) )
-				query.orderByTaskPriority();
-			
-			/*
-			query.orderByDueDate();
-			query.orderByExecutionId();
-			query.orderByProcessInstanceId();
-			query.orderByTaskAssignee();
-			query.orderByTaskDescription();
-			*/
-		}
+		NativeTaskQuery query = taskService.createNativeTaskQuery();
+		StringBuffer sql = new StringBuffer(" FROM " + managementService.getTableName(Task.class) + " t ");
 		
 		if( task != null ){
-			if( StringUtils.isNotEmpty(task.getCandidateUser()) )
-				query.taskCandidateUser( task.getCandidateUser().trim() );
-			
-			if( StringUtils.isNotEmpty(task.getAssignee()) )
-				query.taskAssignee(task.getAssignee().trim());
+			//连接T_ACT_RU_IDENTITYLINK
+			if( StringUtils.isNotEmpty(task.getCandidateUser()) ){
+				sql.append(" INNER JOIN T_ACT_RU_IDENTITYLINK i on i.TASK_ID_ = t.ID_ ");
+				sql.append(" ");
+			}
 		}
 		
-		return (ListPage<Task>)query(query,page);
+		sql.append(" WHERE 1=1 ");
+		
+		if( task != null ){
+			//任务候选者
+			if( StringUtils.isNotEmpty(task.getCandidateUser()) ){
+				sql.append(" AND t.ASSIGNEE_ IS NULL "); //未签收
+				sql.append(" AND i.TYPE_ = 'candidate'");
+				sql.append(" AND i.USER_ID_ = #{candidate_user}");
+				query.parameter("candidate_user", task.getCandidateUser().trim());
+			}
+			
+			//任务签收人
+			if( StringUtils.isNotEmpty(task.getAssignee()) ){
+				sql.append(" AND t.ASSIGNEE_ = #{assignee}");
+				query.parameter("assignee", task.getAssignee().trim());
+			}
+			
+			//任务拥有者
+			if( StringUtils.isNotEmpty(task.getOwner()) ){
+				sql.append(" AND t.OWNER_ = #{owner}");
+				query.parameter("owner", task.getOwner().trim());
+			}
+			
+			//任务到达时间
+			if( task.getStartPeriod() != null ){
+				Date start = task.getStartPeriod().getStart();
+				Date end = task.getStartPeriod().getEnd();
+				
+				if( start != null ){
+					sql.append(" AND t.CREATE_TIME_ >= #{st_start} ");
+					query.parameter("st_start", start);
+				}
+				
+				if( end != null ){
+					Calendar cal_end = Calendar.getInstance();
+					cal_end.setTime(end);
+					cal_end.add(Calendar.DAY_OF_MONTH, 1);
+					cal_end.add(Calendar.SECOND, -1);
+					
+					sql.append(" AND t.CREATE_TIME_ <= #{st_end} ");
+					query.parameter("st_end", cal_end.getTime());
+				}
+			}
+			
+			//流程
+			if( StringUtils.isNotEmpty(task.getProcInstStartUser()) 
+					|| task.getProcStartPeriod() != null ){
+				sql.append(" AND t.PROC_INST_ID_ IN ( "); //start in
+				sql.append(" SELECT PROC_INST_ID_ FROM ");
+				sql.append( managementService.getTableName(HistoricProcessInstance.class) );
+				sql.append(" WHERE 1=1 "); 
+				
+				//流程创建人
+				if( StringUtils.isNotEmpty(task.getProcInstStartUser() ) ){
+					sql.append(" AND START_USER_ID_ = #{proc_inst_owner} ");
+					query.parameter("proc_inst_owner", task.getProcInstStartUser() );
+				}
+				
+				//流程开始时间
+				if( task.getProcStartPeriod() != null ){
+					Date start = task.getProcStartPeriod() .getStart();
+					Date end = task.getProcStartPeriod() .getEnd();
+					
+					if( start != null ){
+						sql.append(" AND START_TIME_ >= #{proc_st_start} ");
+						query.parameter("proc_st_start", start);
+					}
+					
+					if( end != null ){
+						Calendar cal_end = Calendar.getInstance();
+						cal_end.setTime(end);
+						cal_end.add(Calendar.DAY_OF_MONTH, 1);
+						cal_end.add(Calendar.SECOND, -1);
+						
+						sql.append(" AND START_TIME_ <= #{proc_st_end} ");
+						query.parameter("proc_st_end", cal_end.getTime());
+					}
+				}
+				
+				sql.append(" ) "); //end in
+			}
+			
+			//流程实例编号
+			if( StringUtils.isNotEmpty(task.getProcessInstanceId()) ){
+				sql.append(" AND t.PROC_INST_ID_ = #{proc_inst_id}");
+				query.parameter("proc_inst_id", task.getProcessInstanceId().trim());
+			}
+			
+			//流程属性名称
+			if( StringUtils.isNotEmpty(task.getProcessAttributeName()) ){
+				sql.append(" AND t.PROC_INST_ID_ IN ( ");
+				sql.append(" SELECT DISTINCT ACT_PROC_INST_ID FROM T_FLOW_PROCESS_ATTR ");
+				sql.append(" WHERE BIZ_NAME LIKE #{proc_attr_name} )");
+				query.parameter("proc_attr_name", "%"+task.getProcessAttributeName().trim()+"%");
+			}
+			
+			//流程类型Key
+			if( StringUtils.isNotEmpty(task.getProcessDefinitionKey()) ){
+				sql.append(" AND t.PROC_DEF_ID_ IN ( ");
+				sql.append(" SELECT DISTINCT ID_ FROM ");
+				sql.append( managementService.getTableName( ProcessDefinition.class) );
+				sql.append(" WHERE KEY_ = #{proc_def_key} )");
+				query.parameter("proc_def_key", task.getProcessDefinitionKey().trim());
+			}
+			
+		}
+		
+		return (ListPage<Task>) query(sql.toString(),query,page);
 	}
 	
 	/**
@@ -784,6 +891,9 @@ public class WorkflowManagerImpl implements WorkflowManager{
 		
 		if( StringUtil.hasText( task.getAssignee() ) )
 			throw new ApplicationException("任务["+taskId+"]已被用户["+task.getAssignee()+"]认领！");
+		
+		this.taskLogManager.save(task.getProcessInstanceId(),task.getId()
+				,ExecutionType.CLAIM, userId, "用户["+userId+"]签收任务");
 		
 		taskService.claim(taskId, userId);
 	}

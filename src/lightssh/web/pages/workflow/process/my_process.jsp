@@ -5,7 +5,7 @@
 	<meta name="decorator" content="background"/>
 
 	<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/ui/i18n/jquery.ui.datepicker_zh_CN.js"></script>
-	
+	<script type="text/javascript" src="<s:url value="/pages/workflow/process/popup_proc_def.js" />"></script>
 	<title>流程列表</title>
 	
 	<script type="text/javascript">
@@ -24,23 +24,44 @@
 	</ul>
 	
 	<%@ include file="/pages/common/messages.jsp" %>
-		
+	
 	<s:form name="list" method="post">
 		<table class="profile">
+			<colgroup>
+				<col width="10%"/>
+				<col width="23%"/>
+				<col width="10%"/>
+				<col width="23%"/>
+				<col width="10%"/>
+				<col />
+			</colgroup>
 			<tbody>
 				<tr>
-					<th><label for="proid">流程编号</label></th>
-					<td><s:textfield id="proid" name="process.processInstanceId" size="20" maxlength="100"/></td>
+					<th><label for="proc_inst_id">流程编号</label></th>
+					<td><s:textfield id="proc_inst_id" name="process.processInstanceId" size="20" maxlength="100"/></td>
 					
-					<th><label for="defid">流程类型</label></th>
-					<td><s:textfield id="defid" name="process.processDefinitionId" size="20" maxlength="100"/></td>
+					<th><label for="proc_attr_name">流程名称</label></th>
+					<td><s:textfield id="proc_attr_name" name="process.processAttributeName" size="30" maxlength="100"/></td>
 					
+					<th><label for="proc_def_key">流程类型</label></th>
+					<td>
+						<span class="popup" onclick="popupProcDef('<s:url value="/workflow/process/popupdef.do"/>');">&nbsp;</span>
+						<s:hidden id="proc_def_key" name="process.processDefinitionKey"/>
+						<s:hidden id="proc_def_name" name="process.processDefinitionName"/>
+						<span id ="span_procdef_name"><s:property value="process.processDefinitionName"/></span>
+					</td>
 				</tr>
+				
 				<tr>
-					<th><label for="owner">开始时间</label></th>
+					<th><label for="time">开始时间</label></th>
 					<td>
 						<s:textfield name="process.startPeriod.start" cssClass="calendar" id="access_start_date" size="10" /> -
 						<s:textfield name="process.startPeriod.end" cssClass="calendar" id="access_end_date" size="10"/>
+					</td>
+					
+					<th><label for="owner">创建者</label></th>
+					<td>
+						<s:textfield name="process.owner" size="20" />
 					</td>
 					
 					<th><label for="status">流程状态</label></th>
@@ -49,7 +70,6 @@
 						
 						<input type="submit" class="action search right" value="查询"/>
 					</td>
-					
 				</tr>
 			</tbody>
 		</table>
@@ -72,11 +92,10 @@
 		</mys:column>
 		--%>
 		<mys:column title="流程编号" value="processInstanceId" sortable="true" sortKey="PROC_INST_ID_" width="80px"/>
-		<mys:column title="流程类型" width="180px">
-			<s:set name="proDef" value="@com.google.code.lightssh.project.workflow.util.WorkflowHelper@getProcessDefinition(processDefinitionId)"/>
-			<s:property value="#proDef.name"/>
+		<mys:column title="流程名称">
+			<s:set name="procAttr" value="@com.google.code.lightssh.project.workflow.util.WorkflowHelper@getProcAttr(processInstanceId)"/>
+			<s:property value="#procAttr.bizName"/>
 		</mys:column>
-		<%--<mys:column title="流程名称" />--%>
 		<mys:column title="流程节点">
 			<s:if test="endTime==null">
 				<s:set name="task" value="@com.google.code.lightssh.project.workflow.util.WorkflowHelper@listTaskByProcessId(getId())"/>
@@ -90,6 +109,10 @@
 		</mys:column>
 		<mys:column title="状态" sortable="false" width="50px">
 			<font color="<s:property value="endTime==null?'green':'black'"/>"><s:property value="endTime==null?'活动':'结束'"/></font>
+		</mys:column>
+		<mys:column title="流程类型" width="180px">
+			<s:set name="proDef" value="@com.google.code.lightssh.project.workflow.util.WorkflowHelper@getProcessDefinition(processDefinitionId)"/>
+			<s:property value="#proDef.name"/>
 		</mys:column>
 		<mys:column title="创建者" value="startUserId" sortable="false" width="100px"/>
 		<mys:column title="开始时间" sortable="true" sortKey="START_TIME_" width="150px">
