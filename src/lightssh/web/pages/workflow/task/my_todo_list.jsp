@@ -39,7 +39,7 @@
 	<%@ include file="/pages/common/messages.jsp" %>
 	
 	<mys:table cssClass="list" value="taskPage" status="loop" pageParamPrefix="task_page">
-		<mys:column title="序号" width="50px">
+		<mys:column title="序号" width="30px">
 			<s:property value="#loop.index + 1"/>
 		</mys:column>
 		<mys:column title="流程编号" value="processInstanceId" width="80px"/>
@@ -48,7 +48,10 @@
 			<s:set name="procDef" value="@com.google.code.lightssh.project.workflow.util.WorkflowHelper@getProcessDefinition(processDefinitionId)"/>
 			<s:property value="#procDef.name"/>
 		</mys:column>
-		<mys:column title="流程名称" value="description" />
+		<mys:column title="流程名称">
+			<s:set name="procAttr" value="@com.google.code.lightssh.project.workflow.util.WorkflowHelper@getProcAttr(processInstanceId)"/>
+			<s:property value="#procAttr.bizName"/>
+		</mys:column>
 		<mys:column title="流程节点" value="name" sortable="false" width="160px"/>
 		<mys:column title="创建人" value="#procInst.startUserId" sortable="false" width="80px"/>
 		<mys:column title="创建时间" value="@com.google.code.lightssh.common.util.TextFormater@format(#procInst.startTime,'yyyy-MM-dd HH:hh:ss')" 

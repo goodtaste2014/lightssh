@@ -46,6 +46,8 @@ import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.google.code.lightssh.common.ApplicationException;
@@ -66,6 +68,8 @@ import com.google.code.lightssh.project.workflow.model.MyTask;
 public class WorkflowManagerImpl implements WorkflowManager{
 
 	private static final long serialVersionUID = -263409561222061490L;
+	
+	private static Logger log = LoggerFactory.getLogger(WorkflowManagerImpl.class);
 	
 	private static final String SQL_SELECT_COUNT = "SELECT COUNT(1) ";
 	
@@ -96,6 +100,9 @@ public class WorkflowManagerImpl implements WorkflowManager{
 	
 	@Resource(name="taskLogManager")
 	private TaskLogManager taskLogManager;
+	
+	@Resource(name="processAttributeManager")
+	private ProcessAttributeManager processAttributeManager;
 	
 	/**
 	 * 本地查询
@@ -577,15 +584,37 @@ public class WorkflowManagerImpl implements WorkflowManager{
 	
 	/**
 	 * 启动流程
-	 * @param processKey 流程key
+	 * @param procDefKey 流程定义key
 	 * @param bizKey 业务key
+	 * @param bizName 业务名称
+	 * @param userId 用户ID
 	 */
-	public ProcessInstance start( String processKey,String bizKey,String userId,Map<String,Object> variables){
+	public ProcessInstance start( String procDefKey,String bizKey,String bizName
+			,String userId,Map<String,Object> variables){
+		
+		if( StringUtils.isEmpty(bizKey) )
+			throw new ApplicationException("业务关键字(bizKey)为空！");
+		
 		//用来设置启动流程的人员ID，引擎会自动把用户ID保存到activiti:initiator中
 		if( !StringUtils.isEmpty(userId) )
 			identityService.setAuthenticatedUserId(userId);
+		
+		ProcessInstance procInst = runtimeService.startProcessInstanceByKey(
+				procDefKey,bizKey,variables );
+		
+		if( StringUtils.isNotEmpty(bizName) ){
+			processAttributeManager.save(procDefKey,procInst.getId()
+					,bizKey, bizName, userId);//TODO保存流程属性
+			
+			log.debug("保存流程属性：ProcDefKey[{}],BizKey[{}],BizName[{}]"
+					,new Object[]{procDefKey,bizKey,bizName});
+		}
+		
+		//保存操作日志
+		taskLogManager.save(procInst.getId()
+				,procInst.getActivityId(),ExecutionType.SUBMIT,userId,"启动流程");
 	    
-		return runtimeService.startProcessInstanceByKey( processKey,bizKey,variables );
+		return procInst;
 	}
 	
 	/**

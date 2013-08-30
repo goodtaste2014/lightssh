@@ -37,10 +37,6 @@
 			<result name="success">/pages/workflow/process/my_process.jsp</result>	
         </action>
         
-        <action name="start" class="workflowAction" method="start">
-			<result name="success" type="redirectAction">instancelist</result>	
-        </action>
-        
         <action name="view" class="workflowProcessAction" method="view">
 			<result name="success">/pages/workflow/process/view.jsp</result>	
         </action>
@@ -69,7 +65,6 @@
         
         <action name="viewbizdata" class="workflowProcessAction" method="viewBizData">
 			<result name="input">/pages/workflow/process/view_error.jsp</result>
-			<!--<result name="success">/pages/workflow/process/view_error.jsp</result>  -->
 			<result name="success" type="redirectAction">
 				<param name="namespace">${#request.bizNamespace}</param>
 				<param name="actionName">${#request.bizActionName}</param>

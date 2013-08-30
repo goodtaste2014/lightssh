@@ -15,7 +15,8 @@
 			<tr>
 				<th><label>流程名称</label></th>
 				<td colspan="3">
-					<s:property value="#proc.processInstanceId"/>
+					<s:set name="procAttr" value="@com.google.code.lightssh.project.workflow.util.WorkflowHelper@getProcAttr(#proc.processInstanceId)"/>
+					<s:property value="#procAttr.bizName"/>
 				</td>
 			</tr>
 			
