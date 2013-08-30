@@ -119,15 +119,4 @@ public class WorkflowAction extends GenericAction{
 		return SUCCESS;
 	}
 
-	/**
-	 * 开始工作流
-	 */
-	public String start( ){
-		String key = request.getParameter("processDefinitionKey");
-		
-		//ProcessInstance process = 
-		workflowManager.start( key,null,this.getLoginUser(),null );
-		return SUCCESS;
-	}
-
 }

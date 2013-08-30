@@ -145,7 +145,8 @@ public class RoleManagerImpl extends BaseManagerImpl<Role> implements RoleManage
 		RoleChange rc = roleChangeManager.save(user, type, originalRole, newRole,remark);
 		
 		//启动工作流
-		workflowManager.start("security_role_audit",rc.getId(),user.getLoginName(),null);
+		String bizName = "角色变更审核流程_"+db_role.getName()+"_"+user.getLoginName();
+		workflowManager.start("security_role_audit",rc.getId(),bizName,user.getLoginName(),null);
 	}
 	
 	public void remove(Role role,LoginAccount operator,String remark) {

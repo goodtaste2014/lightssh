@@ -135,10 +135,13 @@ public interface WorkflowManager extends Manager{
 	
 	/**
 	 * 启动流程
-	 * @param processKey 流程key
+	 * @param procDefKey 流程定义key
 	 * @param bizKey 业务key
+	 * @param bizName 业务名称
+	 * @param userId 用户ID
 	 */
-	public ProcessInstance start( String processKey,String bizKey,String userId,Map<String,Object> variables );
+	public ProcessInstance start( String procDefKey,String bizKey,String bizName
+			,String userId,Map<String,Object> variables);
 	
 	/**
 	 * 认领任务

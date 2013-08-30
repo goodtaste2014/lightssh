@@ -40,8 +40,9 @@
 			<mys:column title="序号" width="50px">
 				<s:property value="#loop.index + 1"/>
 			</mys:column>
+			<mys:column title="编号" value="getId()" sortable="true" sortKey="id" width="160px"/>
 			<mys:column title="名称" value="name" sortable="true" width="260px"/>
-			<mys:column title="状态" value="status" sortable="false" width="60px"/>
+			<mys:column title="状态" value="status" sortable="true" width="60px"/>
 			<mys:column title="创建日期" value="createdTime" sortable="true" width="160px"/>
 			<mys:column title="描述" value="description"/>
 			<mys:column title="操作" width="40px" cssClass="action">

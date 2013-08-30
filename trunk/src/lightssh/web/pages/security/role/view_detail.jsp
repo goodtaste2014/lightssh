@@ -5,15 +5,31 @@
 	<caption>角色信息</caption>
 	<tbody>
 		<tr>
-			<th><label for="name">角色名称</label></th>
+			<th><label for="id">编号</label></th>
+			<td>
+				<s:property value="%{role.id}"/>
+			</td>
+		</tr>
+		
+		<tr>
+			<th><label for="name">名称</label></th>
 			<td>
 				<s:property value="%{role.name}"/>
 			</td>
 		</tr>
+		
 		<tr>
-			<th><label for="desc">角色描述</label></th>
+			<th><label for="status">状态</label></th>
+			<td>
+				<s:property value="%{role.status}"/>
+			</td>
+		</tr>
+		
+		<tr>
+			<th><label for="desc">描述</label></th>
 			<td><s:property value="%{role.description}"/></td>
 		</tr>
+		
 		<tr>
 			<th><label for="permission">权限集</label></th>
 			<td>
@@ -64,7 +80,7 @@
 		</tr>
 		
 		<tr>
-			<th><label for="result">角色创建时间</label></th>
+			<th><label for="result">创建时间</label></th>
 			<td><s:property value="%{role.createdTime}"/></td>
 		</tr>
 	</tbody>

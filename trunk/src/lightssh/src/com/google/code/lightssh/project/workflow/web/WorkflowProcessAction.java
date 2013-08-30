@@ -16,7 +16,6 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.google.code.lightssh.common.config.SystemConfig;
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.web.action.ImageAction;
 import com.google.code.lightssh.project.web.action.GenericAction;
@@ -49,12 +48,6 @@ public class WorkflowProcessAction extends GenericAction implements ImageAction{
 	private ListPage<ProcessInstance> pi_page;
 	
 	private ListPage<HistoricProcessInstance> hp_page;
-	
-	/**
-	 * 系统参数
-	 */
-	@Resource(name="systemConfig")
-	private SystemConfig systemConfig;
 	
 	@Resource(name="workflowManager")
 	private WorkflowManager workflowManager;
@@ -322,8 +315,8 @@ public class WorkflowProcessAction extends GenericAction implements ImageAction{
 		
 		String bizKey = hisProc.getBusinessKey();
 		if( StringUtils.isEmpty(bizKey) ){
-			//this.addActionError("流程["+procInstId+"]无业务数据关联！");
-			//return INPUT;
+			this.addActionError("流程["+procInstId+"]无业务数据关联！");
+			return INPUT;
 		}
 		
 		ProcessDefinition procDef = workflowManager.getProcessDefinition(
@@ -333,6 +326,7 @@ public class WorkflowProcessAction extends GenericAction implements ImageAction{
 			return INPUT;
 		}
 		
+		//TODO
 		//String procDefKey = procDef.getKey();
 		//request.setAttribute("bizParamName", "role.id");
 		request.setAttribute("bizKey", bizKey);
