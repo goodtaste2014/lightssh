@@ -1,4 +1,4 @@
-<decorators defaultdir="/pages/decorators">
+<decorators defaultdir="/pages/common/decorators">
     <excludes>
         <pattern>/resources/*</pattern>
     </excludes>

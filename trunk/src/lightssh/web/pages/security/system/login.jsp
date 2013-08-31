@@ -2,7 +2,7 @@
 
 <%@ page language ="java" pageEncoding = "UTF-8" contentType="text/html;charset=utf-8" %> 
 <%@ page import ="com.google.code.lightssh.common.support.shiro.*"%>
-<%@ include file="/pages/common/taglibs.jsp" %>
+<%@ include file="/pages/common/util/taglibs.jsp" %>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 

@@ -1,4 +1,4 @@
-<%@ include file="/pages/common/taglibs.jsp" %>
+<%@ include file="/pages/common/util/taglibs.jsp" %>
 <%@ page pageEncoding="utf-8" isErrorPage="true"%>
 
 <html>

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html;charset=utf-8" pageEncoding="UTF-8"%>
-<%@ include file="/pages/common/taglibs.jsp" %>
+<%@ include file="/pages/common/util/taglibs.jsp" %>
 
 <s:set name="originalRole" value="#request.originalRole"/>
 <s:set name="newRole" value="#request.newRole"/>

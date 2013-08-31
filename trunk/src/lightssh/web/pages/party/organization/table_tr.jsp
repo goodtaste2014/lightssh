@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html;charset=utf-8"%>
-<%@ include file="/pages/common/taglibs.jsp" %>
+<%@ include file="/pages/common/util/taglibs.jsp" %>
 
 <tr id="<s:property value="id"/>" class="<s:property value="#loop.odd?\"odd\":\"even\""/> <s:property value="#parent==null?\"\":(\"child-of-\"+#parent)"/>">
 	<td>&nbsp;</td>

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html;charset=utf-8"%>
-<%@ include file="/pages/common/taglibs.jsp" %>
+<%@ include file="/pages/common/util/taglibs.jsp" %>
 	
 <head>
 	<meta name="decorator" content="background"/>
@@ -22,7 +22,7 @@
 	<input type="button" class="action enterprise" value="设置企业信息" 
 		onclick="location.href='<s:url value="viewparent.do?action=edit"/>'"/>
 		
-	<%@ include file="/pages/common/messages.jsp" %>
+	<%@ include file="/pages/common/util/messages.jsp" %>
 	
 	<s:set name="org" value="party"/>
 	

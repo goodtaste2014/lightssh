@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html;charset=utf-8"%>
-<%@ include file="/pages/common/taglibs.jsp" %>
+<%@ include file="/pages/common/util/taglibs.jsp" %>
 	
 <head>
 	<meta name="decorator" content="public"/>
@@ -42,7 +42,7 @@
 
 <body class="public">
 	<h1>登录过程遇到问题了？</h1>
-	<%@ include file="/pages/common/messages.jsp" %>
+	<%@ include file="/pages/common/util/messages.jsp" %>
 	<form method="post">
 		<div class="radio-option">
 			<input type="radio" name="forgot" value="password" id="radio1" onclick="recoveryOptionSelected()">

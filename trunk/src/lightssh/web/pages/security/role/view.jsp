@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html;charset=utf-8" pageEncoding="UTF-8"%>
-<%@ include file="/pages/common/taglibs.jsp" %>
+<%@ include file="/pages/common/util/taglibs.jsp" %>
 
 <html>
 	<head>
@@ -29,7 +29,7 @@
 			<li>查看角色</li>
 		</ul>
 		
-		<%@ include file="/pages/common/messages.jsp" %>
+		<%@ include file="/pages/common/util/messages.jsp" %>
 		
 		<%@ include file="/pages/security/role/view_detail.jsp" %>
 		

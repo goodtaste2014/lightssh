@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html;charset=utf-8"%>
-<%@ include file="/pages/common/taglibs.jsp" %>
+<%@ include file="/pages/common/util/taglibs.jsp" %>
 
 <head>
 	<meta name="decorator" content="background"/>
@@ -44,7 +44,7 @@
 	
 	<input type="button" class="action new" value="新增分类树" onclick="location.href='<s:url value="edit.do"/>'"/>
 		
-	<%@ include file="/pages/common/messages.jsp" %>
+	<%@ include file="/pages/common/util/messages.jsp" %>
 	
 	<s:form name="list" namespace="/settings/tree" method="post">
 		<table class="profile">

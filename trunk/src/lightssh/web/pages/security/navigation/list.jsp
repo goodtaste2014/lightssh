@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%@ page language="java" contentType="text/html;charset=utf-8" pageEncoding="UTF-8"%>
-<%@ include file="/pages/common/taglibs.jsp" %>
+<%@ include file="/pages/common/util/taglibs.jsp" %>
 
 <html>
 	<head>
@@ -57,7 +57,7 @@
 	</head>
 	
 	<body>
-		<%@ include file="/pages/common/messages.jsp" %>
+		<%@ include file="/pages/common/util/messages.jsp" %>
 		
 		<ul id="navigation_tree">
 		<li><input type="checkbox" value="null" id="null" parent="empty" onclick="selectResource(this);"/>系统权限

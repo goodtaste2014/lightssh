@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html;charset=utf-8"%>
-<%@ include file="/pages/common/taglibs.jsp" %>
+<%@ include file="/pages/common/util/taglibs.jsp" %>
 
 <html>
 	<head>
@@ -25,7 +25,7 @@
 		<input type="button" class="action new" value="新增账号" onclick="location.href='<s:url value="edit.do"/>'"/>
 		<input type="button" class="action pdf" value="PDF" onclick="location.href='<s:url value="report.do?type=PDF"/>'"/>
 	
-		<%@ include file="/pages/common/messages.jsp" %>
+		<%@ include file="/pages/common/util/messages.jsp" %>
 		
 		<s:form name="list" namespace="/system/account" method="post">
 			<table class="profile">

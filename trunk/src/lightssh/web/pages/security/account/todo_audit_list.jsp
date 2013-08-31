@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html;charset=utf-8"%>
-<%@ include file="/pages/common/taglibs.jsp" %>
+<%@ include file="/pages/common/util/taglibs.jsp" %>
 
 <html>
 	<head>
@@ -14,7 +14,7 @@
 			<li>待审核列表</li>
 		</ul>
 		
-		<%@ include file="/pages/common/messages.jsp" %>
+		<%@ include file="/pages/common/util/messages.jsp" %>
 		
 		<s:form name="todoauditlist" namespace="/system/account" method="post">
 			<table class="profile">

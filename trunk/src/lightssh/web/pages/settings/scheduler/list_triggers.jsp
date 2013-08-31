@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html;charset=utf-8"%>
-<%@ include file="/pages/common/taglibs.jsp" %>
+<%@ include file="/pages/common/util/taglibs.jsp" %>
 
 <html>
 	<head>
@@ -24,7 +24,7 @@
 			<li>时钟列表</li>
 		</ul>
 		
-		<%@ include file="/pages/common/messages.jsp" %>
+		<%@ include file="/pages/common/util/messages.jsp" %>
 		
 		<mys:table cssClass="list" value="page" status="loop">
 			<mys:column title="序号"  width="50px">
