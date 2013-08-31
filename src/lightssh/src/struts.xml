@@ -100,24 +100,24 @@
         
         <!-- HEADER PAGE -->
         <action name="header" class="securityAction">
-        	<result name="input">/pages/common/header.jsp</result>
-        	<result name="success">/pages/common/header.jsp</result>
+        	<result name="input">/pages/common/layout/header.jsp</result>
+        	<result name="success">/pages/common/layout/header.jsp</result>
         </action>
         
         <!-- BOTTOM PAGE -->
         <action name="footer" class="securityAction">
-        	<result name="success">/pages/common/footer.jsp</result>
+        	<result name="success">/pages/common/layout/footer.jsp</result>
         </action>
         
         <!-- SWITCH PAGE -->
         <action name="switch" class="securityAction">
-        	<result name="success">/pages/common/switch.jsp</result>
+        	<result name="success">/pages/common/layout/switch.jsp</result>
         </action>
         
         <!-- NAVIGATION PAGE -->
         <action name="navigation" class="securityAction">
-        	<result name="input">/pages/common/navigation_vertical.jsp</result>
-        	<result name="success">/pages/common/navigation_vertical.jsp</result>
+        	<result name="input">/pages/common/layout/navigation_vertical.jsp</result>
+        	<result name="success">/pages/common/layout/navigation_vertical.jsp</result>
         </action>
         
         <!-- PANEL PAGE -->
