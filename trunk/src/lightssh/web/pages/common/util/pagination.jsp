@@ -1,6 +1,6 @@
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.Enumeration" %>
-<%@ include file="/pages/common/taglibs.jsp" %>
+<%@ include file="/pages/common/util/taglibs.jsp" %>
 <%@ page pageEncoding="UTF-8" %>
 
 <div class="pagination">
