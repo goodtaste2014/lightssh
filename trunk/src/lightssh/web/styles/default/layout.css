@@ -125,8 +125,9 @@ body#header{
 }
 
 #header{
-	background: white url("images/bg_header.gif") repeat-x ;
-	height:68px;
+	/*background: white url("images/bg_header.gif") repeat-x ;*/
+	background: white;
+	height:50px;
 	/*border-bottom:1px solid #E5E5E8;*/
 }
 
@@ -143,14 +144,28 @@ body#header{
 #header .logo{
 	position: absolute;
 	font-size: 200%;
-	padding: 1em 0 1em 0;
+	width: 260px;
+}
+
+#header .logo img{
+	position: absolute;
+	margin-left: 20px;
+}
+#header .logo a{
+	position: absolute;
+	height: 20px;
+	line-height: 20px;
+	margin: 15px 0 0 100px;
 }
 
 #header .status{
 	display:block;
-	float: none;
-	height: 40px;
-	line-height: 40px;
+	float: right;
+	height: 50px;
+	line-height: 50px;
+	width:100%;
+	/*border-bottom: 1px solid #dcdcdc;*/
+	background: #f7f6f6;
 }
 
 #header .status .right{
@@ -159,13 +174,42 @@ body#header{
 	line-height:30px;
 	vertical-align:middle;
 	padding-right:20px;
-	background: repeat-x url("images/bg_header_status.gif") bottom;
+}
+
+#header .status .right select {
+	margin: 0;
+}
+
+#header .status .right ul{
+	height: 26px;
+	line-height: 26px;
+	margin-top: 2px;
+}
+
+#header .status .right li{
+	display: list-item;
+	float: left;
+	border-right: 1px solid #d2d2d2;
+	border-left: 1px solid #fcfcfc;
+	padding: 0 5px;
+	margin-top: 4px;
+	height: 18px;
+	line-height: 16px;
+}
+
+#header .status .right li.first{
+	border-left: none;
+}
+
+#header .status .right li.last{
+	border-right: none;
 }
 
 #header .status .right a{
-	height: 28px;
-	line-height:28px;
+	height: 18px;
+	line-height:18px;
 	font-size:12px;
+	vertical-align: middle;
 }
 
 #header .status .left{
@@ -173,7 +217,6 @@ body#header{
 	float:right;
 	height: 30px;
 	line-height:30px;
-	background:no-repeat url("images/bg_header_status_left.gif") bottom;
 }
 
 #header select{
@@ -196,7 +239,7 @@ body#header .line .left,body#header .line .right{
 	
 	/* Chrome, Safari:*/
     background: -webkit-gradient(linear,
-                left top, right top, from(#FFFFFF), to(#0066B2));
+                left top, right top, from(#FFFFFF), to(#4C66B5));
                 
     /* Mozilla: */
     background: -moz-linear-gradient(left, #FFFFFF, #0066B2);
@@ -214,7 +257,7 @@ body#header .line .left{
 	float:right;
 	/* Chrome, Safari:*/
     background: -webkit-gradient(linear,
-                left top, right top, from(#0066B2), to(#FFFFFF));
+                left top, right top, from(#4C66B5), to(#FFFFFF));
                 
     /* Mozilla: */
     background: -moz-linear-gradient(left, #0066B2, #FFFFFF);

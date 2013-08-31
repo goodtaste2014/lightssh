@@ -19,7 +19,7 @@
 		</script>
 	</head>
 	
-	<frameset rows="70px,*,20px" frameborder="0" framespacing="0" border="0" >
+	<frameset rows="52px,*,20px" frameborder="0" framespacing="0" border="0" >
 		<frame id="head_frame" scrolling="no" src="<s:url value="/header.do"/>"></frame>
 		<frameset id="main_frameset" frameborder="0" framespacing="0" border="0" cols="200px,10px,*" width="100%">
 			<frame id="navigation_frame" name="navigation_frame" scrolling="no" src="<s:url value="/navigation.do"/>"></frame>

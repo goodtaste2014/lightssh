@@ -35,6 +35,10 @@ body {
 	marginwidth:0;
 }
 
+ul{
+	list-style: none;
+}
+
 li {
 	display: list-item;
 	white-space:nowrap;
@@ -301,6 +305,7 @@ table{
 table caption{
 	text-align: left;
 	margin-bottom: 5px;
+	margin-top: -4px;
 }
 
 /* TABLE LIST */
@@ -433,7 +438,7 @@ table.profile{
 }
 
 table.profile caption{
-	border-top: 2px solid #206F96;
+	border-top: 2px solid #2779aa;
 	font-weight:bold;
 	padding-left:22px;
 	background: transparent url("../../images/background/icon_caption.png") no-repeat 4px center;
