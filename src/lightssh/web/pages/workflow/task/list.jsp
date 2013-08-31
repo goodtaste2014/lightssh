@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html;charset=utf-8"%>
-<%@ include file="/pages/common/taglibs.jsp" %>
+<%@ include file="/pages/common/util/taglibs.jsp" %>
 
 <head>
 	<meta name="decorator" content="background"/>
@@ -37,7 +37,7 @@
 		<li>任务列表</li>
 	</ul>
 	
-	<%@ include file="/pages/common/messages.jsp" %>
+	<%@ include file="/pages/common/util/messages.jsp" %>
 	
 	<mys:table cssClass="list" value="taskPage" status="loop" pageParamPrefix="task_page">
 		<mys:column title="序号" width="50px">

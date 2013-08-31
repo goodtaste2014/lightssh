@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html;charset=utf-8"%>
-<%@ include file="/pages/common/taglibs.jsp" %>
+<%@ include file="/pages/common/util/taglibs.jsp" %>
 	
 <head>
 	<meta name="decorator" content="background"/>
@@ -134,7 +134,7 @@
 	
 	<input type="button" class="action list" value="账号列表" onclick="location.href='<s:url value="list.do"/>'"/>
 		
-	<%@ include file="/pages/common/messages.jsp" %>
+	<%@ include file="/pages/common/util/messages.jsp" %>
 	
 	<s:form id="profile_form" action="save" namespace="/security/account" method="post">
 		<table class="profile">

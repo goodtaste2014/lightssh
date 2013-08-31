@@ -1,5 +1,5 @@
 <%@ page language="java" pageEncoding="utf-8"%>
-<%@ include file="/pages/common/taglibs.jsp" %>
+<%@ include file="/pages/common/util/taglibs.jsp" %>
 
 <s:set name="org" value="party"/>
 <ul id="organization_tree">

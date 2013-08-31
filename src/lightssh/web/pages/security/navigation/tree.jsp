@@ -1,5 +1,5 @@
 <%@ page language="java" pageEncoding="utf-8"%>
-<%@ include file="/pages/common/taglibs.jsp" %>
+<%@ include file="/pages/common/util/taglibs.jsp" %>
 
 	<ul id="mytree" style="width:200px;clear: none;float:left;height: 100%;">
 		<li><input type="checkbox" /><a href="?1">Item 1</a>

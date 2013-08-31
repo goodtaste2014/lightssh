@@ -7,7 +7,7 @@
 <%@page import="org.apache.shiro.subject.Subject"%>
 <%@page import="org.apache.shiro.authc.*"%>
 
-<%@include file="/pages/common/taglibs.jsp"%>
+<%@include file="/pages/common/util/taglibs.jsp"%>
 
 <%
 	Object obj=request.getAttribute(org.apache.shiro.web.filter.authc.FormAuthenticationFilter.DEFAULT_ERROR_KEY_ATTRIBUTE_NAME);

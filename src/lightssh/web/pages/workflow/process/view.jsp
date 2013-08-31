@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html;charset=utf-8"%>
-<%@ include file="/pages/common/taglibs.jsp" %>
+<%@ include file="/pages/common/util/taglibs.jsp" %>
 
 <head>
 	<meta name="decorator" content="background"/>
@@ -24,7 +24,7 @@
 		<li>流程详情</li>
 	</ul>
 	
-	<%@ include file="/pages/common/messages.jsp" %>
+	<%@ include file="/pages/common/util/messages.jsp" %>
 	
 	<%-- 
 	<s:action name="viewproc" namespace="/workflow/process" executeResult="true">

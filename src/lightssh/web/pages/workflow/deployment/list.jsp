@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html;charset=utf-8"%>
-<%@ include file="/pages/common/taglibs.jsp" %>
+<%@ include file="/pages/common/util/taglibs.jsp" %>
 
 <head>
 	<meta name="decorator" content="background"/>
@@ -21,7 +21,7 @@
 		<li>部署列表</li>
 	</ul>
 	
-	<%@ include file="/pages/common/messages.jsp" %>
+	<%@ include file="/pages/common/util/messages.jsp" %>
 	
 	<input type="button" class="action new" onclick="location.href='<s:url value="/workflow/deployment/deploy.do"/>'" value="部署流程"/>
 	

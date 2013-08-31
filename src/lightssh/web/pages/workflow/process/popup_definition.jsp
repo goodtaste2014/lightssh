@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html;charset=utf-8"%>
-<%@ include file="/pages/common/taglibs.jsp" %>
+<%@ include file="/pages/common/util/taglibs.jsp" %>
 
 <script type="text/javascript">
 	function select( span ){
@@ -75,5 +75,5 @@
 		
 	<s:set name="pagination" value="%{pd_page}" />
 	<s:set name="PAGE_NUMBER_NAME" value="'pd_page.number'" />
-	<jsp:include page="/pages/common/paginationAJAX.jsp"/>
+	<jsp:include page="/pages/common/util/paginationAJAX.jsp"/>
 </div>
