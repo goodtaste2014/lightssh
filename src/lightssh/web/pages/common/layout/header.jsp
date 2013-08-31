@@ -82,27 +82,37 @@
 	<body id="header">
 		<div id="header">
 			<div class="logo">
-				<%-- 
 				<img alt="logo" src="<s:url value="/images/logo.png"/>" />
 				<a href="http://code.google.com/p/lightssh/" target="_blank">Light SSH</a>
-				--%>
 			</div>
 			
 			<div class="status" id="div_status">
 				<div class="right">
-					<s:set name="principal" value="#session[@com.google.code.lightssh.common.web.SessionKey@LOGIN_ACCOUNT].loginName"/>
-					<s:text name="project.header.welcome"/>：<a href="<s:url value="/security/account/my.do"/>" class="icon user" target="main_frame"><s:property value="#principal"/></a>
-					
-					|&nbsp;<a href="<s:url value="/welcome.do"/>" class="icon home" target="_top"><s:text name="project.header.home"/></a>
-					|&nbsp;<a href="<s:url value="/security/account/edit.do?password=update"/>" class="icon password" target="main_frame"><s:text name="project.header.changepassword"/></a>
-					
-					|&nbsp;<a href="#" class="icon theme" onclick="theme(this)"><s:text name="project.header.theme"/></a>
-					|&nbsp;<a href="#" class="icon language" onclick="locale(this)"><s:text name="project.header.language"/></a>
-					
-					|&nbsp;<a href="<s:url value="/logout.do"/>" class="icon exit" target="_top"><s:text name="project.header.exit"/></a>
-				
+					<ul>
+						<li class="first">
+							<s:set name="principal" value="#session[@com.google.code.lightssh.common.web.SessionKey@LOGIN_ACCOUNT].loginName"/>
+							<%--<s:text name="project.header.welcome"/>--%>
+							<a href="<s:url value="/security/account/my.do"/>" class="icon user" target="main_frame"><s:property value="#principal"/></a>
+						</li>
+						<li>
+							<a href="<s:url value="/welcome.do"/>" class="icon home" target="_top"><s:text name="project.header.home"/></a>
+						</li>
+						<li>
+							<a href="<s:url value="/security/account/edit.do?password=update"/>" class="icon password" target="main_frame"><s:text name="project.header.changepassword"/></a>
+						</li>
+						<li>
+							<a href="#" class="icon theme" onclick="theme(this)"><s:text name="project.header.theme"/></a>
+						</li>
+						<li>
+							<a href="#" class="icon language" onclick="locale(this)"><s:text name="project.header.language"/></a>
+						</li>
+						<li class="last">
+							<a href="<s:url value="/logout.do"/>" class="icon exit" target="_top"><s:text name="project.header.exit"/></a>
+						</li>
+					</ul>
 				</div>
-				<div class="left">&nbsp;</div>
+				
+				<div class="left">&nbsp; </div>
 			</div>
 			
 		</div>
