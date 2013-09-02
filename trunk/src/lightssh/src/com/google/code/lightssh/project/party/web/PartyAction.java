@@ -95,6 +95,8 @@ public class PartyAction extends CrudAction<Party>{
 	public String view(){
 		if( party != null && party instanceof Person ){
 			this.setParty(getManager().getPerson(party));
+			
+			this.employee = this.employeeManager.get((Person)party);
 		}
 		
 		if( party == null )

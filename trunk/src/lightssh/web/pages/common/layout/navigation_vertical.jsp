@@ -64,7 +64,7 @@
 					<li><a href="<s:url value="/settings/organization/viewparent.do"/>" target="main_frame">企业资料</a></li>
 					
 					<li>
-						<%-- 组织机构管理--%>
+						<%-- 系统管理--%>
 						<a href="#"><s:text name="project.nav.org"/></a>
 						<ul id="org_mgr">
 							<li><a href="<s:url value="/party/organization/edit.do"/>" target="main_frame"><s:text name="project.nav.neworg"/></a></li>

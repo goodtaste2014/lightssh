@@ -107,9 +107,9 @@
 	
 <body>
 	<ul class="path">
-		<li>组织机构管理</li>
+		<li>系统管理</li>
 		<li>组织机构</li>
-		<li>编辑账号</li>
+		<li>编辑数据</li>
 	</ul>
 		
 	<%@ include file="/pages/common/util/messages.jsp" %>

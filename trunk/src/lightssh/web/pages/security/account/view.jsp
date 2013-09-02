@@ -27,9 +27,9 @@
 				</td>
 			</tr>
 			<tr>
-				<th><label for="account_party">所属关系</label></th>
+				<th><label for="account_party">人员</label></th>
 				<td>
-					<s:property value="@com.google.code.lightssh.project.party.service.PartyHelper@getParty(account.partyId).name"/>
+					<s:property value="@com.google.code.lightssh.project.party.util.PartyHelper@getParty(account.partyId).name"/>
 				</td>
 			</tr>
 			<tr>

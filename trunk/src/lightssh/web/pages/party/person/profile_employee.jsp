@@ -18,8 +18,9 @@
 				<td>
 					<s:hidden name="employee.id"/>
 					<s:hidden name="employee.person.id" value="%{(employee==null||employee.code==null)?party.id:employee.person.id}"/>
-					<s:textfield id="code" name="employee.code" 
-						value="%{(employee==null||employee.code==null)?party.id:employee.code}"/>
+					<s:set name="code" value="%{(employee==null||employee.code==null)?party.id:employee.code}" />
+					<s:hidden id="code" name="employee.code" value="#code"/>
+					<s:property value="#code"/>
 				</td>
 				
 				<th><label for="organization">所属部门</label></th>
@@ -43,6 +44,17 @@
 				<td>
 					<s:select id="status" name="employee.status" value="%{employee.status.name()}" listKey="name()" 
 						list="@com.google.code.lightssh.project.party.entity.Employee$Status@values()"></s:select>
+				</td>
+			</tr>
+			
+			<tr>
+				<th><label for="position">职位</label></th>
+				<td>
+					<s:textfield id="position" name="employee.position" size="30"/>
+				</td>
+				<th><label for="workplace">工作地</label></th>
+				<td>
+					<s:textfield id="workplace" name="employee.workplace" size="40"/>
 				</td>
 			</tr>
 		</tbody>

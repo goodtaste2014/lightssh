@@ -8,7 +8,7 @@
 
 <body>
 	<ul class="path">
-		<li>组织机构管理</li>
+		<li>系统管理</li>
 		<li>人员管理</li>
 		<li>查看人员</li>
 	</ul>
@@ -88,6 +88,26 @@
 	</table>
 	
 	<table class="profile">
-		<caption>人员联系方式</caption>
+		<caption>人事信息</caption>
+		<colgroup>
+			<col width="15%"/>
+			<col width="30%"/>
+			<col width="15%"/>
+			<col />
+		</colgroup>
+		<tbody>
+			<tr>
+				<th>员工编号</th>
+				<td><s:property value="%{employee.code}"/></td>
+				<th>部门</th>
+				<td><s:property value="%{employee.organization.name}"/></td>
+			</tr>
+			<tr>
+				<th>人事性质</th>
+				<td><s:property value="%{employee.type}"/></td>
+				<th>人事状态</th>
+				<td><s:property value="%{employee.status}"/></td>
+			</tr>
+		</tbody>
 	</table>
 </body>
