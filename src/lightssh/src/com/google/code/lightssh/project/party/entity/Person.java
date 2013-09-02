@@ -13,6 +13,7 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.google.code.lightssh.project.geo.entity.GeographicBoundary;
 
@@ -265,6 +266,12 @@ public class Person extends Party{
 	protected Double weight;
 	
 	/**
+	 * 人事信息
+	 */
+	@Transient
+	protected Employee employee;
+	
+	/**
 	 * 全名
 	 */
 	public String getFullName( ){
@@ -421,6 +428,14 @@ public class Person extends Party{
 
 	public void setWeight(Double weight) {
 		this.weight = weight;
+	}
+
+	public Employee getEmployee() {
+		return employee;
+	}
+
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
 	}
 
 	@Override

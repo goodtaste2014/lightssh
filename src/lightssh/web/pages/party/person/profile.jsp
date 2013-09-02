@@ -70,7 +70,7 @@
 	
 <body>
 	<ul class="path">
-		<li>组织机构管理</li>
+		<li>系统管理</li>
 		<li>人员管理</li>
 		<li>编辑人员</li>
 	</ul>

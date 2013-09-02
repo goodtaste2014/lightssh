@@ -4,6 +4,9 @@
 <html>
 	<head>
 		<meta name="decorator" content="background"/>
+		
+		<script type="text/javascript" src="<s:url value="/pages/party/popup.js" />"></script>
+		
 		<title>人员列表</title>
 		
 		<script type="text/javascript">
@@ -17,7 +20,7 @@
 	
 	<body>
 		<ul class="path">
-			<li>组织机构管理</li>
+			<li>系统管理</li>
 			<li>人员管理</li>
 			<li>人员列表</li>
 		</ul>
@@ -26,16 +29,43 @@
 		
 		<s:form name="list" method="post">
 			<table class="profile">
+				<colgroup>
+					<col width="10%"/>
+					<col width="23%"/>
+					<col width="10%"/>
+					<col width="23%"/>
+					<col width="10%"/>
+					<col />
+				</colgroup>
 				<tbody>
 					<tr>
 						<th><label for="id">编号</label></th>
 						<td>
 							<s:hidden name="party" class="person"/>
-							<s:textfield id="id" name="party.id" size="10" maxlength="100"/>
+							<s:textfield id="id" name="party.id" maxlength="100"/>
 						</td>
 						<th><label for="name">名称</label></th>
 						<td>
-							<s:textfield id="name" name="party.name" size="20" maxlength="100"/>
+							<s:textfield id="name" name="party.name" size="30" maxlength="100"/>
+						</td>
+						<th><label for="org">部门</label></th>
+						<td>
+							<span class="popup party" onclick="popupParty('<s:url value="/party/popup.do"/>',{party_type:'org'});">&nbsp;</span>
+							<s:hidden name="party.employee.organization.id" id="party_id"/>
+							<s:hidden name="party.employee.organization.name" id="party_name"/>
+							<span id="span_party_name"><s:property value="%{party.employee.organization.name}"/></span>
+						</td>
+					</tr>
+					<tr>
+						<th><label for="credentialsType">证件类型</label></th>
+						<td>
+							<s:select list="@com.google.code.lightssh.project.party.entity.CredentialsType@frequentlyUsed()" 
+								name="party.credentialsType" listKey="name()" headerKey="" headerValue=""
+								value="party.credentialsType.name()" onchange="autofill(this)" id="credentialsType"/>
+						</td>
+						<th><label for="identityCardNumber">证件号码</label></th>
+						<td>
+							<s:textfield id="identityCardNumber" name="party.identityCardNumber" size="30" maxlength="100"/>
 						</td>
 						<td colspan="2"><input type="submit" class="action search" value="查询"/></td>
 					</tr>
@@ -47,11 +77,15 @@
 			dynamicCols="new java.lang.String[]{'enabled','partyAffiliation'}">
 			<mys:column title="序号" width="40px">
 				<s:property value="#loop.index + 1"/>
+				<s:set name="employee" value="@com.google.code.lightssh.project.party.util.PartyHelper@getEmployee(id)"/>
 			</mys:column>
 			<mys:column title="编号" value="identity" sortKey="id" sortable="true" width="50px"/>
 			<mys:column title="姓名" value="name" sortable="true" width="100px"/>
+			<mys:column title="部门">
+				<s:property value="#employee.organization.name"/>
+			</mys:column>
 			<mys:column title="性别" value="gender" sortable="true" width="20px"/>
-			<mys:column title="婚况" value="maritalStatus" sortable="true" width="20px"/>
+			<%--<mys:column title="婚况" value="maritalStatus" sortable="true" width="20px"/>--%>
 			<mys:column title="国籍" value="country.name" sortable="true" width="40px"/>
 			<mys:column title="民族" value="ethnicGroup" sortable="false" width="80px"/>
 			<mys:column title="政治面貌" value="partyAffiliation" dynamic="true" sortable="false" width="50px"/>
@@ -60,7 +94,7 @@
 			<mys:column title="有效" id="enabled" dynamic="true" sortable="true" sortKey="enabled" width="50px">
 				<s:property value="enabled?'是':'否'"/>
 			</mys:column>
-			<mys:column title="描述" value="description" />
+			<%--<mys:column title="描述" value="description" />--%>
 			<mys:column title="操作" width="40px" cssClass="action">
 				<span>&nbsp;</span>
 				<div class="popup-menu-layer">
