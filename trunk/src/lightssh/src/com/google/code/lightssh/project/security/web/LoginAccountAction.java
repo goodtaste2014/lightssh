@@ -263,6 +263,7 @@ public class LoginAccountAction extends GenericAction<LoginAccount>{
 		
 		try{
 			this.getManager().save(account,getLoginAccount());
+			this.saveSuccessMessage("变更登录帐户，需要在审核通过后生效！");
 		}catch( Exception e ){
 			addActionError("保存异常："+e.getMessage());
 			return INPUT;

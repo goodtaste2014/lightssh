@@ -57,7 +57,7 @@
 				<s:property value="#loop.index + 1"/>
 			</mys:column>
 			<mys:column title="登录账号" value="loginName" sortable="true" width="150px"/>
-			<mys:column title="所属关系" sortKey="partyId" sortable="true" width="150px">
+			<mys:column title="人员信息" sortKey="partyId" sortable="true" width="150px">
 				<s:property value="@com.google.code.lightssh.project.party.service.PartyHelper@getParty(partyId).name"/>
 			</mys:column>
 			<mys:column title="有效期(起)" value="period.start" sortable="true" width="90px" />

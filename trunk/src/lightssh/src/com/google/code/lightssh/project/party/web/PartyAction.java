@@ -2,6 +2,7 @@ package com.google.code.lightssh.project.party.web;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.json.annotations.JSON;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -10,8 +11,10 @@ import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.util.StringUtil;
 import com.google.code.lightssh.common.web.action.CrudAction;
 import com.google.code.lightssh.project.log.entity.Access;
+import com.google.code.lightssh.project.party.entity.Employee;
 import com.google.code.lightssh.project.party.entity.Party;
 import com.google.code.lightssh.project.party.entity.Person;
+import com.google.code.lightssh.project.party.service.EmployeeManager;
 import com.google.code.lightssh.project.party.service.PartyManager;
 
 /**
@@ -27,8 +30,14 @@ public class PartyAction extends CrudAction<Party>{
 	
 	private static final String FAMILY = "family";
 	private static final String CONTACT = "contact";
+	private static final String EMPLOYEE = "employee";
 	
 	private Party party;
+	
+	private Employee employee;
+	
+	@Resource( name="employeeManager" )
+	private EmployeeManager employeeManager;
 	
 	@Resource( name="partyManager" )
 	public void setPartyManager( PartyManager manager ){
@@ -49,19 +58,35 @@ public class PartyAction extends CrudAction<Party>{
 		super.model = this.party;
 	}
 	
+	public Employee getEmployee() {
+		return employee;
+	}
+
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
+	}
+
 	@JSON(name="unique")
 	public boolean isUnique() {
 		return unique;
 	}
 	
 	public String edit( ){
+		super.edit();
+		
 		String profile = request.getParameter("profile");
-		if( FAMILY.equalsIgnoreCase( profile ) )
+		if( FAMILY.equalsIgnoreCase( profile ) ){
 			return FAMILY;
-		else if(CONTACT.equalsIgnoreCase( profile ) )
+		}else if(CONTACT.equalsIgnoreCase( profile ) ){
 			return CONTACT;
-			
-		return super.edit();
+		}else if(EMPLOYEE.equalsIgnoreCase( profile ) ){
+			if( party != null 
+					&&StringUtils.isNotEmpty(party.getId()) )
+				employee = employeeManager.getByPerson(party.getId());
+			return EMPLOYEE;
+		}
+		
+		return SUCCESS;
 	}
 	
 	/**
@@ -100,6 +125,7 @@ public class PartyAction extends CrudAction<Party>{
     }
     
     public String popup(){
+    	
     	String type = request.getParameter("party_type");
     	if( "person".equalsIgnoreCase(type) ){
         	page = getManager().listPerson(page , party );
@@ -148,6 +174,25 @@ public class PartyAction extends CrudAction<Party>{
          }else{        	
          	return SUCCESS;
          }
+     }
+     
+     /**
+      * 保存人事信息
+      */
+     public String saveEmployee(){
+    	 if( employee == null )
+    		 return INPUT;
+    	 
+    	 try{
+    		 this.employeeManager.save(employee);
+    		 this.saveSuccessMessage("成功保存人事信息！");
+    	 }catch(Exception e ){
+    		 this.addActionError("保存人事信息异常："+e.getMessage());
+    		 this.setParty( employee.getPerson() );
+    		 return INPUT;
+    	 }
+    	 
+    	 return SUCCESS;
      }
      
      /**

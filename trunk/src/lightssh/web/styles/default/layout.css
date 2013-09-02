@@ -164,7 +164,6 @@ body#header{
 	height: 50px;
 	line-height: 50px;
 	width:100%;
-	/*border-bottom: 1px solid #dcdcdc;*/
 	background: #f7f6f6;
 }
 
@@ -173,6 +172,7 @@ body#header{
 	height: 30px;
 	line-height:30px;
 	vertical-align:middle;
+	/*border-bottom: 1px solid #dcdcdc;*/
 	padding-right:20px;
 }
 

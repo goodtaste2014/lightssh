@@ -4,13 +4,10 @@
 	<head>
 		<meta name="decorator" content="background"/>
 		
-		<script language="javascript" src="<%= request.getContextPath() %>/scripts/jquery/jquery.cookie.js"></script>
-		<script language="javascript" src="<%= request.getContextPath() %>/scripts/jquery/plugins/treeview/jquery.treeview.js"></script>
-		<link rel="stylesheet" href="<%= request.getContextPath() %>/scripts/jquery/plugins/treeview/jquery.treeview.css" type="text/css">
-		
 		<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/ui/i18n/jquery.ui.datepicker_zh_CN.js"></script>
 		<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/my/geo.js"></script>
 	
+		<script type="text/javascript" src="<s:url value="/pages/party/popup.js" />"></script>
 		
 		<title>编辑人员</title>
 		
@@ -83,12 +80,15 @@
 	<div id="tabs"> 
 			<ul> 	
 				<li><a href="#tabs-1">基本信息</a></li>
-				<li><a href="<s:url value="?profile=contact"/>">联系方式</a></li>
+				
+				<s:if test="party != null && !party.insert ">
+				<li><a href="<s:url value="edit.do?party=person&party.id=%{party.id}&profile=employee"/>">人事信息</a></li>
+				</s:if>
 				<%-- 
-				<li><a href="<s:url value="?profile=family"/>">人事信息</a></li>
+				<li><a href="<s:url value="?profile=contact"/>">联系方式</a></li>
 				<li><a href="<s:url value="?profile=family"/>">工作经历</a></li>
-				--%>
 				<li><a href="<s:url value="?profile=family"/>">家庭成员</a></li>
+				--%>
 			</ul> 
 		
 			<div id="tabs-1">

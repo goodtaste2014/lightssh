@@ -7,7 +7,7 @@
 			<col width="15%"/>
 			<col width="30%"/>
 			<col width="15%"/>
-			<col width="40%"/>
+			<col />
 		</colgroup>
 		<tbody>
 			<input type="hidden" name="party" value="person"/>
@@ -46,7 +46,7 @@
 			<tr>
 				<th><label for="person_birthday">生日</label></th>
 				<td>
-					<s:textfield name="party.birthday" id="person_birthday" size="10"/>
+					<s:textfield name="party.birthday" id="person_birthday" size="12"/>
 				</td>
 				
 				<th><label for="geo">出生地(籍贯)</label></th>

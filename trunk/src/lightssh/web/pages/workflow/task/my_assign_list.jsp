@@ -41,6 +41,7 @@
 	
 	<%@ include file="/pages/common/util/messages.jsp" %>
 	<s:form name="myassignlist" method="post">
+		<input type="submit" class="action search" value="查询"/>
 		<table class="profile">
 			<colgroup>
 				<col width="10%"/>
@@ -83,9 +84,7 @@
 					<th><label for="owner">流程创建者</label></th>
 					<td>
 						<s:textfield name="task.procInstStartUser" size="20" />
-						<input type="submit" class="action search right" value="查询"/>
 					</td>
-					
 				</tr>
 			</tbody>
 		</table>

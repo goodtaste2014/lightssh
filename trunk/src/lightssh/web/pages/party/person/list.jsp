@@ -76,7 +76,7 @@
 						</li>
 						
 						<li class="remove">
-							<a href="#" onclick="javascript:doRemove('<s:property value="%{id}"/>','<s:property value="%{name}"/>')">删除</a>
+							<a href="#" onclick="javascript:doRemove('<s:property value="%{id}"/>','<s:property value="%{name}"/>')">删除信息</a>
 						</li>
 					</ul>
 				</div>
