@@ -81,20 +81,28 @@
 			</mys:column>
 			<mys:column title="编号" value="identity" sortKey="id" sortable="true" width="50px"/>
 			<mys:column title="姓名" value="name" sortable="true" width="100px"/>
-			<mys:column title="部门">
-				<s:property value="#employee.organization.name"/>
-			</mys:column>
 			<mys:column title="性别" value="gender" sortable="true" width="20px"/>
-			<%--<mys:column title="婚况" value="maritalStatus" sortable="true" width="20px"/>--%>
+			<mys:column title="婚况" value="maritalStatus" sortable="true" width="20px"/>
 			<mys:column title="国籍" value="country.name" sortable="true" width="40px"/>
 			<mys:column title="民族" value="ethnicGroup" sortable="false" width="80px"/>
 			<mys:column title="政治面貌" value="partyAffiliation" dynamic="true" sortable="false" width="50px"/>
 			<mys:column title="证件类型" value="credentialsType" sortable="true" width="100px"/>
 			<mys:column title="证件号码" value="identityCardNumber" sortable="true" width="130px"/>
+			<mys:column title="部门">
+				<s:property value="#employee.organization.name"/>
+			</mys:column>
+			<mys:column title="人事性质" width="50px">
+				<s:property value="#employee.type"/>
+			</mys:column>
+			<mys:column title="人事状态" width="50px">
+				<s:property value="#employee.status"/>
+			</mys:column>
+			<%--
 			<mys:column title="有效" id="enabled" dynamic="true" sortable="true" sortKey="enabled" width="50px">
 				<s:property value="enabled?'是':'否'"/>
 			</mys:column>
-			<%--<mys:column title="描述" value="description" />--%>
+			<mys:column title="描述" value="description" />
+			--%>
 			<mys:column title="操作" width="40px" cssClass="action">
 				<span>&nbsp;</span>
 				<div class="popup-menu-layer">

@@ -127,7 +127,7 @@ body#header{
 #header{
 	/*background: white url("images/bg_header.gif") repeat-x ;*/
 	background: white;
-	height:50px;
+	height:60px;
 	/*border-bottom:1px solid #E5E5E8;*/
 }
 
@@ -161,7 +161,7 @@ body#header{
 #header .status{
 	display:block;
 	float: right;
-	height: 50px;
+	height: 60px;
 	line-height: 50px;
 	width:100%;
 	background: #f7f6f6;
@@ -217,6 +217,51 @@ body#header{
 	float:right;
 	height: 30px;
 	line-height:30px;
+}
+
+#header .search{
+	position: absolute;
+	right: 0px;
+	top: 33px;
+}
+
+#header .search input[type=text]{
+	border: 0;
+	border-radius: 6px 0 0 6px;
+	font-size: 11px;
+	height: 18px;
+	margin: 0;
+	position: absolute;
+	left: -250px;
+	padding: 0;
+	padding-left: 6px;
+	outline: none;
+	width: 200px;
+	vertical-align: bottom;
+	
+	border-color: #6DCFF6;
+	-webkit-box-shadow: 0 0 5px rgba(109, 207, 246, .5);
+	-moz-box-shadow: 0 0 5px rgba(109,207,246,.5);
+	box-shadow: 0 0 5px rgba(109, 207, 246, .5);
+}
+
+#header .search input[type=submit] {
+	background:#f0f7fc url(images/header_search.png) no-repeat scroll center center;
+	border: 0;
+	border-radius: 0 6px 6px 0;
+	cursor: pointer;
+	height: 18px;
+	line-height:18px;
+	padding: 0;
+	width: 30px;
+	position: absolute;
+	top: -2px;
+	right: 20px;
+	
+	border-color: #6DCFF6;
+	-webkit-box-shadow: 0 0 5px rgba(109, 207, 246, .5);
+	-moz-box-shadow: 0 0 5px rgba(109,207,246,.5);
+	box-shadow: 0 0 5px rgba(109, 207, 246, .5);
 }
 
 #header select{

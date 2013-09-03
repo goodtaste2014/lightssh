@@ -75,10 +75,13 @@ public class EmployeeManagerImpl extends BaseManagerImpl<Employee> implements Em
 			db_e = t;
 			dao.create(db_e);
 		}else{
+			db_e.setOrganization(t.getOrganization());
 			db_e.setStatus(t.getStatus());
 			db_e.setType( t.getType() );
 			db_e.setPosition( t.getPosition() );
-			db_e.setOrganization(t.getOrganization());
+			db_e.setWorkplace(t.getWorkplace());
+			db_e.setEmploymentDate(t.getEmploymentDate());
+			db_e.setDescription(t.getDescription());
 			dao.update(db_e);
 		}
 	}
