@@ -9,7 +9,7 @@ package com.google.code.lightssh.project.workflow.model;
 public enum ExecutionType {
 	EDIT("编辑")	
 	,CLAIM("认领")	
-	,REMOVE("删除")	
+	,TERMINATE("终止")	
 	,SUBMIT("提交")	
 	,REVOKE("退回")	
 	,NOTICE("转发")	

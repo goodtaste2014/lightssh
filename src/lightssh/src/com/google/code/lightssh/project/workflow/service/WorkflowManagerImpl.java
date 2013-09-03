@@ -887,6 +887,15 @@ public class WorkflowManagerImpl implements WorkflowManager{
 	}
 	
 	/**
+	 * 终止流程
+	 */
+	public void terminate( String procInstId,String user,String reason ){
+		//保存操作日志
+		taskLogManager.save(procInstId,procInstId,ExecutionType.TERMINATE,user, reason);
+		this.runtimeService.deleteProcessInstance(procInstId, reason);
+	}
+	
+	/**
 	 * 流程注释
 	 */
 	public List<Comment> getProcessInstanceComments(String processInstanceId){
