@@ -12,6 +12,13 @@
 		$(document).ready(function(){
 			$(".calendar").datepicker({dateFormat: 'yy-mm-dd',changeYear:true});
 		});
+		
+		/**
+		 * 结束流程
+		 */
+		function terminate(procInstId){
+			
+		}
 	</script>
 	
 </head>
@@ -126,6 +133,14 @@
 					<li class="view">
 						<a href="<s:url value="view.do?process.processInstanceId=%{processInstanceId}"/>">流程详情</a>
 					</li>
+					
+					<li class="section"/>
+					
+					<s:if test="endTime==null">
+					<li class="remove">
+						<a href="<s:url value="terminate.do?process.processInstanceId=%{processInstanceId}"/>">结束流程</a>
+					</li>
+					</s:if>
 				</ul>
 			</div>
 		</mys:column>

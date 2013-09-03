@@ -75,6 +75,11 @@
 				<param name="workflowBizKey">%{#request.bizKey}</param>
 			</result>
         </action>
+        
+        <action name="terminate" class="workflowProcessAction" method="terminate">
+			<result name="input" type="redirectAction">list</result>
+			<result name="success" type="redirectAction">list</result>
+        </action>
     </package>
     
 	<package name="workflow_task" extends="default" namespace="/workflow/task">

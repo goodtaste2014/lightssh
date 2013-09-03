@@ -335,4 +335,24 @@ public class WorkflowProcessAction extends GenericAction implements ImageAction{
 		
 		return SUCCESS;
 	}
+	
+	/**
+	 * 终止流程
+	 */
+	public String terminate( ){
+		if( process == null || StringUtils.isEmpty(
+				process.getProcessInstanceId() )){
+			this.saveErrorMessage("流程实例Id为空!");
+			return INPUT;
+		}
+		
+		try{
+			workflowManager.terminate(process.getProcessInstanceId(),this.getLoginUser(), null);
+		}catch( Exception e ){
+			this.saveErrorMessage("终止流程异常:"+e.getMessage());
+			return INPUT;
+		}
+			
+		return SUCCESS;
+	}
 }

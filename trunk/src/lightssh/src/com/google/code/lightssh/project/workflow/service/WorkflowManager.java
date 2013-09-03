@@ -163,6 +163,11 @@ public interface WorkflowManager extends Manager{
 	public void complete( MyTask myTask,String user );
 	
 	/**
+	 * 终止流程
+	 */
+	public void terminate( String procInstId,String user,String reason );
+	
+	/**
 	 * 流程注释
 	 */
 	public List<Comment> getProcessInstanceComments(String processInstanceId);
