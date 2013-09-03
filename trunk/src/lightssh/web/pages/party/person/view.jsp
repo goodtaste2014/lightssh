@@ -108,6 +108,12 @@
 				<th>人事状态</th>
 				<td><s:property value="%{employee.status}"/></td>
 			</tr>
+			<tr>
+				<th>职位</th>
+				<td><s:property value="%{employee.position}"/></td>
+				<th>工作地</th>
+				<td><s:property value="%{employee.workplace}"/></td>
+			</tr>
 		</tbody>
 	</table>
 </body>

@@ -76,6 +76,13 @@
 					top.location.href=url;
 				});
 			}
+			
+			/**
+			 * 搜索
+			 */
+			function search(){
+				return false;
+			}
 		</script>
 	</head>
 	
@@ -112,7 +119,12 @@
 					</ul>
 				</div>
 				
-				<div class="left">&nbsp; </div>
+				<div class="search">
+					<form method="POST" action="<s:url value=""/>" target="main_frame" onsubmit="return search()">
+			            <input type="text" name="keywords">
+			            <input type="submit" value="">
+			        </form>
+				</div>
 			</div>
 			
 		</div>

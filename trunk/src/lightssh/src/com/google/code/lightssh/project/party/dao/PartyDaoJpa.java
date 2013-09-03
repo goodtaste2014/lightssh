@@ -62,9 +62,20 @@ public class PartyDaoJpa extends JpaAnnotationDao<Party> implements PartyDao{
 					hql_emp.append( Employee.class.getName() );
 					hql_emp.append(" AS e WHERE 1=1 ");
 					
-					if( employee.getOrganization() != null && StringUtils.isNotEmpty(employee.getOrganization().getId())){
+					if( employee.getOrganization() != null 
+							&& StringUtils.isNotEmpty(employee.getOrganization().getId())){
 						hql_emp.append( " AND e.organization.id = ? " );
 						params.add( employee.getOrganization().getId().trim() );
+					}
+					
+					if( employee.getStatus() != null ){
+						hql_emp.append( " AND e.status = ? " );
+						params.add( employee.getStatus() );
+					}
+					
+					if( employee.getType() != null ){
+						hql_emp.append( " AND e.type = ? " );
+						params.add( employee.getType() );
 					}
 					
 					if( hql_emp.toString().indexOf("AND") >0 )

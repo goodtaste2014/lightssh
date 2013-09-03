@@ -138,9 +138,22 @@ public class PartyManagerImpl extends BaseManagerImpl<Party> implements PartyMan
 			throw new ApplicationException("名称["+party.getName()+"]已经存在！");
 		
 		if( party instanceof Person ){
-			if( ((Person) party).getCountry() != null && StringUtils.isEmpty(
-					((Person) party).getCountry().getIdentity()))
-				((Person) party).setCountry(null);
+			Person p =  ((Person) party);
+			if( p.getCountry() != null 
+					&& StringUtils.isEmpty(p.getCountry().getIdentity()))
+				p.setCountry(null);
+			
+			if( p.getSecondaryGeo() != null 
+					&& StringUtils.isEmpty(p.getSecondaryGeo().getIdentity()) )
+				p.setSecondaryGeo(null);
+			
+			if( p.getThirdGeo() != null 
+					&& StringUtils.isEmpty(p.getThirdGeo().getIdentity()) )
+				p.setThirdGeo(null);
+			
+			if( p.getFourthGeo() != null 
+					&& StringUtils.isEmpty(p.getFourthGeo().getIdentity()) )
+				p.setFourthGeo(null);
 		}
 		
 		if( inserted ){
