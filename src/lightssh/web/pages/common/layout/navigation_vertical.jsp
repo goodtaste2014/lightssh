@@ -149,6 +149,14 @@
 						</ul>
 					</li>
 					
+					<li>
+						<a href="#">消息管理</a>
+						<ul id="message_mgr">
+							<li><a href="<s:url value="/message/catalog/list.do"/>" target="main_frame">消息类型</a></li>
+							<li><a href="<s:url value="/message/subscription/list.do"/>" target="main_frame">消息订阅</a></li>
+						</ul>
+					</li>
+					
 					<%-- 邮件内容 --%>
 					<li><a href="<s:url value="/settings/email/list.do"/>" target="main_frame">邮件内容</a></li>
 							
