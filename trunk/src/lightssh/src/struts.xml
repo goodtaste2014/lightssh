@@ -23,6 +23,7 @@
     <include file="config/struts/party.xml"/>
     <include file="config/struts/settings.xml"/>
     <include file="config/struts/workflow.xml"/>
+    <include file="config/struts/message.xml"/>
 
     <package name="default" extends="json-default" namespace="/">
     	<result-types>

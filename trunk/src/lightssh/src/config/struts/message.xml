@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+	<package name="msg_catalog" extends="default" namespace="/message/catalog">
+		<action name="list" class="catalogAction" method="list">
+			<result name="success">/pages/message/catalog/list.jsp</result>	
+        </action>
+    </package>
+    
+	<package name="msg_subscription" extends="default" namespace="/message/subscription">
+		<action name="list" class="subscriptionAction" method="list">
+			<result name="success">/pages/message/subscription/list.jsp</result>	
+        </action>
+    </package>
+    
+</struts>
