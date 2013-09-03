@@ -17,7 +17,7 @@
 	<ul class="path">
 		<li>基础管理</li>
 		<li>工作流</li>
-		<li>流程列表</li>
+		<li>流程类型列表</li>
 	</ul>
 	
 	<%@ include file="/pages/common/util/messages.jsp" %>
