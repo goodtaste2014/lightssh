@@ -16,9 +16,12 @@
 		/**
 		 * 结束流程
 		 */
-		function terminate(procInstId){
-			
+		function terminate(procInstId,name){
+			var url = '<s:url value="terminate.do"/>?process.processInstanceId=' + procInstId ;
+			if( confirm('确认结束流程[' + name + ']'))
+				location.href=url;
 		}
+		
 	</script>
 	
 </head>
@@ -134,12 +137,12 @@
 						<a href="<s:url value="view.do?process.processInstanceId=%{processInstanceId}"/>">流程详情</a>
 					</li>
 					
-					<li class="section"/>
 					
 					<s:if test="endTime==null">
-					<li class="remove">
-						<a href="<s:url value="terminate.do?process.processInstanceId=%{processInstanceId}"/>">结束流程</a>
-					</li>
+						<li class="section"/>
+						<li class="remove">
+							<a href="#" onclick="terminate('<s:property value="%{processInstanceId}"/>','<s:property value="#procAttr.bizName"/>')">结束流程</a>
+						</li>
 					</s:if>
 				</ul>
 			</div>

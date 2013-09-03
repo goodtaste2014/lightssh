@@ -232,17 +232,22 @@ body#header{
 	height: 18px;
 	margin: 0;
 	position: absolute;
-	left: -250px;
+	left: -200px;
 	padding: 0;
 	padding-left: 6px;
 	outline: none;
-	width: 200px;
+	width: 160px;
 	vertical-align: bottom;
 	
 	border-color: #6DCFF6;
 	-webkit-box-shadow: 0 0 5px rgba(109, 207, 246, .5);
 	-moz-box-shadow: 0 0 5px rgba(109,207,246,.5);
 	box-shadow: 0 0 5px rgba(109, 207, 246, .5);
+}
+
+#header .search input[type=text]:focus{
+	width: 300px;
+	left: -350px;
 }
 
 #header .search input[type=submit] {
