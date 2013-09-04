@@ -203,6 +203,17 @@ public class LoginAccountAction extends GenericAction<LoginAccount>{
 		
 		return SUCCESS;
 	}
+	
+	public String popup( ){
+		if ( page == null )
+			page = new ListPage<LoginAccount>();
+		page.addAscending( "createDate" );
+		page.setSize(10); //每页10条
+		
+		page = manager.list( page , account );
+		
+		return SUCCESS;
+	}
 
 	public String edit() {
 		if ( request.getParameter( "password" ) != null )

@@ -40,9 +40,9 @@
 					<tr>
 						<th><label for="name">登录账号</label></th>
 						<td><s:textfield id="name" name="account.loginName" value="%{cachedParams['account.loginName']}" size="30" maxlength="100"/></td>
-						<th><label for="name">状态</label></th>
+						<th><label for="status">状态</label></th>
 						<td>
-							<s:select name="account.status" value="account.status.name()"
+							<s:select  id="status" name="account.status" value="account.status.name()"
 								list="@com.google.code.lightssh.project.util.constant.AuditStatus@values()"
 								listKey="name()" listValue="getValue()" headerKey="" headerValue=""/>
 							<input type="submit" class="action search right" value="查询"/>
@@ -58,7 +58,7 @@
 			</mys:column>
 			<mys:column title="登录账号" value="loginName" sortable="true" width="150px"/>
 			<mys:column title="人员信息" sortKey="partyId" sortable="true" width="150px">
-				<s:property value="@com.google.code.lightssh.project.party.uitl.PartyHelper@getParty(partyId).name"/>
+				<s:property value="@com.google.code.lightssh.project.party.util.PartyHelper@getParty(partyId).name"/>
 			</mys:column>
 			<mys:column title="有效期(起)" value="period.start" sortable="true" width="90px" />
 			<mys:column title="有效期(止)" value="period.end" sortable="true" width="90px"/>

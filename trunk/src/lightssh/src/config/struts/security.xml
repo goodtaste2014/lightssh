@@ -41,6 +41,10 @@
 		<action name="list" class="loginAccountAction" method="list">
 			<result name="success" >/pages/security/account/list.jsp</result>
 		</action>
+		
+		<action name="popup" class="loginAccountAction" method="popup">
+			<result name="success" >/pages/security/account/popup.jsp</result>
+		</action>
         
         <action name="remove" class="loginAccountAction" method="delete">
 			<result name="success" type="redirectAction">list</result>
