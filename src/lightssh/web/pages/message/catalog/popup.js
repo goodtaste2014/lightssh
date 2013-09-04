@@ -11,7 +11,7 @@ function popupMsgCatalog( url ,param){
 		resizable: true,modal: true,height:500,width: 700,
 		close: function(event, ui) {$(this).dialog('destroy'); },				
 		buttons: {				
-			"关闭": function() {$(this).dialog('destroy');}
+			"关闭": function() {callbackSelectMsgCatalog({});$(this).dialog('destroy');}
 		}
 	});
 	

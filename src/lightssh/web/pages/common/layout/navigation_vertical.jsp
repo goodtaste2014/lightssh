@@ -154,6 +154,7 @@
 						<ul id="message_mgr">
 							<li><a href="<s:url value="/message/catalog/list.do"/>" target="main_frame">消息类型</a></li>
 							<li><a href="<s:url value="/message/subscription/list.do"/>" target="main_frame">消息订阅</a></li>
+							<li><a href="<s:url value="/message/message/list.do"/>" target="main_frame">消息列表</a></li>
 						</ul>
 					</li>
 					

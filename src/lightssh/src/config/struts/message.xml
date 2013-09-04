@@ -36,4 +36,15 @@
         </action>
     </package>
     
+    <package name="msg_message" extends="default" namespace="/message/message">
+		<action name="list" class="messageAction" method="list">
+			<result name="success">/pages/message/message/list.jsp</result>	
+        </action>
+        
+		<action name="view" class="messageAction" method="edit">
+			<result name="success">/pages/message/message/view.jsp</result>	
+        </action>
+        
+    </package>
+    
 </struts>
