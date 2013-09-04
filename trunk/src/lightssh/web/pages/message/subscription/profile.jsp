@@ -98,7 +98,12 @@
 		 */
 		function callbackSelectMsgCatalog(param){
 			$("input[name='subscription.catalog.id']").val(param.id);
-			$("#span_msg_catalog_name").text( param.id + '-' +param.description);
+			$("input[name='subscription.catalog.description']").val(param.description);
+			
+			if( param != null && (param.id != null || param.description != null)  )
+				$("#span_msg_catalog_name").text( param.id + '-' +param.description);
+			else
+				$("#span_msg_catalog_name").text( '');
 			$( popup_msg_catalog ).dialog('destroy').html('');
 			
 			$("label[for='subscription.catalog.id']").remove(); //移除样式
@@ -173,6 +178,7 @@
 				
 					<span class="popup" onclick="popupMsgCatalog('<s:url value="/message/catalog/popup.do"/>');">&nbsp;</span>
 					<s:hidden id="subscription.catalog.id" name="subscription.catalog.id"/>
+					<s:hidden name="subscription.catalog.description"/>
 					<span id="span_msg_catalog_name"><s:property value="subscription.catalog.id + '-' + subscription.catalog.description"/></span>
 				</td>
 			</tr>
