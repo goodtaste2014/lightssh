@@ -31,13 +31,22 @@ public class Subscription extends UUIDModel{
 	 */
 	public enum SubType{
 		ROLE("角色")			
-		,DEPT("部门")			
+		,DEPARTMENT("部门")			
+		,PERSON("人员")	
+		,POSITION("岗位")	
 		,USER("用户");		
 
 		private String value;
 		
 		SubType( String value ){
 			this.value = value;
+		}
+		
+		/**
+		 * 支持的类型
+		 */
+		public static SubType[] supportedValues( ){
+			return new SubType[]{DEPARTMENT,PERSON,USER};
 		}
 
 		public String getValue() {
