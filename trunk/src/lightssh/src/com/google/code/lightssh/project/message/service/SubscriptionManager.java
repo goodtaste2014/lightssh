@@ -1,6 +1,7 @@
 package com.google.code.lightssh.project.message.service;
 
 import com.google.code.lightssh.common.service.BaseManager;
+import com.google.code.lightssh.project.message.entity.ReceiveType;
 import com.google.code.lightssh.project.message.entity.Subscription;
 
 /**
@@ -16,7 +17,7 @@ public interface SubscriptionManager extends BaseManager<Subscription>{
 	 * @param type 订阅类型
 	 * @param subValue 订阅值
 	 */
-	public Subscription get(String catalogId,Subscription.SubType type,String subValue );
+	public Subscription get(String catalogId,ReceiveType type,String subValue );
 
 	/**
 	 * 是否存在

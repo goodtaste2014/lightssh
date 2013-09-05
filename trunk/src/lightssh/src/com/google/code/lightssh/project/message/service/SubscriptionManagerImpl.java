@@ -12,6 +12,7 @@ import com.google.code.lightssh.common.dao.SearchCondition;
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.service.BaseManagerImpl;
 import com.google.code.lightssh.project.message.dao.SubscriptionDao;
+import com.google.code.lightssh.project.message.entity.ReceiveType;
 import com.google.code.lightssh.project.message.entity.Subscription;
 
 /**
@@ -39,7 +40,7 @@ public class SubscriptionManagerImpl extends BaseManagerImpl<Subscription> imple
 	 * @param type 订阅类型
 	 * @param subValue 订阅值
 	 */
-	public Subscription get(String catalogId,Subscription.SubType type,String subValue ){
+	public Subscription get(String catalogId,ReceiveType type,String subValue ){
 		if( StringUtils.isEmpty(catalogId) ||
 				type == null || StringUtils.isEmpty(subValue) )
 			return null;
@@ -47,8 +48,8 @@ public class SubscriptionManagerImpl extends BaseManagerImpl<Subscription> imple
 		ListPage<Subscription> page = new ListPage<Subscription>(1);
 		SearchCondition sc = new SearchCondition();
 		sc.equal("catalog.id", catalogId )
-			.equal("subType", type )
-			.equal("subValue", subValue );
+			.equal("recType", type )
+			.equal("recValue", subValue );
 		
 		page = dao.list(page, sc);
 		
@@ -62,12 +63,12 @@ public class SubscriptionManagerImpl extends BaseManagerImpl<Subscription> imple
 	public boolean isUnique(Subscription param) {
 		if( param == null || param.getCatalog() == null 
 				|| StringUtils.isEmpty(param.getCatalog().getId()) 
-				|| param.getSubType() == null 
-				|| StringUtils.isEmpty(param.getSubValue())  )
+				|| param.getRecType() == null 
+				|| StringUtils.isEmpty(param.getRecValue())  )
 			return false;
 		
 		Subscription exists = get( param.getCatalog().getId()
-				,param.getSubType(),param.getSubValue());
+				,param.getRecType(),param.getRecValue());
 	
 		return exists == null || exists.getIdentity().equals(param.getIdentity() );
 	}
@@ -83,8 +84,8 @@ public class SubscriptionManagerImpl extends BaseManagerImpl<Subscription> imple
 		}else{
 			db.setCatalog(t.getCatalog());
 			db.setPeriod(t.getPeriod());
-			db.setSubType(t.getSubType());
-			db.setSubValue(t.getSubValue());
+			db.setRecType(t.getRecType());
+			db.setRecValue(t.getRecValue());
 			db.setDescription(t.getDescription());
 		}
 		

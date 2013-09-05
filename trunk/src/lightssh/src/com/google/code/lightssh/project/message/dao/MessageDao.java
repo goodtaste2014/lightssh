@@ -9,5 +9,7 @@ import com.google.code.lightssh.project.message.entity.Message;
  * 
  */
 public interface MessageDao extends Dao<Message>{
+	
+	public void save( Message t );
 
 }

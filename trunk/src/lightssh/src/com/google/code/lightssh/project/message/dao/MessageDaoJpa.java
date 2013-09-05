@@ -1,11 +1,15 @@
 package com.google.code.lightssh.project.message.dao;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+
+import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
+import com.google.code.lightssh.common.ApplicationException;
 import com.google.code.lightssh.common.dao.jpa.JpaDao;
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.project.message.entity.Message;
@@ -20,6 +24,29 @@ import com.google.code.lightssh.project.message.entity.Publish;
 public class MessageDaoJpa extends JpaDao<Message> implements MessageDao{
 
 	private static final long serialVersionUID = 8245137954310955563L;
+	
+	@Resource(name="publishDao")
+	private PublishDao publishDao;
+	
+	public void save( Message t ){
+		if( t == null )
+			throw new ApplicationException("参数为空！");
+		
+		t.setCreatedTime( Calendar.getInstance() );
+		t.setLinkable(false);
+		t.setPublishedCount(0);//TODO
+		t.setDeletedCount(0);
+		t.setHitCount(0);
+		t.setReaderCount(0);
+		t.setTodoClean(false);
+		create(t);
+		this.getEntityManager().flush();
+		
+		t.setPublishedCount(publishDao.publish(
+				t.getRecType(),t.getRecValue(),t.getId()));
+		
+		update(t);
+	}
 	
 	public ListPage<Message> list( ListPage<Message> page, Message t ){
 		StringBuffer sql = new StringBuffer(" FROM "+this.entityClass.getName() + " AS m WHERE 1=1 ");

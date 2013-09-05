@@ -55,13 +55,13 @@ public class SubscriptionAction extends GenericAction<Subscription>{
 	}
 	
 	public String edit( ){
-		if( subscription != null && subscription.getSubType() != null 
-				&& StringUtils.isNotEmpty( subscription.getSubValue() )
+		if( subscription != null && subscription.getRecType() != null 
+				&& StringUtils.isNotEmpty( subscription.getRecValue() )
 				&& subscription.getCatalog() != null 
 				&& StringUtils.isNotEmpty( subscription.getCatalog().getId() )){
 			
 			setSubscription( getManager().get(subscription.getCatalog().getId()
-					,subscription.getSubType(),subscription.getSubValue()));
+					,subscription.getRecType(),subscription.getRecValue()));
 			return SUCCESS;
 		}
 		

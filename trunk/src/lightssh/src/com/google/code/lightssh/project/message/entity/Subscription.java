@@ -26,39 +26,6 @@ public class Subscription extends UUIDModel{
 	private static final long serialVersionUID = 3826073871651109841L;
 	
 	/**
-	 * 类型
-	 */
-	public enum SubType{
-		ROLE("角色")			
-		,DEPARTMENT("部门")			
-		,PERSON("人员")	
-		,POSITION("岗位")	
-		,USER("用户");		
-
-		private String value;
-		
-		SubType( String value ){
-			this.value = value;
-		}
-		
-		/**
-		 * 支持的类型
-		 */
-		public static SubType[] supportedValues( ){
-			return new SubType[]{DEPARTMENT,PERSON,USER};
-		}
-
-		public String getValue() {
-			return value;
-		}
-		
-		public String toString(){
-			return this.value;
-		}
-	}
-
-	
-	/**
 	 * 消息类型
 	 */
 	@ManyToOne
@@ -68,15 +35,15 @@ public class Subscription extends UUIDModel{
 	/**
 	 * 订阅类型
 	 */
-	@Column(name="SUB_TYPE",length=20)
+	@Column(name="REC_TYPE",length=20)
 	@Enumerated(EnumType.STRING)
-	private SubType subType;
+	private ReceiveType recType;
 	
 	/**
 	 * 订阅类型值
 	 */
-	@Column(name="SUB_VALUE",length=255)
-	private String subValue;
+	@Column(name="REC_VALUE",length=255)
+	private String recValue;
 	
 	/**
 	 * 创建人
@@ -107,20 +74,20 @@ public class Subscription extends UUIDModel{
 		this.catalog = catalog;
 	}
 
-	public SubType getSubType() {
-		return subType;
+	public ReceiveType getRecType() {
+		return recType;
 	}
 
-	public void setSubType(SubType subType) {
-		this.subType = subType;
+	public void setRecType(ReceiveType recType) {
+		this.recType = recType;
 	}
 
-	public String getSubValue() {
-		return subValue;
+	public String getRecValue() {
+		return recValue;
 	}
 
-	public void setSubValue(String subValue) {
-		this.subValue = subValue;
+	public void setRecValue(String recValue) {
+		this.recValue = recValue;
 	}
 
 	public String getCreator() {

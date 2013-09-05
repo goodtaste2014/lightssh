@@ -45,6 +45,14 @@
 			<result name="success">/pages/message/message/view.jsp</result>
         </action>
         
+		<action name="edit" class="messageAction" method="edit">
+			<result name="success">/pages/message/message/profile.jsp</result>
+        </action>
+        
+		<action name="save" class="messageAction" method="save">
+			<result name="input">/pages/message/message/profile.jsp</result>
+			<result name="success" type="redirectAction">list</result>	
+        </action>
     </package>
     
     <package name="msg_publish" extends="default" namespace="/message/publish">

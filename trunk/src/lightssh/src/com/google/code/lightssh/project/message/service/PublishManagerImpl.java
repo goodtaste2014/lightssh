@@ -14,6 +14,7 @@ import com.google.code.lightssh.common.service.BaseManagerImpl;
 import com.google.code.lightssh.project.message.dao.PublishDao;
 import com.google.code.lightssh.project.message.entity.Message;
 import com.google.code.lightssh.project.message.entity.Publish;
+import com.google.code.lightssh.project.message.entity.ReceiveType;
 import com.google.code.lightssh.project.security.entity.LoginAccount;
 
 /**
@@ -36,7 +37,6 @@ public class PublishManagerImpl extends BaseManagerImpl<Publish> implements Publ
 		return (PublishDao)this.dao;
 	}
 	
-
 	/**
 	 * 标记为已读
 	 */
@@ -45,6 +45,16 @@ public class PublishManagerImpl extends BaseManagerImpl<Publish> implements Publ
 			return false;
 		
 		return getDao().markToRead(id, user) > 0;
+	}
+	
+	/**
+	 * 发布消息
+	 * @param type 类型
+	 * @param value 类型值
+	 * @param msgId 信息ID
+	 */
+	public int publish( ReceiveType type,String value,String msgId ){
+		return getDao().publish(type, value, msgId);
 	}
 	
 	public ListPage<Publish> list(ListPage<Publish> page ,Publish t){
@@ -78,6 +88,10 @@ public class PublishManagerImpl extends BaseManagerImpl<Publish> implements Publ
 				
 				if( StringUtils.isNotEmpty( msg.getTitle() ) ){
 					sc.like("message.title", msg.getTitle().trim() );
+				}
+				
+				if( StringUtils.isNotEmpty( msg.getCreator() ) ){
+					sc.equal("message.creator", msg.getCreator().trim() );
 				}
 			}
 		}

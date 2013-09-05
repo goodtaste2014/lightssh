@@ -9,5 +9,10 @@ import com.google.code.lightssh.project.message.entity.Catalog;
  * 
  */
 public interface CatalogManager extends BaseManager<Catalog>{
+	
+	/**
+	 * 默认信息类消息
+	 */
+	public Catalog getDefaultInfo( );
 
 }

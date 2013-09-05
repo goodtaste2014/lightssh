@@ -9,11 +9,11 @@
 	<script type="text/javascript" src="<s:url value="/pages/party/popup.js" />"></script>
 	<script type="text/javascript" src="<s:url value="/pages/security/account/popup.js" />"></script>
 	
-	<title>消息订阅</title>
+	<title>创建消息</title>
 	
 	<script type="text/javascript">
 		$(document).ready(function(){
-			var recType= $("select[name='subscription.recType']").val();
+			var recType= $("select[name='message.recType']").val();
 			$("#handler_msg_subtype").removeClass("disabled");
 			if( recType == null || recType == '' )
 				$("#handler_msg_subtype").addClass("disabled");
@@ -23,74 +23,33 @@
 			 */
 			$("#profile_form").validate({
 				rules:{
-					"subscription.recType":{required:true}
-					,"subscription.catalog.id":{required:true}
-					,"subscription.recValue":{required:true}
-				}
-				,submitHandler: function(form) {
-					if( !ajaxCheck( ) ){ 
-						var url = '<s:url value="edit.do?"/>'
-							+ '?subscription.catalog.id=' + $("input[name='subscription.catalog.id']").val() 
-							+ '&subscription.recType=' + $("select[name='subscription.recType']").val() 
-							+ '&subscription.recValue=' + $.trim( $("input[name='subscription.recValue']").val() );
-						var msg = '\'消息类型\'+\'订阅类型\'+\'订阅值\'已存在！';
-							msg += '<a href=\'' + url + '\'>点击进行修改！</a>';
-
-						$.lightssh.showActionError(msg);
-					}else{
-						form.submit();
-					}
+					"message.recValue":{required:function(){return $("select[name='message.recType']").val() != 'ALL'}}
+					,"message.title":{required:true,maxlength:100}
+					,"message.priority":{required:true}
+					,"message.content":{required:true,maxlength:2000}
 				}
 			});
 			
-			$(".calendar").datepicker( );
 		});
-		
-		/**
-		 * 检查名称是否重复
-		 */
-		function ajaxCheck( ){
-			var result = false;
-			$.ajax({
-				url: "<s:url value="/message/subscription/unique.do"/>"
-				,dataType: "json" 
-				,type:"post"
-				,async:false
-				,data: {
-		        	"subscription.id": function(){
-						return $("input[name='subscription.id']").val()
-			        }
-			        ,"subscription.catalog.id": function(){
-						return $.trim( $("input[name='subscription.catalog.id']").val() );
-			        }
-			        ,"subscription.recType": function(){
-						return $.trim( $("select[name='subscription.recType']").val() );
-			        }
-			        ,"subscription.recValue": function(){
-						return $.trim( $("input[name='subscription.recValue']").val() );
-			        }
-		        }
-		        ,error: function(){ alert("检查重名出现异常!") }
-		        ,success: function(json){
-		        	result = json.unique;
-		        }
-			});
-			
-			return result;
-		}
 		
 		/**
 		 * 改变类型时清除选择的数据
 		 */
 		function cleanSelectedValue( ele ){
 			var recType= $(ele).val();
+			var recValueHandler = $("#handler_msg_subtype");
 			
-			$("input[name='subscription.recValue']").val('');
+			$("input[name='message.recValue']").val('');
 			$("#span_msg_subscription_subvalue").text( '');
 			
 			$("#handler_msg_subtype").removeClass("disabled");
-			if( recType == null || recType == '' )
-				$("#handler_msg_subtype").addClass("disabled");
+			$( recValueHandler ).show( );
+			if( recType == '<s:property value="@com.google.code.lightssh.project.message.entity.ReceiveType@ALL.name()"/>' ){
+				$( recValueHandler ).hide( );
+				$("label[for='message.recValue']").remove(); //移除样式
+			}else if( recType == null || recType == '' ){
+				$( recValueHandler ).addClass("disabled");
+			}
 		}
 		
 		/**
@@ -113,7 +72,7 @@
 		 * 根据类型选择
 		 */
 		function popupSubType( ){
-			var recType= $("select[name='subscription.recType']").val();
+			var recType= $("select[name='message.recType']").val();
 			if( recType == null || recType == '' )
 				return;
 			
@@ -126,6 +85,8 @@
 				popupParty('<s:url value="/party/popup.do"/>',{party_type:'person'})
 			}else if( recType == '<s:property value="@com.google.code.lightssh.project.message.entity.ReceiveType@USER.name()"/>' ){
 				popupLoginAccount('<s:url value="/security/account/popup.do"/>',{})
+			}else if( recType == '<s:property value="@com.google.code.lightssh.project.message.entity.ReceiveType@ALL.name()"/>' ){
+				//所有用户
 			}
 		}
 		
@@ -133,7 +94,7 @@
 		 * DEPT-弹出框回调
 		 */
 		function callbackSelectParty( party ){
-			$("input[name='subscription.recValue']").val( party.id);
+			$("input[name='message.recValue']").val( party.id);
 			$("#span_msg_subscription_subvalue").text( party.name);
 			
 			$("label[for='subscription.recValue']").remove(); //移除样式
@@ -145,10 +106,10 @@
 		 * USER-弹出框回调
 		 */
 		function callbackSelectLoginAccount( param ){
-			$("input[name='subscription.recValue']").val( param.id);
+			$("input[name='message.recValue']").val( param.id);
 			$("#span_msg_subscription_subvalue").text( param.loginName );
 			
-			$("label[for='subscription.recValue']").remove(); //移除样式
+			$("label[for='message.recValue']").remove(); //移除样式
 			
 			$( popup_login_account ).dialog('destroy').html('');
 		}
@@ -159,60 +120,63 @@
 	<ul class="path">
 		<li>基础管理</li>
 		<li>消息管理</li>
-		<li>消息订阅</li>
+		<li>创建消息</li>
 	</ul>
 		
 	<%@ include file="/pages/common/util/messages.jsp" %>
 	
-	<input type="button" class="action list" value="消息订阅列表" onclick="location.href='<s:url value="list.do"/>'"/>
+	<input type="button" class="action list" value="我的消息" onclick="location.href='<s:url value="/message/publish/myunreadlist.do"/>'"/>
 	
 	<s:form id="profile_form" action="save" method="post">
 	<table class="profile">
 		<tbody>
+			<%-- 
 			<tr>
 				<th><label for="name" class="required">消息类型</label></th>
 				<td>
-					<s:hidden id="subscription.id" name="subscription.id"/>
-					<s:hidden name="subscription.createdTime"/>
-					<s:hidden name="subscription.creator"/>
+					<s:hidden name="message.id"/>
 				
 					<span class="popup" onclick="popupMsgCatalog('<s:url value="/message/catalog/popup.do"/>');">&nbsp;</span>
-					<s:hidden id="subscription.catalog.id" name="subscription.catalog.id"/>
-					<s:hidden name="subscription.catalog.description"/>
-					<span id="span_msg_catalog_name"><s:property value="subscription.catalog.id + '-' + subscription.catalog.description"/></span>
+					<s:hidden id="message.catalog.id" name="message.catalog.id"/>
+					<s:hidden name="message.catalog.description"/>
+					<span id="span_msg_catalog_name"><s:property value="message.catalog.id + '-' + message.catalog.description"/></span>
 				</td>
 			</tr>
+			--%>
 			
 			<tr>
-				<th><label for="name" class="required">订阅类型</label></th>
+				<th><label for="name" class="required">接收人</label></th>
 				<td>
-					<s:select name="subscription.recType" value="%{subscription.recType.name()}" 
+					<s:select name="message.recType" value="%{message.recType.name()}" 
 						listKey="name()" headerKey="" headerValue=""
 						onchange="cleanSelectedValue(this)"
 						list="@com.google.code.lightssh.project.message.entity.ReceiveType@supportedValues()"/>
-				</td>
-			</tr>
-			
-			<tr>
-				<th><label for="name" class="required">订阅值</label></th>
-				<td>
+						
 					<span class="popup disabled" id="handler_msg_subtype" onclick="popupSubType();">&nbsp;</span>
-					<s:hidden id="subscription.recValue" name="subscription.recValue"/>
-					<span id="span_msg_subscription_subvalue"><s:property value="subscription.recValue"/></span>
+					<s:hidden id="message.recValue" name="message.recValue"/>
+					<span id="span_msg_subscription_subvalue"><s:property value="message.recValue"/></span>
 				</td>
 			</tr>
 			
 			<tr>
-				<th><label for="account_start_date">有效期</label></th>
+				<th><label for="priority" class="required">优先级</label></th>
 				<td>
-					<s:textfield name="subscription.period.start" cssClass="calendar" size="10" /> -
-					<s:textfield name="subscription.period.end" cssClass="calendar" size="10"/>
+					<s:select name="message.priority" value="%{message.priority.name()}" 
+						listKey="name()" headerKey="" headerValue=""
+						list="@com.google.code.lightssh.project.message.entity.Message$Priority@values()"/>
 				</td>
 			</tr>
 			
 			<tr>
-				<th><label for="desc">描述</label></th>
-				<td><s:textarea id="desc" name="subscription.description" cols="60" rows="5"/></td>
+				<th><label for="title" class="required">标题</label></th>
+				<td>
+					<s:textfield name="message.title" size="60" maxlength="100"/> 
+				</td>
+			</tr>
+			
+			<tr>
+				<th><label for="content" class="required">内容</label></th>
+				<td><s:textarea id="desc" name="message.content" cols="80" rows="7"/></td>
 			</tr>
 		</tbody>
 	</table>

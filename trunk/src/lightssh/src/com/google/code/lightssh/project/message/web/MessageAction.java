@@ -42,4 +42,13 @@ public class MessageAction extends GenericAction<Message>{
 		this.model = this.message;
 	}
 	
+	public String save( ){
+		if( message == null )
+			message = new Message();
+		
+		message.setCreator( this.getLoginUser() );
+		
+		return super.save();
+	}
+	
 }
