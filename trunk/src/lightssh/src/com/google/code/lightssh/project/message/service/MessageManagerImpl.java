@@ -11,6 +11,7 @@ import com.google.code.lightssh.common.service.BaseManagerImpl;
 import com.google.code.lightssh.project.message.dao.MessageDao;
 import com.google.code.lightssh.project.message.entity.Catalog;
 import com.google.code.lightssh.project.message.entity.Message;
+import com.google.code.lightssh.project.message.entity.ReceiveType;
 
 /**
  * 
@@ -44,6 +45,9 @@ public class MessageManagerImpl extends BaseManagerImpl<Message> implements Mess
 		Catalog catalog = catalogManager.getDefaultInfo();
 		if( catalog == null )
 			throw new ApplicationException("默认信息分类未初始化！");
+		
+		if(  ReceiveType.ALL.equals(t.getRecType()) )
+			t.setRecValue( ReceiveType.ALL.name() );
 		
 		t.setCatalog( catalog );
 		t.setCreatedTime( Calendar.getInstance() );
