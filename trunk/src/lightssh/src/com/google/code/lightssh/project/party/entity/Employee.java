@@ -14,7 +14,7 @@ import com.google.code.lightssh.common.entity.base.UUIDModel;
 
 /**
  * 员工信息
- * @author YangXiojin
+ * @author Aspen
  * @date 2013-9-1
  * 
  */

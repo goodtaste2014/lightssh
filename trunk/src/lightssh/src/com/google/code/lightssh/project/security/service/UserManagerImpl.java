@@ -15,7 +15,7 @@ import com.google.code.lightssh.project.security.entity.LoginAccount;
 
 /**
  * 
- * @author YangXiojin
+ * @author Aspen
  * @date 2013-3-28
  * 
  */

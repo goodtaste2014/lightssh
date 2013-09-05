@@ -11,7 +11,7 @@ import com.google.code.lightssh.project.workflow.entity.ProcessAttribute;
 
 /**
  * 
- * @author YangXiojin
+ * @author Aspen
  * @date 2013-8-30
  * 
  */

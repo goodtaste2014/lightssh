@@ -460,6 +460,7 @@ div.summary .currency{
 
 div.summary .line .left,div.summary .line .right{
 	margin-top:2px;
+	margin-bottom:2px;
 	float:right;
 	width:50%;
 	height:1px;

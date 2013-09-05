@@ -11,8 +11,7 @@ import com.google.code.lightssh.project.web.action.GenericAction;
 
 /**
  * 
- * @author YangXiojin
- * @date 2013-9-3
+ * @author Aspen
  * 
  */
 @Component( "catalogAction" )

@@ -2,7 +2,7 @@ package com.google.code.lightssh.project.workflow.entity;
 
 /**
  * 会签
- * @author YangXiojin
+ * @author Aspen
  * @date 2013-8-27
  * 
  */

@@ -11,8 +11,7 @@ import com.google.code.lightssh.project.web.action.GenericAction;
 
 /**
  * 
- * @author YangXiojin
- * @date 2013-9-4
+ * @author Aspen
  * 
  */
 @Component( "messageAction" )
@@ -22,6 +21,7 @@ public class MessageAction extends GenericAction<Message>{
 	private static final long serialVersionUID = 3443312151707430333L;
 	
 	private Message message;
+	
 	
 	@Resource(name="messageManager")
 	public void setManager(MessageManager mgr){
@@ -42,5 +42,4 @@ public class MessageAction extends GenericAction<Message>{
 		this.model = this.message;
 	}
 	
-
 }

@@ -2,7 +2,7 @@ package com.google.code.lightssh.project.util.constant;
 
 /**
  * 
- * @author YangXiojin
+ * @author Aspen
  * @date 2013-8-28
  * 
  */

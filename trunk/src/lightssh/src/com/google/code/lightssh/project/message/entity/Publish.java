@@ -9,14 +9,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.google.code.lightssh.common.entity.base.UUIDModel;
+import com.google.code.lightssh.common.model.Period;
 import com.google.code.lightssh.project.security.entity.LoginAccount;
 
 /**
  * 
- * @author YangXiojin
- * @date 2013-9-4
+ * @author Aspen
  * 
  */
 @Entity
@@ -45,6 +46,9 @@ public class Publish extends UUIDModel{
 	@Column(name="READ_TIME",columnDefinition="DATE")
 	@Temporal( TemporalType.TIMESTAMP )
 	private Calendar readTime;
+	
+	@Transient
+	private Period period;
 
 	public Message getMessage() {
 		return message;
@@ -68,6 +72,14 @@ public class Publish extends UUIDModel{
 
 	public void setReadTime(Calendar readTime) {
 		this.readTime = readTime;
+	}
+
+	public Period getPeriod() {
+		return period;
+	}
+
+	public void setPeriod(Period period) {
+		this.period = period;
 	}
 
 }

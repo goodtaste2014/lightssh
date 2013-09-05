@@ -4,7 +4,7 @@ import com.google.code.lightssh.project.workflow.model.ExecutionType;
 
 /**
  * 工作流业务接口
- * @author YangXiojin
+ * @author Aspen
  * @date 2013-8-28
  * 
  */

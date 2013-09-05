@@ -16,7 +16,7 @@ import com.google.code.lightssh.project.workflow.model.ExecutionType;
 
 /**
  * 
- * @author YangXiojin
+ * @author Aspen
  * @date 2013-8-28
  * 
  */

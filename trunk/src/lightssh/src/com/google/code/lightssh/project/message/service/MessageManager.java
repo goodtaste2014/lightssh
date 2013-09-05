@@ -5,8 +5,7 @@ import com.google.code.lightssh.project.message.entity.Message;
 
 /**
  * 
- * @author YangXiojin
- * @date 2013-9-4
+ * @author Aspen
  * 
  */
 public interface MessageManager extends BaseManager<Message>{
