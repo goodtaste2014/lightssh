@@ -2,7 +2,7 @@ package com.google.code.lightssh.project.workflow.model;
 
 /**
  * 执行类型
- * @author YangXiojin
+ * @author Aspen
  * @date 2013-8-28
  * 
  */

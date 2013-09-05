@@ -12,7 +12,7 @@ import com.google.code.lightssh.project.party.entity.Person;
 
 /**
  * 
- * @author YangXiojin
+ * @author Aspen
  * @date 2013-9-2
  * 
  */

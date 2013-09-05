@@ -16,8 +16,7 @@ import com.google.code.lightssh.common.model.Period;
 
 /**
  * 消息订阅
- * @author YangXiojin
- * @date 2013-9-3
+ * @author Aspen
  * 
  */
 @Entity

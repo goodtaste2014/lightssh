@@ -22,7 +22,7 @@ import com.google.code.lightssh.project.workflow.service.WorkflowManager;
 
 /**
  * 
- * @author YangXiojin
+ * @author Aspen
  * @date 2013-8-15
  * 
  */
@@ -138,7 +138,7 @@ public class WorkflowTaskAction extends GenericAction{
 		try{
 			//String userId = request.getParameter("userId");
 			List<String> users = new ArrayList<String>(); //TODO
-			users.add("aspen");
+			users.add("Aspen");
 			
 			workflowManager.addAssignee(taskId ,users);
 		}catch( Exception e ){

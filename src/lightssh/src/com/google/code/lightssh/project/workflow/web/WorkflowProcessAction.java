@@ -26,7 +26,7 @@ import com.google.code.lightssh.project.workflow.service.WorkflowManager;
 
 /**
  * 
- * @author YangXiojin
+ * @author Aspen
  * @date 2013-8-15
  * 
  */

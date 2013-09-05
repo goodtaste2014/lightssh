@@ -5,8 +5,7 @@ import com.google.code.lightssh.project.message.entity.Catalog;
 
 /**
  * 
- * @author YangXiojin
- * @date 2013-9-3
+ * @author Aspen
  * 
  */
 public interface CatalogManager extends BaseManager<Catalog>{

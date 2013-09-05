@@ -4,7 +4,7 @@ import com.google.code.lightssh.common.model.Period;
 
 /**
  * 
- * @author YangXiojin
+ * @author Aspen
  * @date 2013-8-22
  * 
  */

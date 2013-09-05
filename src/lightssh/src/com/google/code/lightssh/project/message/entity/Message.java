@@ -11,13 +11,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.google.code.lightssh.common.entity.base.UUIDModel;
+import com.google.code.lightssh.project.security.entity.LoginAccount;
 
 /**
  * 消息
- * @author YangXiojin
- * @date 2013-9-3
+ * @author Aspen
  * 
  */
 @Entity
@@ -137,6 +138,12 @@ public class Message extends UUIDModel{
 	 */
 	@Column(name="CREATOR",length=50)
 	private String creator;
+	
+	/**
+	 * 读者
+	 */
+	@Transient
+	public LoginAccount reader;
 
 	public Catalog getCatalog() {
 		return catalog;
@@ -248,6 +255,14 @@ public class Message extends UUIDModel{
 
 	public void setCreator(String creator) {
 		this.creator = creator;
+	}
+
+	public LoginAccount getReader() {
+		return reader;
+	}
+
+	public void setReader(LoginAccount reader) {
+		this.reader = reader;
 	}
 
 }

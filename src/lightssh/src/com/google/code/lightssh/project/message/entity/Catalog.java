@@ -19,8 +19,7 @@ import com.google.code.lightssh.common.entity.Persistence;
 
 /**
  * 消息种类
- * @author YangXiojin
- * @date 2013-9-3
+ * @author Aspen
  * 
  */
 @Entity

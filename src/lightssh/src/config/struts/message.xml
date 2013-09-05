@@ -42,7 +42,21 @@
         </action>
         
 		<action name="view" class="messageAction" method="edit">
-			<result name="success">/pages/message/message/view.jsp</result>	
+			<result name="success">/pages/message/message/view.jsp</result>
+        </action>
+        
+    </package>
+    
+    <package name="msg_publish" extends="default" namespace="/message/publish">
+        
+		<action name="read" class="publishAction" method="read">
+			<result name="success" type="json">
+				<param name="includeProperties">result.*</param>
+			</result>
+        </action>
+        
+		<action name="myunreadlist" class="publishAction" method="myUnreadList">
+			<result name="success">/pages/message/publish/my_unread_list.jsp</result>	
         </action>
         
     </package>

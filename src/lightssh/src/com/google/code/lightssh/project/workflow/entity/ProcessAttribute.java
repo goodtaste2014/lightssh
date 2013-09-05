@@ -8,7 +8,7 @@ import com.google.code.lightssh.common.entity.base.UUIDModel;
 
 /**
  * 流程属性
- * @author YangXiojin
+ * @author Aspen
  * @date 2013-8-30
  * 
  */

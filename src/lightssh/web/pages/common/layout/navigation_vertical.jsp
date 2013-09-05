@@ -45,7 +45,7 @@
 			<li>
 				<a href="#">消息及流程</a>
 				<ul id="msgwf_mgr">
-					<li><a href="#">未读消息</a></li>
+					<li><a href="<s:url value="/message/publish/myunreadlist.do"/>" target="main_frame">未读消息</a></li>
 					
 					<li>
 						<a href="#">工作流程</a>

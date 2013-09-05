@@ -19,7 +19,7 @@ import com.google.code.lightssh.project.security.service.LoginAccountManager;
 
 /**
  * 
- * @author YangXiojin
+ * @author Aspen
  * @date 2013-8-20
  * 
  */

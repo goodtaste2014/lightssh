@@ -12,7 +12,7 @@ import com.google.code.lightssh.project.security.service.NavigationManager;
 
 /**
  * 
- * @author YangXiojin
+ * @author Aspen
  * @date 2013-4-15
  * 
  */

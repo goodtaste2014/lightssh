@@ -68,7 +68,7 @@
 						<th><label for="creator">创建人</label></th>
 						<td>
 							<s:textfield id="creator" name="message.creator" size="20" maxlength="100"/>
-							<span class="popup" onclick="popupLoginAccount('<s:url value="/security/account/popup.do"/>',{});">&nbsp;</span>
+							<span class="popup user" onclick="popupLoginAccount('<s:url value="/security/account/popup.do"/>',{});">&nbsp;</span>
 						</td>
 						<td colspan="2"><input type="submit" class="action search" value="查询"/></td>
 					</tr>

@@ -6,7 +6,7 @@ import com.google.code.lightssh.common.model.Period;
 
 /**
  * 流程VO，用于查询
- * @author YangXiojin
+ * @author Aspen
  * @date 2013-8-15
  * 
  */
