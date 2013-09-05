@@ -27,4 +27,11 @@ public class CatalogManagerImpl extends BaseManagerImpl<Catalog> implements Cata
 		return (CatalogDao)this.dao;
 	}
 	
+	/**
+	 * 默认信息类消息
+	 */
+	public Catalog getDefaultInfo( ){
+		return get( Catalog.DEFAULT_INFO_ID );
+	}
+	
 }

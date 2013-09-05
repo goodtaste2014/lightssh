@@ -27,6 +27,8 @@ import com.google.code.lightssh.common.entity.Persistence;
 public class Catalog implements Persistence<String>{
 	
 	private static final long serialVersionUID = 5765293589440052230L;
+	
+	public static final String DEFAULT_INFO_ID = "INFO-DEF";
 
 	/**
 	 * 类型

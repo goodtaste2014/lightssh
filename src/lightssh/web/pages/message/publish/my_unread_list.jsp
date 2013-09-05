@@ -7,6 +7,8 @@
 	<title>任务列表</title>
 	
 	<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/ui/i18n/jquery.ui.datepicker_zh_CN.js"></script>
+	<script type="text/javascript" src="<s:url value="/pages/security/account/popup.js" />"></script>
+	
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$(".calendar").datepicker({dateFormat: 'yy-mm-dd',changeYear:true});
@@ -50,6 +52,15 @@
 			
 			return result;
 		}
+		
+		/**
+		 * USER-弹出框回调
+		 */
+		function callbackSelectLoginAccount( param ){
+			$("input[name='publish.message.creator']").val( param.loginName);
+			
+			$( popup_login_account ).dialog('destroy').html('');
+		}
 	</script>
 	
 	<style type="text/css">
@@ -69,7 +80,10 @@
 	<%@ include file="/pages/common/util/messages.jsp" %>
 	
 	<s:form name="mytodolist" method="post">
-		<input type="submit" class="action search" value="查询"/>
+		<input type="submit" class="action search" value="我的消息"/>
+		<input type="button" class="action search" value="消息发件箱"/>
+		<input type="button" class="action new" value="创建消息" 
+			onclick="location.href='<s:url value="/message/message/edit.do"/>'"/>
 		
 		<table class="profile">
 			<colgroup>
@@ -83,7 +97,7 @@
 			<tbody>
 				<tr>
 					<th><label for="title">消息标题</label></th>
-					<td><s:textfield id="title" name="publish.message.title" size="20" maxlength="100"/></td>
+					<td><s:textfield id="title" name="publish.message.title" size="30" maxlength="100"/></td>
 					
 					<th><label for="startTime">接收时间</label></th>
 					<td>
@@ -93,7 +107,8 @@
 					
 					<th><label for="owner">消息创建者</label></th>
 					<td>
-						<s:textfield name="task.procInstStartUser" size="20" />
+						<s:textfield name="publish.message.creator" size="20" />
+						<span class="popup user" onclick="popupLoginAccount('<s:url value="/security/account/popup.do"/>',{});">&nbsp;</span>
 					</td>
 				</tr>
 			</tbody>
@@ -103,6 +118,7 @@
 	<table class="list">
 		<colgroup>
 			<col width="50px"/>
+			<col width="50px"/>
 			<col />
 			<col width="50px"/>
 			<col width="80px"/>
@@ -111,6 +127,7 @@
 		<thead>
 			<tr>
 				<th>序号</th>
+				<th>级别</th>
 				<th>标题</th>
 				<th>阅读标志</th>
 				<th>创建者</th>
@@ -122,6 +139,7 @@
 			<s:set name="unread" value="readTime == null"/>
 			<tr class="message <s:property value="#unread?'unread':'read'"/>" publishid="<s:property value="id"/>">
 				<td><s:property value="#loop.index + 1"/></td>
+				<td><s:property value="message.priority"/></td>
 				<td>
 					<s:property value="message.title"/>
 					<div class="content summary" style="display: none;float: none;text-align: left;margin: 2px 5px 2px 5px;">
@@ -129,7 +147,7 @@
 							<div class="left"></div>
 							<div class="right"></div>
 						</div>
-						<s:property value="message.content"/>
+						<pre><s:property value="%{message.content}"/></pre>
 					</div>
 				</td>
 				<td class="flag"><s:property value="#unread?'未读':'已读'"/></td>
@@ -140,5 +158,5 @@
 		</tbody>
 	</table>
 
-	<mys:pagination />
+	<mys:pagination value="page"/>
 </body>

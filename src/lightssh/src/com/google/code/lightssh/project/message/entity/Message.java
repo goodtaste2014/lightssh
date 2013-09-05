@@ -53,6 +53,19 @@ public class Message extends UUIDModel{
 	}
 	
 	/**
+	 * 订阅类型
+	 */
+	@Column(name="REC_TYPE",length=20)
+	@Enumerated(EnumType.STRING)
+	private ReceiveType recType;
+	
+	/**
+	 * 订阅类型值
+	 */
+	@Column(name="REC_VALUE",length=255)
+	private String recValue;
+	
+	/**
 	 * 消息类型
 	 */
 	@ManyToOne
@@ -263,6 +276,22 @@ public class Message extends UUIDModel{
 
 	public void setReader(LoginAccount reader) {
 		this.reader = reader;
+	}
+
+	public ReceiveType getRecType() {
+		return recType;
+	}
+
+	public void setRecType(ReceiveType recType) {
+		this.recType = recType;
+	}
+
+	public String getRecValue() {
+		return recValue;
+	}
+
+	public void setRecValue(String recValue) {
+		this.recValue = recValue;
 	}
 
 }

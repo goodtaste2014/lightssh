@@ -30,14 +30,14 @@
 			</mys:column>
 			<mys:column title="类型编号" value="catalog.id" width="80px"/>
 			<mys:column title="消息类型" value="catalog.type" width="40px"/>
-			<mys:column title="订阅类型" value="subType" sortable="true" width="60px"/>
+			<mys:column title="订阅类型" value="recType" sortable="true" width="60px"/>
 			<mys:column title="订阅值" sortable="false" width="160px">
-				<s:if test="@com.google.code.lightssh.project.message.entity.Subscription$SubType@USER == subType ">
-					<s:property value="subValue"/>
+				<s:if test="@com.google.code.lightssh.project.message.entity.ReceiveType@USER == recType ">
+					<s:property value="recValue"/>
 				</s:if>
-				<s:elseif test="(@com.google.code.lightssh.project.message.entity.Subscription$SubType@DEPARTMENT == subType)
-					 || (@com.google.code.lightssh.project.message.entity.Subscription$SubType@PERSON == subType)">
-					<s:property value="@com.google.code.lightssh.project.party.util.PartyHelper@getParty(subValue).name"/>
+				<s:elseif test="(@com.google.code.lightssh.project.message.entity.ReceiveType@DEPARTMENT == recType)
+					 || (@com.google.code.lightssh.project.message.entity.ReceiveType@PERSON == recType)">
+					<s:property value="@com.google.code.lightssh.project.party.util.PartyHelper@getParty(recValue).name"/>
 				</s:elseif>
 			</mys:column>
 			<mys:column title="有效期(起)" value="period.start" width="90px"/>

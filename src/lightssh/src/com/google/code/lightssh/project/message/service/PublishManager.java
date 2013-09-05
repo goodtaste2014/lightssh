@@ -2,6 +2,7 @@ package com.google.code.lightssh.project.message.service;
 
 import com.google.code.lightssh.common.service.BaseManager;
 import com.google.code.lightssh.project.message.entity.Publish;
+import com.google.code.lightssh.project.message.entity.ReceiveType;
 import com.google.code.lightssh.project.security.entity.LoginAccount;
 
 /**
@@ -16,5 +17,13 @@ public interface PublishManager extends BaseManager<Publish>{
 	 * 标记为已读
 	 */
 	public boolean markToRead( String id ,LoginAccount user);
+	
+	/**
+	 * 发布消息
+	 * @param type 类型
+	 * @param value 类型值
+	 * @param msgId 信息ID
+	 */
+	public int publish( ReceiveType type,String value,String msgId );
 
 }

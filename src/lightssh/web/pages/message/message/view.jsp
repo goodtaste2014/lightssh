@@ -29,7 +29,9 @@
 			</tr>
 			<tr>
 				<th>内容</th>
-				<td colspan="3"><s:property value="%{message.content}"/></td>
+				<td colspan="3">
+					<pre><s:property value="%{message.content}"/></pre>
+				</td>
 			</tr>
 			<tr>
 				<th>优先级</th>
