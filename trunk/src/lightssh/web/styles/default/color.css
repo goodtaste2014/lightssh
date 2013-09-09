@@ -196,6 +196,14 @@ a.icon.theme{
 	background-image:url("../../images/background/icon_theme.png");
 }
 
+a.icon.message{
+	background-image:url("../../images/background/icon_message.png");
+}
+
+a.icon.task{
+	background-image:url("../../images/background/icon_task.png");
+}
+
 a.icon.user{
 	background-image:url("../../images/background/icon_user.png");
 }

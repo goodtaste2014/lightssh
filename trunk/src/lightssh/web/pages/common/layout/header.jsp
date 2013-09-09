@@ -108,6 +108,14 @@
 							<a href="<s:url value="/security/account/edit.do?password=update"/>" class="icon password" target="main_frame"><s:text name="project.header.changepassword"/></a>
 						</li>
 						<li>
+							<a href="<s:url value="/message/publish/myunreadlist.do"/>" class="icon message" target="main_frame" >未读消息</a>
+							<%--<span class="conter">(79)</span>--%>
+						</li>
+						<li>
+							<a href="<s:url value="/workflow/task/mytodolist.do"/>" class="icon task" target="main_frame" >待办事宜</a>
+							<%--<span class="conter">(10+)</span>--%>
+						</li>
+						<li>
 							<a href="#" class="icon theme" onclick="theme(this)"><s:text name="project.header.theme"/></a>
 						</li>
 						<li>
