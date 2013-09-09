@@ -48,6 +48,25 @@ public class MessageDaoJpa extends JpaDao<Message> implements MessageDao{
 		update(t);
 	}
 	
+	public Message readWithLock(String id ){
+		String sql = " SELECT * FROM T_MSG_MESSAGE WHERE ID = ? FOR UPDATE ";
+		
+		return (Message) addQueryParams( getEntityManager().createNativeQuery(
+				sql,Message.class),new Object[]{id}).getSingleResult();
+ 	}
+	
+	/**
+	 * 增加属性
+	 */
+	public int incProperty(String property,String id ){
+		String hql = " UPDATE " + this.entityClass.getName() + " SET " 
+				+ property + " = " + property +"+ 1 WHERE id = ? "  ;
+		
+		return addQueryParams( getEntityManager().createQuery(hql)
+				,new Object[]{id}).executeUpdate();
+	}
+	
+	
 	public ListPage<Message> list( ListPage<Message> page, Message t ){
 		StringBuffer sql = new StringBuffer(" FROM "+this.entityClass.getName() + " AS m WHERE 1=1 ");
 		List<Object> params = new ArrayList<Object>();
@@ -86,4 +105,5 @@ public class MessageDaoJpa extends JpaDao<Message> implements MessageDao{
 		
 		return super.query(page,sql.toString(), params.toArray() );
 	}
+	
 }

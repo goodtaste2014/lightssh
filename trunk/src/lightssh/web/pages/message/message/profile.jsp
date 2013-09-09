@@ -183,7 +183,7 @@
 	
 	<p class="submit">
 		<input type="submit" class="action save" name="Submit" 
-			value="<s:property value="%{(subscription==null||subscription.insert)?\"新增消息订阅\":\"修改消息订阅\"}"/>"/>
+			value="<s:property value="%{(subscription==null||subscription.insert)?\"新增消息\":\"修改消息\"}"/>"/>
 	</p>
 	</s:form>
 </body>

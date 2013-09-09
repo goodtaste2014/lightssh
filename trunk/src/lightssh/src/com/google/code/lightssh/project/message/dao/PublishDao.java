@@ -18,6 +18,11 @@ public interface PublishDao extends Dao<Publish>{
 	public int markToRead( String id,LoginAccount user );
 	
 	/**
+	 * 删除发布消息
+	 */
+	public int delete( String id ,String msgId,LoginAccount user);
+	
+	/**
 	 * 发布消息
 	 * @param type 类型
 	 * @param value 类型值

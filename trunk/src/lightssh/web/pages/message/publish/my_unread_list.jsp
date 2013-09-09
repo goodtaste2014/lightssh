@@ -61,6 +61,39 @@
 			
 			$( popup_login_account ).dialog('destroy').html('');
 		}
+		
+		/**
+		 * 删除消息发布
+		 */
+		function removePublish(target,id,msgId,title ){
+			if( id == null || id == '' ){
+				$.lightssh.showActionError("参数错误，未选择消息发布id!");
+				return;
+			}
+			
+			$.ajax({
+				url: "<s:url value="/message/publish/remove.do"/>"
+				,dataType: "json" 
+				,type:"post"
+				,async:false
+				,data: {
+		        	"publish.id": id
+		        	,"publish.message.id": msgId
+		        }
+		        ,error: function(){ 
+		        	$.lightssh.showActionError("阅读消息异常!"); 
+		        }
+		        ,success: function(json){
+		        	result = json.result.success;
+		        	if( result ){
+		        		$.lightssh.showActionMessage("成功删除消息!"); 
+		        		$( target ).closest("tr").remove();
+		        	}else{
+		        		$.lightssh.showActionError( json.result.message ); 
+		        	}
+		        }
+			});
+		}
 	</script>
 	
 	<style type="text/css">
@@ -142,12 +175,22 @@
 				<td><s:property value="message.priority"/></td>
 				<td>
 					<s:property value="message.title"/>
+					
 					<div class="content summary" style="display: none;float: none;text-align: left;margin: 2px 5px 2px 5px;">
 						<div class="line">
 							<div class="left"></div>
 							<div class="right"></div>
 						</div>
 						<pre><s:property value="%{message.content}"/></pre>
+						
+						<div class="line">
+							<div class="left"></div>
+							<div class="right"></div>
+						</div>
+						
+						<input type="button" class="action forward" disabled value="转发"/>
+						<input type="button" class="action remove" value="删除" onclick="removePublish(
+							this,'<s:property value="id"/>','<s:property value="message.id"/>')"/>
 					</div>
 				</td>
 				<td class="flag"><s:property value="#unread?'未读':'已读'"/></td>

@@ -29,6 +29,21 @@ public class MessageManagerImpl extends BaseManagerImpl<Message> implements Mess
 	//@Resource(name="publishManager")
 	//private PublishManager publishManager;
 	
+	/**
+	 * 带锁的查询
+	 */
+	public Message getWithLock(String id ){
+		return getDao().readWithLock(id);
+	}
+	
+	/**
+	 * 增加删除数
+	 */
+	public boolean incDeletedCount( String id ){
+		getWithLock( id );
+		return getDao().incProperty("deletedCount", id) > 0;
+	}
+	
 	@Resource(name="messageDao")
 	public void setDao(MessageDao dao){
 		this.dao = dao;

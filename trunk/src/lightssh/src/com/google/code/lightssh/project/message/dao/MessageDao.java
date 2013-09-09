@@ -11,5 +11,15 @@ import com.google.code.lightssh.project.message.entity.Message;
 public interface MessageDao extends Dao<Message>{
 	
 	public void save( Message t );
+	
+	/**
+	 * 带锁的查询
+	 */
+	public Message readWithLock(String id );
+	
+	/**
+	 * 增加属性
+	 */
+	public int incProperty(String property,String id );
 
 }

@@ -157,6 +157,16 @@ public class Message extends UUIDModel{
 	 */
 	@Transient
 	public LoginAccount reader;
+	
+	/**
+	 * 增加删除数
+	 */
+	public void incDeletedCount(){
+		if( deletedCount == null )
+			deletedCount = 0;
+		
+		this.deletedCount ++;
+	}
 
 	public Catalog getCatalog() {
 		return catalog;
