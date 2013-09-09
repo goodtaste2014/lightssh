@@ -4,7 +4,7 @@
 <head>
 	<meta name="decorator" content="background"/>
 
-	<title>任务列表</title>
+	<title>我的消息</title>
 	
 	<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/ui/i18n/jquery.ui.datepicker_zh_CN.js"></script>
 	<script type="text/javascript" src="<s:url value="/pages/security/account/popup.js" />"></script>
@@ -107,7 +107,7 @@
 <body>
 	<ul class="path">
 		<li>消息中心</li>
-		<li>未读消息</li>
+		<li>我的消息</li>
 	</ul>
 	
 	<%@ include file="/pages/common/util/messages.jsp" %>

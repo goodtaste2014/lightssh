@@ -43,7 +43,7 @@
 		
 		<ul id="vertical_navigation" class="menu vertical-menu">
 			<li>
-				<a href="#">消息及流程</a>
+				<a href="#">消息中心</a>
 				<ul id="msgwf_mgr">
 					<li><a href="<s:url value="/message/publish/myunreadlist.do"/>" target="main_frame">我的消息</a></li>
 					
