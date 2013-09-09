@@ -250,6 +250,10 @@ input.forward{
 	background: #f2f2f2 url("../../images/background/icon_forward.png") no-repeat 4px center;
 }
 
+input.outbox{
+	background: #f2f2f2 url("../../images/background/icon_outbox.png") no-repeat 4px center;
+}
+
 
 input.action:hover,input.action:active
 ,input.save:hover,input.save:active
