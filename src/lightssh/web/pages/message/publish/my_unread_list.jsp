@@ -114,7 +114,8 @@
 	
 	<s:form name="mytodolist" method="post">
 		<input type="submit" class="action search" value="我的消息"/>
-		<input type="button" class="action search" value="消息发件箱"/>
+		<input type="button" class="action outbox" value="消息发件箱"
+			onclick="location.href='<s:url value="/message/message/outbox.do"/>'"/>
 		<input type="button" class="action new" value="创建消息" 
 			onclick="location.href='<s:url value="/message/message/edit.do"/>'"/>
 		
@@ -170,7 +171,7 @@
 		<tbody>
 		<s:iterator value="page.list" status="loop">
 			<s:set name="unread" value="readTime == null"/>
-			<tr class="message <s:property value="#unread?'unread':'read'"/>" publishid="<s:property value="id"/>">
+			<tr class="<s:property value="#loop.odd?\"odd\":\"even\""/> message <s:property value="#unread?'unread':'read'"/>" publishid="<s:property value="id"/>">
 				<td><s:property value="#loop.index + 1"/></td>
 				<td><s:property value="message.priority"/></td>
 				<td>

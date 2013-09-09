@@ -41,6 +41,10 @@
 			<result name="success">/pages/message/message/list.jsp</result>	
         </action>
         
+		<action name="outbox" class="messageAction" method="outbox">
+			<result name="success">/pages/message/message/list_outbox.jsp</result>	
+        </action>
+        
 		<action name="view" class="messageAction" method="edit">
 			<result name="success">/pages/message/message/view.jsp</result>
         </action>

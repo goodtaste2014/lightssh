@@ -51,4 +51,22 @@ public class MessageAction extends GenericAction<Message>{
 		return super.save();
 	}
 	
+	/**
+	 * 发件箱
+	 */
+	public String outbox(){
+		if( message == null )
+			message = new Message();
+		
+		message.setCreator( getLoginUser() );
+		try{
+			page = getManager().list(page, message);
+		}catch(Exception e ){
+			this.saveErrorMessage("查询消息发件箱异常："+e.getMessage());
+			return INPUT;
+		}
+		
+		return SUCCESS;
+	}
+	
 }

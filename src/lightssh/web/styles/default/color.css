@@ -244,6 +244,10 @@ span.popup.party{
 	background:url("../../images/background/icon_party.png") no-repeat;
 }
 
+span.popup.user{
+	background:url("../../images/background/icon_user.png") no-repeat;
+}
+
 span.refresh{
 	cursor:pointer;
 	padding-left:18px;
