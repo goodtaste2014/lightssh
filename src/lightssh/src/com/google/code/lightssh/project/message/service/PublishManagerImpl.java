@@ -6,6 +6,8 @@ import java.util.Date;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.google.code.lightssh.common.dao.SearchCondition;
@@ -28,6 +30,11 @@ public class PublishManagerImpl extends BaseManagerImpl<Publish> implements Publ
 
 	private static final long serialVersionUID = -4659284392763441005L;
 	
+	private static Logger log = LoggerFactory.getLogger(PublishManagerImpl.class);
+	
+	@Resource(name="messageManager")
+	private MessageManager messageManager;
+	
 	@Resource(name="publishDao")
 	public void setDao(PublishDao dao){
 		this.dao = dao;
@@ -45,6 +52,22 @@ public class PublishManagerImpl extends BaseManagerImpl<Publish> implements Publ
 			return false;
 		
 		return getDao().markToRead(id, user) > 0;
+	}
+	
+	/**
+	 * 删除发布消息
+	 */
+	public boolean delete( String id ,String msgId,LoginAccount user){
+		if( StringUtils.isEmpty(id) || user == null )
+			return false;
+		
+		boolean result = getDao().delete(id,msgId, user) > 0;
+		if( result ){
+			if( messageManager.incDeletedCount(msgId) )
+				log.debug("消息[{}]删除数加1!",msgId);
+		}
+		
+		return result;
 	}
 	
 	/**

@@ -34,6 +34,12 @@
 				</td>
 			</tr>
 			<tr>
+				<th>接收类型</th>
+				<td><s:property value="%{message.recType}"/></td>
+				<th>接收者</th>
+				<td><s:property value="%{message.recValue}"/></td>
+			</tr>
+			<tr>
 				<th>优先级</th>
 				<td><s:property value="%{message.priority}"/></td>
 				<th>消息类型</th>
@@ -41,16 +47,20 @@
 			</tr>
 			
 			<tr>
+				<%-- 
 				<th>是否可链接</th>
 				<td><s:property value="%{message.linkable?'是':'否'}"/></td>
+				--%>
 				<th>链接地址</th>
-				<td><s:property value="%{message.catalog.type}"/></td>
-			</tr>
-			<tr>
+				<td><s:property value="%{message.url}"/></td>
 				<th>是否可转发</th>
 				<td><s:property value="%{message.forward?'是':'否'}"/></td>
+			</tr>
+			<tr>
 				<th>发布条数</th>
 				<td><s:property value="%{message.publishedCount}"/></td>
+				<th>删除发布条数</th>
+				<td><s:property value="%{message.deletedCount}"/></td>
 			</tr>
 			<tr>
 				<th>点击次数</th>

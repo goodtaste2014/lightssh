@@ -63,6 +63,12 @@
 			</result>
         </action>
         
+		<action name="remove" class="publishAction" method="remove">
+			<result name="success" type="json">
+				<param name="includeProperties">result.*</param>
+			</result>
+        </action>
+        
 		<action name="myunreadlist" class="publishAction" method="myUnreadList">
 			<result name="success">/pages/message/publish/my_unread_list.jsp</result>	
         </action>
