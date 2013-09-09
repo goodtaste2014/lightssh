@@ -89,7 +89,7 @@ jQuery.lightssh={
 	 */
 	,showActionMessage: function( msg,clazz ) {
 		if( $( "div.messages" ).length == 0 ) {
-			$( 'table' ).before( "<div class='messages'></div>" );
+			$( 'table' ).first().before( "<div class='messages'></div>" );
 		}
 		
 		if( clazz == null )
