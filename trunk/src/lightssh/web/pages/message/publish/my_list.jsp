@@ -121,11 +121,9 @@
 		
 		<table class="profile">
 			<colgroup>
-				<col width="10%"/>
-				<col width="23%"/>
-				<col width="10%"/>
-				<col width="23%"/>
-				<col width="10%"/>
+				<col />
+				<col width="35%"/>
+				<col />
 				<col />
 			</colgroup>
 			<tbody>
@@ -133,6 +131,14 @@
 					<th><label for="title">消息标题</label></th>
 					<td><s:textfield id="title" name="publish.message.title" size="30" maxlength="100"/></td>
 					
+					<th><label for="read">阅读标志</label></th>
+					<td>
+						<s:select id="read" name="publish.read" list="#{false:'未读',true:'已读' }"
+							 headerKey="" headerValue="" />
+					</td>
+					
+				</tr>
+				<tr>
 					<th><label for="startTime">接收时间</label></th>
 					<td>
 						<s:textfield name="publish.period.start" cssClass="calendar" size="10" /> -

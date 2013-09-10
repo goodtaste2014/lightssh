@@ -88,8 +88,8 @@
 			</result>
         </action>
         
-		<action name="myunreadlist" class="publishAction" method="myUnreadList">
-			<result name="success">/pages/message/publish/my_unread_list.jsp</result>	
+		<action name="mylist" class="publishAction" method="myList">
+			<result name="success">/pages/message/publish/my_list.jsp</result>	
         </action>
         
     </package>

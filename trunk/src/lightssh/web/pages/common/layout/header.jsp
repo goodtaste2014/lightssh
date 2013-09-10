@@ -108,7 +108,7 @@
 							<a href="<s:url value="/security/account/edit.do?password=update"/>" class="icon password" target="main_frame"><s:text name="project.header.changepassword"/></a>
 						</li>
 						<li>
-							<a href="<s:url value="/message/publish/myunreadlist.do"/>" class="icon message" target="main_frame" >未读消息</a>
+							<a href="<s:url value="/message/publish/mylist.do"/>?publish.read=false" class="icon message" target="main_frame" >未读消息</a>
 							<%--<span class="conter">(79)</span>--%>
 						</li>
 						<li>
