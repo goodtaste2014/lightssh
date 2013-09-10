@@ -104,9 +104,9 @@ public class PublishAction extends GenericAction<Publish>{
 	}
 
 	/**
-	 * 我的未读消息
+	 * 我的消息
 	 */
-	public String myUnreadList( ){
+	public String myList( ){
 		if(publish == null )
 			publish = new Publish();
 		

@@ -113,6 +113,13 @@ public class PublishManagerImpl extends BaseManagerImpl<Publish> implements Publ
 				}
 			}
 			
+			if( t.getRead() != null ){
+				if( Boolean.TRUE.equals( t.getRead() ) )
+					sc.isNotNull("readTime");
+				else
+					sc.isNull("readTime");
+			}
+			
 			if( t.getMessage() != null ){
 				Message msg = t.getMessage();
 				

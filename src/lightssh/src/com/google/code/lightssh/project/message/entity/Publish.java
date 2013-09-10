@@ -49,7 +49,10 @@ public class Publish extends UUIDModel{
 	
 	@Transient
 	private Period period;
-
+	
+	@Transient
+	private Boolean read;
+	
 	public Message getMessage() {
 		return message;
 	}
@@ -80,6 +83,14 @@ public class Publish extends UUIDModel{
 
 	public void setPeriod(Period period) {
 		this.period = period;
+	}
+
+	public Boolean getRead() {
+		return read;
+	}
+
+	public void setRead(Boolean read) {
+		this.read = read;
 	}
 
 }
