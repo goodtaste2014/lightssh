@@ -21,5 +21,10 @@ public interface MessageDao extends Dao<Message>{
 	 * 增加属性
 	 */
 	public int incProperty(String property,String id );
-
+	
+	/**
+	 * 删除消息
+	 */
+	public int remove( String id,String user );
+	
 }

@@ -29,6 +29,15 @@
 				
 				$( popup_login_account ).dialog('destroy').html('');
 			}
+			
+			/**
+			 * 删除消息-管理员
+			 */
+			function doRemove( id,name ){
+				var url = '<s:url value="/message/message/remove.do"/>?message.id=' + id ;
+				if( confirm('确认删除消息[' + name + ']'))
+					location.href=url;
+			}
 		</script>
 	</head>
 	
@@ -86,6 +95,7 @@
 			<mys:column title="标题">
 				<s:property value="title"/>
 			</mys:column>
+			<mys:column title="状态" value="status" width="60px"/>
 			<mys:column title="可链接" width="60px">
 				<s:property value="linkable?'是':'否'"/>
 			</mys:column>
@@ -93,8 +103,8 @@
 				<s:property value="forward?'是':'否'"/>
 			</mys:column>
 			<mys:column title="发布条数" value="publishedCount" sortable="true"  width="60px"/>
-			<mys:column title="点击次数" value="hitCount" sortable="true" width="60px"/>
-			<mys:column title="阅读者数" value="readerCount" sortable="true"  width="60px"/>
+			<%--<mys:column title="点击次数" value="hitCount" sortable="true" width="60px"/>--%>
+			<%--<mys:column title="阅读者数" value="readerCount" sortable="true"  width="60px"/>--%>
 			<mys:column title="创建人" value="creator" width="80px"/>
 			<mys:column title="创建时间" value="createdTime" sortable="true"  width="150px"/>
 			<mys:column title="操作" width="40px" cssClass="action">
@@ -105,6 +115,9 @@
 							<a href="<s:url value="view.do?message.id=%{id}"/>">消息详情</a>
 						</li>
 						<li class="section"/>
+						<li class="remove">
+							<a href="#" onclick="doRemove('<s:property value="id"/>','<s:property value="title"/>')">删除消息</a>
+						</li>
 					</ul>
 				</div>
 			</mys:column>

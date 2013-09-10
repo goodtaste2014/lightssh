@@ -1,7 +1,6 @@
 package com.google.code.lightssh.project.message.dao;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -32,18 +31,19 @@ public class MessageDaoJpa extends JpaDao<Message> implements MessageDao{
 		if( t == null )
 			throw new ApplicationException("参数为空！");
 		
-		t.setCreatedTime( Calendar.getInstance() );
-		t.setLinkable(false);
-		t.setPublishedCount(0);//TODO
-		t.setDeletedCount(0);
-		t.setHitCount(0);
-		t.setReaderCount(0);
-		t.setTodoClean(false);
-		create(t);
+		if( t.isInsert() )
+			this.create(t);
+		else
+			this.update(t);
 		this.getEntityManager().flush();
 		
-		t.setPublishedCount(publishDao.publish(
+		//发布消息
+		if( Message.Status.PUBLISH.equals(t.getStatus()) ){
+			t.setPublishedCount(publishDao.publish(
 				t.getRecType(),t.getRecValue(),t.getId()));
+		}else{
+			t.setPublishedCount(0);
+		}
 		
 		update(t);
 	}
@@ -104,6 +104,27 @@ public class MessageDaoJpa extends JpaDao<Message> implements MessageDao{
 		}
 		
 		return super.query(page,sql.toString(), params.toArray() );
+	}
+	
+	/**
+	 * 删除消息
+	 */
+	public int remove( String id,String user ){
+		if( StringUtils.isEmpty(id) )
+			return 0;
+		
+		String hql = " DELETE FROM " + this.entityClass.getName() + " WHERE id = ? ";
+		
+		List<Object> params = new ArrayList<Object>();
+		params.add( id );
+		
+		if( StringUtils.isNotEmpty( user ) ){
+			hql += " AND creator = ? ";
+			params.add(user);
+		}
+		
+		return addQueryParams( getEntityManager().createQuery(hql)
+				,params).executeUpdate();
 	}
 	
 }

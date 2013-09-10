@@ -24,6 +24,11 @@ public interface PublishManager extends BaseManager<Publish>{
 	public boolean delete( String id ,String msgId,LoginAccount user);
 	
 	/**
+	 * 删除发布消息
+	 */
+	public int deleteByMessage( String msgId );
+	
+	/**
 	 * 发布消息
 	 * @param type 类型
 	 * @param value 类型值
