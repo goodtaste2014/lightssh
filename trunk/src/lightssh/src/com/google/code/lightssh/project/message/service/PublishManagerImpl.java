@@ -135,5 +135,15 @@ public class PublishManagerImpl extends BaseManagerImpl<Publish> implements Publ
 		
 		return dao.list(page, sc);
 	}
+	
+	/**
+	 * 转发消息
+	 * @param type 类型
+	 * @param value 类型值
+	 * @param msgId 信息ID
+	 */
+	public int forward( ReceiveType type,String value,String msgId ){
+		return getDao().forward(type, value, msgId);
+	}
 
 }

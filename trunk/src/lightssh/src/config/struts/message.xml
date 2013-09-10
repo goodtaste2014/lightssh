@@ -92,6 +92,16 @@
 			<result name="success">/pages/message/publish/my_list.jsp</result>	
         </action>
         
+		<action name="preforward" class="publishAction" method="preforward">
+			<result name="input" type="redirectAction">mylist</result>
+			<result name="success">/pages/message/publish/forward.jsp</result>	
+        </action>
+        
+		<action name="forward" class="publishAction" method="forward">
+			<result name="input" type="redirectAction">mylist</result>
+			<result name="success" type="redirectAction">mylist</result>
+        </action>
+        
     </package>
     
 </struts>

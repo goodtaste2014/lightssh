@@ -76,7 +76,8 @@ public class PublishDaoJpa extends JpaDao<Publish> implements PublishDao{
 		StringBuffer sql = new StringBuffer(" INSERT INTO T_MSG_PUBLISH(ID,MESSAGE_ID,USER_ID,CREATED_TIME) ");
 		
 		List<Object> params = new ArrayList<Object>( );
-		if( ReceiveType.USER.equals(type) || ReceiveType.ALL.equals(type)){
+		if( ReceiveType.USER.equals(type) || ReceiveType.ALL.equals(type)
+				|| ReceiveType.DEPARTMENT.equals( type )){
 			sql.append(" SELECT sys_guid(),'");
 			sql.append( msgId );
 			sql.append( "',id,sysdate FROM T_SECURITY_LOGINACCOUNT WHERE status = ? ");
@@ -85,11 +86,51 @@ public class PublishDaoJpa extends JpaDao<Publish> implements PublishDao{
 			if( ReceiveType.USER.equals(type) ){
 				sql.append(" AND id = ? ");
 				params.add( value );
+			}else if( ReceiveType.DEPARTMENT.equals( type ) ){//部门
+				sql.append(" AND party_id IN ( SELECT PERSON_ID FROM T_PARTY_EMPLOYEE WHERE org_id = ? ) ");
+				params.add( value );
 			}
 		}
 		
 		return addQueryParams(getEntityManager().createNativeQuery(
 				sql.toString()),params).executeUpdate();
 	}
-
+	
+	/**
+	 * 转发消息
+	 * @param type 类型
+	 * @param value 类型值
+	 * @param msgId 信息ID
+	 */
+	public int forward( ReceiveType type,String value,String msgId ){
+		StringBuffer sql = new StringBuffer(" MERGE INTO T_MSG_PUBLISH p ");
+		sql.append(" USING( ");
+		
+		List<Object> params = new ArrayList<Object>( );
+		if( ReceiveType.USER.equals(type) || ReceiveType.ALL.equals(type)
+			|| ReceiveType.DEPARTMENT.equals( type )){
+			sql.append(" SELECT sys_guid(),'");
+			sql.append( msgId );
+			sql.append( "',id,sysdate FROM T_SECURITY_LOGINACCOUNT WHERE status = ? ");
+			
+			params.add( AuditStatus.EFFECTIVE.name() );
+			if( ReceiveType.USER.equals(type) ){
+				sql.append(" AND id = ? ");
+				params.add( value );
+			}else if( ReceiveType.DEPARTMENT.equals( type ) ){//部门
+				sql.append(" AND party_id IN ( SELECT PERSON_ID FROM T_PARTY_EMPLOYEE WHERE org_id = ? ) ");
+				params.add( value );
+			}
+		}
+		
+		sql.append( " ) u ON (u.id = p.user_id AND p.message_id = ? ) " );
+		params.add( msgId );
+		sql.append( " WHEN NOT MATCHED THEN " );
+		sql.append( " INSERT (p.id,p.message_id,p.user_id,p.created_time) " ); 
+		sql.append( " 	VALUES(sys_guid(),'"+msgId+"',u.id,sysdate ) " ); 
+		
+		return addQueryParams(getEntityManager().createNativeQuery(
+				sql.toString()),params).executeUpdate();
+	}
+	
 }

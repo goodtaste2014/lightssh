@@ -94,6 +94,13 @@
 		        }
 			});
 		}
+		
+		/**
+		 * 消息转发
+		 */
+		function doForward( id ){
+			location.href='<s:url value="/message/publish/preforward.do"/>?publish.id=' + id;
+		}
 	</script>
 	
 	<style type="text/css">
@@ -195,7 +202,8 @@
 							<div class="right"></div>
 						</div>
 						
-						<input type="button" class="action forward" disabled value="转发"/>
+						<input type="button" class="action forward" <s:property value="message.forward?'':'disabled'"/> 
+							value="转发" onclick="doForward('<s:property value="id"/>')"/>
 						<input type="button" class="action remove" value="删除" onclick="removePublish(
 							this,'<s:property value="id"/>','<s:property value="message.id"/>')"/>
 					</div>
