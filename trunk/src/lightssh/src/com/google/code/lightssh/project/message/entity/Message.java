@@ -53,6 +53,29 @@ public class Message extends UUIDModel{
 	}
 	
 	/**
+	 * 状态
+	 */
+	public enum Status{
+		DRAFT("草稿")			
+		,REMOVE("删除")			
+		,PUBLISH("发布");	
+		
+		private String value;
+		
+		Status( String value ){
+			this.value = value;
+		}
+		
+		public String getValue() {
+			return value;
+		}
+		
+		public String toString(){
+			return this.value;
+		}
+	}
+	
+	/**
 	 * 订阅类型
 	 */
 	@Column(name="REC_TYPE",length=20)
@@ -71,6 +94,13 @@ public class Message extends UUIDModel{
 	@ManyToOne
 	@JoinColumn(name="CATALOG_ID")
 	private Catalog catalog;
+	
+	/**
+	 * 状态
+	 */
+	@Column(name="STATUS",length=20)
+	@Enumerated(EnumType.STRING)
+	private Status status;
 	
 	/**
 	 * 优先级
@@ -302,6 +332,14 @@ public class Message extends UUIDModel{
 
 	public void setRecValue(String recValue) {
 		this.recValue = recValue;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 
 }

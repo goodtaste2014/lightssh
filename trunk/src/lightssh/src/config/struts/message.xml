@@ -57,6 +57,21 @@
 			<result name="input">/pages/message/message/profile.jsp</result>
 			<result name="success" type="redirectAction">list</result>	
         </action>
+        
+		<action name="myremove" class="messageAction" method="myRemove">
+			<result name="input" type="redirectAction">outbox</result>	
+			<result name="success" type="redirectAction">outbox</result>	
+        </action>
+        
+		<action name="remove" class="messageAction" method="remove">
+			<result name="input" type="redirectAction">list</result>	
+			<result name="success" type="redirectAction">list</result>	
+        </action>
+        
+		<action name="revoke" class="messageAction" method="revoke">
+			<result name="input" type="redirectAction">outbox</result>	
+			<result name="success" type="redirectAction">outbox</result>	
+        </action>
     </package>
     
     <package name="msg_publish" extends="default" namespace="/message/publish">

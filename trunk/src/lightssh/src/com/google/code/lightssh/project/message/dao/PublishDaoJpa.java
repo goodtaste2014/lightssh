@@ -53,6 +53,20 @@ public class PublishDaoJpa extends JpaDao<Publish> implements PublishDao{
 	}
 	
 	/**
+	 * 删除发布消息
+	 */
+	public int removeByMessage( String msgId ){
+		if( StringUtils.isEmpty(msgId) )
+			return 0;
+		
+		String hql = " DELETE FROM " + this.entityClass.getName() 
+				+ " WHERE message.id = ? ";
+		
+		return addQueryParams( getEntityManager().createQuery(hql)
+				,msgId).executeUpdate();
+	}
+	
+	/**
 	 * 发布消息
 	 * @param type 类型
 	 * @param value 类型值

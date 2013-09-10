@@ -71,6 +71,13 @@ public class PublishManagerImpl extends BaseManagerImpl<Publish> implements Publ
 	}
 	
 	/**
+	 * 删除发布消息
+	 */
+	public int deleteByMessage( String msgId ){
+		return getDao().removeByMessage(msgId);
+	}
+	
+	/**
 	 * 发布消息
 	 * @param type 类型
 	 * @param value 类型值

@@ -2,11 +2,13 @@ package com.google.code.lightssh.project.message.web;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.google.code.lightssh.project.message.entity.Message;
 import com.google.code.lightssh.project.message.service.MessageManager;
+import com.google.code.lightssh.project.security.entity.LoginAccount;
 import com.google.code.lightssh.project.web.action.GenericAction;
 
 /**
@@ -63,6 +65,50 @@ public class MessageAction extends GenericAction<Message>{
 			page = getManager().list(page, message);
 		}catch(Exception e ){
 			this.saveErrorMessage("查询消息发件箱异常："+e.getMessage());
+			return INPUT;
+		}
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * 管理员删除消息
+	 */
+	public String remove(){
+		if( message == null || StringUtils.isEmpty(message.getId()) ){
+			this.saveErrorMessage("参数错误!");
+			return INPUT;
+		}
+		
+		try{
+			getManager().remove(message.getId(),null);
+			this.saveSuccessMessage("成功删除消息！");
+		}catch(Exception e ){
+			this.saveErrorMessage("删除消息异常："+e.getMessage());
+			return INPUT;
+		}
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * 管理员删除消息
+	 */
+	public String myRemove(){
+		LoginAccount user = getLoginAccount();
+		if( user == null )
+			return LOGIN;
+		
+		if( message == null || StringUtils.isEmpty(message.getId()) ){
+			this.saveErrorMessage("参数错误!");
+			return INPUT;
+		}
+		
+		try{
+			getManager().remove(message.getId(), user );
+			this.saveSuccessMessage("成功删除消息！");
+		}catch(Exception e ){
+			this.saveErrorMessage("删除消息异常："+e.getMessage());
 			return INPUT;
 		}
 		
