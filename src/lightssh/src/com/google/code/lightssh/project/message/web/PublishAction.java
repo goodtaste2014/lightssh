@@ -126,4 +126,59 @@ public class PublishAction extends GenericAction<Publish>{
 		
 		return SUCCESS;
 	}
+	
+	/**
+	 * 消息转发
+	 */
+	public String preforward(){
+		if( getLoginAccount() == null )
+			return LOGIN;
+		
+		if( publish == null || StringUtils.isEmpty(publish.getId()) ){
+			this.saveErrorMessage("参数为空！");
+			return INPUT;
+		}
+		
+		setPublish(getManager().get(publish));
+		if( publish == null ){
+			saveErrorMessage("转发消息不存在");
+			return INPUT;
+		}
+		
+		publish.getMessage().setRecType( null );
+		publish.getMessage().setRecValue( null );
+		
+		if( !getLoginAccount().getId().equals( publish.getUser().getId() ) ){
+			saveErrorMessage("只能转发自己的消息！");
+			return INPUT;
+		}
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * 消息转发
+	 */
+	public String forward(){
+		if( getLoginAccount() == null )
+			return LOGIN;
+		
+		if( publish == null || StringUtils.isEmpty(publish.getId()) 
+				|| publish.getMessage() == null ){
+			this.saveErrorMessage("参数为空！");
+			return INPUT;
+		}
+		
+		try{
+			int c = getManager().forward(publish.getMessage().getRecType()
+					, publish.getMessage().getRecValue()
+					, publish.getMessage().getId());
+			this.saveSuccessMessage("成功转发消息至["+c+"]位接收人！");
+		}catch( Exception e ){
+			this.saveErrorMessage("转发消息异常:"+e.getMessage());
+			return INPUT;
+		}
+		
+		return SUCCESS;
+	}
 }

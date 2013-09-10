@@ -66,8 +66,12 @@ public class MessageManagerImpl extends BaseManagerImpl<Message> implements Mess
 		if( catalog == null )
 			throw new ApplicationException("默认信息分类未初始化！");
 		
-		if(  ReceiveType.ALL.equals(t.getRecType()) )
+		if(  ReceiveType.ALL.equals(t.getRecType()) ){
 			t.setRecValue( ReceiveType.ALL.name() );
+			t.setForward( false ); //所有人接收的消息不能转发
+		}else{
+			t.setForward( catalog.getForward() );
+		}
 		
 		if( t.getStatus() == null )
 			t.setStatus(Message.Status.PUBLISH );

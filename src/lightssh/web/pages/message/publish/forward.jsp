@@ -23,10 +23,7 @@
 			 */
 			$("#profile_form").validate({
 				rules:{
-					"message.recValue":{required:function(){return $("select[name='message.recType']").val() != 'ALL'}}
-					,"message.title":{required:true,maxlength:100}
-					,"message.priority":{required:true}
-					,"message.content":{required:true,maxlength:2000}
+					"publish.message.recValue":{required:function(){return $("select[name='publish.message.recType']").val() != 'ALL'}}
 				}
 			});
 			
@@ -39,40 +36,24 @@
 			var recType= $(ele).val();
 			var recValueHandler = $("#handler_msg_subtype");
 			
-			$("input[name='message.recValue']").val('');
+			$("input[name='publish.message.recValue']").val('');
 			$("#span_msg_subscription_subvalue").text( '');
 			
 			$("#handler_msg_subtype").removeClass("disabled");
 			$( recValueHandler ).show( );
 			if( recType == '<s:property value="@com.google.code.lightssh.project.message.entity.ReceiveType@ALL.name()"/>' ){
 				$( recValueHandler ).hide( );
-				$("label[for='message.recValue']").remove(); //移除样式
+				$("label[for='publish.message.recValue']").remove(); //移除样式
 			}else if( recType == null || recType == '' ){
 				$( recValueHandler ).addClass("disabled");
 			}
 		}
 		
 		/**
-		 * 选择消息类型回调
-		 */
-		function callbackSelectMsgCatalog(param){
-			$("input[name='subscription.catalog.id']").val(param.id);
-			$("input[name='subscription.catalog.description']").val(param.description);
-			
-			if( param != null && (param.id != null || param.description != null)  )
-				$("#span_msg_catalog_name").text( param.id + '-' +param.description);
-			else
-				$("#span_msg_catalog_name").text( '');
-			$( popup_msg_catalog ).dialog('destroy').html('');
-			
-			$("label[for='subscription.catalog.id']").remove(); //移除样式
-		}
-		
-		/**
 		 * 根据类型选择
 		 */
 		function popupSubType( ){
-			var recType= $("select[name='message.recType']").val();
+			var recType= $("select[name='publish.message.recType']").val();
 			if( recType == null || recType == '' )
 				return;
 			
@@ -94,10 +75,10 @@
 		 * DEPT-弹出框回调
 		 */
 		function callbackSelectParty( party ){
-			$("input[name='message.recValue']").val( party.id);
+			$("input[name='publish.message.recValue']").val( party.id);
 			$("#span_msg_subscription_subvalue").text( party.name);
 			
-			$("label[for='subscription.recValue']").remove(); //移除样式
+			$("label[for='publish.message.recValue']").remove(); //移除样式
 			$( popup_party ).dialog('destroy').html('');
 			
 		}
@@ -106,10 +87,10 @@
 		 * USER-弹出框回调
 		 */
 		function callbackSelectLoginAccount( param ){
-			$("input[name='message.recValue']").val( param.id);
+			$("input[name='publish.message.recValue']").val( param.id);
 			$("#span_msg_subscription_subvalue").text( param.loginName );
 			
-			$("label[for='message.recValue']").remove(); //移除样式
+			$("label[for='publish.message.recValue']").remove(); //移除样式
 			
 			$( popup_login_account ).dialog('destroy').html('');
 		}
@@ -127,63 +108,54 @@
 	
 	<input type="button" class="action list" value="我的消息" onclick="location.href='<s:url value="/message/publish/mylist.do"/>'"/>
 	
-	<s:form id="profile_form" action="save" method="post">
+	<s:form id="profile_form" action="forward" method="post">
 	<table class="profile">
 		<tbody>
-			<%-- 
-			<tr>
-				<th><label for="name" class="required">消息类型</label></th>
-				<td>
-					<s:hidden name="message.id"/>
-				
-					<span class="popup" onclick="popupMsgCatalog('<s:url value="/message/catalog/popup.do"/>');">&nbsp;</span>
-					<s:hidden id="message.catalog.id" name="message.catalog.id"/>
-					<s:hidden name="message.catalog.description"/>
-					<span id="span_msg_catalog_name"><s:property value="message.catalog.id + '-' + message.catalog.description"/></span>
-				</td>
-			</tr>
-			--%>
-			
 			<tr>
 				<th><label for="name" class="required">接收人</label></th>
 				<td>
-					<s:select name="message.recType" value="%{message.recType.name()}" 
+					<s:hidden name="publish.id"/>
+					<s:hidden name="publish.message.id"/>
+					
+					<s:select name="publish.message.recType" value="%{publish.message.recType.name()}" 
 						listKey="name()" headerKey="" headerValue=""
 						onchange="cleanSelectedValue(this)"
 						list="@com.google.code.lightssh.project.message.entity.ReceiveType@supportedValues()"/>
 						
 					<span class="popup disabled" id="handler_msg_subtype" onclick="popupSubType();">&nbsp;</span>
-					<s:hidden id="message.recValue" name="message.recValue"/>
-					<span id="span_msg_subscription_subvalue"><s:property value="message.recValue"/></span>
+					<s:hidden id="publish.message.recValue" name="publish.message.recValue"/>
+					<span id="span_msg_subscription_subvalue"><s:property value="publish.message.recValue"/></span>
 				</td>
 			</tr>
 			
 			<tr>
-				<th><label for="priority" class="required">优先级</label></th>
+				<th><label for="priority">优先级</label></th>
 				<td>
-					<s:select name="message.priority" value="%{message.priority.name()}" 
-						listKey="name()" headerKey="" headerValue=""
-						list="@com.google.code.lightssh.project.message.entity.Message$Priority@values()"/>
+					<s:hidden name="publish.message.priority" value="%{publish.message.priority.name()}"/>
+					<s:property value="publish.message.priority"/>
 				</td>
 			</tr>
 			
 			<tr>
-				<th><label for="title" class="required">标题</label></th>
+				<th><label for="title">标题</label></th>
 				<td>
-					<s:textfield name="message.title" size="60" maxlength="100"/> 
+					<s:hidden name="publish.message.title"/>
+					<s:property value="publish.message.title"/>
 				</td>
 			</tr>
 			
 			<tr>
-				<th><label for="content" class="required">内容</label></th>
-				<td><s:textarea id="desc" name="message.content" cols="80" rows="7"/></td>
+				<th><label for="content">内容</label></th>
+				<td>
+					<s:hidden name="publish.message.content"/>
+					<pre><s:property value="publish.message.content"/></pre>
+				</td>
 			</tr>
 		</tbody>
 	</table>
 	
 	<p class="submit">
-		<input type="submit" class="action save" name="Submit" 
-			value="<s:property value="%{(subscription==null||subscription.insert)?\"新增消息\":\"修改消息\"}"/>"/>
+		<input type="submit" class="action forward" name="submit" value="转发消息"/>
 	</p>
 	</s:form>
 </body>

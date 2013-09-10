@@ -34,5 +34,13 @@ public interface PublishDao extends Dao<Publish>{
 	 * @param msgId 信息ID
 	 */
 	public int publish( ReceiveType type,String value,String msgId );
+	
+	/**
+	 * 转发消息
+	 * @param type 类型
+	 * @param value 类型值
+	 * @param msgId 信息ID
+	 */
+	public int forward( ReceiveType type,String value,String msgId );
 
 }
