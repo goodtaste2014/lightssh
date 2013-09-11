@@ -12,6 +12,7 @@ import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.HistoricDetail;
 import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.struts2.json.annotations.JSON;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -39,6 +40,8 @@ public class WorkflowTaskAction extends GenericAction{
 	
 	private String taskId;
 
+	private Integer count = 0;
+
 	@Resource(name="workflowManager")
 	private WorkflowManager workflowManager;
 
@@ -65,6 +68,15 @@ public class WorkflowTaskAction extends GenericAction{
 	public void setTask(MyTask task) {
 		this.task = task;
 	}
+	
+	@JSON(name="count")
+	public Integer getCount() {
+		return count;
+	}
+
+	public void setCount(Integer count) {
+		this.count = count;
+	}
 
 	/**
 	 * 所有待办任务
@@ -83,6 +95,27 @@ public class WorkflowTaskAction extends GenericAction{
 		task.setAssignee( getLoginUser() ); //登录用户
 		
 		taskPage = workflowManager.listTask(task,taskPage);
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * 我的待办任务数
+	 */
+	public String myTodoCount(){
+		if( task == null )
+			task = new MyTask();
+		task.setAssignee( getLoginUser() ); //登录用户
+		
+		if( taskPage == null )
+			taskPage = new ListPage<Task>();
+		taskPage.setSize(0);
+		
+		try{
+			taskPage = workflowManager.listTask(task,taskPage);
+			this.count = taskPage.getAllSize();
+		}catch( Exception e ){
+		}
 		
 		return SUCCESS;
 	}

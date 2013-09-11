@@ -219,6 +219,17 @@ body#header{
 	line-height:30px;
 }
 
+/** ¼ÆÊıÆ÷ */
+#header .status span.counter{
+	height: 16px;
+	line-height: 16px;
+	color: green;
+}
+
+#header .status span.counter:hover{
+	cursor: pointer;
+}
+
 #header .search{
 	position: absolute;
 	right: 0px;
