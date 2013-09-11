@@ -54,7 +54,7 @@
 			<input type="submit" class="action outbox" value="查询"/>
 			
 			<input type="button" class="action back" value="返回"
-				onclick="location.href='<s:url value="/message/publish/myunreadlist.do"/>'"/>
+				onclick="location.href='<s:url value="/message/publish/mylist.do"/>'"/>
 				
 			<input type="button" class="action new" value="创建消息" 
 				onclick="location.href='<s:url value="/message/message/edit.do"/>'"/>
