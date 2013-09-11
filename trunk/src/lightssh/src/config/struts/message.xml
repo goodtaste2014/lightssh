@@ -55,7 +55,7 @@
         
 		<action name="save" class="messageAction" method="save">
 			<result name="input">/pages/message/message/profile.jsp</result>
-			<result name="success" type="redirectAction">list</result>	
+			<result name="success" type="redirectAction">outbox</result>	
         </action>
         
 		<action name="myremove" class="messageAction" method="myRemove">

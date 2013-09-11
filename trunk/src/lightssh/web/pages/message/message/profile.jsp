@@ -13,6 +13,11 @@
 	
 	<script type="text/javascript">
 		$(document).ready(function(){
+			jQuery.validator.addMethod("regularName", function(value, element) {    
+				return this.optional(element) ||  /^[^('|")]*$/.test(value);   
+			},"不能包括引号(\')及双引号(\")！");
+			
+			
 			var recType= $("select[name='message.recType']").val();
 			$("#handler_msg_subtype").removeClass("disabled");
 			if( recType == null || recType == '' )
@@ -24,7 +29,7 @@
 			$("#profile_form").validate({
 				rules:{
 					"message.recValue":{required:function(){return $("select[name='message.recType']").val() != 'ALL'}}
-					,"message.title":{required:true,maxlength:100}
+					,"message.title":{required:true,regularName:true,maxlength:100}
 					,"message.priority":{required:true}
 					,"message.content":{required:true,maxlength:2000}
 				}
@@ -171,6 +176,7 @@
 				<th><label for="title" class="required">标题</label></th>
 				<td>
 					<s:textfield name="message.title" size="60" maxlength="100"/> 
+					
 				</td>
 			</tr>
 			
