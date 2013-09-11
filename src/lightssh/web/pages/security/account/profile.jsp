@@ -22,7 +22,7 @@
 			 */
 			$("#profile_form").validate({
 				rules:{
-					"account.loginName":{required:true}
+					"account.loginName":{required:true,loginName:true}
 				},
 				messages:{
 					"account.loginName": {}
