@@ -22,12 +22,10 @@
 			    		//location.reload();
 			    	}
 			    	
-			    	refreshMessageCounter();
-					refreshTaskCounter();
+			    	initCounter();
 				});
 				
-				refreshMessageCounter();
-				refreshTaskCounter();
+				initCounter();
 				
 				$(".counter").bind("mouseover",function(){
 					$(this).siblings("a").addClass("hourglass");
@@ -42,8 +40,19 @@
 						refreshMessageCounter();
 					else if( clazz.indexOf("task") > 0 )
 						refreshTaskCounter();
+					else if( clazz.indexOf("shoppingcart") > 0 )
+						refreshShoppingcartCounter();
 				});
 			});
+			
+			function initCounter( ){
+				if( $("a.message").length > 0)
+					refreshMessageCounter();
+				if( $("a.task").length > 0)
+					refreshTaskCounter();
+				if( $("a.shoppingcart").length > 0)
+					refreshShoppingcartCounter();
+			}
 			
 			/**
 			 * 样式
@@ -114,6 +123,13 @@
 			}
 			
 			/**
+			 * 购物车商品数
+			 */
+			function refreshShoppingcartCounter(ele,url){
+				refreshCounter( $("li > a.shoppingcart"),'' );
+			}
+			
+			/**
 			 * 更新数字
 			 */
 			function refreshCounter(ele,url){
@@ -126,6 +142,8 @@
 				$.ajax({
 					url:url,dataType: "json",type:"post",async:false,data: {}
 			        ,error: function(){ 
+			        	$(counter).html( '(ERR)' );
+			        	$(ele).removeClass("hourglass");
 			        }
 			        ,success: function(json){
 			        	if( json.count < 10 ){
@@ -182,7 +200,7 @@
 						<%--
 						<li>
 							<a href="#" class="icon shoppingcart" target="main_frame" >购物车</a>
-							<span class="conter">(10+)</span>
+							<span class="counter">( 0 )</span>
 						</li>
 						--%>
 						<li>
