@@ -204,12 +204,20 @@ a.icon.task{
 	background-image:url("../../images/background/icon_task.png");
 }
 
+a.icon.shoppingcart{
+	background-image:url("../../images/background/icon_shoppingcart.png");
+}
+
 a.icon.user{
 	background-image:url("../../images/background/icon_user.png");
 }
 
 a.icon.exit{
 	background-image:url("../../images/background/icon_exit.png");
+}
+
+a.icon.hourglass{
+	background-image:url("../../images/background/icon_hourglass.png");
 }
 
 span.has{

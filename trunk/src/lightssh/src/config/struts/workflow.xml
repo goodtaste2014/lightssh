@@ -91,6 +91,12 @@
 			<result name="success">/pages/workflow/task/my_todo_list.jsp</result>	
         </action>
         
+		<action name="mytodocount" class="workflowTaskAction" method="myTodoCount">
+			<result name="success" type="json">
+				<param name="includeProperties">count</param>
+			</result>
+        </action>
+        
 		<action name="myassignlist" class="workflowTaskAction" method="myAssignList">
 			<result name="success">/pages/workflow/task/my_assign_list.jsp</result>	
         </action>

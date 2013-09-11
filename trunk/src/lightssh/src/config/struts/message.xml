@@ -88,6 +88,12 @@
 			</result>
         </action>
         
+		<action name="myunreadcount" class="publishAction" method="myUnreadCount">
+			<result name="success" type="json">
+				<param name="includeProperties">count</param>
+			</result>
+        </action>
+        
 		<action name="mylist" class="publishAction" method="myList">
 			<result name="success">/pages/message/publish/my_list.jsp</result>	
         </action>

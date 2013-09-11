@@ -29,6 +29,8 @@ public class PublishAction extends GenericAction<Publish>{
 	
 	private Result result;
 	
+	private Integer count = 0;
+	
 	@Resource(name="publishManager")
 	public void setManager(PublishManager manager){
 		this.manager = manager;
@@ -57,6 +59,15 @@ public class PublishAction extends GenericAction<Publish>{
 		this.result = result;
 	}
 	
+	@JSON(name="count")
+	public Integer getCount() {
+		return count;
+	}
+
+	public void setCount(Integer count) {
+		this.count = count;
+	}
+
 	/**
 	 * 读消息
 	 */
@@ -122,6 +133,33 @@ public class PublishAction extends GenericAction<Publish>{
 			getManager().list(page, publish );
 		}catch( Exception e ){
 			this.addActionError("查询未读消息异常:"+e.getMessage());
+		}
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * 未读消息数
+	 */
+	public String myUnreadCount( ){
+		if( getLoginAccount() == null ){
+			return SUCCESS;
+		}
+		
+		if(publish == null )
+			publish = new Publish();
+		
+		publish.setUser(this.getLoginAccount());
+		publish.setRead( false );
+		
+		if( this.page == null )
+			page = new ListPage<Publish>( );
+		page.setSize(0);
+		
+		try{
+			page = getManager().list(page, publish );
+			this.count = page.getAllSize();
+		}catch( Exception e ){
 		}
 		
 		return SUCCESS;

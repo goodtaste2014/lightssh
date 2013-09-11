@@ -16,19 +16,38 @@
 		<script type="text/javascript">
 			
 			$(document).ready(function(){
-				$(document).everyTime(2000, function() {
+				$(document).everyTime(2*60*1000, function() {
 			    	if( $.cookie( "REFRESH-HEADER" ) == 'TRUE' ){
-			    		//alert($.cookie( "REFRESH-HEADER") );
 			    		$.cookie( "REFRESH-HEADER",'',{path:'<%= request.getContextPath() %>'});
 			    		//location.reload();
 			    	}
+			    	
+			    	refreshMessageCounter();
+					refreshTaskCounter();
 				});
 				
-				$(document).ready(function(){
-					$( "#header-tabs" ).tabs();
+				refreshMessageCounter();
+				refreshTaskCounter();
+				
+				$(".counter").bind("mouseover",function(){
+					$(this).siblings("a").addClass("hourglass");
+				});
+				
+				$(".counter").bind("mouseout",function(){
+					var clazz = $(this).siblings("a").attr("class");
+					
+					$(this).siblings("a").removeClass("hourglass");
+					
+					if( clazz.indexOf("message") > 0 )
+						refreshMessageCounter();
+					else if( clazz.indexOf("task") > 0 )
+						refreshTaskCounter();
 				});
 			});
 			
+			/**
+			 * 样式
+			 */
 			function theme( link ){
 				var select = $("<select></select>");
 				$("<option value=''></option>").appendTo(select);
@@ -56,6 +75,9 @@
 				});
 			}
 			
+			/**
+			 * 语言
+			 */
 			function locale( link ){
 				var select = $("<select></select>");
 				$("<option value=''></option>").appendTo(select);
@@ -74,6 +96,48 @@
 				$(select).change(function(){
 					var url = "<s:url value="/welcome.do?locale="/>" + this.value;
 					top.location.href=url;
+				});
+			}
+			
+			/**
+			 * 未读消息数
+			 */
+			function refreshMessageCounter(ele,url){
+				refreshCounter( $("li > a.message"),'<s:url value="/message/publish/myunreadcount.do"/>' );
+			}
+			
+			/**
+			 * 待办任务数
+			 */
+			function refreshTaskCounter(ele,url){
+				refreshCounter( $("li > a.task"),'<s:url value="/workflow/task/mytodocount.do"/>' );
+			}
+			
+			/**
+			 * 更新数字
+			 */
+			function refreshCounter(ele,url){
+				if( ele == null )
+					return;
+				
+				var msg = '( ? )';
+				var counter = $(ele).siblings("span");
+				$(ele).addClass("hourglass");
+				$.ajax({
+					url:url,dataType: "json",type:"post",async:false,data: {}
+			        ,error: function(){ 
+			        }
+			        ,success: function(json){
+			        	if( json.count < 10 ){
+			        		msg = '( ' + json.count + ' )';
+			        	}else if( json.count > 99 ){
+			        		msg = '(99+)';
+			        	}else{
+			        		msg = '( ' + json.count + ')';
+			        	}
+			        	$(counter).html( msg );
+			        	$(ele).removeClass("hourglass");
+			        }
 				});
 			}
 			
@@ -109,12 +173,18 @@
 						</li>
 						<li>
 							<a href="<s:url value="/message/publish/mylist.do"/>?publish.read=false" class="icon message" target="main_frame" >未读消息</a>
-							<%--<span class="conter">(79)</span>--%>
+							<span class="counter">( ? )</span>
 						</li>
 						<li>
 							<a href="<s:url value="/workflow/task/mytodolist.do"/>" class="icon task" target="main_frame" >待办事宜</a>
-							<%--<span class="conter">(10+)</span>--%>
+							<span class="counter">( ? )</span>
 						</li>
+						<%--
+						<li>
+							<a href="#" class="icon shoppingcart" target="main_frame" >购物车</a>
+							<span class="conter">(10+)</span>
+						</li>
+						--%>
 						<li>
 							<a href="#" class="icon theme" onclick="theme(this)"><s:text name="project.header.theme"/></a>
 						</li>
