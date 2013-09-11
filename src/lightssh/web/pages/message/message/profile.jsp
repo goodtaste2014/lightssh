@@ -14,7 +14,7 @@
 	<script type="text/javascript">
 		$(document).ready(function(){
 			jQuery.validator.addMethod("regularName", function(value, element) {    
-				return this.optional(element) ||  /^[^('|")]*$/.test(value);   
+				return this.optional(element) ||  /^[^'|"]*$/.test(value);   
 			},"不能包括引号(\')及双引号(\")！");
 			
 			
