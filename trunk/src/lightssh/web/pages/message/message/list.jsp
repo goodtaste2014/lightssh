@@ -91,6 +91,9 @@
 			</mys:column>
 			<mys:column title="类型编号" value="catalog.id" width="80px"/>
 			<%--<mys:column title="消息类型" value="catalog.type" width="40px"/>--%>
+			<mys:column title="接收人" width="80px">
+				<s:property value="@com.google.code.lightssh.project.message.util.ReceiveTypeHelper@getReceiveTitle(recType,recValue)"/>
+			</mys:column>
 			<mys:column title="优先级" value="priority" sortable="true" width="60px"/>
 			<mys:column title="标题">
 				<s:property value="title"/>
