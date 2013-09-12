@@ -126,9 +126,9 @@ body#header{
 
 #header{
 	/*background: white url("images/bg_header.gif") repeat-x ;*/
-	background: white;
+	background: white url("images/bg_gray_gradient.png") repeat-x ;
 	height:60px;
-	/*border-bottom:1px solid #E5E5E8;*/
+	/*border-bottom:1px solid #aaa;*/
 }
 
 #header h1{
@@ -164,7 +164,7 @@ body#header{
 	height: 60px;
 	line-height: 50px;
 	width:100%;
-	background: #f7f6f6;
+	/*background: #f7f6f6;*/
 }
 
 #header .status .right{
@@ -300,17 +300,17 @@ body#header .line .left,body#header .line .right{
 	
 	/* Chrome, Safari:*/
     background: -webkit-gradient(linear,
-                left top, right top, from(#FFFFFF), to(#4C66B5));
+                left top, right top, from(#FFFFFF), to(#AAAAAA));
                 
     /* Mozilla: */
-    background: -moz-linear-gradient(left, #FFFFFF, #0066B2);
+    background: -moz-linear-gradient(left, #FFFFFF, #AAAAAA);
     
     /* Opera */
-	background: -o-linear-gradient(left, #FFFFFF, #0066B2);
+	background: -o-linear-gradient(left, #FFFFFF, #AAAAAA);
 	
     /* MSIE */
     filter: progid:DXImageTransform.Microsoft.Gradient(
-                StartColorStr='#FFFFFF', EndColorStr='#0066B2', GradientType=1);
+                StartColorStr='#FFFFFF', EndColorStr='#AAAAAA', GradientType=1);
 }
 
 body#header .line .left{
@@ -318,17 +318,17 @@ body#header .line .left{
 	float:right;
 	/* Chrome, Safari:*/
     background: -webkit-gradient(linear,
-                left top, right top, from(#4C66B5), to(#FFFFFF));
+                left top, right top, from(#AAAAAA), to(#FFFFFF));
                 
     /* Mozilla: */
-    background: -moz-linear-gradient(left, #0066B2, #FFFFFF);
+    background: -moz-linear-gradient(left, #AAAAAA, #FFFFFF);
     
     /* Opera */
-	background: -o-linear-gradient(left, #0066B2, #FFFFFF);
+	background: -o-linear-gradient(left, #AAAAAA, #FFFFFF);
 	
     /* MSIE */
     filter: progid:DXImageTransform.Microsoft.Gradient(
-                StartColorStr='#0066B2', EndColorStr='#FFFFFF', GradientType=1);
+                StartColorStr='#AAAAAA', EndColorStr='#FFFFFF', GradientType=1);
 }
 
 /* LOGIN */
