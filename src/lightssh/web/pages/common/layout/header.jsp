@@ -10,12 +10,17 @@
 		<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/jquery.min.js"></script>
 		<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/jquery.cookie.js"></script>
 		<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/ui/jquery-ui.custom.min.js"></script>
-		
+		<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/my/layout/my_menu_tabs.js"></script>
 		<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/plugins/timers/jquery.timers-1.2.js"></script>
 	
 		<script type="text/javascript">
+			var myMenuTabs = null;
 			
 			$(document).ready(function(){
+				//myMenuTabs = $("#multi_window ul.tabs").mymenutabs();
+				
+				//myMenuTabs.addTab();
+		    	
 				$(document).everyTime(2*60*1000, function() {
 			    	if( $.cookie( "REFRESH-HEADER" ) == 'TRUE' ){
 			    		$.cookie( "REFRESH-HEADER",'',{path:'<%= request.getContextPath() %>'});
@@ -43,6 +48,7 @@
 					else if( clazz.indexOf("shoppingcart") > 0 )
 						refreshShoppingcartCounter();
 				});
+				
 			});
 			
 			function initCounter( ){
@@ -223,13 +229,53 @@
 				</div>
 			</div>
 			
+			<%-- 
+			<div id="multi_window">
+				<ul class="tabs">
+					<li class="tab icon home">
+						<a href="#">首页</a>
+						<span class="">&times;<span>
+					</li>
+					
+					<li class="tab" id="one" href="">
+						<a href="#">My Menu</a>
+						<span class="close">&times;<span>
+					</li>
+					
+					<li class="tab active" id="two">
+						<a href="#">System Manager</a>
+						<span class="close">&times;<span>
+					</li>
+					
+					<li class="tab"  href="">
+						<a href="#">My Menu</a>
+						<span class="close">&times;<span>
+					</li>
+					
+					<li class="tab" id="two">
+						<a href="#"></a>
+						<span class="close">&times;<span>
+					</li>
+					
+					<li class="tab" id="two">
+						<a href="#">我的菜单</a>
+						<span class="close">&times;<span>
+					</li>
+					
+					<li class="tab hide">
+						<a href="#">System </a>
+						<span class="close">&times;<span>
+					</li>
+				</ul>
+			</div>
+			--%>
 		</div>
 		
+		<%-- 
 		<div class="line">
 			<div class="left"></div>
 			<div class="right"></div>
 		</div>
-		<%-- 
 		--%>
 	</body>
 </html>
