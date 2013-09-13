@@ -5,11 +5,18 @@
 
 frameset{
 	border:none;
-	framespacing:0;
+}
+
+iframe{
+	border:none;
 }
 
 div {
 	display: block;
+}
+
+body{
+	margin: 0;
 }
 
 div.clear{
