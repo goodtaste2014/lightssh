@@ -79,9 +79,9 @@
         
         <global-results>
             <result name="login" type="redirectAction">login</result>
-            <result name="unknownException">/pages/security/system/error.jsp</result>
-            <result name="invalid.token">/pages/security/system/invalid_token.jsp</result>
-            <result name="notfound">/pages/security/system/notfound.jsp</result>
+            <result name="unknownException">/pages/system/error.jsp</result>
+            <result name="invalid.token">/pages/system/invalid_token.jsp</result>
+            <result name="notfound">/pages/system/notfound.jsp</result>
         </global-results>
 
         <global-exception-mappings>
@@ -90,7 +90,7 @@
         
         <!-- 403 PAGE -->
         <action name="403" class="securityAction">
-            <result name="success">/pages/security/system/403.jsp</result>
+            <result name="success">/pages/system/403.jsp</result>
         </action>
 
         <!-- HOME PAGE -->
@@ -123,30 +123,30 @@
         
         <!-- PANEL PAGE -->
         <action name="panel" class="securityAction">
-        	<result name="input">/pages/security/system/panel.jsp</result>
-        	<result name="success">/pages/security/system/panel.jsp</result>
+        	<result name="input">/pages/system/panel.jsp</result>
+        	<result name="success">/pages/system/panel.jsp</result>
         </action>
         
         <!-- LOGIN PAGE -->
         <action name="login" class="securityAction" method="login">
-        	<result name="input">/pages/security/system/login.jsp</result>
+        	<result name="input">/pages/system/login.jsp</result>
         	<result name="success" type="redirectAction">welcome</result>
         </action>
         
         <!-- LOGOUT  -->
         <action name="logout" class="securityAction" method="logout">
-        	<!--<result name="success">/pages/security/system/logout.jsp</result>-->
+        	<!--<result name="success">/pages/system/logout.jsp</result>-->
         	<result name="success" type="redirectAction">login</result>
         </action>
         
         <!-- CAS TICKET ERROR -->
         <action name="casticketerror" class="securityAction">
-        	<result name="success">/pages/security/system/cas_ticket_error.jsp</result>
+        	<result name="success">/pages/system/cas_ticket_error.jsp</result>
         </action>
         
         <!-- 401 ERROR PAGE -->
         <action name="401" class="securityAction">
-        	<result name="success">/pages/security/system/401.jsp</result>
+        	<result name="success">/pages/system/401.jsp</result>
         </action>
         
 		<action name="index" class="securityAction">
