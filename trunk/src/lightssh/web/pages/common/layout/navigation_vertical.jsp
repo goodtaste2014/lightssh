@@ -8,6 +8,7 @@
 		<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/jquery.min.js"></script>
 		<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/jquery.cookie.js"></script>
 		<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/my/layout/vertical_menu.js"></script>
+		<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/my/layout/my_multi_window.js"></script>
 		<style type="text/css">
 			body{
 				padding:0;
@@ -29,11 +30,12 @@
 		</style>
 		
 		<script>
-			/**
-			 * init vertical menu
-			 */
+		
 			$(document).ready(function(){
 				initVerticalMenu( "vertical_navigation" );
+				
+				//$("a[target='main_frame']").mymultiwindows();
+				
 			})
 		</script>
 	</head>
@@ -61,7 +63,7 @@
 				<%-- 系统管理--%>
 				<a href="#"><s:text name="project.nav.sysmgr"/></a>
 				<ul id="system_mgr">
-					<li><a href="<s:url value="/settings/organization/viewparent.do"/>" target="main_frame">企业资料</a></li>
+					<li><a href="<s:url value="/settings/organization/viewparent.do?ok=test"/>" target="main_frame">企业资料</a></li>
 					
 					<li>
 						<%-- 系统管理--%>
