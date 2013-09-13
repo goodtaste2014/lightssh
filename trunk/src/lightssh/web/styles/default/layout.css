@@ -230,6 +230,103 @@ body#header{
 	cursor: pointer;
 }
 
+/* 多窗口菜单 */
+#header #multi_window{
+	position: absolute;
+	font-size: 12px;
+	width: 500px;
+	left: 300px;
+	top: 39px;
+}
+
+ul.tabs li a{
+	text-decoration: none;
+	font-size: 12px;
+	padding:4px;
+	height:16px;
+	line-height:16px;
+	float:left;
+}
+
+ul.tabs{
+	list-style: none;
+	float:left;
+	/*border-bottom: 1px solid #919b9c;*/
+}
+
+ul.tabs li.tab{
+	display: list-item;
+	float: left;
+	height:20px;
+	line-height:12px;
+	
+	background-color: #dadada;
+	border-top: 1px solid #d3d3d3;
+	border-left: 1px solid #d3d3d3;
+	border-right: 1px solid #d3d3d3;
+	
+	border-top-right-radius: 4px;
+	border-top-left-radius: 4px;
+	margin: 2px 2px 0 2px;
+}
+
+ul.tabs li.tab:hover{
+	background-color: #e6e6e6;
+	border-top: 1px solid #555555;
+	border-left: 1px solid #555555;
+	border-right: 1px solid #555555;
+}
+
+ul.tabs li.tab.active{
+	background-color: white;
+	border-top: 1px solid red;
+	margin-bottom: -1px;
+	padding-bottom: 1px;
+	
+	margin-top:-1px;
+	height:23px;
+	line-height:12px;
+}
+
+ul.tabs li.tab.hide,li.tab span{
+	display: none;
+}
+
+ul.tabs li.tab span.close{
+	width:12px;
+	height:12px;
+	float:left;
+	cursor: pointer;
+	display: block;
+	font-size:10px;
+	overflow: hidden;
+	padding:0;
+	text-align:center;
+	vertical-align:bottom;
+	margin:4px 2px 0 2px;
+}
+
+ul.tabs li.tab span.close:hover{
+	color:white;
+	background:red;
+	border-radius: 10em;
+	-webkit-transition: background-color .7s;
+	-moz-transition: background-color .7s;
+	-o-transition: background-color .7s;
+	transition: background-color .7s;
+}
+
+ul.tabs li.tab.icon{
+	padding-left: 16px;
+	background-position: left center;
+	background-repeat: no-repeat;
+}
+
+ul.tabs li.tab.icon.home{
+	background-image:url("../../images/background/icon_home.png");
+}
+
+/* 查询按钮 */
 #header .search{
 	position: absolute;
 	right: 0px;
