@@ -30,12 +30,12 @@
 		</style>
 		
 		<script>
-		
+			var myMultiWindows = null;
+			
 			$(document).ready(function(){
 				initVerticalMenu( "vertical_navigation" );
 				
-				//$("a[target='main_frame']").mymultiwindows();
-				
+				myMultiWindows = $("a[target='main_frame']").mymultiwindows();
 			})
 		</script>
 	</head>

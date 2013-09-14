@@ -17,7 +17,7 @@
 			var myMenuTabs = null;
 			
 			$(document).ready(function(){
-				//myMenuTabs = $("#multi_window ul.tabs").mymenutabs();
+				myMenuTabs = $("#multi_window ul.tabs").mymenutabs();
 				
 				//myMenuTabs.addTab();
 		    	
@@ -229,37 +229,11 @@
 				</div>
 			</div>
 			
-			<%-- 
 			<div id="multi_window">
 				<ul class="tabs">
 					<li class="tab icon home">
 						<a href="#">首页</a>
 						<span class="">&times;<span>
-					</li>
-					
-					<li class="tab" id="one" href="">
-						<a href="#">My Menu</a>
-						<span class="close">&times;<span>
-					</li>
-					
-					<li class="tab active" id="two">
-						<a href="#">System Manager</a>
-						<span class="close">&times;<span>
-					</li>
-					
-					<li class="tab"  href="">
-						<a href="#">My Menu</a>
-						<span class="close">&times;<span>
-					</li>
-					
-					<li class="tab" id="two">
-						<a href="#"></a>
-						<span class="close">&times;<span>
-					</li>
-					
-					<li class="tab" id="two">
-						<a href="#">我的菜单</a>
-						<span class="close">&times;<span>
 					</li>
 					
 					<li class="tab hide">
@@ -268,7 +242,6 @@
 					</li>
 				</ul>
 			</div>
-			--%>
 		</div>
 		
 		<%-- 

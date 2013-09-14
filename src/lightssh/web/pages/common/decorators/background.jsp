@@ -30,6 +30,7 @@
 		</script>
 		
         <decorator:head/>
+        <meta name="uri" content="<s:url />"/>
         <title><decorator:title/></title>
     </head>
     

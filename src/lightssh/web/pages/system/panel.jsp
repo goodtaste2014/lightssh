@@ -2,10 +2,11 @@
 <%@ include file="/pages/common/util/taglibs.jsp" %>
 
 <head>
-	<meta name="decorator" content="background"/>
+	<%--<meta name="decorator" content="background"/>--%>
 </head>
 
-<body>
+<body style="margin:0;width: 100%;height: 100%;">
+	<%-- 
 	<ul class="path">
 		<li>系统首页</li>
 	</ul>
@@ -15,5 +16,6 @@
 	System Panel!
 	<br/>
 	Hello, <shiro:principal/>, how are you today?
+	--%>
 	
 </body>
