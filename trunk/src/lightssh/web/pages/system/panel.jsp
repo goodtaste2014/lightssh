@@ -2,7 +2,25 @@
 <%@ include file="/pages/common/util/taglibs.jsp" %>
 
 <head>
-	<%--<meta name="decorator" content="background"/>--%>
+	<link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/styles/<mys:theme />/theme.css" />
+    <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/scripts/jquery/styles/theme.css" />
+    <script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/jquery.min.js"></script>
+    
+    <script type="text/javascript">
+	    $(document).ready(function(){
+	    	var mainBody = $(top.frames['main_frame'].window.document.body);
+	    	var homeUrl = '<s:url value="/welcome.do"/>';
+	    	var mainUrl = '<s:url value="/main.do"/>';
+	    	var homeIframe = $(mainBody).find("iframe.tab[id='"+homeUrl+"']");
+	    	if( $(homeIframe).length == 0){ //不存在
+	    		homeIframe = $("<iframe class='tab' id='"+homeUrl +"'"
+						+" src='"+mainUrl+"' "
+						+" width='100%' height='100%' "
+						+" marginwidth='0' marginheight='0' frameborder='0' border='0' />");
+				$(mainBody).append( homeIframe );
+	    	}
+	    })
+    </script>
 </head>
 
 <body style="margin:0;width: 100%;height: 100%;">
