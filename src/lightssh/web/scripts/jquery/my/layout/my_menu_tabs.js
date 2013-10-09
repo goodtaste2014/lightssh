@@ -27,6 +27,13 @@
 			
 			opts.activeTab();
 		});
+		
+		$(ultabs).find("li.tab").each(function(index,element){
+			//选中标签
+			$(element ).bind('click',function(){
+				selectTab(element,opts);
+			});
+		});
 	 	
 		//关闭按钮
 		$(ultabs).find("li.tab span").bind('click',function(){

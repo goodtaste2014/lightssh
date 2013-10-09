@@ -231,14 +231,9 @@
 			
 			<div id="multi_window">
 				<ul class="tabs">
-					<li class="tab icon home">
+					<li class="tab icon home active" id="<s:url value="/welcome.do"/>" href="<s:url value="welcome.do"/>">
 						<a href="#">首页</a>
 						<span class="">&times;<span>
-					</li>
-					
-					<li class="tab hide">
-						<a href="#">System </a>
-						<span class="close">&times;<span>
 					</li>
 				</ul>
 			</div>
