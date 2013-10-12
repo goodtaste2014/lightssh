@@ -35,7 +35,7 @@
 			$(document).ready(function(){
 				initVerticalMenu( "vertical_navigation" );
 				
-				myMultiWindows = $("a[target='main_frame']").mymultiwindows();
+				//myMultiWindows = $("a[target='main_frame']").mymultiwindows();
 			})
 		</script>
 	</head>

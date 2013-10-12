@@ -68,7 +68,7 @@
 		
 		<p class="submit">
 			<input type="button" class="action save" value="提交流程" onclick="doTaskSubmit()" />
-			<input type="button" class="action save" value="退回流程" onclick="doTaskRevoke()" />
+			<input type="button" class="action save" value="拒绝流程" onclick="doTaskRevoke()" />
 		</p>
 	</s:form>
 	

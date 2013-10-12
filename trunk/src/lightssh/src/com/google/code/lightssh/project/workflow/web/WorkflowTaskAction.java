@@ -273,4 +273,24 @@ public class WorkflowTaskAction extends GenericAction{
 		
 		return SUCCESS;
 	}
+	
+	/**
+	 * 回退流程
+	 */
+	public String undo( ){
+		if( task == null || StringUtils.isEmpty(task.getProcessInstanceId())){
+			this.saveErrorMessage("参数错误:流程实例ID不能为空!");
+			return INPUT;
+		}
+		 
+		try{
+			this.workflowManager.undoTask(task.getProcessInstanceId(),getLoginUser());
+			this.saveSuccessMessage("流程回退成功！");
+		}catch( Exception e ){
+			this.saveErrorMessage("流程回退异常:"+e.getMessage());
+			return INPUT;
+		}
+		
+		return SUCCESS;
+	}
 }

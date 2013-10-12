@@ -204,5 +204,11 @@ public interface WorkflowManager extends Manager{
 	 * 提交数据
 	 */
 	public void submitFormData(String taskId,Map<String,String> properties );
+	
+	/**
+	 * 回退到上一步
+	 * @param procInstId 流程实例ID
+	 */
+	public void undoTask( String procInstId,String user);
 
 }

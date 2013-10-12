@@ -127,6 +127,9 @@
 						<a href="<s:url value="view.do?process.processInstanceId=%{processInstanceId}"/>">流程详情</a>
 					</li>
 					
+					<li class="">
+						<a href="<s:url value="/workflow/task/undo.do?task.processInstanceId=%{processInstanceId}"/>">回退流程</a>
+					</li>
 				</ul>
 			</div>
 		</mys:column>
