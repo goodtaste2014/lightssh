@@ -11,7 +11,8 @@ public enum ExecutionType {
 	,CLAIM("认领")	
 	,TERMINATE("终止")	
 	,SUBMIT("提交")	
-	,REVOKE("退回")	
+	,REVOKE("拒绝")	
+	,FALLBACK("回退")	
 	,NOTICE("转发")	
 	,CONFIRM("确认")	
 	,SIGN("会签");	

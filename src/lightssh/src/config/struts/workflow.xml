@@ -135,6 +135,14 @@
 				<param name="actionName">my</param>
 			</result>	
         </action>
+        
+		<action name="undo" class="workflowTaskAction" method="undo">
+			<result name="input" type="redirectAction">
+				<param name="namespace">/workflow/process</param>
+				<param name="actionName">my</param>
+			</result>
+			<result name="success" type="redirectAction">mytodolist</result>
+        </action>
 	</package>
 	
 	<package name="workflow" extends="default" namespace="/workflow">

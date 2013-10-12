@@ -33,6 +33,8 @@ import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
 import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.activiti.engine.impl.pvm.PvmTransition;
 import org.activiti.engine.impl.pvm.process.ActivityImpl;
+import org.activiti.engine.impl.pvm.process.ProcessDefinitionImpl;
+import org.activiti.engine.impl.pvm.process.TransitionImpl;
 import org.activiti.engine.query.NativeQuery;
 import org.activiti.engine.query.Query;
 import org.activiti.engine.repository.Deployment;
@@ -949,5 +951,138 @@ public class WorkflowManagerImpl implements WorkflowManager{
 			return getTaskFormData(id);
 		return getStartFormData(id);
 	}
-
+	
+	/** 
+     * 流程转向操作 
+     *  
+     * @param task Task 当前任务
+     * @param targetActivityId 目标节点任务ID 
+     * @param variables 流程变量 
+     */  
+    protected void turnTransition(ExecutionType type,String user,Task task, 
+    		String targetActivityId,String targetActivityName,
+            Map<String, Object> variables){  
+    	
+		if( task == null || !(task instanceof TaskEntity))
+			throw new ApplicationException("当前任务为空或类型不正确!");
+		
+        // 当前节点  
+        ActivityImpl currActivity = getActivityImpl(task, null);  
+        // 清空当前流向  
+        List<PvmTransition> oriPvmTransitionList = clearTransition(currActivity);  
+  
+        // 创建新流向  
+        TransitionImpl newTransition = currActivity.createOutgoingTransition();  
+        // 目标节点  
+        ActivityImpl targetActivity = getActivityImpl(task, targetActivityId);  
+        // 设置新流向的目标节点  
+        newTransition.setDestination( targetActivity );  
+  
+        // 执行转向任务  
+        taskService.complete(task.getId(), variables);  
+        // 删除目标节点新流入  
+        targetActivity.getIncomingTransitions().remove(newTransition);  
+  
+        // 还原以前流向  
+        restoreTransition(currActivity, oriPvmTransitionList);  
+        
+        //保存操作日志
+        String message = "流程转向:"+task.getName()+"-->"+targetActivityName;
+      	taskLogManager.save(task.getProcessInstanceId(),task.getId(),type,user, message);
+    }  
+    
+    /** 
+     * 还原指定活动节点流向 
+     *  
+     * @param activityImpl 活动节点 
+     * @param oriPvmTransitionList 原有节点流向集合 
+     */  
+    private void restoreTransition(ActivityImpl activityImpl,  
+            List<PvmTransition> oriPvmTransitionList) {  
+        // 清空现有流向  
+        List<PvmTransition> pvmTransitionList = activityImpl.getOutgoingTransitions();  
+        pvmTransitionList.clear();  
+        
+        // 还原以前流向  
+        for (PvmTransition pvmTransition : oriPvmTransitionList) {  
+            pvmTransitionList.add(pvmTransition);  
+        }  
+    } 
+    
+    /**
+     * 活动节点
+     */
+    protected ActivityImpl getActivityImpl(Task task, String activityId ){
+    	if( task == null )
+    		return null;
+    	
+    	if( StringUtils.isEmpty(activityId) )
+    		activityId = task.getTaskDefinitionKey();
+    	
+    	//流程定义
+		ProcessDefinitionEntity processDef = (ProcessDefinitionEntity)
+				((RepositoryServiceImpl) repositoryService)
+                .getDeployedProcessDefinition( task.getProcessDefinitionId()  );
+		if( processDef == null )
+			return null;
+		
+		return ((ProcessDefinitionImpl)processDef).findActivity(activityId);
+    }
+    
+    /** 
+     * 清空指定活动节点流向 
+     *  
+     * @param activityImpl 活动节点 
+     * @return 节点流向集合 
+     */  
+    protected List<PvmTransition> clearTransition(ActivityImpl activityImpl) {  
+        // 存储当前节点所有流向临时变量  
+        List<PvmTransition> oriPvmTransitionList = new ArrayList<PvmTransition>(); 
+        
+        // 获取当前节点所有流向，存储到临时变量，然后清空  
+        List<PvmTransition> pvmTransitionList = activityImpl.getOutgoingTransitions();  
+        for (PvmTransition pvmTransition : pvmTransitionList)
+            oriPvmTransitionList.add(pvmTransition);  
+        
+        pvmTransitionList.clear();  
+  
+        return oriPvmTransitionList;  
+    }  
+	
+	/**
+	 * 回退到上一步
+	 * @param procInstId 流程实例ID
+	 */
+	public void undoTask( String procInstId,String user){
+		//流程实例
+		ProcessInstance processInst = getProcessInstance(procInstId);
+		processInst.getActivityId();
+		
+		List<Task> activeTasks = taskService.createTaskQuery()
+				.processInstanceId(procInstId).active().list();
+		if( activeTasks == null || activeTasks.size() != 1 )
+			throw new ApplicationException("流程活动任务不存在或存在多个，无法回退!");
+		
+		Task task = activeTasks.get(0); //当前任务节点
+		if( task == null )
+			throw new ApplicationException("无法获取当前任务，无法回退!");
+		
+		List<HistoricTaskInstance> histTaskList = historyService
+				.createHistoricTaskInstanceQuery().finished()
+				.orderByHistoricTaskInstanceEndTime().desc()
+				.listPage(0, 1);
+		HistoricTaskInstance histTask = (histTaskList==null
+				||histTaskList.isEmpty())?null:histTaskList.get(0);
+		
+		if( histTask == null )
+			throw new ApplicationException("历史任务不存在，无法回退!");
+		
+		if( histTask.getAssignee() == null || !histTask.getAssignee().equals(user) )
+			throw new ApplicationException("其它操作用户已完成了新任务，无法回退!");
+		
+		//流程转向
+		turnTransition(ExecutionType.FALLBACK,user,task
+				,histTask.getTaskDefinitionKey(),histTask.getName(),null);
+	}
+	
 }
