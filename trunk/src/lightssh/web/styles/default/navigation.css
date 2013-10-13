@@ -183,9 +183,9 @@ ul.vertical-menu .level1{
 	height:26px;
 	/*background:#DAE1F9 url("images/bg_menu_level1.gif") repeat-x 0 bottom;*/
 	
-	color:#287755;
+	color:#4C9978;
 	font-size:13px;
-	background: #D7E8F5;
+	background: #00B266;
 	
 	/* Mozilla: */
     background: -moz-linear-gradient(top, #FFFFFF, #DAE5EE);
@@ -209,7 +209,9 @@ ul.vertical-menu .level2{
 	padding:0 0 0 20px;
 	/*background:white url("images/bg_menu_level2.gif") repeat-x center right;*/
 	
+	font-size:13px;
 	background: #E8E9E5;
+	color:#285577;
     /* Mozilla: */
     background: -moz-linear-gradient(top, #FFFFFF, #E8E9E5);
     
@@ -231,6 +233,7 @@ ul.vertical-menu .level3{
 	height:22px;
 	padding:0 0 0 20px;
 	background-color: #F6F7F5;
+	color:#4C7899;
 	/*background-image:url("images/bg_menu_level3.gif");*/
 }
 
