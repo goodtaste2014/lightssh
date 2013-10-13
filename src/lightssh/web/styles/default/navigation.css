@@ -183,21 +183,23 @@ ul.vertical-menu .level1{
 	height:26px;
 	/*background:#DAE1F9 url("images/bg_menu_level1.gif") repeat-x 0 bottom;*/
 	
+	color:#287755;
+	font-size:13px;
 	background: #D7E8F5;
 	
 	/* Mozilla: */
-    background: -moz-linear-gradient(top, #FFFFFF, #D7E8F5);
+    background: -moz-linear-gradient(top, #FFFFFF, #DAE5EE);
     
 	/* Chrome, Safari:*/
     background: -webkit-gradient(linear,
-                left top, left bottom, from(#FFFFFF), to(#D7E8F5));
+                left top, left bottom, from(#FFFFFF), to(#DAE5EE));
                 
     /* Opera */
-	background: -o-linear-gradient(top, #FFFFFF, #D7E8F5);
+	background: -o-linear-gradient(top, #FFFFFF, #DAE5EE);
 	
     /* MSIE */
     filter: progid:DXImageTransform.Microsoft.Gradient(
-                StartColorStr='#FFFFFF', EndColorStr='#D7E8F5', GradientType=0);
+                StartColorStr='#FFFFFF', EndColorStr='#DAE5EE', GradientType=0);
 }
 
 /* level2 */

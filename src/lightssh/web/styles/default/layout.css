@@ -144,7 +144,8 @@ body#header{
 #header .logo{
 	position: absolute;
 	font-size: 200%;
-	width: 260px;
+	width: 560px;
+	margin-top: 10px;
 }
 
 #header .logo img{
@@ -155,7 +156,9 @@ body#header{
 	position: absolute;
 	height: 20px;
 	line-height: 20px;
-	margin: 15px 0 0 100px;
+	color:green;
+	top:10px;
+	left:190px;
 }
 
 #header .status{

@@ -45,6 +45,19 @@
 				height:50px;
 				line-height:50px;
 				text-align:center; 
+				font-size:14px;
+				color:#00B266;
+				display: block;
+			}
+			
+			div#toggle a:hover{
+				z-index:1;
+				color:red;
+				-webkit-transform: scale(1.6);  /* Chrome, Safari 3.1+ */
+				-moz-transform: scale(1.6);  /* Firefox 3.5+ */
+				-ms-transform: scale(1.6);  /* IE 9 */
+				-o-transform: scale(1.6);  /* Opera 10.50-12.00 */
+				transform: scale(1.6);  /* Firefox 16+, IE 10+, Opera 12.10+ */
 			}
 			
 			div#top_half,div#bottom_half{
@@ -91,8 +104,8 @@
 	<body style="margin:0">
 		<div style="margin:0;height: 100%;line-height: 100%;">
 			<div id="top_half" style=""></div>
-			<div id="toggle" style=" ">
-				<a onclick="toggle()" href="javascript:void(0);">&laquo;</a>
+			<div id="toggle" style="">
+				<a onclick="toggle()" href="javascript:void(0);"><span>&laquo;</span></a>
 			</div>
 			<div id="bottom_half" style=""></div>
 		</div>

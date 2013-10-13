@@ -448,11 +448,11 @@ table.list tr{
 }
 
 table.list tr.even{
-	background-color: #F5F7FD;
+	background-color: #F6F9FB;
 }
 
 table.list tbody > tr:hover{
-	background:#FFFFDF;
+	background:#F2FFDF;
 }
 
 /* TABLE PROFILE */
