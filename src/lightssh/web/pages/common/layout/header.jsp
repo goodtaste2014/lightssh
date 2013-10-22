@@ -152,15 +152,21 @@
 			        	$(ele).removeClass("hourglass");
 			        }
 			        ,success: function(json){
-			        	if( json.count < 10 ){
-			        		msg = '( ' + json.count + ' )';
-			        	}else if( json.count > 99 ){
-			        		msg = '(99+)';
+			        	if( json.type == 'login' ){
+			        		//Session失效
+			        		$(counter).html( 'E00' );
+				        	$(ele).removeClass("hourglass");
 			        	}else{
-			        		msg = '( ' + json.count + ')';
+				        	if( json.count < 10 ){
+				        		msg = '( ' + json.count + ' )';
+				        	}else if( json.count > 99 ){
+				        		msg = '(99+)';
+				        	}else{
+				        		msg = '( ' + json.count + ')';
+				        	}
+				        	$(counter).html( msg );
+				        	$(ele).removeClass("hourglass");
 			        	}
-			        	$(counter).html( msg );
-			        	$(ele).removeClass("hourglass");
 			        }
 				});
 			}
@@ -177,6 +183,10 @@
 	<body id="header">
 		<div id="header">
 			<div class="logo">
+				<%-- 
+				<img alt="logo" src="<s:url value="/images/logo.gif"/>" />
+				<a href="#" >采购管理系统</a>
+				--%>
 				<img alt="logo" src="<s:url value="/images/logo.png"/>" />
 				<a href="http://code.google.com/p/lightssh/" target="_blank">Light SSH</a>
 			</div>
@@ -229,6 +239,7 @@
 				</div>
 			</div>
 			
+			<%-- 
 			<div id="multi_window">
 				<ul class="tabs">
 					<li class="tab icon home active" id="<s:url value="/welcome.do"/>" href="<s:url value="welcome.do"/>">
@@ -237,13 +248,14 @@
 					</li>
 				</ul>
 			</div>
+			--%>
 		</div>
 		
-		<%-- 
 		<div class="line">
 			<div class="left"></div>
 			<div class="right"></div>
 		</div>
+		<%-- 
 		--%>
 	</body>
 </html>
