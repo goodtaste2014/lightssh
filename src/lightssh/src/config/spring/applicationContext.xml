@@ -47,9 +47,9 @@
             <tx:method name="load*" propagation="SUPPORTS" read-only="true"/>
 			<tx:method name="is*" propagation="SUPPORTS" read-only="true"/>
 			
-            <tx:method name="*"/>
-            <tx:method name="writeSystemLog" propagation="REQUIRES_NEW"/>
-            <tx:method name="newTransaction*" propagation="REQUIRES_NEW"/>
+            <tx:method name="*" timeout="20"/>
+            <tx:method name="writeSystemLog" propagation="REQUIRES_NEW" timeout="30"/>
+            <tx:method name="newTransaction*" propagation="REQUIRES_NEW" timeout="30"/>
         </tx:attributes>
     </tx:advice>
     
