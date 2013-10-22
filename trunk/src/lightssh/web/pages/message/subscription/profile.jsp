@@ -28,7 +28,10 @@
 					,"subscription.recValue":{required:true}
 				}
 				,submitHandler: function(form) {
-					if( !ajaxCheck( ) ){ 
+					var result = ajaxCheck( );
+					if( result.type == 'login' ){ 
+						alert( result.message );
+					}else if( !result.unique ){ 
 						var url = '<s:url value="edit.do?"/>'
 							+ '?subscription.catalog.id=' + $("input[name='subscription.catalog.id']").val() 
 							+ '&subscription.recType=' + $("select[name='subscription.recType']").val() 
@@ -72,7 +75,7 @@
 		        }
 		        ,error: function(){ alert("检查重名出现异常!") }
 		        ,success: function(json){
-		        	result = json.unique;
+		        	result = json;
 		        }
 			});
 			
