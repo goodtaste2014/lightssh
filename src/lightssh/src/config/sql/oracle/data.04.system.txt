@@ -1,6 +1,0 @@
-
---消息类型
-Insert into T_MSG_CATALOG (ID,PARENT_ID,TYPE,SEQUENCE,SUBSCRIBE,FORWARD,READ_ONLY,CREATED_TIME,DESCRIPTION)
-values ('INFO-DEF',null,'INFO',1,1,1,1,sysdate,'一般消息');
-
-commit;
