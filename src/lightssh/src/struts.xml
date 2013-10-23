@@ -132,6 +132,13 @@
         	<result name="success">/pages/system/main.jsp</result>
         </action>
         
+        <!-- SHOW CAPTCHA -->
+        <action name="showcaptcha" class="securityAction" method="showCaptcha">
+        	<result name="success" type="json">
+        		<param name="includeProperties">show</param>
+        	</result>
+       	</action>
+        
         <!-- LOGIN PAGE -->
         <action name="login" class="securityAction" method="login">
         	<result name="input">/pages/system/login.jsp</result>
