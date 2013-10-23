@@ -30,7 +30,11 @@
 				,submitHandler: function(form) {
 					var result = ajaxCheck( );
 					if( result.type == 'login' ){ 
-						alert( result.message );
+						//alert( result.message );
+						$.lightssh.login({contextPath:'<%=request.getContextPath() %>'},function(result){
+							if( result ) 
+								$("#profile_form").submit();
+						});
 					}else if( !result.unique ){ 
 						var url = '<s:url value="edit.do?"/>'
 							+ '?subscription.catalog.id=' + $("input[name='subscription.catalog.id']").val() 

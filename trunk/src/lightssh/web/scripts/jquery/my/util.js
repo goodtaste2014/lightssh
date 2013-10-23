@@ -104,6 +104,128 @@ jQuery.lightssh={
 	}
 	
 	/**
+	 * 用户登录
+	 */
+	,login:function( options,callback ){
+		var dialog = 'dialog-login';
+		var url = "/login.do"; //登录地址
+		var showcaptcha_url = "/showcaptcha.do"; //验证码是否显示检查地址
+		var captcha_url = "/images/kaptcha.jpg"; //验证码显示地址
+		if( options != null ) {
+			if( options.url != null )
+				url = options.url;
+			
+			if( options.showcaptcha_url != null )
+				showcaptcha_url = options.showcaptcha_url;
+			
+			if( options.captcha_url != null )
+				captcha_url = options.captcha_url;
+			
+			if( options.contextPath != null ){
+				url = options.contextPath + url;
+				showcaptcha_url = options.contextPath + showcaptcha_url;
+				captcha_url = options.contextPath + captcha_url;
+			}
+		}
+		var def_opts = {
+				dialog_id:dialog
+				,dialog_title:"用户登录",dialog_hint:""
+				,label_user:"账号",label_password:"密码",label_captcha:"验证码"
+				,show_captcha:false
+				,resizable: false,modal: true
+				,width: 320, height: 270,zIndex: 9999
+				,buttons: {
+					'确定': function() {
+						// $( this ).remove();
+						$.lightssh.callbackLogin( {
+							'dialog': dialog,
+							'result': true,
+							'username': $( "#username" ).val(),
+							'password': $("#password").val()==''?'':$.md5($("#password").val()),
+							'captcha': $( "#captcha" ).val(),
+							'url': url
+						},options, callback );
+					},
+					'取消': function() {
+						$( this ).remove();
+					}
+				},
+				close: function() {
+					$( this ).remove();
+				}
+			};
+		var opts = $.extend({},def_opts, options );
+		
+		//是否显示验证码
+		$.post( showcaptcha_url, {}, function( json ) {
+			var hint_id = opts.dialog_id + "-hint";
+			opts.show_captcha = json.show;
+			//alert( "show captcha:" +showCaptcha )
+			
+			var captach_el = "";
+			if( opts.show_captcha )
+				captach_el = "<label for='captcha' style='float:left;width:70px'>" + opts.label_captcha+ "：</label>" 
+					+ "	<input type='text' id='captcha' name='j_captcha' size='30'/><br/>" 
+					+ "	<label for='captcha' style='float:left;width:70px'>&nbsp;</label>" 
+					+ " <img src='"+ captcha_url +"' style='cursor: pointer;' alt='captcha' " 
+					+ "  onclick=\"$(this).attr('src','"+captcha_url+"?rnd='+Math.random())\"/>";
+				
+			var el = "<div id='" + opts.dialog_id + "' title='"+opts.dialog_title+"' style='display:none;'>" 
+				+ "<div id='"+hint_id+"' style='height:20px;margin:2px 0 5px 0;'></div>"
+				+ "	<label for='username' style='float:left;width:70px'>" + opts.label_user+ "：</label>" 
+				+ "	<input type='text' id='username' name='j_username' size='30'/><br/>" 
+				+ "	<label for='password' style='float:left;width:70px'>" + opts.label_password+ "：</label>" 
+				+ "	<input type='password' id='password' name='j_password' size='30'/><br/>" 
+				+ captach_el
+				+ "</div>"
+				+ "</div>";
+			
+			$( 'body' ).append( el );
+			$( 'div#'+opts.dialog_id ).dialog( opts );
+			
+			if( opts.dialog_hint != null && opts.dialog_hint != '' )
+				$.lightssh.showDialogMessage( hint_id , opts.dialog_hint);
+		});
+		
+	}
+	
+	,callbackLogin:function( opts,parentOpts,callback ){
+		var result = false;
+		var hint_id = opts.dialog + "-hint";
+		
+		if( opts==null || opts.username == null || opts.username == ''){
+			$.lightssh.showDialogMessage(hint_id,'用户名不能为空！',true,'username');
+			return;
+		}else if( opts==null || opts.password == null || opts.password == ''){
+			$.lightssh.showDialogMessage(hint_id,'密码不能为空！',true,'password');
+			return;
+		}else if( parentOpts.show_captcha && ( opts.captcha == null || opts.captcha == '' ) ){
+			$.lightssh.showDialogMessage(hint_id,'验证码不能为空！',true,'captcha');
+			return;
+		}
+		
+		if( opts.result && opts.url != null ) {
+			var param = {
+				'j_username': opts.username
+				,'j_password': opts.password
+				,'j_captcha': opts.captcha
+			};
+			$.post( opts.url, param, function( json ) {
+				$( '#' + opts.dialog ).remove();//关闭弹出窗口
+				
+				if( !(json.type == 'login_success') ){ //登录不成功
+					parentOpts.dialog_hint = json.message;
+					$.lightssh.login(parentOpts,callback);
+				}else{
+					callback( true );
+				}
+			});
+		}
+
+		return result;
+	}
+	
+	/**
 	 * 校验用户密码
 	 */
 	,checkPassword:function( opts,callback ){
