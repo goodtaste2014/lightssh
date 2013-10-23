@@ -398,7 +398,6 @@ public class CaptchaFormAuthenticationFilter extends FormAuthenticationFilter{
     
     /**
      * 认证异常信息
-     *  //测试合并
      */
     protected String getAuthExpMessage( AuthenticationException e ){
     	String expMsg = null;
