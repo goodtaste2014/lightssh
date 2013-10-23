@@ -1,0 +1,241 @@
+*{
+	margin:0;
+	padding:0;
+}
+
+frameset{
+	border:none;
+	framespacing:0;
+}
+
+div {
+	display: block;
+}
+
+
+head {
+	display: none;
+}
+
+body {
+	background: #F9F7F0;
+	color: #555;
+	font-family:Lucida Grande, Verdana, Bitstream Vera Sans, Arial, sans-serif;
+	font-size:12px;
+	line-height: 22px;
+	
+	leftmargin:0;
+	marginwidth:0;
+}
+
+li {
+	display: list-item;
+	white-space:nowrap;
+}
+
+a {
+	color: #21759B;
+	font-weight: normal;
+	text-decoration: none;
+}
+
+a:hover { 
+	color: #d54e21; 
+}
+
+img {
+	border: 0px;
+	vertical-align: middle;
+}
+
+h2 {
+	font-family: Georgia, Times, 'Times New Roman', serif;
+	font-size: 20px;
+	font-weight: normal;
+}
+
+label{
+	cursor:pointer;
+}
+
+input,textarea{
+    border: 1px solid #d1e5f6;
+    border-top-color: #b0c1cf;
+    border-left-color: #b0c1cf;
+    vertical-align: middle;
+    font-size:12px;
+    line-height:12px;
+    padding:2px;
+    margin:2px 0 2px 0;
+    font-family:'Verdana'; 
+}
+
+select{
+	vertical-align: middle;
+    font-size:12px;
+    line-height:10px;
+    height:18px;
+    font-family:'Verdana'; 
+}
+
+input[type=file],input.file{
+	border-width:1px;
+	background-color: white;
+	border-top: none;
+}
+
+input[type=button], input[type=submit], input[type=reset]{
+    background: #f2f2f2 repeat-x scroll left top;
+    font: normal 11px/16px "Lucida Grande", Verdana, Arial, "Bitstream Vera Sans", sans-serif;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid #bbb;
+}
+
+input.save{
+	background: #f2f2f2 url("../../images/background/icon_save.gif") no-repeat left center;
+	line-height:18px;
+    padding:1px 4px 0 18px;
+}
+
+input.search{
+	background: #f2f2f2 url("../../images/background/icon_search.png") no-repeat left center;
+	line-height:18px;
+    padding:1px 4px 0 18px;
+}
+
+input.user{
+	background: white url("../../images/background/icon_user.gif") no-repeat left center;
+	height:24px;
+	line-height:24px;
+    padding:1px 4px 0 18px;
+}
+
+input.password{
+	background: white url("../../images/background/icon_password.png") no-repeat left center;
+	height:24px;
+	line-height:24px;
+    padding:1px 4px 0 18px;
+}
+
+input.captcha{
+	background: white url("../../images/background/icon_captcha.png") no-repeat left center;
+	height:24px;
+	line-height:24px;
+    padding:1px 4px 0 18px;
+}
+
+input.login{
+	background: #f2f2f2 url("../../images/background/icon_login.png") no-repeat left center;
+	height:20px;
+	line-height:20px;
+	vertical-align:middle;
+    padding:0 4px 0 18px;
+}
+
+
+input[type=checkbox] {
+	padding:0;
+}
+
+input[type=radio] {
+	border:none;
+	margin:0 3px 0 0;
+}
+
+input[type=text].calendar{
+	width: 8em;
+}
+
+span{
+	vertical-align: middle;
+}
+
+/* TABLE */
+table{
+	width: 100%;
+    clear: both;
+    margin-top:10px;
+    margin-bottom: 10px;
+    border-collapse: collapse;
+}
+
+table caption{
+	text-align: left;
+	margin-bottom: 5px;
+}
+
+/* TABLE LIST */
+table.list{
+    border: 1px solid #ccc;  
+}
+
+table.list thead {
+    background-image: url("images/bg_table_th.gif");
+    background-repeat:repeat-x;
+    background-position:top;
+}
+
+table.list td,table.list th {
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: #ccc;
+    font-size: 12px;
+    padding: 6px;
+    vertical-align: text-top;
+}
+
+table.list th {
+    padding-bottom: 4px;
+    padding-top: 8px;
+    text-align: left;
+    word-break:keep-all;
+    white-space:nowrap;
+}
+
+table.list td {
+   border: #CCC solid 1px;
+   padding:4px;
+}
+
+table.list tr{
+	line-height: 16px;
+}
+
+table.list tr.odd{
+	background-color: #FFFEFB;
+}
+
+table.list tr.even{
+	background-color: #FFF2BF;
+}
+
+table.list tbody > tr:hover{
+	background:#FFFFDF;
+}
+
+/* TABLE PROFILE */
+table.profile{
+	/*border: #CCC solid 1px;*/
+}
+
+table.profile tr{
+	vertical-align: middle;
+}
+
+table.profile th,table.profile td{
+	line-height: 23px;
+	text-align:left;
+	font-weight: normal;
+	font-size:12px;
+	border: 1px #E5EFF8 solid;
+	padding-left: 4px;
+	vertical-align: middle;
+}
+
+
+table.profile th{
+	width:100px;
+	background-color: #FFF9DF;
+}
+
