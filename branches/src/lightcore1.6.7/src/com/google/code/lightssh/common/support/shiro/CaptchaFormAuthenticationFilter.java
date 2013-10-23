@@ -15,7 +15,9 @@ import net.sf.ehcache.Element;
 
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.ExpiredCredentialsException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.apache.shiro.web.util.WebUtils;
@@ -24,6 +26,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.code.lightssh.common.config.SystemConfig;
 import com.google.code.lightssh.common.util.RequestUtil;
+import com.google.code.lightssh.common.util.TextFormater;
 import com.google.code.lightssh.common.web.SessionKey;
 
 /**
@@ -191,7 +194,7 @@ public class CaptchaFormAuthenticationFilter extends FormAuthenticationFilter{
 	protected boolean doLock( User user,int failed_count ){
 		boolean locked = false;
 		
-		if( userService == null )
+		if( userService == null || user == null )
 			return false;
 		
 		int times = 3;
@@ -277,7 +280,17 @@ public class CaptchaFormAuthenticationFilter extends FormAuthenticationFilter{
         	userService.logLoginSuccess(account,Calendar.getInstance(),ip);
 			
         	writeSession( account,(HttpServletRequest)request );
-            return onLoginSuccess(token, subject, request, response);
+        	
+        	if( isAjaxRequest((HttpServletRequest)request) ){
+        		log.debug("AJAX认证成功!");
+        		
+        		String json = "{\"type\":\"login_success\",\"message\":\"登录认证成功\"}";
+        		responseJson( response,json );
+        		
+        		return false;
+        	}else{
+        		return onLoginSuccess(token, subject, request, response);
+        	}
         } catch (AuthenticationException e) {
         	if( !(e instanceof TimeLockedException) ){
 	        	incFailedCount((HttpServletRequest)request);//登录失败次数
@@ -293,7 +306,16 @@ public class CaptchaFormAuthenticationFilter extends FormAuthenticationFilter{
 	        	}
         	}
         	
-            return onLoginFailure(token, e, request, response);
+        	if( isAjaxRequest((HttpServletRequest)request) ){
+        		log.debug("AJAX认证失败!");
+        		
+        		String json = "{\"type\":\"login_failure\",\"message\":\""+getAuthExpMessage(e)+"\"}";
+        		responseJson( response,json );
+        		
+        		return false;
+        	}else{
+        		return onLoginFailure(token, e, request, response);
+        	}
         } 
     }
     
@@ -354,13 +376,52 @@ public class CaptchaFormAuthenticationFilter extends FormAuthenticationFilter{
     	if( isAjaxRequest((HttpServletRequest)request) ){
     		log.debug("AJAX请求无权限,需要认证!");
     		
-    		response.setCharacterEncoding("UTF-8");
-    		response.setContentType("application/json");
     		String json = "{\"type\":\"login\",\"message\":\"需要登录认证\"}";
-    		response.getWriter().write(json);
+    		responseJson( response,json );
     	}else{
     		WebUtils.issueRedirect(request, response, getLoginUrl());
     	}
+    }
+    
+    /**
+     * 响应JSON数据
+     */
+    protected void responseJson(ServletResponse response,String json){
+    	response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json");
+		try {
+			response.getWriter().write(json);
+		} catch (IOException e) {
+			log.warn("响应异常:{}",e.getMessage());
+		}
+    }
+    
+    /**
+     * 认证异常信息
+     */
+    protected String getAuthExpMessage( AuthenticationException e ){
+    	String expMsg = null;
+    	if(e instanceof UnknownAccountException || e instanceof IncorrectCredentialsException){
+			expMsg="错误的用户账号或密码！";
+		}else if( e instanceof ShiroBadCaptchaException ){
+			expMsg="验证码错误！";
+		}else if( e instanceof LockedAccountException ){
+			expMsg= "用户账号已禁用！";
+		}else if( e instanceof ExpiredCredentialsException ){
+			expMsg= "用户账号已过期！";
+		}else if( e instanceof TimeLockedException ){
+			expMsg= e.getMessage();
+		}else if( e instanceof OnlineUserExistException ){
+			OnlineUser user = ((OnlineUserExistException)e).getUser();
+			expMsg = "用户在重复登录，您被迫下线！";
+			if( user != null )
+				expMsg= TextFormater.format(user.getLoginTime(),"HH点mm分")
+					+"，用户已在["+user.getIp()+"]登录上线！";
+		}else{
+			expMsg="登录异常:"+e.getMessage() ;
+		}
+    	
+    	return expMsg;
     }
 
 }
