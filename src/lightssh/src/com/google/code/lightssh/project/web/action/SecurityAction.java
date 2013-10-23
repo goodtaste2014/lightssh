@@ -4,6 +4,7 @@ import javax.annotation.Resource;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
+import org.apache.struts2.json.annotations.JSON;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -27,10 +28,21 @@ public class SecurityAction extends BaseAction{
 	@Resource(name="systemConfig")
 	private SystemConfig systemConfig;
 	
+	private boolean show;
+	
 	public String getVersion( ){
 		return systemConfig.getProperty("version","trunk");
 	}
 	
+	@JSON(name="show")
+	public boolean isShow() {
+		return show;
+	}
+
+	public void setShow(boolean show) {
+		this.show = show;
+	}
+
 	/**
 	 * 是否显示验证码
 	 */
@@ -50,6 +62,14 @@ public class SecurityAction extends BaseAction{
 		failed_count=(failed_count == null) ? 0 : failed_count;
 		
 		return enabled && failed_count>=times;
+	}
+	
+	/**
+	 * 是否显示验证码
+	 */
+	public String showCaptcha( ){
+		this.show = isShowCaptcha();
+		return SUCCESS;
 	}
 	
 	/**

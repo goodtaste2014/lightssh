@@ -42,6 +42,7 @@
 	        	/login.do*=authc
 	        	/logout.do*=anon
 	        	/casticketerror.do*=anon
+	        	/showcaptcha.do*=anon
 	        	
 	        	/styles/**=anon
 	        	/scripts/**=anon
