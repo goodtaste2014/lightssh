@@ -1,0 +1,3 @@
+Manifest-Version: 1.6.6
+Sealed: true
+
