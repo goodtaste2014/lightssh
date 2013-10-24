@@ -172,6 +172,9 @@ body#header{
 
 #header .status .right{
 	float: right;
+	position:absolute;
+	right:0;
+	bottom:0;
 	height: 30px;
 	line-height:30px;
 	vertical-align:middle;
@@ -333,7 +336,7 @@ ul.tabs li.tab.icon.home{
 #header .search{
 	position: absolute;
 	right: 0px;
-	top: 33px;
+	top:10px;
 }
 
 #header .search input[type=text]{
