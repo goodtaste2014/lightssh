@@ -9,6 +9,7 @@ import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
 
 import com.google.code.lightssh.common.dao.Dao;
+import com.google.code.lightssh.common.dao.DaoException;
 import com.google.code.lightssh.common.dao.SearchCondition;
 import com.google.code.lightssh.common.dao.Term;
 import com.google.code.lightssh.common.entity.Persistence;
@@ -116,6 +117,11 @@ public class EhCacheDao <T extends Persistence<?>> implements Dao<T>{
 			return null;
 		
 		return (T)element.getValue();
+	}
+	
+	@Override
+	public T readWithLock(Serializable identity) {
+		throw new DaoException("实体("+identity+")带锁的查询没有实现！");
 	}
 
 	@Override
