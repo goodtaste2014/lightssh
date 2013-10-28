@@ -46,6 +46,17 @@ public class BaseManagerImpl<T extends Persistence<?>> implements BaseManager<T>
 		return dao.read(identity);
 	}
 	
+	public T getWithLock(Serializable identity) {
+		return dao.readWithLock(identity);
+	}
+	
+	public T getWithLock(T t) {
+		if( t== null || t.getIdentity() == null )
+			return null;
+		
+		return dao.readWithLock(t.getIdentity());
+	}
+	
 	public ListPage<T> list(ListPage<T> page) {
 		return dao.list(page);
 	}

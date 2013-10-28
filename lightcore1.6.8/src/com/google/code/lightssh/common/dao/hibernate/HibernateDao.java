@@ -269,6 +269,11 @@ public class HibernateDao<T extends Persistence<?>> extends HibernateDaoSupport 
 		return (T)getHibernateTemplate().get( this.entityClass , identity );
 	}
 	
+	@Override
+	public T readWithLock(Serializable identity) {
+		throw new DaoException("实体("+entityClass+")带锁的查询没有实现！");
+	}
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected T readBySql(String sql,Object[] params ){
 		final String f_sql = sql;
