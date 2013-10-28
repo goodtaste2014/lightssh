@@ -596,7 +596,30 @@ COMMENT ON COLUMN "T_FLOW_PROCESS_ATTR"."CREATED_TIME" IS '创建时间';
 COMMENT ON COLUMN "T_FLOW_PROCESS_ATTR"."DESCRIPTION" IS '描述';
 
 --------------------------------------------------------
---[03-21] 消息-消息类型  T_MSG_CATALOG
+--[03-21] 工作流-业务数据展示配置 T_FLOW_BIZ_VIEW
+--------------------------------------------------------
+CREATE TABLE "T_FLOW_BIZ_VIEW"(	
+  "ACT_PROC_DEF_KEY" VARCHAR2(255 CHAR),  
+  "NAMESPACE" VARCHAR2(255 CHAR), 
+  "ACTION" VARCHAR2(100 CHAR), 
+  "PARAM_NAME" VARCHAR2(50 CHAR), 
+  "DESCRIPTION" VARCHAR2(200 CHAR)
+) TABLESPACE "LIGHTSSH_TBS";
+
+ALTER TABLE "T_FLOW_BIZ_VIEW" MODIFY ("ACT_PROC_DEF_KEY" NOT NULL ENABLE);
+ALTER TABLE "T_FLOW_BIZ_VIEW" MODIFY ("NAMESPACE" NOT NULL ENABLE);
+ALTER TABLE "T_FLOW_BIZ_VIEW" MODIFY ("ACTION" NOT NULL ENABLE);
+ALTER TABLE "T_FLOW_BIZ_VIEW" MODIFY ("PARAM_NAME" NOT NULL ENABLE);
+ALTER TABLE "T_FLOW_BIZ_VIEW" ADD CONSTRAINT "T_FLOW_BIZ_VIEW_PK" PRIMARY KEY ("ACT_PROC_DEF_KEY");
+
+COMMENT ON COLUMN "T_FLOW_BIZ_VIEW"."ACT_PROC_DEF_KEY" IS '流程定义KEY,主键';
+COMMENT ON COLUMN "T_FLOW_BIZ_VIEW"."NAMESPACE" IS '命名空间';
+COMMENT ON COLUMN "T_FLOW_BIZ_VIEW"."ACTION" IS 'Action名称';
+COMMENT ON COLUMN "T_FLOW_BIZ_VIEW"."PARAM_NAME" IS '参数名称';
+COMMENT ON COLUMN "T_FLOW_BIZ_VIEW"."DESCRIPTION" IS '描述';
+
+--------------------------------------------------------
+--[03-22] 消息-消息类型  T_MSG_CATALOG
 --------------------------------------------------------
 CREATE TABLE "T_MSG_CATALOG"(	
   "ID" VARCHAR2(50 CHAR), 
@@ -631,7 +654,7 @@ COMMENT ON COLUMN "T_MSG_CATALOG"."CREATED_TIME" IS '创建时间';
 COMMENT ON COLUMN "T_MSG_CATALOG"."DESCRIPTION" IS '描述';
 
 --------------------------------------------------------
---[03-22] 消息-消息订阅  T_MSG_SUBSCRIPTION
+--[03-23] 消息-消息订阅  T_MSG_SUBSCRIPTION
 --------------------------------------------------------
 CREATE TABLE "T_MSG_SUBSCRIPTION"(	
   "ID" VARCHAR2(50 CHAR), 
@@ -668,7 +691,7 @@ COMMENT ON COLUMN "T_MSG_SUBSCRIPTION"."CREATED_TIME" IS '创建时间';
 COMMENT ON COLUMN "T_MSG_SUBSCRIPTION"."DESCRIPTION" IS '描述';
 
 --------------------------------------------------------
---[03-23] 消息-消息信息  T_MSG_MESSAGE
+--[03-24] 消息-消息信息  T_MSG_MESSAGE
 --------------------------------------------------------
 CREATE TABLE "T_MSG_MESSAGE"(	
   "ID" VARCHAR2(50 CHAR), 
@@ -737,7 +760,7 @@ COMMENT ON COLUMN "T_MSG_MESSAGE"."CREATED_TIME" IS '创建时间';
 COMMENT ON COLUMN "T_MSG_MESSAGE"."DESCRIPTION" IS '描述';
 
 --------------------------------------------------------
---[03-24] 消息-消息发布  T_MSG_PUBLISH
+--[03-25] 消息-消息发布  T_MSG_PUBLISH
 --------------------------------------------------------
 CREATE TABLE "T_MSG_PUBLISH"(	
   "ID" VARCHAR2(50 CHAR), 

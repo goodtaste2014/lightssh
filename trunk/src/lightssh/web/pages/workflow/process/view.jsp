@@ -9,7 +9,7 @@
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$( "#tabs" ).tabs({
-				cache:true
+				cache:false
 			});
 			
 		});

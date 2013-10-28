@@ -70,9 +70,9 @@
         <action name="viewbizdata" class="workflowProcessAction" method="viewBizData">
 			<result name="input">/pages/workflow/process/view_error.jsp</result>
 			<result name="success" type="redirectAction">
-				<param name="namespace">${#request.bizNamespace}</param>
-				<param name="actionName">${#request.bizActionName}</param>
-				<param name="workflowBizKey">%{#request.bizKey}</param>
+				<param name="namespace">${#request.bizView.namespace}</param>
+				<param name="actionName">${#request.bizView.action}</param>
+				<param name="workflowBizKey">${#request.bizKey}</param>
 			</result>
         </action>
         
