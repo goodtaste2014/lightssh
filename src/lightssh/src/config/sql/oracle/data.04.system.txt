@@ -1,4 +1,8 @@
 
+--工作流业务数据展示设置
+INSERT INTO T_FLOW_BIZ_VIEW(ACT_PROC_DEF_KEY,NAMESPACE,ACTION,PARAM_NAME,DESCRIPTION)
+VALUES('security_role_audit','/security/role','workflowview','workflowBizKey','角色业务数据查看');
+
 --消息类型
 Insert into T_MSG_CATALOG (ID,PARENT_ID,TYPE,SEQUENCE,SUBSCRIBE,FORWARD,READ_ONLY,CREATED_TIME,DESCRIPTION)
 values ('INFO-DEF',null,'INFO',1,1,1,1,sysdate,'一般消息');

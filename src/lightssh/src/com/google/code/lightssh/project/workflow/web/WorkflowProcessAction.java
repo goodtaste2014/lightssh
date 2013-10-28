@@ -19,8 +19,10 @@ import org.springframework.stereotype.Component;
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.web.action.ImageAction;
 import com.google.code.lightssh.project.web.action.GenericAction;
+import com.google.code.lightssh.project.workflow.entity.BizView;
 import com.google.code.lightssh.project.workflow.entity.TaskLog;
 import com.google.code.lightssh.project.workflow.model.MyProcess;
+import com.google.code.lightssh.project.workflow.service.BizViewManager;
 import com.google.code.lightssh.project.workflow.service.TaskLogManager;
 import com.google.code.lightssh.project.workflow.service.WorkflowManager;
 
@@ -54,6 +56,9 @@ public class WorkflowProcessAction extends GenericAction implements ImageAction{
 	
 	@Resource(name="taskLogManager")
 	private TaskLogManager taskLogManager;
+	
+	@Resource(name="bizViewManager")
+	private BizViewManager bizViewManager;
 	
 	public ListPage<ProcessDefinition> getPd_page() {
 		return pd_page;
@@ -326,12 +331,13 @@ public class WorkflowProcessAction extends GenericAction implements ImageAction{
 			return INPUT;
 		}
 		
-		//TODO
-		//String procDefKey = procDef.getKey();
-		//request.setAttribute("bizParamName", "role.id");
 		request.setAttribute("bizKey", bizKey);
-		request.setAttribute("bizNamespace", "/security/role");
-		request.setAttribute("bizActionName", "workflowview");
+		BizView bizView = bizViewManager.get( procDef.getKey() );
+		if( bizView == null ){
+			this.addActionError("流程定义["+procDef.getKey()+"]数据展示未配置！");
+			return INPUT;
+		}
+		request.setAttribute("bizView", bizView);
 		
 		return SUCCESS;
 	}
