@@ -90,6 +90,8 @@
 			</div>
 		</mys:column>
 	</mys:table>
+	
+	<mys:pagination value="page" />
 
 	<div id="popup" title="树结点" style="display: none;">&nbsp;</div>
 </body>
