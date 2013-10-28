@@ -25,6 +25,16 @@ public interface BaseManager<T extends Persistence<?>> extends Manager{
 	public T get( Serializable identity );
 	
 	/**
+	 * read with lock
+	 */
+	public T getWithLock( Serializable identity );
+	
+	/**
+	 * read with lock
+	 */
+	public T getWithLock( T t );
+	
+	/**
 	 * create
 	 */
 	public void create( T t );
