@@ -24,15 +24,6 @@ public class PlanDetailDaoJpa extends JpaDao<PlanDetail> implements PlanDetailDa
 	private static final long serialVersionUID = 2299825707757948995L;
 	
 	/**
-	 * 带锁的查询
-	 */
-	public PlanDetail readWithLock( String id ){
-		String sql = "select * from t_scheduler_plan_detail where id = ? for update";
-		Query query = getEntityManager().createNativeQuery(sql,PlanDetail.class);
-		return (PlanDetail)addQueryParams(query, id).getSingleResult();
-	}
-	
-	/**
 	 * 查询依赖未完成任务
 	 */
 	@SuppressWarnings("unchecked")
