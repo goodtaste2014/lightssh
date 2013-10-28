@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -25,8 +26,8 @@ import com.google.code.lightssh.common.dao.Term;
 import com.google.code.lightssh.common.entity.Persistence;
 import com.google.code.lightssh.common.model.page.Aggregation;
 import com.google.code.lightssh.common.model.page.ListPage;
-import com.google.code.lightssh.common.model.page.OrderBy;
 import com.google.code.lightssh.common.model.page.ListPage.OrderType;
+import com.google.code.lightssh.common.model.page.OrderBy;
 import com.google.code.lightssh.common.util.ParserUtil;
 import com.google.code.lightssh.common.util.ReflectionUtil;
 import com.google.code.lightssh.common.util.StringUtil;
@@ -37,7 +38,6 @@ import com.google.code.lightssh.common.util.StringUtil;
  *
  * @param <T>
  */
-@SuppressWarnings("deprecation")
 public class JpaDao<T extends Persistence<?>> implements Dao<T>,Serializable{
 	
 	private static final long serialVersionUID = -1688932844858330144L;
@@ -108,6 +108,36 @@ public class JpaDao<T extends Persistence<?>> implements Dao<T>,Serializable{
 			}
 		}
 	}
+	
+	/**
+	 * FROM JPQL
+	 */
+	protected String getFromJpql(Class<?> clazz,String symbol){
+		if( clazz == null )
+			clazz = this.entityClass;
+		
+		StringBuffer sb = new StringBuffer( " FROM ");
+		sb.append( clazz.getName() );
+		
+		if( StringUtil.hasText(symbol) )
+			sb.append(" AS " + symbol.trim() );
+		
+		return sb.toString();
+	}
+	
+	/**
+	 * FROM JPQL
+	 */
+	protected String getFromJpql(Class<?> clazz){
+		return getFromJpql(clazz,"m");
+	}
+	
+	/**
+	 * FROM JPQL
+	 */
+	protected String getFromJpql( ){
+		return getFromJpql( entityClass );
+	}
 
 	@Override
 	public void create(T t) {
@@ -147,7 +177,7 @@ public class JpaDao<T extends Persistence<?>> implements Dao<T>,Serializable{
 	 * 总记录数
 	 */
 	protected int rowCount() {
-		String hql = " SELECT COUNT( m ) from " + entityClass.getName() + " AS m ";
+		String hql = " SELECT COUNT( m ) " + getFromJpql();
 		
 		return rowCount( hql );
 	}
@@ -310,9 +340,7 @@ public class JpaDao<T extends Persistence<?>> implements Dao<T>,Serializable{
 	
 	@Override
 	public ListPage<T> list(ListPage<T> page) {
-		String jpql = " FROM " + entityClass.getName() + " AS m ";
-		
-		return query( page , jpql );
+		return query( page , this.getFromJpql() );
 	}
 	
 	public ListPage<T> list(ListPage<T> page,T t ){
@@ -332,17 +360,23 @@ public class JpaDao<T extends Persistence<?>> implements Dao<T>,Serializable{
 
 	@Override
 	public T read(T t) {
-		return (T)getJpaTemplate().find( this.entityClass , t.getIdentity() );
+		return (T)getEntityManager().find( this.entityClass , t.getIdentity() );
 	}
 
 	@Override
 	public T read(Serializable identity) {
-		return (T)getJpaTemplate().find( this.entityClass , identity );
+		return (T)getEntityManager().find( this.entityClass , identity );
+	}
+	
+	@Override
+	public T readWithLock(Serializable identity) {
+		return (T)getEntityManager().find( this.entityClass 
+				, identity,LockModeType.PESSIMISTIC_READ );
 	}
 	
 	@Override
 	public void update(T t) {
-		getJpaTemplate().merge(t);
+		getEntityManager().merge(t);
 	}
 
 	@Override
@@ -409,7 +443,7 @@ public class JpaDao<T extends Persistence<?>> implements Dao<T>,Serializable{
 		if( clazz == null || page == null || terms == null )
 			return page;
 		
-		StringBuffer sb = new StringBuffer( " FROM " + clazz.getName() + " AS m WHERE 1 = 1 " );
+		StringBuffer sb = new StringBuffer( getFromJpql( clazz ) + " WHERE 1 = 1 " );
 		List<Object> params = new ArrayList<Object>( );
 		for( Term term:terms ){
 			if( Term.Type.EQUAL.equals( term.getType() ) 

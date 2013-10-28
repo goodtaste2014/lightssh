@@ -49,6 +49,11 @@ public interface Dao<T extends Persistence<?>> {
 	 * read
 	 */
 	public T read(Serializable identity);
+	
+	/**
+	 * read with lock
+	 */
+	public T readWithLock(Serializable identity);
 			
 	/**
 	 * delete
