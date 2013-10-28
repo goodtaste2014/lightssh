@@ -15,11 +15,6 @@ import com.google.code.lightssh.project.scheduler.entity.PlanDetail;
 public interface PlanDetailDao extends Dao<PlanDetail>{
 	
 	/**
-	 * 带锁的查询
-	 */
-	public PlanDetail readWithLock( String id );
-	
-	/**
 	 * 查询依赖未完成任务
 	 */
 	public List<PlanDetail> listRelyOnUnsuccessful( String id );
