@@ -52,6 +52,11 @@ public class Column extends UIBean{
 	 * 是否动态列
 	 */
 	protected boolean dynamic;
+	
+    /**
+     * 显示顺序
+     */
+    protected String sequence;
     
 	public Column(ValueStack stack, HttpServletRequest request,
 			HttpServletResponse response) {
@@ -118,6 +123,7 @@ public class Column extends UIBean{
         evaluateParams();
         try {
             if(table.getRowNum() >= 0) {
+            	table.incCellNum();
                 mergeTemplate(writer, buildTemplateName(null,COLUMN_CLOSE_TEMPLATE));
             }
         } catch(Exception e) {
@@ -127,6 +133,19 @@ public class Column extends UIBean{
         }
 
         return false;
+    }
+    
+    /**
+     * 排序
+     */
+    public Column getSortedSubstitute( ){
+    	Table table = (Table) this.findAncestor(Table.class);
+    	
+    	if( table.getColumns() == null || table.getColumns().isEmpty() )
+    		return null;
+    	
+    	int len = table.getColumns().size();
+    	return table.getColumns().get( table.getCellNum() % len );
     }
 
 	@Override
@@ -203,5 +222,13 @@ public class Column extends UIBean{
 	public boolean isDynamic() {
 		return dynamic;
 	}
-    
+
+	public String getSequence() {
+		return sequence;
+	}
+
+	public void setSequence(String sequence) {
+		this.sequence = sequence;
+	}
+
 }
