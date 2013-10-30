@@ -1,7 +1,9 @@
 package com.google.code.lightssh.common.web.tag.table.views;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +14,8 @@ import org.apache.struts2.components.Component;
 import org.apache.struts2.views.jsp.ui.AbstractUITag;
 
 import com.google.code.lightssh.common.web.tag.table.components.Table;
+import com.google.code.lightssh.common.web.tag.table.model.CustomizeColumn;
+import com.google.code.lightssh.common.web.tag.table.model.IColumn;
 import com.opensymphony.xwork2.util.ValueStack;
 
 public class TableTag extends AbstractUITag{
@@ -82,10 +86,10 @@ public class TableTag extends AbstractUITag{
     /**
      * @see com.opensymphony.webwork.views.jsp.ui.AbstractUITag#populateParams()
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings("unchecked")
 	protected void populateParams() {
         super.populateParams();
-
+        
         Table table = ((Table) component);
         table.setValue(value);
         table.setStatus(status);
@@ -96,17 +100,26 @@ public class TableTag extends AbstractUITag{
         if( dynamicCols != null ){
         	Object obj = findValue(dynamicCols);
         	if( obj != null ){
-        		if(obj instanceof Collection )
-        			table.setDynamicCols((Collection)obj);
-        		else if( obj instanceof String[] ){
-        			Set<String> cols = new HashSet<String>();
-                	for(String col:(String[])obj )
-                		cols.add(col);
-                	
-                	table.setDynamicCols(cols);
-        		}
-        	}
+        		List<IColumn> cols = new ArrayList<IColumn>();
         		
+        		if(obj instanceof List ){
+        			cols = (List<IColumn>)obj;
+        		}else if( obj instanceof String[] ){//字符串
+        			Set<String> ids = new HashSet<String>();
+                	for(String col:(String[])obj )
+                		ids.add(col);
+                	
+                	int i=0;
+                	for( String id:ids )
+                		cols.add( new CustomizeColumn(id,String.valueOf(i++)) );
+        		}else if( obj instanceof Map ){ //参数为Map
+        			for(Object key:((Map<?,?>)obj).keySet() )
+        				cols.add( new CustomizeColumn(key.toString()
+        						,((Map<?,?>)obj).get(key).toString()) );
+        		}
+        		
+        		table.setDynamicCols(cols);
+        	}
         	
         }
     }
