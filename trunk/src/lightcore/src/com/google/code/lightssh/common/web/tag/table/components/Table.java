@@ -2,9 +2,12 @@ package com.google.code.lightssh.common.web.tag.table.components;
 
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.model.page.Pagination;
 import com.google.code.lightssh.common.util.StringUtil;
+import com.google.code.lightssh.common.web.tag.table.model.IColumn;
 import com.opensymphony.xwork2.util.ValueStack;
 
 /**
@@ -59,7 +63,7 @@ public class Table extends AbstractURLBean{
 	/**
 	 * 表格列
 	 */
-	protected List<Column> columns = new ArrayList<Column>();
+	protected ArrayList<Column> columns = new ArrayList<Column>();
 	
 	/**
 	 * 是否可分页
@@ -74,7 +78,7 @@ public class Table extends AbstractURLBean{
 	/**
 	 * 动态列
 	 */
-	protected Collection<String> dynamicCols;
+	protected List<IColumn> dynamicCols;
 	
 	/**
 	 * 分页参数前缀
@@ -85,6 +89,11 @@ public class Table extends AbstractURLBean{
 	 * 行数
 	 */
 	private int rowNum = -1;
+	
+	/**
+	 * 单元格数
+	 */
+	private int cellNum = 0;
 	
 	public Table(ValueStack stack, HttpServletRequest request,
 			HttpServletResponse response) {
@@ -118,6 +127,78 @@ public class Table extends AbstractURLBean{
         parameters.put("dynamic", this.dynamic );
         parameters.put("dynamicCols", this.dynamicCols );
     }
+	
+	/**
+	 * 列排序
+	 */
+	protected void sortColumn( ){
+		if( !dynamic || this.columns == null || columns.isEmpty() )
+			return;
+		
+		//根据动态列排序
+		if( dynamicCols != null && !dynamicCols.isEmpty() ){
+			Collections.sort(dynamicCols, new Comparator<IColumn>(){
+				public int compare(IColumn c1, IColumn c2){
+					String s1 = c1.getColSequence()==null?"":c1.getColSequence();
+					String s2 = c2.getColSequence()==null?"":c2.getColSequence();
+					
+					return s1.compareTo( s2 );
+				}
+			});
+			
+			Map<String,Column> map = new HashMap<String,Column>();
+			for(Column item:this.columns){
+				map.put(item.getColumnIdentity(), item);
+			}
+			
+			ArrayList<Column> sortedCols = new ArrayList<Column>();
+			for( IColumn item:dynamicCols){
+				Column col = map.get(item.getColIdentity());
+				if( col != null )
+					sortedCols.add( col );
+			}
+			
+			if( !sortedCols.isEmpty() ){
+				this.columns.removeAll( sortedCols );
+				columns.addAll(0, sortedCols);
+			}
+		}
+		
+		adujstColumn();
+	}
+	
+	/**
+	 * 整理列，根据列sequence属性调整首列或尾列
+	 */
+	protected void adujstColumn( ){
+		int first=-1,last=-1;
+		Column temp = null;
+		//调整顺序
+		for(int i=0;i<columns.size();i++ ){
+			if( "first".equalsIgnoreCase(columns.get(i).getSequence()) ){
+				first = i;
+				break;
+			}
+		}
+		if( first > 0 ){
+			temp = columns.get(first);
+			columns.remove(first);
+			columns.add(0, temp );
+		}
+		
+		for(int i=0;i<columns.size();i++ ){
+			if("last".equalsIgnoreCase(columns.get(i).getSequence()) ){
+				last = i;
+				//break;
+			}
+		}
+		if( last < columns.size()-1 && last >=0 ){
+			temp = columns.get(last);
+			columns.remove(last);
+			
+			columns.add(columns.size(), temp );
+		}
+	}
     
     /**
      * 排序URL
@@ -239,8 +320,8 @@ public class Table extends AbstractURLBean{
     			|| StringUtils.isEmpty(colIdentity))
     		return false;
     	
-    	for(String item:this.dynamicCols )
-    		if( item.equals(colIdentity) )
+    	for(IColumn item:this.dynamicCols )
+    		if( item.getColIdentity().equals(colIdentity) )
     			return true;
     	
     	return false;
@@ -261,6 +342,7 @@ public class Table extends AbstractURLBean{
         parameters.put("rowIndex", rowNum);
         
         if(rowNum == 0) {
+        	sortColumn( ); //排序
         	
             try {
                 mergeTemplate(writer, buildTemplateName(null, TABLE_HEADER));
@@ -313,6 +395,18 @@ public class Table extends AbstractURLBean{
 		return rowNum;
 	}
 	
+	public int getCellNum() {
+		return cellNum;
+	}
+
+	public void setCellNum(int cellNum) {
+		this.cellNum = cellNum;
+	}
+	
+	public void incCellNum( ){
+		this.cellNum ++;
+	}
+
 	public String getValue(){
 		return value;
 	}
@@ -336,7 +430,7 @@ public class Table extends AbstractURLBean{
 	}
 
 	@StrutsTagAttribute(description = "所显示的动态表",type="Collection")
-	public void setDynamicCols(Collection<String> dynamicCols) {
+	public void setDynamicCols(List<IColumn> dynamicCols) {
 		this.dynamicCols = dynamicCols;
 	}
 
