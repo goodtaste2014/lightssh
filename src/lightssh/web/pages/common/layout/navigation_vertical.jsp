@@ -160,6 +160,13 @@
 						</ul>
 					</li>
 					
+					<li>
+						<a href="#">定制化列</a>
+						<ul id="column_mgr">
+							<li><a href="<s:url value="/settings/column/listtable.do"/>" target="main_frame">定制列表</a></li>
+						</ul>
+					</li>
+					
 					<%-- 邮件内容 --%>
 					<li><a href="<s:url value="/settings/email/list.do"/>" target="main_frame">邮件内容</a></li>
 							

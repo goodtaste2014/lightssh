@@ -4,7 +4,8 @@
     "http://struts.apache.org/dtds/struts-2.0.dtd">
 
 <struts>
-
+	
+	<!-- 系统日志 -->
 	<package name="settings_log" extends="default" namespace="/settings/log">
 		<action name="list" class="accessAction" method="list">
 			<result name="input">/pages/settings/log/list.jsp</result>	
@@ -22,6 +23,7 @@
         </action>
     </package>
     
+    <!-- 定时时钟 -->
     <package name="settings_scheduler" extends="default" namespace="/settings/scheduler">
     	<action name="list" class="schedulerAction" method="listTriggers">
 			<result name="input">/pages/settings/scheduler/list_triggers.jsp</result>	
@@ -47,6 +49,7 @@
         </action>
 	</package>
 	
+	<!-- 计划任务 -->
 	<package name="settings_plan" extends="default" namespace="/settings/plan">
 		<action name="list" class="planAction" method="list">
 			<result name="success">/pages/settings/scheduler/list_plan.jsp</result>	
@@ -74,6 +77,7 @@
         </action>
 	</package>
 	
+	<!-- 计量单位 -->
     <package name="settings_uom" extends="default" namespace="/settings/uom">
     	<action name="edit" class="uomAction" method="edit">
 			<result name="input">/pages/settings/uom/profile.jsp</result>	
@@ -97,6 +101,7 @@
         
     </package>
     
+    <!-- 分类树 -->
     <package name="settings_tree" extends="default" namespace="/settings/tree">
     	<action name="edit" class="treeAction" method="edit">
 			<result name="input">/pages/settings/tree/profile.jsp</result>	
@@ -134,6 +139,7 @@
         </action>
     </package>
     
+    <!-- 地理区域 -->
     <package name="settings_geo" extends="default" namespace="/settings/geo">
     	<action name="edit" class="geoAction" method="edit">
 			<result name="input">/pages/settings/geo/profile.jsp</result>	
@@ -178,6 +184,7 @@
         </action>
     </package>
     
+    <!-- 组织机构 -->
     <package name="settings_organization" extends="default" namespace="/settings/organization">
     	<action name="viewparent" class="organizationAction" method="viewparent">
 			<result name="input">/pages/party/organization/profile_parent_org.jsp</result>	
@@ -200,6 +207,7 @@
 		</action>
 	</package>
 	
+	<!-- 系统参数 -->
 	<package name="settings_system_param" extends="default" namespace="/settings/param">
 		<action name="edit" class="systemParamAction" method="edit">
 			<result name="input">/pages/settings/param/profile.jsp</result>	
@@ -234,6 +242,7 @@
         </action>
 	</package>
 	
+	<!-- 邮件 -->
 	<package name="settings_email" extends="default" namespace="/settings/email">
 	    <action name="list" class="emailContentAction" method="list">
 			<result name="success">/pages/settings/email/list.jsp</result>
@@ -246,6 +255,13 @@
 	    <action name="resend" class="emailContentAction" method="resend">
 			<result name="input" type="redirectAction">list</result>
 			<result name="success" type="redirectAction">list</result>
+		</action>
+	</package>
+	
+	<!-- 定制化列 -->
+	<package name="settings_column" extends="default" namespace="/settings/column">
+		 <action name="listtable" class="columnTableAction" method="list">
+			<result name="success">/pages/settings/column/list_table.jsp</result>
 		</action>
 	</package>
 </struts>
