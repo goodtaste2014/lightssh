@@ -26,7 +26,7 @@
 	<#if column.cssClass?exists>${column.cssClass}</#if>" 
 	<#if (column.possibleSortKey?exists) && column.sortable> onclick="window.document.location='${pageOrderByQueryParams}&${pageOrderByPropertyParamName}=${column.possibleSortKey}&${pageOrderByTypeParamName}=${parameters.toggleOrderByTypeValue}'"</#if>
 	>
-		<#if column.sortable><span>&nbsp;</span></#if>${column.title}
+		<#if column.sortable><span>&nbsp;</span></#if><@s.text name="${column.title}"/>
 	</th>
 	</#list>
 	</tr>

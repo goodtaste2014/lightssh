@@ -27,6 +27,11 @@ public class ColumnTag extends AbstractUITag{
 	 * 是否动态列
 	 */
 	protected String dynamic;
+	
+    /**
+     * 显示顺序
+     */
+    protected String sequence;
 
 	/**
 	 * @see org.apache.struts2.views.jsp.ComponentTagSupport#getBean(com.opensymphony.xwork2.util.ValueStack,
@@ -52,6 +57,7 @@ public class ColumnTag extends AbstractUITag{
 		column.setWidth(width);
 		column.setColClass( colClass );
 		column.setValue(value);
+		column.setSequence(sequence);
 	}
 
 	public void setSortable(String sortable) {
@@ -68,6 +74,10 @@ public class ColumnTag extends AbstractUITag{
 
 	public void setDynamic(String dynamic) {
 		this.dynamic = dynamic;
+	}
+
+	public void setSequence(String sequence) {
+		this.sequence = sequence;
 	}
 
 }
