@@ -1,19 +1,16 @@
 package com.google.code.lightssh.project.column.entity;
 
-import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.google.code.lightssh.common.entity.base.UUIDModel;
+import com.google.code.lightssh.project.security.entity.LoginAccount;
 
 /**
- * 动态列组
+ * 用户定制化列
  * @author Aspen
  * @date 2013-10-24
  * 
@@ -25,32 +22,67 @@ public class ColumnCustomization extends UUIDModel{
 	private static final long serialVersionUID = 5650569139163210417L;
 	
 	/**
-	 * 名称
+	 * 登录用户
 	 */
-	@Column(name="NAME")
-	private String name;
+	@ManyToOne
+	@JoinColumn(name="LOGINACCOUNT_ID")
+	private LoginAccount account;
 	
+	/**
+	 * 定制化列
+	 */
+	@ManyToOne
+	@JoinColumn(name="COLUMN_ITEM_ID")
+	private ColumnItem item;
+	
+	/**
+	 * 顺序
+	 */
+	@Column(name="SEQUENCE",nullable=false)
+	private Integer sequence;	
+
+	/**
+	 * 是否可见
+	 */
+	@Column(name="VISIBLE",nullable=false)
+	private Boolean visible;
+
 	/**
 	 * 备注
 	 */
 	@Column(name="DESCRIPTION")
 	private String description;
-	
-	/**
-	 * 组对应列条目
-	 */
-	@ManyToMany( fetch=FetchType.EAGER )
-	@JoinTable( name="T_REF_COLUMN_GROUP_ITEM", 
-			joinColumns=@JoinColumn( name="COLUMN_GROUP_ID"),
-			inverseJoinColumns=@JoinColumn( name="COLUMN_ITEM_ID"))
-	private Set<ColumnItem> items;
 
-	public String getName() {
-		return name;
+	public LoginAccount getAccount() {
+		return account;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setAccount(LoginAccount account) {
+		this.account = account;
+	}
+
+	public ColumnItem getItem() {
+		return item;
+	}
+
+	public void setItem(ColumnItem item) {
+		this.item = item;
+	}
+
+	public Integer getSequence() {
+		return sequence;
+	}
+
+	public void setSequence(Integer sequence) {
+		this.sequence = sequence;
+	}
+
+	public Boolean getVisible() {
+		return visible;
+	}
+
+	public void setVisible(Boolean visible) {
+		this.visible = visible;
 	}
 
 	public String getDescription() {
@@ -60,13 +92,5 @@ public class ColumnCustomization extends UUIDModel{
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
-	public Set<ColumnItem> getItems() {
-		return items;
-	}
-
-	public void setItems(Set<ColumnItem> items) {
-		this.items = items;
-	}
-
+	
 }
