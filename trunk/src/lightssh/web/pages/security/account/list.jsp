@@ -42,7 +42,7 @@
 						<td><s:textfield id="name" name="account.loginName" value="%{cachedParams['account.loginName']}" size="30" maxlength="100"/></td>
 						<th><label for="status">状态</label></th>
 						<td>
-							<s:select  id="status" name="account.status" value="account.status.name()"
+							<s:select  id="status" name="account.status" value="%{cachedParams['account.status']}"
 								list="@com.google.code.lightssh.project.util.constant.AuditStatus@values()"
 								listKey="name()" listValue="getValue()" headerKey="" headerValue=""/>
 							<input type="submit" class="action search right" value="查询"/>
