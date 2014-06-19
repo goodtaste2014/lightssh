@@ -439,24 +439,27 @@ public class WorkflowManagerImpl implements WorkflowManager{
 			}
 			
 			boolean includeOwner = StringUtils.isNotEmpty(process.getOwner());
+			String assignee = process.getAssignee()==null?null:process.getAssignee().trim();
+			String owner = process.getOwner()==null?null:process.getOwner().trim();
 			
 			//与“操作人”相关的流水
-			if( StringUtils.isNotEmpty(process.getAssignee()) ){ //优化，与owner相同时，不执行子查询
+			if( StringUtils.isNotEmpty( assignee ) && 
+					!assignee.equals( owner ) ){ //优化，与owner相同时，不执行子查询
 				sql.append( " AND ( t.PROC_INST_ID_ IN( SELECT DISTINCT PROC_INST_ID_ FROM ");
 				sql.append( managementService.getTableName(HistoricTaskInstance.class) );
 				sql.append(" WHERE ASSIGNEE_ = #{assignee}");
-				sql.append( " ) OR "+(includeOwner?" 1=1 ":" t.START_USER_ID_ = #{owner} " )+")" );
 				
+				sql.append( " ) "+(includeOwner?" ":" OR t.START_USER_ID_ = #{owner} " )+")" );
 				if(!includeOwner)
-					query.parameter("owner", process.getAssignee().trim());
+					query.parameter("owner", assignee);
 				
-				query.parameter("assignee", process.getAssignee().trim());
+				query.parameter("assignee", assignee);
 			}
 			
 			//流程创建者
 			if( includeOwner ){
 				sql.append(" AND t.START_USER_ID_ = #{owner}");
-				query.parameter("owner", process.getOwner().trim());
+				query.parameter("owner", owner );
 			}
 			
 			//是否完成
