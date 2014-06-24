@@ -25,7 +25,7 @@
 			 * USER-弹出框回调
 			 */
 			function callbackSelectLoginAccount( param ){
-				$("input[name='message.creator']").val( param.loginName);
+				$("input[name='message.creator']").val( param.text);
 				
 				$( popup_login_account ).dialog('destroy').html('');
 			}

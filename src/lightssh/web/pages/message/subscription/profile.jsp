@@ -152,8 +152,8 @@
 		 * USER-弹出框回调
 		 */
 		function callbackSelectLoginAccount( param ){
-			$("input[name='subscription.recValue']").val( param.id);
-			$("#span_msg_subscription_subvalue").text( param.loginName );
+			$("input[name='subscription.recValue']").val( param.key);
+			$("#span_msg_subscription_subvalue").text( param.text );
 			
 			$("label[for='subscription.recValue']").remove(); //移除样式
 			
