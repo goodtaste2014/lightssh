@@ -22,15 +22,6 @@
 			}
 			
 			/**
-			 * USER-弹出框回调
-			 */
-			function callbackSelectLoginAccount( param ){
-				$("input[name='message.creator']").val( param.loginName);
-				
-				$( popup_login_account ).dialog('destroy').html('');
-			}
-			
-			/**
 			 * 删除消息
 			 */
 			function doRemove( id,name ){

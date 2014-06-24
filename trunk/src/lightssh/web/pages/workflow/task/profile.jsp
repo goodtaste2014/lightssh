@@ -46,7 +46,7 @@
 	</script>
 	
 	<s:action name="viewproc" namespace="/workflow/process" executeResult="true">
-		<s:param name="process.processInstanceId" value="#request.procInstId"></s:param>
+		<s:param name="process.processInstanceId" value="#request.procInstId"/>
 	</s:action>
 	
 	<s:form id="profile_form" action="complete" namespace="/workflow/task" method="post">
@@ -67,8 +67,10 @@
 		<s:token />
 		
 		<p class="submit">
-			<input type="button" class="action save" value="提交流程" onclick="doTaskSubmit()" />
-			<input type="button" class="action save" value="拒绝流程" onclick="doTaskRevoke()" />
+			<input type="button" class="action ok" value="提交流程" onclick="doTaskSubmit()" />
+			<input type="button" class="action remove" value="拒绝流程" onclick="doTaskRevoke()" />
+			
+			<input type="button" class="action forward disabled" value="添加会签" />
 		</p>
 	</s:form>
 	

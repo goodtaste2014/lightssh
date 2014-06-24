@@ -6,8 +6,8 @@
 		<meta name="decorator" content="background"/>
 		<title>权限资源</title>
 		
-		<script language="javascript" src="<%= request.getContextPath() %>/scripts/jquery/jquery.cookie.js"></script>
-		<script language="javascript" src="<%= request.getContextPath() %>/scripts/jquery/plugins/treeview/jquery.treeview.js"></script>
+		<script src="<%= request.getContextPath() %>/scripts/jquery/jquery.cookie.js"></script>
+		<script src="<%= request.getContextPath() %>/scripts/jquery/plugins/treeview/jquery.treeview.js"></script>
 		<link rel="stylesheet" href="<%= request.getContextPath() %>/scripts/jquery/plugins/treeview/jquery.treeview.css" type="text/css">
 		
 		<script type="text/javascript">

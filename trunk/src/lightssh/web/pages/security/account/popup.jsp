@@ -1,12 +1,15 @@
 <%@ page language="java" contentType="text/html;charset=utf-8"%>
 <%@ include file="/pages/common/util/taglibs.jsp" %>
 
+<link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/styles/<mys:theme />/theme.css" />
+<link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/scripts/jquery/styles/theme.css" />
+
 <script type="text/javascript">
 	function select( span ){
 		var param = {
-				"id":$( span ).attr("id")
-				,"loginName":$( span ).attr("loginName")
-				,"description":$( span ).attr("description")
+				"key":$( span ).attr("id")
+				,"text":$( span ).attr("loginName")
+				//,"description":$( span ).attr("description")
 			};
 		
 		callbackSelectLoginAccount( param );

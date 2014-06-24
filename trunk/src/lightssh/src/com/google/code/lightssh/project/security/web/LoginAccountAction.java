@@ -204,6 +204,10 @@ public class LoginAccountAction extends GenericAction<LoginAccount>{
 		return SUCCESS;
 	}
 	
+	/**
+	 * 弹出窗口
+	 * @return
+	 */
 	public String popup( ){
 		if ( page == null )
 			page = new ListPage<LoginAccount>();
@@ -211,6 +215,9 @@ public class LoginAccountAction extends GenericAction<LoginAccount>{
 		page.setSize(10); //每页10条
 		
 		page = manager.list( page , account );
+		
+		if( "true".equalsIgnoreCase(request.getParameter("multi")) )
+			return "multi"; //多选
 		
 		return SUCCESS;
 	}

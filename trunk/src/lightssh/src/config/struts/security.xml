@@ -44,6 +44,15 @@
 		
 		<action name="popup" class="loginAccountAction" method="popup">
 			<result name="success" >/pages/security/account/popup.jsp</result>
+			<result name="multi" type="redirectAction" >
+				<param name="namespace">/</param>
+				<param name="actionName">multipopup</param>
+				<param name="popup_multi_url">/security/account/multipopup.do</param>
+			</result>
+		</action>
+		
+		<action name="multipopup" class="loginAccountAction" method="list">
+			<result name="success" >/pages/security/account/multi_popup.jsp</result>
 		</action>
         
         <action name="remove" class="loginAccountAction" method="delete">
