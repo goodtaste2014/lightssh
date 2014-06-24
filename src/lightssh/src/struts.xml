@@ -161,6 +161,16 @@
         	<result name="success">/pages/system/401.jsp</result>
         </action>
         
+        <!-- MULTI POPUP DATA-->
+        <action name="multipopup" class="securityAction">
+        	<result name="success">/pages/common/layout/multi_popup.jsp</result>
+        </action>
+        
+        <!-- MULTI POPUP SELECT-->
+        <action name="multipopupselect" class="securityAction">
+        	<result name="success">/pages/common/layout/multi_popup_select.jsp</result>
+        </action>
+        
 		<action name="index" class="securityAction">
 			<result name="success">/pages/index.jsp</result>
 		</action>

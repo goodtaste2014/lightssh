@@ -74,8 +74,8 @@
 				select.focus();
 				
 				$(select).blur(function(){
-					$(this).hide()
-					$(link).show()
+					$(this).hide();
+					$(link).show();
 				});
 				
 				$(select).change(function(){

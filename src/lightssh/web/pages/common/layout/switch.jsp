@@ -6,7 +6,7 @@
 		<link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/styles/<mys:theme />/theme.css" />
 		<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/jquery.min.js"></script>
 		
-		<script language="javascript">
+		<script>
 			function toggle() {
 				var isHidden = false;
 				if (parent.document.getElementById('main_frameset').cols == "200px,10px,*") {

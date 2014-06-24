@@ -85,11 +85,11 @@
 			if( recType == '<s:property value="@com.google.code.lightssh.project.message.entity.ReceiveType@ROLE.name()"/>'){
 				url = '<s:url value="/security/role/popup.do"/>';
 			}else if( recType == '<s:property value="@com.google.code.lightssh.project.message.entity.ReceiveType@DEPARTMENT.name()"/>' ){
-				popupParty('<s:url value="/party/popup.do"/>',{party_type:'org'})
+				popupParty('<s:url value="/party/popup.do"/>',{party_type:'org'});
 			}else if( recType == '<s:property value="@com.google.code.lightssh.project.message.entity.ReceiveType@PERSON.name()"/>' ){
-				popupParty('<s:url value="/party/popup.do"/>',{party_type:'person'})
+				popupParty('<s:url value="/party/popup.do"/>',{party_type:'person'});
 			}else if( recType == '<s:property value="@com.google.code.lightssh.project.message.entity.ReceiveType@USER.name()"/>' ){
-				popupLoginAccount('<s:url value="/security/account/popup.do"/>',{})
+				popupLoginAccount('<s:url value="/security/account/popup.do?page.size=10"/>',{multi:'true'});
 			}else if( recType == '<s:property value="@com.google.code.lightssh.project.message.entity.ReceiveType@ALL.name()"/>' ){
 				//所有用户
 			}
@@ -110,9 +110,17 @@
 		/**
 		 * USER-弹出框回调
 		 */
-		function callbackSelectLoginAccount( param ){
-			$("input[name='message.recValue']").val( param.id);
-			$("#span_msg_subscription_subvalue").text( param.loginName );
+		function callbackSelectLoginAccount( param,multi ){
+			if( multi == null || !multi ){
+				$("input[name='message.recValue']").val( param.key);
+				$("#span_msg_subscription_subvalue").text( param.text );
+			}else{
+				var msg = "";
+				for( var i=0;i<Object.keys(param).length;i++ ){
+					msg = msg + (i==0?"":",") + param[i].text
+				}
+				$("#span_msg_subscription_subvalue").text( msg );
+			}
 			
 			$("label[for='message.recValue']").remove(); //移除样式
 			
