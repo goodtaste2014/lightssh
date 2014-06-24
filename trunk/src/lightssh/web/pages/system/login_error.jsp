@@ -1,6 +1,6 @@
 <%@page language="java" pageEncoding ="UTF-8" contentType="text/html;charset=utf-8"%>
 
-<%@page import="ccom.google.code.lightssh.common.support.shiro.*"%>
+<%@page import="com.google.code.lightssh.common.support.shiro.*"%>
 <%@page import="com.google.code.lightssh.project.security.shiro.*"%>
 <%@page import="com.google.code.lightssh.common.util.TextFormater"%>
 <%@page import="org.apache.shiro.SecurityUtils"%>
