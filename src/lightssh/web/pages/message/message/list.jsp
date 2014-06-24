@@ -93,6 +93,22 @@
 			<%--<mys:column title="消息类型" value="catalog.type" width="40px"/>--%>
 			<mys:column title="接收人" width="80px">
 				<s:property value="@com.google.code.lightssh.project.message.util.ReceiveTypeHelper@getReceiveTitle(recType,recValue)"/>
+				<s:if test="@com.google.code.lightssh.project.message.entity.ReceiveType@USER.equals( recType)">
+					<s:set name="users" value="@com.google.code.lightssh.project.security.util.LoginAccountHelper@listByIds( recValue)" />
+					<s:set name="title" value="''"/>
+					<s:set name="link" value="''"/>
+					<s:iterator value="#users" status="loop">
+						<s:if test="#loop.first"><s:set name="link" value="loginName"/></s:if>
+						<s:if test="#loop.last && #loop.index > 1 "><s:set name="link" value="#link +'...'"/></s:if>
+						
+						<s:set name="title" value="(#title +(#loop.first?'':',') + loginName)"/>
+					</s:iterator>
+					
+					<a class="title" href="#" title="<s:property value="#title"/>">
+						<s:property value="#link"/>
+					</a>
+				</a>
+				</s:if>
 			</mys:column>
 			<mys:column title="优先级" value="priority" sortable="true" width="60px"/>
 			<mys:column title="标题">
