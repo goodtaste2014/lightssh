@@ -17,6 +17,10 @@
 				return this.optional(element) ||  /^[^'|"]*$/.test(value);   
 			},"不能包括引号(\')及双引号(\")！");
 			
+			jQuery.validator.addMethod("recValueLen", function(value, element) {    
+				return this.optional(element) || value.length < 255;   
+			},"选择的用户太多，请减少用户数");
+			
 			
 			var recType= $("select[name='message.recType']").val();
 			$("#handler_msg_subtype").removeClass("disabled");
@@ -28,7 +32,7 @@
 			 */
 			$("#profile_form").validate({
 				rules:{
-					"message.recValue":{required:function(){return $("select[name='message.recType']").val() != 'ALL'}}
+					"message.recValue":{recValueLen:true,required:function(){return $("select[name='message.recType']").val() != 'ALL'}}
 					,"message.title":{required:true,regularName:true,maxlength:100}
 					,"message.priority":{required:true}
 					,"message.content":{required:true,maxlength:2000}
@@ -115,10 +119,12 @@
 				$("input[name='message.recValue']").val( param.key);
 				$("#span_msg_subscription_subvalue").text( param.text );
 			}else{
-				var msg = "";
+				var msg = "",ids="" ;
 				for( var i=0;i<Object.keys(param).length;i++ ){
 					msg = msg + (i==0?"":",") + param[i].text
+					ids = ids + (i==0?"":",") + param[i].key
 				}
+				$("input[name='message.recValue']").val( ids );
 				$("#span_msg_subscription_subvalue").text( msg );
 			}
 			

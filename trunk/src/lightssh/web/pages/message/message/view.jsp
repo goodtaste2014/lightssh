@@ -37,7 +37,18 @@
 				<th>接收类型</th>
 				<td><s:property value="%{message.recType}"/></td>
 				<th>接收者</th>
-				<td><s:property value="%{message.recValue}"/></td>
+				<td>
+					<s:if test="@com.google.code.lightssh.project.message.entity.ReceiveType@USER.equals( message.recType)">
+						<s:set name="users" value="@com.google.code.lightssh.project.security.util.LoginAccountHelper@listByIds(message.recValue)" />
+						<s:iterator value="#users" status="loop">
+							<s:if test="!#loop.first">,</s:if>
+							<s:property value="loginName"/>
+						</s:iterator>
+					</s:if>
+					<s:else>
+						<s:property value="%{message.recValue}"/>
+					</s:else>
+				</td>
 			</tr>
 			<tr>
 				<th>优先级</th>

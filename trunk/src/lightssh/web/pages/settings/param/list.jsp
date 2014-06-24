@@ -11,7 +11,7 @@
 	
 	<script type="text/javascript">
 		$(document).ready(function(){
-			$('a.title').cluetip({splitTitle: '|'});
+			//$('a.title').cluetip({splitTitle: '|'});
 		});
 	</script>
 	
@@ -42,13 +42,6 @@
 			</colgroup>
 			<tbody>
 				<tr>
-					<th><label for="system">子系统</label></th>
-					<td>
-						<s:select list="@com.ylink.ylpay.common.project.mp.constant.SubSystem@values()"
-							 name="param.system" value="param.system.name()"
-							 listKey="name()" listValue="value" 
-							 headerKey="" headerValue="" />
-					</td>
 					<th><label for="group">组名</label></th>
 					<td>
 						<s:textfield name="param.group" id="group"/>
@@ -58,9 +51,6 @@
 					<td>
 						<s:textfield name="param.name" id="name"/>
 					</td>
-				</tr>
-				
-				<tr>
 					<th><label for="value">参数值</label></th>
 					<td colspan="5">
 						<s:textfield name="param.value" id="value" size="30"/>
