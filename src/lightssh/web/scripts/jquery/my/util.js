@@ -471,4 +471,20 @@ jQuery.lightssh={
 			return false;
 		});
 	}
+	
+	/**
+	 * 获取下拉选择元素
+	 */
+	,getMultiPopupSelect:function(){
+		var mainBody = null;
+		var selectBody = null;
+		if( top.frames[ "main_frame" ] == null ){
+			selectBody = $(top.frames[ 'popup_multi_select_iframe' ].window.document.body);
+		}else{
+			mainBody = $(top.frames[ "main_frame" ].window.document.body);
+			selectBody = $(mainBody).find('#popup_multi_select_iframe').contents().find("body");
+		}
+		
+		return $(selectBody).find("select");
+	}
 };
