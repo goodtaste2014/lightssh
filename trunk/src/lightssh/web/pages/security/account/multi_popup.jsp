@@ -6,27 +6,31 @@
 	<title>账号列表</title>
 	
 	<script type="text/javascript">
-		function select( span ){
+		/**
+		 * 添加元素
+		 */
+		function addItem( tr ){
 			var param = {
-					"key":$( span ).attr("key")
-					,"text":$( span ).attr("text")
+					"key":$( tr ).attr("key")
+					,"text":$( tr ).attr("text")
 				};
 			
-			//callbackSelectLoginAccount( param );
 			var select = $.lightssh.getMultiPopupSelect();
 			
-			var exits = false;
-			$(select).find("option").each(function() {
-				if( this.value == param.key ){
-			    	exits = true;
-			    	return false;
-				}
-			});
-			
-			if(!exits )
+			if( $(select).find("option[value='"+param.key+"']").length == 0 )
 				$(select).append("<option value='"+param.key+"'>"+param.text+"</option>");
 		}
 		
+		/**
+		 * 选中元素
+		 */
+		function select( tr ){
+			var CLAZZ = "selected";
+			if( $(tr).hasClass( CLAZZ ) )
+				$(tr).removeClass( CLAZZ );
+			else
+				$(tr).addClass( CLAZZ );
+		}
 	</script>
 </head>
 
@@ -81,10 +85,10 @@
 		</thead>
 		
 		<s:iterator value="page.list" status="loop">
-		<tr class="<s:property value="#loop.odd?\"odd\":\"even\""/>"
+		<tr class="<s:property value="#loop.odd?\"odd\":\"even\""/> popupdata"
 			key="<s:property value="id"/>" 
 			text="<s:property value="loginName"/>" 
-			style="cursor: pointer;" ondblclick="select(this)">
+			style="cursor: pointer;" ondblclick="addItem(this)" onclick="select(this)">
 			<td><s:property value="#loop.index +1"/></td>
 			<td><s:property value="loginName"/></td>
 			<td>

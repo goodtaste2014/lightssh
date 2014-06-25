@@ -398,6 +398,15 @@ table.list > tbody > tr > td:first-child{
 	padding-left: 12px;
 }
 
+table.list > tbody > tr.selected {
+}
+
+table.list > tbody > tr.selected > td:first-child {
+	background-image: url('../../images/background/icon_ok.png');
+	background-repeat: no-repeat;
+	background-position:0 center;
+}
+
 table.list > tbody > tr.focused {
 	background-color: #FFF5DF;
 }
@@ -488,7 +497,7 @@ table.profile th{
 	background-color: #F9F9F9;
 }
 
-/** 弹出菜单 */
+/** 寮瑰�鸿����� */
 .popup-menu-layer {
 	display:none; 
 	min-width: 160px; 
@@ -554,7 +563,7 @@ table.profile th{
 	cursor: default;
 }
 
-/** 弹出窗口菜单图标 */
+/** 寮瑰�虹����ｈ�������炬�� */
 .popup-menu-layer li.view a{
 	background-image: url("../../images/background/icon_view.png");
 }
@@ -600,3 +609,4 @@ table.profile th{
 .popup-menu-layer li.print a{
 	background-image: url("../../images/background/icon_print.png");
 }
+
