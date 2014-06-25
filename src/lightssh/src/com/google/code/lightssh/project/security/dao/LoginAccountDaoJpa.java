@@ -334,4 +334,5 @@ public class LoginAccountDaoJpa extends JpaDao<LoginAccount>
 		
 		return query.executeUpdate();
 	}
+	
 }

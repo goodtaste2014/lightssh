@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import com.google.code.lightssh.common.ApplicationException;
 import com.google.code.lightssh.common.dao.Dao;
+import com.google.code.lightssh.common.dao.SearchCondition;
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.common.service.BaseManagerImpl;
 import com.google.code.lightssh.common.util.CryptographyUtil;
@@ -331,6 +332,21 @@ public class LoginAccountManagerImpl extends BaseManagerImpl<LoginAccount>
 		dao.list(page,account);
 		
 		return page.getList();
+	}
+	
+	/**
+	 * 根据ID查询有效登录帐户
+	 * @param ids 登录帐户ID
+	 */
+	public List<LoginAccount> listByIds(Object[] ids ){
+		if( ids == null )
+			return null;
+		
+		ListPage<LoginAccount> page = new ListPage<LoginAccount>(100);
+		SearchCondition sc = new SearchCondition();
+		sc.in("id", ids);
+		
+		return getDao().list(page, sc).getList();
 	}
 	
 	/**
