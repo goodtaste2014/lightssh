@@ -5,9 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.google.code.lightssh.project.message.entity.ReceiveType;
 import com.google.code.lightssh.project.party.entity.Party;
 import com.google.code.lightssh.project.party.service.PartyManager;
-import com.google.code.lightssh.project.security.entity.LoginAccount;
 import com.google.code.lightssh.project.security.entity.Role;
-import com.google.code.lightssh.project.security.service.LoginAccountManager;
 import com.google.code.lightssh.project.security.service.RoleManager;
 import com.google.code.lightssh.project.util.SpringContextHelper;
 
@@ -37,10 +35,20 @@ public class ReceiveTypeHelper {
 			
 			return role==null?"":role.getName();
 		}else if( ReceiveType.USER.equals(type) ){
+			/*
 			LoginAccountManager mgr = (LoginAccountManager)SpringContextHelper.getBean( "loginAccountManager" );
-			LoginAccount acc = mgr.get( Long.parseLong(val) );
+			List<LoginAccount> users = mgr.listByIds( val.split(",") );
+			if( users == null || users.isEmpty() )
+				return null;
 			
-			return acc==null?"":acc.getLoginName();
+			StringBuffer msg = new StringBuffer();
+			for( int i=0;i<users.size();i++ ){
+				msg.append( i==0?"":"," );
+				msg.append( users.get(i).getLoginName() );
+			}
+			return msg.toString();
+			*/
+			return null; //页面处理
 		}
 		
 		return null;

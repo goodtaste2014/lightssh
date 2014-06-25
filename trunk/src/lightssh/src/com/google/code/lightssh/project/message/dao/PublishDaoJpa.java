@@ -84,8 +84,24 @@ public class PublishDaoJpa extends JpaDao<Publish> implements PublishDao{
 			
 			params.add( AuditStatus.EFFECTIVE.name() );
 			if( ReceiveType.USER.equals(type) ){
-				sql.append(" AND id = ? ");
-				params.add( value );
+				//sql.append(" AND id = ? ");
+				//params.add( value ); 
+				
+				//多个用户
+				String[] ids = value.split(",");
+				if( ids == null || ids.length == 0 ){
+					sql.append(" AND 1 = 2 "); //容错
+				}else{
+					for(int i=0;i<ids.length;i++ ){
+						if( i==0 )
+							sql.append(" AND id IN ( " + ids[i] );
+						else
+							sql.append(" , " + ids[i] );
+						
+						if( i==ids.length-1 )
+							sql.append(" ) ");
+					}//end for
+				}
 			}else if( ReceiveType.DEPARTMENT.equals( type ) ){//部门
 				sql.append(" AND party_id IN ( SELECT PERSON_ID FROM T_PARTY_EMPLOYEE WHERE org_id = ? ) ");
 				params.add( value );

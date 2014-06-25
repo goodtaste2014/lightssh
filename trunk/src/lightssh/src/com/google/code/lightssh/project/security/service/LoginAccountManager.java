@@ -80,6 +80,12 @@ public interface LoginAccountManager extends BaseManager<LoginAccount>{
 	public List<LoginAccount> listByRole(String id );
 	
 	/**
+	 * 根据ID查询有效登录帐户
+	 * @param ids 登录帐户ID
+	 */
+	public List<LoginAccount> listByIds(Object[] ids );
+	
+	/**
 	 * 启用或禁用CA登录
 	 */
 	public void toggleCa( LoginAccount account ,Access log );
