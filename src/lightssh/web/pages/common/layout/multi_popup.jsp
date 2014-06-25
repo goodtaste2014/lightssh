@@ -17,4 +17,3 @@
 	<s:else>
 		<div>多选弹出窗口参数异常。参数值[popup_multi_url]为空！</div>
 	</s:else>
-	
