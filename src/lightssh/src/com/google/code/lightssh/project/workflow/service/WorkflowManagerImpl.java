@@ -822,6 +822,7 @@ public class WorkflowManagerImpl implements WorkflowManager{
 	/**
 	 * 添加会签人
 	 */
+	@Deprecated
 	public void addAssignee( String taskId,List<String> userIds ){
 		if( userIds == null || userIds.isEmpty() )
 			throw new ApplicationException("添加的会签人不能为空！");
@@ -1086,6 +1087,67 @@ public class WorkflowManagerImpl implements WorkflowManager{
 		//流程转向
 		turnTransition(ExecutionType.FALLBACK,user,task
 				,histTask.getTaskDefinitionKey(),histTask.getName(),null);
+	}
+	
+	/**
+	 * 会签
+	 * @param operator 操作人
+	 * @param taskId 任务ID
+	 * @param users 会签用户
+	 */
+	public void countersignTask(String operator,String taskId,String[] users){
+		if( StringUtils.isEmpty(taskId) )
+			throw new ApplicationException("会签任务ID不能为空!");
+		
+		if( users == null )
+			throw new ApplicationException("会签用户不能为空!");
+		
+		Task task = getTask(taskId);
+		if( task == null )
+			throw new ApplicationException("任务ID["+taskId+"]不存在!");
+		
+		if( StringUtils.isEmpty(operator) ){
+			operator = task.getAssignee();
+			log.warn("会签操作人为空，使用任务签收人[{}]",task.getAssignee());
+		}
+		
+		StringBuffer message = new StringBuffer("添加会签人[");
+		int i = 0;
+		
+		//对用户不能重复添加会签
+		List<Task> subTasks = taskService.getSubTasks(taskId); //子任务
+		Map<String,Task> subTaskMap = new HashMap<String,Task>();
+		if( subTasks != null && subTasks.size() > 0 ){
+			for(Task item: subTasks){
+				subTaskMap.put(item.getAssignee(), item);
+			}
+		}
+		
+		for( String user:users ){
+			if( task.getAssignee().equals(user) )
+				throw new ApplicationException("不能添加自己["+user+"]为会签人");
+				
+			if( subTaskMap.get(user) != null )
+				throw new ApplicationException("任务已添加会签人["+user+"]");
+			
+			TaskEntity subTask = (TaskEntity)taskService.newTask();
+			subTask.setParentTaskId(taskId); //上级Task
+			subTask.setName( task.getName() + "-["+user+"]会签");
+			subTask.setAssignee( user ); //会签用户
+			subTask.setProcessDefinitionId( task.getProcessDefinitionId() );
+			subTask.setProcessInstanceId( task.getProcessInstanceId() );
+			subTask.setDescription("会签"); 
+			
+			taskService.saveTask(subTask);
+			
+			message.append((i==0?"":",") +user);
+			++i;
+		}
+		message.append("]");
+		
+		taskLogManager.save(task.getProcessInstanceId(),task.getId()
+				,ExecutionType.SIGN, operator, message.toString());
+		
 	}
 	
 }

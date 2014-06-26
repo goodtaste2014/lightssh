@@ -16,6 +16,7 @@ import org.apache.struts2.json.annotations.JSON;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.google.code.lightssh.common.model.Result;
 import com.google.code.lightssh.common.model.page.ListPage;
 import com.google.code.lightssh.project.web.action.GenericAction;
 import com.google.code.lightssh.project.workflow.model.MyTask;
@@ -41,9 +42,13 @@ public class WorkflowTaskAction extends GenericAction{
 	private String taskId;
 
 	private Integer count = 0;
+	
+	private Result result;
 
 	@Resource(name="workflowManager")
 	private WorkflowManager workflowManager;
+	
+	private List<String> users;
 
 	public ListPage<Task> getTaskPage() {
 		return taskPage;
@@ -76,6 +81,23 @@ public class WorkflowTaskAction extends GenericAction{
 
 	public void setCount(Integer count) {
 		this.count = count;
+	}
+	
+	@JSON(name="result")
+	public Result getResult() {
+		return result;
+	}
+
+	public void setResult(Result result) {
+		this.result = result;
+	}
+
+	public List<String> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<String> users) {
+		this.users = users;
 	}
 
 	/**
@@ -289,6 +311,39 @@ public class WorkflowTaskAction extends GenericAction{
 		}catch( Exception e ){
 			this.saveErrorMessage("流程回退异常:"+e.getMessage());
 			return INPUT;
+		}
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * 会签
+	 */
+	public String countersign( ){
+		this.result = new Result();
+		
+		if( StringUtils.isEmpty(taskId)){
+			result.setStatus(false);
+			result.setMessage("参数错误:任务ID不能为空!");
+			return SUCCESS;
+		}
+		
+		if( users == null || users.isEmpty() ){
+			result.setStatus(false);
+			result.setMessage("参数错误:会签用户不能为空!");
+			return SUCCESS;
+		}
+		
+		try{
+			this.workflowManager.countersignTask( getLoginUser(),taskId, users.toArray(new String[]{}));
+			//this.saveSuccessMessage("流程会签成功！");
+			result.setStatus(true);
+			result.setMessage("流程会签成功！");
+		}catch( Exception e ){
+			//this.saveErrorMessage("流程会签异常:"+e.getMessage());
+			//return INPUT;
+			result.setStatus(false);
+			result.setMessage("流程会签异常:"+e.getMessage());
 		}
 		
 		return SUCCESS;

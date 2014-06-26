@@ -121,8 +121,8 @@
 			}else{
 				var msg = "",ids="" ;
 				for( var i=0;i<Object.keys(param).length;i++ ){
-					msg = msg + (i==0?"":",") + param[i].text
-					ids = ids + (i==0?"":",") + param[i].key
+					msg = msg + (i==0?"":",") + param[i].text;
+					ids = ids + (i==0?"":",") + param[i].key;
 				}
 				$("input[name='message.recValue']").val( ids );
 				$("#span_msg_subscription_subvalue").text( msg );
