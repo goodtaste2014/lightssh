@@ -143,6 +143,13 @@
 			</result>
 			<result name="success" type="redirectAction">mytodolist</result>
         </action>
+        
+		<action name="countersign" class="workflowTaskAction" method="countersign">
+			<result name="success" type="json">
+				<param name="includeProperties">result.*</param>
+			</result>
+        </action>
+        
 	</package>
 	
 	<package name="workflow" extends="default" namespace="/workflow">

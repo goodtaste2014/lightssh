@@ -210,5 +210,13 @@ public interface WorkflowManager extends Manager{
 	 * @param procInstId 流程实例ID
 	 */
 	public void undoTask( String procInstId,String user);
+	
+	/**
+	 * 会签
+	 * @param operator 操作人
+	 * @param taskId 任务ID
+	 * @param users 会签用户
+	 */
+	public void countersignTask(String operator,String taskId,String[] users);
 
 }
