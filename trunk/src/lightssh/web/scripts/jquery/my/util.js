@@ -74,7 +74,8 @@ jQuery.lightssh={
 		if( eTarget == null )
 			return;
 		
-		$(eTarget).parent().hide('slow');
+		//$(eTarget).parent().hide('slow');
+		$(eTarget).parent().hide('slow').remove();
 	}
 	
 	/**
@@ -95,12 +96,13 @@ jQuery.lightssh={
 		if( clazz == null )
 			clazz = 'success';
 		
-		if( $( ".messages > ."+clazz ).length == 0 ) {
-			$( '.messages' ).append( "<div class='"+clazz+"'>" + msg + "</div>" );
-		} else {
+		if( $( ".messages > ."+clazz ).length != 0 ) {
 			$( '.messages' ).empty();
-			$( '.messages' ).append( "<div class='"+clazz+"'>" + msg + "</div>" );
-		}
+		} 
+		
+		if( $( '.messages' ).find("button.close").length == 0)
+			$( '.messages' ).append("<button type=\"button\" class=\"close\" onclick=\"$.lightssh.removeMessages();\">&times;</button>");
+		$( '.messages' ).append( "<div class='"+clazz+"'>" + msg + "</div>" );
 	}
 	
 	/**
