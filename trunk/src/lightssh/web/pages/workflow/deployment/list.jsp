@@ -35,6 +35,7 @@
 			<s:property  value="@com.google.code.lightssh.common.util.TextFormater@format(deploymentTime,'yyyy-MM-dd HH:hh:ss')" />
 		</mys:column>
 		<mys:column title="描述" value="description" />
+		<%-- 
 		<mys:column title="操作" width="40px" cssClass="action">
 			<span>&nbsp;</span>
 			<div class="popup-menu-layer">
@@ -43,6 +44,7 @@
 				</ul>
 			</div>
 		</mys:column>
+		--%>
 	</mys:table>
 
 	<mys:pagination value="deployment_page" pageParamPrefix="deployment_page"/>

@@ -62,6 +62,13 @@ public class ColumnItem extends UUIDModel{
 	 */
 	@Column(name="DESCRIPTION",length=200)
 	private String description;
+	
+	/**
+	 * 用于标签显示
+	 */
+	public String getDisplayTitle() {
+		return title;
+	} 
 
 	public ColumnTable getTable() {
 		return table;

@@ -28,6 +28,10 @@ public class ColumnTableAction extends GenericAction<ColumnTable>{
 		this.manager = mgr;
 	}
 	
+	public ColumnTableManager getManager( ){
+		return (ColumnTableManager)this.manager;
+	}
+	
 	public ColumnTable getTable() {
 		this.table = this.model;
 		return table;
@@ -36,6 +40,26 @@ public class ColumnTableAction extends GenericAction<ColumnTable>{
 	public void setTable(ColumnTable table) {
 		this.table = table;
 		this.model = this.table;
+	}
+	
+	/**
+	 * 查询列表明细
+	 */
+	public String listItem(){
+		if( table == null || table.getId() == null ){
+			this.saveErrorMessage("参数为空！");
+			return INPUT;
+		}
+		
+		try{
+			request.setAttribute("column_item_list", 
+				getManager().listItems( table.getId() ) );
+		}catch(Exception e ){
+			this.saveErrorMessage("查询异常:"+e.getMessage());
+			return INPUT;
+		}
+		
+		return SUCCESS;
 	}
 
 }
