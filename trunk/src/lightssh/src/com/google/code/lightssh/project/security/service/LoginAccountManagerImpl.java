@@ -108,14 +108,14 @@ public class LoginAccountManagerImpl extends BaseManagerImpl<LoginAccount>
 			root.setLoginName(ROOT_LOGIN_NAME);
 			root.setStatus(AuditStatus.EFFECTIVE);
 			root.setType(LoginAccountType.ADMIN);
-			Role superRole = roleManager.initRole(true); //TODO
+			Role superRole = roleManager.initRole(true);
 			root.addRole(superRole); 
 			root.setPassword(CryptographyUtil.hashMd5Hex(DEFAULT_PASSWORD ) );
 			root.setDescription("系统初始化自动创建。");
 			
 			try{
 				save(root);
-				log.info("成功初始化系统账户！" );
+				log.info("成功初始化系统管理员[{}]！",ROOT_LOGIN_NAME);
 			}catch( Exception e ){
 				String msg = "初始化系统账户异常："+e.getMessage();
 				log.error( msg );
