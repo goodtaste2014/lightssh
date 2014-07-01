@@ -54,11 +54,11 @@
 					<th><label for="value">参数值</label></th>
 					<td colspan="5">
 						<s:textfield name="param.value" id="value" size="30"/>
-						<input type="submit" class="action search right" value="查询"/>
 					</td>
 				</tr>
 			</tbody>
 		</table>
+		<input type="submit" class="action search right" value="查询"/>
 	</s:form>
 	
 	<mys:table cssClass="list" value="page" status="loop">
