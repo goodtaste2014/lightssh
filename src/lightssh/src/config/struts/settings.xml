@@ -260,8 +260,12 @@
 	
 	<!-- 定制化列 -->
 	<package name="settings_column" extends="default" namespace="/settings/column">
-		 <action name="listtable" class="columnTableAction" method="list">
+		<action name="listtable" class="columnTableAction" method="list">
 			<result name="success">/pages/settings/column/list_table.jsp</result>
+		</action>
+		
+		<action name="listitem" class="columnTableAction" method="listItem">
+			<result name="success">/pages/settings/column/list_item.jsp</result>
 		</action>
 	</package>
 </struts>

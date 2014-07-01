@@ -7,4 +7,65 @@ VALUES('security_role_audit','/security/role','workflowview','workflowBizKey','�
 Insert into T_MSG_CATALOG (ID,PARENT_ID,TYPE,SEQUENCE,SUBSCRIBE,FORWARD,READ_ONLY,CREATED_TIME,DESCRIPTION)
 values ('INFO-DEF',null,'INFO',1,1,1,1,sysdate,'一般消息');
 
+--定制化列-表
+Insert into T_COLUMN_TABLE (ID,NAME,DESCRIPTION)
+values ('party_person_list','人员列表','系统管理-人员管理-人员列表');
+
+--定制化列-列
+Insert into T_COLUMN_ITEM (ID,COLUMN_TABLE_ID,NAME,TITLE,SEQUENCE,VISIBLE,IMMUTABLE,CREATED_TIME,DESCRIPTION) 
+values (sys_guid(),'party_person_list','id','编号',10,1,1,sysdate,'');
+
+Insert into T_COLUMN_ITEM (ID,COLUMN_TABLE_ID,NAME,TITLE,SEQUENCE,VISIBLE,IMMUTABLE,CREATED_TIME,DESCRIPTION) 
+values (sys_guid(),'party_person_list','name','姓名',20,1,0,sysdate,'');
+
+Insert into T_COLUMN_ITEM (ID,COLUMN_TABLE_ID,NAME,TITLE,SEQUENCE,VISIBLE,IMMUTABLE,CREATED_TIME,DESCRIPTION) 
+values (sys_guid(),'party_person_list','credentialsType','证件类型',30,1,0,sysdate,'');
+
+Insert into T_COLUMN_ITEM (ID,COLUMN_TABLE_ID,NAME,TITLE,SEQUENCE,VISIBLE,IMMUTABLE,CREATED_TIME,DESCRIPTION) 
+values (sys_guid(),'party_person_list','identityCardNumber','证件号',40,1,0,sysdate,'');
+
+Insert into T_COLUMN_ITEM (ID,COLUMN_TABLE_ID,NAME,TITLE,SEQUENCE,VISIBLE,IMMUTABLE,CREATED_TIME,DESCRIPTION) 
+values (sys_guid(),'party_person_list','degree','最高学历',50,1,0,sysdate,'');
+
+Insert into T_COLUMN_ITEM (ID,COLUMN_TABLE_ID,NAME,TITLE,SEQUENCE,VISIBLE,IMMUTABLE,CREATED_TIME,DESCRIPTION) 
+values (sys_guid(),'party_person_list','title','称呼',60,1,0,sysdate,'');
+
+Insert into T_COLUMN_ITEM (ID,COLUMN_TABLE_ID,NAME,TITLE,SEQUENCE,VISIBLE,IMMUTABLE,CREATED_TIME,DESCRIPTION) 
+values (sys_guid(),'party_person_list','nickname','别名',70,1,0,sysdate,'');
+
+Insert into T_COLUMN_ITEM (ID,COLUMN_TABLE_ID,NAME,TITLE,SEQUENCE,VISIBLE,IMMUTABLE,CREATED_TIME,DESCRIPTION) 
+values (sys_guid(),'party_person_list','gender','性别',80,1,0,sysdate,'');
+
+Insert into T_COLUMN_ITEM (ID,COLUMN_TABLE_ID,NAME,TITLE,SEQUENCE,VISIBLE,IMMUTABLE,CREATED_TIME,DESCRIPTION) 
+values (sys_guid(),'party_person_list','birthday','生日',90,1,0,sysdate,'');
+
+Insert into T_COLUMN_ITEM (ID,COLUMN_TABLE_ID,NAME,TITLE,SEQUENCE,VISIBLE,IMMUTABLE,CREATED_TIME,DESCRIPTION) 
+values (sys_guid(),'party_person_list','maritalStatus','婚姻状况',100,1,0,sysdate,'');
+
+Insert into T_COLUMN_ITEM (ID,COLUMN_TABLE_ID,NAME,TITLE,SEQUENCE,VISIBLE,IMMUTABLE,CREATED_TIME,DESCRIPTION) 
+values (sys_guid(),'party_person_list','country','国家',110,1,0,sysdate,'');
+
+Insert into T_COLUMN_ITEM (ID,COLUMN_TABLE_ID,NAME,TITLE,SEQUENCE,VISIBLE,IMMUTABLE,CREATED_TIME,DESCRIPTION) 
+values (sys_guid(),'party_person_list','ethnicGroup','民族',120,1,0,sysdate,'');
+
+Insert into T_COLUMN_ITEM (ID,COLUMN_TABLE_ID,NAME,TITLE,SEQUENCE,VISIBLE,IMMUTABLE,CREATED_TIME,DESCRIPTION) 
+values (sys_guid(),'party_person_list','partyAffiliation','政治面貌',130,1,0,sysdate,'');
+	
+Insert into T_COLUMN_ITEM (ID,COLUMN_TABLE_ID,NAME,TITLE,SEQUENCE,VISIBLE,IMMUTABLE,CREATED_TIME,DESCRIPTION) 
+values (sys_guid(),'party_person_list','secondaryGeo','二级地理区域',140,1,0,sysdate,'');
+
+Insert into T_COLUMN_ITEM (ID,COLUMN_TABLE_ID,NAME,TITLE,SEQUENCE,VISIBLE,IMMUTABLE,CREATED_TIME,DESCRIPTION) 
+values (sys_guid(),'party_person_list','thirdGeo','三级地理区域',150,1,0,sysdate,'');
+	
+Insert into T_COLUMN_ITEM (ID,COLUMN_TABLE_ID,NAME,TITLE,SEQUENCE,VISIBLE,IMMUTABLE,CREATED_TIME,DESCRIPTION) 
+values (sys_guid(),'party_person_list','fourthGeo','四级地理区域',160,1,0,sysdate,'');
+
+Insert into T_COLUMN_ITEM (ID,COLUMN_TABLE_ID,NAME,TITLE,SEQUENCE,VISIBLE,IMMUTABLE,CREATED_TIME,DESCRIPTION) 
+values (sys_guid(),'party_person_list','bloodType','血型',170,1,0,sysdate,'');
+	
+Insert into T_COLUMN_ITEM (ID,COLUMN_TABLE_ID,NAME,TITLE,SEQUENCE,VISIBLE,IMMUTABLE,CREATED_TIME,DESCRIPTION) 
+values (sys_guid(),'party_person_list','height','身高',180,1,0,sysdate,'');
+
+Insert into T_COLUMN_ITEM (ID,COLUMN_TABLE_ID,NAME,TITLE,SEQUENCE,VISIBLE,IMMUTABLE,CREATED_TIME,DESCRIPTION) 
+values (sys_guid(),'party_person_list','weight','体重',190,1,0,sysdate,'');
 commit;
