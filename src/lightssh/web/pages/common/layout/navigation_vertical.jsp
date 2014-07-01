@@ -170,6 +170,8 @@
 					<%-- 邮件内容 --%>
 					<li><a href="<s:url value="/settings/email/list.do"/>" target="main_frame">邮件内容</a></li>
 							
+					<%-- 系统参数 --%>
+					<li><a href="<s:url value="/settings/param/list.do"/>" target="main_frame">系统参数</a></li>
 					<%-- 计量单位 --%>
 					<li><a href="<s:url value="/settings/uom/list.do"/>" target="main_frame">计量单位</a></li>
 					<%-- 地理区域--%>
