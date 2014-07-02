@@ -17,6 +17,8 @@
 		
 	<%@ include file="/pages/common/util/messages.jsp" %>
 	
+	<input type="button" class="action back" value="返回" onclick="location.href='<s:url value="list.do"/>'"/>
+	
 	<table class="profile">
 		<caption>登录帐户信息</caption>
 		<tbody>
