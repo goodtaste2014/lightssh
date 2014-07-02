@@ -23,7 +23,7 @@
 		</ul>
 		
 		<input type="button" class="action new" value="新增账号" onclick="location.href='<s:url value="edit.do"/>'"/>
-		<input type="button" class="action pdf" value="PDF" onclick="location.href='<s:url value="report.do?type=PDF"/>'"/>
+		<input type="button" class="action pdf" value="PDF展示" onclick="location.href='<s:url value="report.do?type=PDF"/>'"/>
 	
 		<%@ include file="/pages/common/util/messages.jsp" %>
 		
