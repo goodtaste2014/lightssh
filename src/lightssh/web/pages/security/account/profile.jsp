@@ -6,6 +6,7 @@
 	
 	<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/ui/i18n/jquery.ui.datepicker_<s:property value="locale"/>.js"></script>
 	<script type="text/javascript" src="<s:url value="/pages/party/popup.js" />"></script>
+	<script type="text/javascript" src="<s:url value="/pages/security/role/popup.js" />"></script>
 		
 	<title>编辑用户账号</title>
 	
@@ -32,61 +33,32 @@
 			$("#account_start_date").datepicker( );
 			$("#account_end_date").datepicker( );
 		});
-
+		
+		
 		/**
-		 * 选择角色
-		 */		
-		function popupRole(){
-			var popup = $("#role_popup");
-			$(popup).dialog({
-				resizable: true,
-				height:400,
-				width: 700,
-				modal: true,
-				close: function(event, ui) { $(this).dialog('destroy'); },				
-				buttons: {					
-					"关闭": function() {
-						$(this).dialog('destroy');
-					}
-					,"选择": selectRoles
-				}
-			});
+		 * 角色弹出窗口
+		 */
+		function popupRole( ){
+			popupSecurityRole('<s:url value="/security/role/popup.do"/>',{multi:'true'});
+		}
+		
+		/**
+		 * 弹出框回调
+		 */
+		function callbackSelectSecurityRole( param ){
+			//if( param.length == 0 )
+			//	$.lightssh.showActionError("角色为空，新重新选择!"); 
 			
-			var req_url = '<s:url value="/security/role/popup.do"/>';
-			$.post(req_url,{'page.size':'1024','role.status':'EFFECTIVE'}
-				,function(json){showRoleList( $(popup),json.page.list )});
-
-			/**
-			 * 显示角色列表
-			 */
-			function showRoleList( popup,list ){
-				$(popup).html('');
-				var table = $("<table class='list'><tr><th></th><th>名称</th><th>描述</th></tr></table>");
-				$(popup).append(table)
-				$.each( list , function( index,role ){
-					var item = "<td><input type='checkbox' value='"+role.id+"' rolename='"+role.name+"'/></td>"
-					item += "<td>"+role.name+"</td>";
-					item += "<td>" + (role.description==null?'':role.description) + "</td>";
-					$(table).append( "<tr>"+ item + "</tr>"  );
-				});
+			$("#selected_roles").html('');
+			$("input[name='account.roles']").remove();
 				
-				$("#loading").fadeOut();
+			for( var i=0;i<param.length;i++ ){
+				$("#selected_roles").append( (i==0?'':' , ')+ param[i].text );
+				$("#selected_roles").append("<input type='hidden' name='account.roles' value='"+param[i].key+"'/>" );
 			}
 			
-			/**
-			 * 选择角色
-			 */
-			function selectRoles( ){
-				$("#selected_roles").html('');
-				$("input[name='account.roles']").remove();
-				$.each( $("input:checked"), function( index, checkbox ){
-					var rolename = $(checkbox).attr('rolename');
-					$("#selected_roles").append( (index==0?'':' , ')+ rolename );
-					$("#selected_roles").append("<input type='hidden' name='account.roles' value='"+$(checkbox).attr('value')+"'/>" );
-				});
-				$(this).dialog('destroy');
-				$("input[type=submit]").removeAttr("disabled");
-			}
+			$("input[type=submit]").removeAttr("disabled");
+			$( popup_security_role ).dialog('destroy').html('');
 		}
 	</script>
 </head>

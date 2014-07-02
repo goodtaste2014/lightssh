@@ -220,7 +220,7 @@
 			<result name="success" type="redirectAction">list</result>
 		</action>
 
-		<action name="popup" class="roleAction" method="list">
+		<action name="popup" class="roleAction" method="popup">
 			<result name="success" type="json">
 				<param name="includeProperties">
 					^page\.list\[\d+\]\.id,
@@ -232,6 +232,16 @@
 					page\.number
 				</param>
 			</result>
+			
+			<result name="multi" type="redirectAction" >
+				<param name="namespace">/</param>
+				<param name="actionName">multipopup</param>
+				<param name="popup_multi_url">/security/role/multipopup.do</param>
+			</result>
+		</action>
+		
+		<action name="multipopup" class="roleAction" method="popup">
+			<result name="success" >/pages/security/role/multi_popup.jsp</result>
 		</action>
 	</package>
 

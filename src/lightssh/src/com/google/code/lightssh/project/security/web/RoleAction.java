@@ -195,6 +195,22 @@ public class RoleAction extends GenericAction<Role>{
 	}
 	
 	/**
+	 * 弹出窗口
+	 */
+	public String popup( ){
+		if ( page == null )
+			page = new ListPage<Role>();
+		page.addAscending( "createdTime" );
+		
+		page = manager.list( page , role );
+		
+		if( "true".equalsIgnoreCase(request.getParameter("multi")) )
+			return "multi"; //多选
+		
+		return SUCCESS;
+	}
+	
+	/**
 	 * 保存角色权限
 	 */
 	public String addPermission( ){
