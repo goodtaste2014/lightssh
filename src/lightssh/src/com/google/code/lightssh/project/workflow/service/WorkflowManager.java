@@ -143,6 +143,13 @@ public interface WorkflowManager extends Manager{
 	public void claim( String taskId,String userId );
 	
 	/**
+	 * 认领并提交当前活动的流程
+	 * @param procInstId 流程实例ID
+	 * @param operator 操作人
+	 */
+	public void claimAndComplete(String procInstId,String operator);
+	
+	/**
 	 * 变更认领人
 	 */
 	public void changeAssignee( String taskId,String userId );

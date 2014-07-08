@@ -601,6 +601,18 @@ public class WorkflowManagerImpl implements WorkflowManager{
 	}
 	
 	/**
+	 * 当前活动Task
+	 * @param processId 流程实例ID
+	 */
+	protected Task getCurrentTask( String processId ){
+		TaskQuery query = taskService.createTaskQuery();
+		query.active();
+		query.processInstanceId(processId).listPage(0,1);
+		
+		return query.singleResult();
+	}
+	
+	/**
 	 * 查询任务
 	 */
 	@SuppressWarnings("unchecked")
@@ -809,6 +821,24 @@ public class WorkflowManagerImpl implements WorkflowManager{
 	}
 	
 	/**
+	 * 认领并提交当前活动的流程
+	 * @param procInstId 流程实例ID
+	 * @param operator 操作人
+	 */
+	public void claimAndComplete(String procInstId,String operator){
+		if( StringUtils.isEmpty(operator) )
+			throw new ApplicationException("操作人不能为空！");
+		
+		Task task = this.getCurrentTask( procInstId );
+		
+		if( task == null )
+			throw new ApplicationException("无法获取活动的任务[流程实例ID="+procInstId+"]");
+		
+		taskService.claim( task.getId(), operator );
+		taskService.complete(task.getId());
+	}
+	
+	/**
 	 * 变更认领人
 	 */
 	public void changeAssignee( String taskId,String userId ){
@@ -963,9 +993,8 @@ public class WorkflowManagerImpl implements WorkflowManager{
      * @param targetActivityId 目标节点任务ID 
      * @param variables 流程变量 
      */  
-    protected void turnTransition(ExecutionType type,String user,Task task, 
-    		String targetActivityId,String targetActivityName,
-            Map<String, Object> variables){  
+    protected void turnTransition(ExecutionType type,String user,Task task
+    		,HistoricTaskInstance histTask, Map<String, Object> variables){  
     	
 		if( task == null || !(task instanceof TaskEntity))
 			throw new ApplicationException("当前任务为空或类型不正确!");
@@ -978,12 +1007,18 @@ public class WorkflowManagerImpl implements WorkflowManager{
         // 创建新流向  
         TransitionImpl newTransition = currActivity.createOutgoingTransition();  
         // 目标节点  
-        ActivityImpl targetActivity = getActivityImpl(task, targetActivityId);  
+        ActivityImpl targetActivity = getActivityImpl(task, histTask.getTaskDefinitionKey());  
         // 设置新流向的目标节点  
         newTransition.setDestination( targetActivity );  
   
         // 执行转向任务  
         taskService.complete(task.getId(), variables);  
+        //获取新Task
+        Task newTask = getCurrentTask( task.getProcessInstanceId() );
+        if( newTask != null ){
+        	//新任务从流程定义恢复，原签收人从历史任务中得到
+        	taskService.claim(newTask.getId(), histTask.getAssignee() );
+        }
         // 删除目标节点新流入  
         targetActivity.getIncomingTransitions().remove(newTransition);  
   
@@ -991,7 +1026,7 @@ public class WorkflowManagerImpl implements WorkflowManager{
         restoreTransition(currActivity, oriPvmTransitionList);  
         
         //保存操作日志
-        String message = "流程转向:"+task.getName()+"-->"+targetActivityName;
+        String message = "流程转向:"+task.getName()+"-->"+histTask.getName();
       	taskLogManager.save(task.getProcessInstanceId(),task.getId(),type,user, message);
     }  
     
@@ -1058,9 +1093,6 @@ public class WorkflowManagerImpl implements WorkflowManager{
 	 * @param procInstId 流程实例ID
 	 */
 	public void undoTask( String procInstId,String user){
-		//流程实例
-		ProcessInstance processInst = getProcessInstance(procInstId);
-		processInst.getActivityId();
 		
 		List<Task> activeTasks = taskService.createTaskQuery()
 				.processInstanceId(procInstId).active().list();
@@ -1085,8 +1117,7 @@ public class WorkflowManagerImpl implements WorkflowManager{
 			throw new ApplicationException("其它操作用户已完成了新任务，无法回退!");
 		
 		//流程转向
-		turnTransition(ExecutionType.FALLBACK,user,task
-				,histTask.getTaskDefinitionKey(),histTask.getName(),null);
+		turnTransition(ExecutionType.FALLBACK,user,task,histTask,null);
 	}
 	
 	/**
