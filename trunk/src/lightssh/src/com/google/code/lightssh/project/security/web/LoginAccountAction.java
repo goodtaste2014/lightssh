@@ -33,6 +33,7 @@ import com.google.code.lightssh.project.security.service.LoginAccountChangeManag
 import com.google.code.lightssh.project.security.service.LoginAccountManager;
 import com.google.code.lightssh.project.security.service.PermissionManager;
 import com.google.code.lightssh.project.util.constant.AuditResult;
+import com.google.code.lightssh.project.util.constant.WorkflowConstant;
 import com.google.code.lightssh.project.web.action.GenericAction;
 
 /**
@@ -251,6 +252,30 @@ public class LoginAccountAction extends GenericAction<LoginAccount>{
 		
 		if( account == null )
 			return INPUT;
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * 工作流显示业务数据
+	 */
+	public String workflowView(){
+		String bizKey = request.getParameter( WorkflowConstant.BIZ_KEY_NAME );
+		
+		//this.setRole( this.getManager().get(bizKey));
+		if( StringUtils.isEmpty(bizKey) ){
+			this.addActionError("业务参数为空！");
+			return SUCCESS;
+		}
+		
+		LoginAccountChange rc = loginAccountChangeManager.get(bizKey);
+		if( rc == null ){
+			this.addActionError("登录帐号数据["+bizKey+"]不存在！");
+			return SUCCESS;
+		}
+		
+		this.setAccountChange(rc);
+		todoAudit();
 		
 		return SUCCESS;
 	}

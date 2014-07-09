@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Query;
@@ -173,6 +174,26 @@ public class LoginAccountDaoJpa extends JpaDao<LoginAccount>
 		if( t.getStatus() != null ){
 			hql.append( " AND m.status = ? " );
 			params.add( t.getStatus());
+		}
+		
+		if( t.get_createDatePeriod() != null ){
+			Calendar cal = Calendar.getInstance();
+			Date start = t.get_createDatePeriod().getStart();
+			Date end = t.get_createDatePeriod().getEnd();
+			
+			if( start != null ){
+				hql.append( " AND m.createDate >= ? " );
+				params.add( start );
+			}
+			
+			if( end != null ){
+				cal.setTime(end);
+				cal.add(Calendar.DAY_OF_MONTH, 1);
+				cal.add(Calendar.SECOND, -1);
+				
+				hql.append( " AND m.createDate <= ? " );
+				params.add( cal.getTime() );
+			}
 		}
 		
 		int subquery_flag = params.size();

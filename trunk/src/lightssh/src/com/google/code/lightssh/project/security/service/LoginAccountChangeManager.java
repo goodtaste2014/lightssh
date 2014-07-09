@@ -18,7 +18,7 @@ public interface LoginAccountChangeManager extends BaseManager<LoginAccountChang
 	/**
 	 * 保存
 	 */
-	public void save(LoginAccount user,EntityChange.Type type
+	public LoginAccountChange save(LoginAccount user,EntityChange.Type type
 			,LoginAccount originalAcc,LoginAccount newAcc,String remark);
 	
 	/**

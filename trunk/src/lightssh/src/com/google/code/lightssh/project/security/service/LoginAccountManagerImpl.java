@@ -9,6 +9,7 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 
+import org.activiti.engine.runtime.ProcessInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -25,9 +26,12 @@ import com.google.code.lightssh.project.party.entity.Party;
 import com.google.code.lightssh.project.security.dao.LoginAccountDao;
 import com.google.code.lightssh.project.security.entity.LoginAccount;
 import com.google.code.lightssh.project.security.entity.LoginAccount.LoginAccountType;
+import com.google.code.lightssh.project.security.entity.LoginAccountChange;
 import com.google.code.lightssh.project.security.entity.Permission;
 import com.google.code.lightssh.project.security.entity.Role;
 import com.google.code.lightssh.project.util.constant.AuditStatus;
+import com.google.code.lightssh.project.workflow.model.WorkflowType;
+import com.google.code.lightssh.project.workflow.service.WorkflowManager;
 
 /**
  * LoginAccount Manager implement
@@ -52,6 +56,9 @@ public class LoginAccountManagerImpl extends BaseManagerImpl<LoginAccount>
 	
 	@Resource(name="loginAccountChangeManager")
 	private LoginAccountChangeManager loginAccountChangeManager;
+	
+	@Resource(name="workflowManager")
+	private WorkflowManager workflowManager;
 	
 	@Resource(name="loginAccountDao")
 	public void setDao(Dao<LoginAccount> dao) {
@@ -230,7 +237,25 @@ public class LoginAccountManagerImpl extends BaseManagerImpl<LoginAccount>
 			remark = "变更登录帐户";
 		}
 		
-		loginAccountChangeManager.save(operator,type,originalAcc,newAcc,remark);
+		LoginAccountChange lac =loginAccountChangeManager.save(
+				operator,type,originalAcc,newAcc,remark);
+		
+		//启动工作流
+		startWorkflow(lac,newAcc,operator);
+	}
+	
+	/**
+	 * 启动工作流
+	 */
+	protected void startWorkflow(LoginAccountChange lac
+			,LoginAccount account,LoginAccount operator){
+		String bizName = "登录账号审核流程_"+account.getLoginName()
+				+"_"+operator.getLoginName();
+		ProcessInstance pi = workflowManager.start(WorkflowType.SEC_ACCT.getName()
+				,lac.getId(),bizName,operator.getLoginName(),null);
+		
+		//有经办人，直接提交到下一个处理流程（启动流程后，根据 bizKey 查询Task，然后提交 ）
+		workflowManager.claimAndComplete(pi.getProcessInstanceId(), operator.getLoginName() );
 	}
 	
 	public void remove( Serializable identity ){

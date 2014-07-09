@@ -165,6 +165,12 @@ public class LoginAccount extends BaseModel implements User,Cloneable,Loggable{
 	@Temporal( TemporalType.TIMESTAMP )
 	private Calendar lastLoginTime;
 	
+	/**
+	 * 使用期限
+	 */
+	@Transient
+	private Period _createDatePeriod;
+	
 	public LoginAccount() {
 		super();
 	}
@@ -430,6 +436,14 @@ public class LoginAccount extends BaseModel implements User,Cloneable,Loggable{
 
 	public void setLastLoginTime(Calendar lastLoginTime) {
 		this.lastLoginTime = lastLoginTime;
+	}
+
+	public Period get_createDatePeriod() {
+		return _createDatePeriod;
+	}
+
+	public void set_createDatePeriod(Period _createDatePeriod) {
+		this._createDatePeriod = _createDatePeriod;
 	}
 
 	@Override

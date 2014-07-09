@@ -38,6 +38,10 @@
         	<result name="success" >/pages/security/account/view.jsp</result>
         </action>
         
+        <action name="workflowview" class="loginAccountAction" method="workflowView">
+			<result name="success">/pages/security/account/workflow_view.jsp</result>
+		</action>
+        
 		<action name="list" class="loginAccountAction" method="list">
 			<result name="success" >/pages/security/account/list.jsp</result>
 		</action>
