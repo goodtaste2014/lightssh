@@ -48,6 +48,16 @@ public class GroupAssignmentHandler implements TaskListener{
 	 */
 	public static final String GROUP_SUFFIX = "}";
 	
+	/**
+	 * 当前用户
+	 */
+	public static final String CURRENT_USER = "@USER";
+	
+	/**
+	 * 当前部门
+	 */
+	public static final String CURRENT_DEPT = "@DEPT";
+	
 	private static Logger log = LoggerFactory.getLogger(GroupAssignmentHandler.class);
 	
 	@Resource(name="loginAccountManager")

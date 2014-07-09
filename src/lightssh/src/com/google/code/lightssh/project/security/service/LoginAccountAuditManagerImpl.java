@@ -18,6 +18,7 @@ import com.google.code.lightssh.project.security.entity.LoginAccountAudit;
 import com.google.code.lightssh.project.security.entity.LoginAccountChange;
 import com.google.code.lightssh.project.util.constant.AuditResult;
 import com.google.code.lightssh.project.util.constant.AuditStatus;
+import com.google.code.lightssh.project.workflow.model.ExecutionType;
 
 /** 
  * @author YangXiaojin
@@ -82,7 +83,7 @@ public class LoginAccountAuditManagerImpl extends BaseManagerImpl<LoginAccountAu
 		}
 		
 		loginAccountManager.update(dbAcc);
-		dao.create(audit);
+		//dao.create(audit);//TODO 改为工作流，不需要记录审核日志
 		
 		loginAccountChangeManager.updateStatus(change.getId()
 				,EntityChange.Status.NEW,EntityChange.Status.FINISHED);
@@ -102,6 +103,22 @@ public class LoginAccountAuditManagerImpl extends BaseManagerImpl<LoginAccountAu
 		}
 		
 		return dao.list(page, sc);
+	}
+	
+	@Override
+	public void process(ExecutionType type, String procDefKey,
+			String procInstId, String bizKey) {
+		
+		LoginAccountChange lac = this.loginAccountChangeManager.get(bizKey);
+		
+		LoginAccountAudit accAudit = new LoginAccountAudit();
+		accAudit.setLoginAccountChange( lac );//关联变更
+		
+		accAudit.setUser( null );
+		boolean passed = ExecutionType.SUBMIT.equals(type);
+		accAudit.setResult(passed?AuditResult.LAST_AUDIT_PASSED:AuditResult.LAST_AUDIT_REJECT);
+		
+		this.audit(accAudit, lac);
 	}
 
 }

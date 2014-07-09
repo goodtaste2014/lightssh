@@ -36,7 +36,7 @@ public class LoginAccountChangeManagerImpl extends BaseManagerImpl<LoginAccountC
 		return (LoginAccountChangeDao)this.dao;
 	}
 	
-	public void save(LoginAccount user,EntityChange.Type type
+	public LoginAccountChange save(LoginAccount user,EntityChange.Type type
 			,LoginAccount originalAcc,LoginAccount newAcc,String remark){
 		if( originalAcc == null && newAcc == null )
 			throw new ApplicationException("原始登录帐户或新登录帐户为空！");
@@ -58,6 +58,8 @@ public class LoginAccountChangeManagerImpl extends BaseManagerImpl<LoginAccountC
 			ec.setOriginalObject(IoSerialUtil.serialize(originalAcc) );
 		
 		dao.create(ec);
+		
+		return ec;
 	}
 	
 	public ListPage<LoginAccountChange> listTodoAudit(ListPage<LoginAccountChange> page,LoginAccountChange t ){

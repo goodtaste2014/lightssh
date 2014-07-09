@@ -11,6 +11,7 @@
 	<!-- 工作流业务处理映射 workflowBizHookMap -->
 	<util:map id="workflowBizHookMap">
 		<entry key="security_role_audit" value-ref="roleAuditManager" />
+		<entry key="security_account_audit" value-ref="loginAccountAuditManager" />
 	</util:map>
 
 	<bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">

@@ -6,12 +6,18 @@
 		<meta name="decorator" content="background"/>
 		<title>账号列表</title>
 		
+		<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/ui/i18n/jquery.ui.datepicker_<s:property value="locale"/>.js"></script>
 		<script type="text/javascript">
 			function doRemove( id,name ){
 				var url = '<s:url value="/security/account/remove.do?account.id="/>' + id ;
 				if( confirm('确认删除用户账号[' + name + ']'))
 					location.href=url;
 			}
+			
+			
+			$(document).ready(function(){
+				$(".calendar").datepicker( );
+			});
 		</script>
 	</head>
 	
@@ -34,12 +40,19 @@
 					<col width="20%"/>
 					<col width="10%"/>
 					<col width="20%"/>
+					<col width="10%"/>
+					<col width="20%"/>
 					<col/>
 				</colgroup>
 				<tbody>
 					<tr>
 						<th><label for="name">登录账号</label></th>
 						<td><s:textfield id="name" name="account.loginName" value="%{cachedParams['account.loginName']}" size="30" maxlength="100"/></td>
+						<th><label for="createDate">创建日期</label></th>
+						<td>
+							<s:textfield name="account._createDatePeriod.start" cssClass="calendar" size="10" /> -
+							<s:textfield name="account._createDatePeriod.end" cssClass="calendar" size="10"/>
+						</td>
 						<th><label for="status">状态</label></th>
 						<td>
 							<s:select  id="status" name="account.status" value="%{cachedParams['account.status']}"

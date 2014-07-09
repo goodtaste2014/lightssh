@@ -98,8 +98,10 @@
 							<%-- 用户列表--%>
 							<li><a href="<s:url value="/security/account/list.do"/>" target="main_frame"><s:text name="project.nav.listaccount"/></a></li>
 							
+							<%-- 
 							<li><a href="<s:url value="/security/account/todoauditlist.do"/>" target="main_frame">待审核列表</a></li>
 							<li><a href="<s:url value="/security/account/auditlist.do"/>" target="main_frame">审核结果</a></li>
+							--%>
 						</ul>
 					</li>
 					
@@ -111,8 +113,10 @@
 							<li><a href="<s:url value="/security/role/edit.do"/>" target="main_frame"><s:text name="project.nav.newrole"/></a></li>
 							<%-- 角色列表--%>
 							<li><a href="<s:url value="/security/role/list.do"/>" target="main_frame"><s:text name="project.nav.listrole"/></a></li>
+							<%-- 
 							<li><a href="<s:url value="/security/role/todoauditlist.do"/>" target="main_frame">待审核列表</a></li>
 							<li><a href="<s:url value="/security/role/auditlist.do"/>" target="main_frame">审核结果</a></li>
+							--%>
 						</ul>
 					</li>
 					
