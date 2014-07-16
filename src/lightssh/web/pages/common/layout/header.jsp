@@ -148,7 +148,7 @@
 				$.ajax({
 					url:url,dataType: "json",type:"post",async:false,data: {}
 			        ,error: function(){ 
-			        	$(counter).html( '(ERR)' );
+			        	$(counter).html( 'ERR' );
 			        	$(ele).removeClass("hourglass");
 			        }
 			        ,success: function(json){

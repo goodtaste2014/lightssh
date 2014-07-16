@@ -53,7 +53,7 @@
 		<mys:column title="序号" width="50px">
 			<s:property value="#loop.index + 1"/>
 		</mys:column>
-		<mys:column title="类型" value="type" sortable="true" width="80px"/>
+		<mys:column title="类型" value="type" sortable="true" width="100px"/>
 		<mys:column title="系统编号" value="code" sortable="true" width="100px"/>
 		<mys:column title="ISO编号" value="isoCode" sortable="true" width="100px"/>
 		<mys:column title="状态" value="active?'活动的':'已冻结'" sortKey="active" sortable="true" width="50px"/>
