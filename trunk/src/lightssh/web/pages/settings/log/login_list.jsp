@@ -5,8 +5,9 @@
 	<head>
 		<meta name="decorator" content="background"/>
 		<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/ui/i18n/jquery.ui.datepicker_zh_CN.js"></script>
+		<script type="text/javascript" src="<s:url value="/pages/security/account/popup.js" />"></script>
 	
-		<title>用户登录日志</title>
+		<title>登录日志</title>
 		
 		<script type="text/javascript">
 			$(document).ready(function(){
@@ -29,6 +30,15 @@
 				
 				$.post(url,{},function(data){$( popup ).html( data );});
 			}
+			
+			/**
+			 * USER-弹出框回调
+			 */
+			function callbackSelectLoginAccount( param ){
+				$("input[name='loginLog.operator']").val( param.text);
+				
+				$( popup_login_account ).dialog('destroy').html('');
+			}
 		</script>
 		
 	</head>
@@ -37,7 +47,7 @@
 	<ul class="path">
 		<li>系统管理</li>
 		<li>系统日志</li>
-		<li>用户登录日志</li>
+		<li>登录日志</li>
 	</ul>
  		
 		<%@ include file="/pages/common/util/messages.jsp" %>
@@ -53,10 +63,13 @@
 						</td>
 						
 						<td><label for="ip">IP</label></td>
-						<td><s:textfield id="ip" name="loginLog.ip"  size="10"/></td>
+						<td><s:textfield id="ip" name="loginLog.ip"  size="16"/></td>
 						
 						<td><label for="operator">登录用户</label></td>
-						<td><s:textfield id="operator" name="loginLog.operator"  size="10"/></td>
+						<td>
+							<s:textfield id="operator" name="loginLog.operator"  size="16"/>
+							<span class="popup user" onclick="popupLoginAccount('<s:url value="/security/account/popup.do"/>',{});">&nbsp;</span>
+						</td>
 						
 						<td colspan="2"><input type="submit" class="action search right" value="查询"/></td>
 					</tr>
