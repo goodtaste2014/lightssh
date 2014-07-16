@@ -36,7 +36,7 @@ public class UnitOfMeasure implements Persistence<String>{
 		,LENGTH("长度")	
 		,TEMPERATURE("温度")
 		,TIME_OR_FREQUENCY("时间或频率")	//'Time/Frequency'
-		,DRY_VOLUME("dry volume")
+		,VOLUME_DRY("DRY VOLUME")
 		,LIQUID_VOLUME("液体体积")
 		,WEIGHT("重量")
 		,VOLUME_LIQ("VOLUME LIQ")
