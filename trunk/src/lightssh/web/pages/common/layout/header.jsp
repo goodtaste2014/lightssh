@@ -158,11 +158,11 @@
 				        	$(ele).removeClass("hourglass");
 			        	}else{
 				        	if( json.count < 10 ){
-				        		msg = '( ' + json.count + ' )';
+				        		msg = '' + json.count + '';
 				        	}else if( json.count > 99 ){
-				        		msg = '(99+)';
+				        		msg = '99+';
 				        	}else{
-				        		msg = '( ' + json.count + ')';
+				        		msg = '' + json.count + '';
 				        	}
 				        	$(counter).html( msg );
 				        	$(ele).removeClass("hourglass");
@@ -207,11 +207,11 @@
 						</li>
 						<li>
 							<a href="<s:url value="/message/publish/mylist.do"/>?publish.read=false" class="icon message" target="main_frame" >未读消息</a>
-							<span class="counter">( ? )</span>
+							<span class="counter badge">?</span>
 						</li>
 						<li>
 							<a href="<s:url value="/workflow/task/mytodolist.do"/>" class="icon task" target="main_frame" >待办事宜</a>
-							<span class="counter">( ? )</span>
+							<span class="counter badge">?</span>
 						</li>
 						<%--
 						<li>
