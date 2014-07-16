@@ -244,6 +244,10 @@ ul.vertical-menu li a span{
 	padding-left: 14px;
 }
 
+ul.vertical-menu li a span.badge{
+	padding-left: 0;
+}
+
 ul.vertical-menu li a.expand span{
 	padding-left:10px;
 	background-image:url("../../images/background/icon_expanded.gif");

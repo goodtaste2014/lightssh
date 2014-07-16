@@ -229,11 +229,27 @@ body#header{
 #header .status span.counter{
 	height: 16px;
 	line-height: 16px;
-	color: green;
+	/*color: green;*/
 }
 
 #header .status span.counter:hover{
 	cursor: pointer;
+}
+
+#header .status span.badge {
+	display: inline-block;
+	min-width: 10px;
+	padding: 2px 5px 2px 5px;
+	margin-left: 3px;
+	font-size: 6px;
+	height: 10px;
+	line-height: 10px;
+	color: #fff;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: baseline;
+	background-color: #428bca;
+	border-radius: 10px;
 }
 
 /* ¶à´°¿Ú²Ëµ¥ */

@@ -47,7 +47,9 @@
 			<li>
 				<a href="#">消息中心</a>
 				<ul id="msgwf_mgr">
-					<li><a href="<s:url value="/message/publish/mylist.do"/>" target="main_frame">我的消息</a></li>
+					<li>
+						<a href="<s:url value="/message/publish/mylist.do"/>" target="main_frame">我的消息</a>
+					</li>
 					
 					<li>
 						<a href="#">工作流程</a>
