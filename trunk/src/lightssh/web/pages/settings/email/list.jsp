@@ -52,7 +52,7 @@
 						</td>
 						<th><label for="addressee">收件人</label></th>
 						<td>
-							<s:textfield name="emailContent.addressee" size="40"/>
+							<s:textfield name="emailContent.addressee" id="addressee" size="40"/>
 						</td>
 						<td colspan="2"><input type="submit" class="action search right" value="查询"/></td>
 					</tr>

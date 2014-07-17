@@ -6,6 +6,7 @@
 
 	<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/ui/i18n/jquery.ui.datepicker_zh_CN.js"></script>
 	<script type="text/javascript" src="<s:url value="/pages/workflow/process/popup_proc_def.js" />"></script>
+	<script type="text/javascript" src="<s:url value="/pages/security/account/popup.js" />"></script>
 	<title>流程列表</title>
 	
 	<script type="text/javascript">
@@ -22,6 +23,14 @@
 				location.href=url;
 		}
 		
+		/**
+		 * USER-弹出框回调
+		 */
+		function callbackSelectLoginAccount( param ){
+			$("input[name='process.owner']").val( param.text);
+			
+			$( popup_login_account ).dialog('destroy').html('');
+		}
 	</script>
 	
 </head>
@@ -50,7 +59,7 @@
 					<th><label for="proid">流程编号</label></th>
 					<td><s:textfield id="proid" name="process.processInstanceId" size="20" maxlength="100"/></td>
 					
-					<th><label for="name">流程名称</label></th>
+					<th><label for="defid">流程名称</label></th>
 					<td><s:textfield id="defid" name="process.processAttributeName" size="30" maxlength="100"/></td>
 					
 					<th><label for="proc_def_key">流程类型</label></th>
@@ -62,15 +71,16 @@
 					</td>
 				</tr>
 				<tr>
-					<th><label for="owner">开始时间</label></th>
+					<th><label for="access_start_date">开始时间</label></th>
 					<td>
 						<s:textfield name="process.startPeriod.start" cssClass="calendar" id="access_start_date" size="10" /> -
 						<s:textfield name="process.startPeriod.end" cssClass="calendar" id="access_end_date" size="10"/>
 					</td>
 					
-					<th><label for="startPeriod">创建者</label></th>
+					<th><label for="owner">创建者</label></th>
 					<td>
-						<s:textfield id="startPeriod" name="process.owner" size="20" maxlength="100"/>
+						<s:textfield name="process.owner" id="owner" size="20" maxlength="100"/>
+						<span class="popup user" onclick="popupLoginAccount('<s:url value="/security/account/popup.do"/>',{});">&nbsp;</span>
 					</td>
 					
 					<th><label for="status">流程状态</label></th>

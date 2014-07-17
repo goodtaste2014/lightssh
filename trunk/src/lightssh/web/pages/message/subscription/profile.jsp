@@ -17,6 +17,10 @@
 			$("#handler_msg_subtype").removeClass("disabled");
 			if( recType == null || recType == '' )
 				$("#handler_msg_subtype").addClass("disabled");
+				
+			jQuery.validator.addMethod("recValueLen", function(value, element) {    
+				return this.optional(element) || value.length < 255;   
+			},"选择的用户太多，请减少用户数");
 			
 			/**
 			 * 数据校验
@@ -25,7 +29,7 @@
 				rules:{
 					"subscription.recType":{required:true}
 					,"subscription.catalog.id":{required:true}
-					,"subscription.recValue":{required:true}
+					,"subscription.recValue":{recValueLen:true,required:function(){return $("select[name='subscription.recType']").val() != 'ALL'}}
 				}
 				,submitHandler: function(form) {
 					var result = ajaxCheck( );
@@ -201,7 +205,7 @@
 			</tr>
 			
 			<tr>
-				<th><label for="name" class="required">订阅值</label></th>
+				<th><label for="handler_msg_subtype" class="required">订阅值</label></th>
 				<td>
 					<span class="popup disabled" id="handler_msg_subtype" onclick="popupSubType();">&nbsp;</span>
 					<s:hidden id="subscription.recValue" name="subscription.recValue"/>
@@ -212,7 +216,7 @@
 			<tr>
 				<th><label for="account_start_date">有效期</label></th>
 				<td>
-					<s:textfield name="subscription.period.start" cssClass="calendar" size="10" /> -
+					<s:textfield name="subscription.period.start" id="account_start_date" cssClass="calendar" size="10" /> -
 					<s:textfield name="subscription.period.end" cssClass="calendar" size="10"/>
 				</td>
 			</tr>

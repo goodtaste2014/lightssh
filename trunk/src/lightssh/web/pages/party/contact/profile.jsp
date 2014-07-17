@@ -176,7 +176,7 @@
 			</td>
 		</tr>
 		<tr>
-			<th>描述</th>
+			<th><label for="contact_description">描述</label></th>
 			<td><s:textarea id="contact_description" name="contact.description" cols="60" rows="5"/></td>
 		</tr>
 	</tbody>
