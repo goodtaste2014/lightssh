@@ -19,8 +19,8 @@
 	<s:form action="deploy" method="post" enctype="multipart/form-data">
 	<table class="profile">
 		<tr>
-			<th>名称</th>
-			<td><s:textfield name="deployment_file_name" size="40" /></td>
+			<th><label for="deployment_file_name"  class="required">名称</label></th>
+			<td><s:textfield name="deployment_file_name" id="deployment_file_name" size="40" /></td>
 		</tr>
 		<tr>
 			<th><label class="required">文件</label></th>

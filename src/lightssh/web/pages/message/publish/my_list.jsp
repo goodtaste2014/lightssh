@@ -146,15 +146,15 @@
 					
 				</tr>
 				<tr>
-					<th><label for="startTime">接收时间</label></th>
+					<th><label for="recevieTime">接收时间</label></th>
 					<td>
-						<s:textfield name="publish.period.start" cssClass="calendar" size="10" /> -
+						<s:textfield name="publish.period.start" id="recevieTime" cssClass="calendar" size="10" /> -
 						<s:textfield name="publish.period.end" cssClass="calendar" size="10"/>
 					</td>
 					
-					<th><label for="owner">消息创建者</label></th>
+					<th><label for="creator">消息创建者</label></th>
 					<td>
-						<s:textfield name="publish.message.creator" size="20" />
+						<s:textfield name="publish.message.creator" id="creator" size="20" />
 						<span class="popup user" onclick="popupLoginAccount('<s:url value="/security/account/popup.do"/>',{});">&nbsp;</span>
 					</td>
 				</tr>

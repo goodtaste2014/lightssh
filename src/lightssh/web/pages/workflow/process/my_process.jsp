@@ -6,12 +6,22 @@
 
 	<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/ui/i18n/jquery.ui.datepicker_zh_CN.js"></script>
 	<script type="text/javascript" src="<s:url value="/pages/workflow/process/popup_proc_def.js" />"></script>
+	<script type="text/javascript" src="<s:url value="/pages/security/account/popup.js" />"></script>
 	<title>流程列表</title>
 	
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$(".calendar").datepicker({dateFormat: 'yy-mm-dd',changeYear:true});
 		});
+		
+		/**
+		 * USER-弹出框回调
+		 */
+		function callbackSelectLoginAccount( param ){
+			$("input[name='process.owner']").val( param.text);
+			
+			$( popup_login_account ).dialog('destroy').html('');
+		}
 	</script>
 	
 </head>
@@ -53,15 +63,16 @@
 				</tr>
 				
 				<tr>
-					<th><label for="time">开始时间</label></th>
+					<th><label for="startTime">开始时间</label></th>
 					<td>
-						<s:textfield name="process.startPeriod.start" cssClass="calendar" id="access_start_date" size="10" /> -
+						<s:textfield name="process.startPeriod.start" id="startTime" cssClass="calendar" size="10" /> -
 						<s:textfield name="process.startPeriod.end" cssClass="calendar" id="access_end_date" size="10"/>
 					</td>
 					
 					<th><label for="owner">创建者</label></th>
 					<td>
-						<s:textfield name="process.owner" size="20" />
+						<s:textfield name="process.owner" id="owner" size="20" />
+						<span class="popup user" onclick="popupLoginAccount('<s:url value="/security/account/popup.do"/>',{});">&nbsp;</span>
 					</td>
 					
 					<th><label for="status">流程状态</label></th>

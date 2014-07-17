@@ -37,7 +37,7 @@
 							 listKey="name()" headerKey="" headerValue="" value="access.type.name()" name="access.type"/>
 						</td>
 						
-						<th><label for="time">时间</label></th>
+						<th><label for="access_start_date">时间</label></th>
 						<td>
 							<s:textfield name="access._period.start" id="access_start_date" size="10" /> -
 							<s:textfield name="access._period.end" id="access_end_date" size="10"/>

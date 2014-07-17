@@ -115,12 +115,12 @@
 					<th><label for="name" class="required">名称</label></th>
 					<td>
 						<s:hidden name="role.id"/>
-						<s:textfield name="role.name" size="60"/>
+						<s:textfield name="role.name" id="name" size="60"/>
 					</td>
 				</tr>
 				<tr>
 					<th><label for="desc">描述</label></th>
-					<td><s:textarea name="role.description" cols="60" rows="3"/></td>
+					<td><s:textarea name="role.description" id="desc" cols="60" rows="3"/></td>
 				</tr>
 				<tr>
 					<th><label for="permission">权限集</label></th>

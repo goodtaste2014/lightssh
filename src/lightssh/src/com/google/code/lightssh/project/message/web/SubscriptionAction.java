@@ -7,6 +7,7 @@ import org.apache.struts2.json.annotations.JSON;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.google.code.lightssh.project.message.entity.ReceiveType;
 import com.google.code.lightssh.project.message.entity.Subscription;
 import com.google.code.lightssh.project.message.service.SubscriptionManager;
 import com.google.code.lightssh.project.web.action.GenericAction;
@@ -50,6 +51,9 @@ public class SubscriptionAction extends GenericAction<Subscription>{
 	}
 	
 	public String unique( ){
+		if( subscription != null && ReceiveType.ALL.equals(subscription.getRecType()) )
+			subscription.setRecValue( ReceiveType.ALL.name() );
+		
 		this.unique = this.getManager().isUnique( subscription );
 		return SUCCESS;
 	}

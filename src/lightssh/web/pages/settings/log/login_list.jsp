@@ -56,7 +56,7 @@
 			<table class="profile">
 				<tbody>
 					<tr>
-						<td><label for="time">时间</label></td>
+						<td><label for="access_start_date">时间</label></td>
 						<td>
 							<s:textfield name="loginLog._period.start" id="access_start_date" size="10" /> -
 							<s:textfield name="loginLog._period.end" id="access_end_date" size="10"/>

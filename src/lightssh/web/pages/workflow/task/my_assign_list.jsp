@@ -8,6 +8,7 @@
 	
 	<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/ui/i18n/jquery.ui.datepicker_zh_CN.js"></script>
 	<script type="text/javascript" src="<s:url value="/pages/workflow/process/popup_proc_def.js" />"></script>
+	<script type="text/javascript" src="<s:url value="/pages/security/account/popup.js" />"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$(".calendar").datepicker({dateFormat: 'yy-mm-dd',changeYear:true});
@@ -28,6 +29,15 @@
 				}
 			});
 			
+		}
+		
+		/**
+		 * USER-弹出框回调
+		 */
+		function callbackSelectLoginAccount( param ){
+			$("input[name='task.procInstStartUser']").val( param.text);
+			
+			$( popup_login_account ).dialog('destroy').html('');
 		}
 	</script>
 	
@@ -69,21 +79,22 @@
 				</tr>
 				
 				<tr>
-					<th><label for="owner">流程开始时间</label></th>
+					<th><label for="startTime">流程开始时间</label></th>
 					<td>
-						<s:textfield name="task.procStartPeriod.start" cssClass="calendar" size="10" /> -
+						<s:textfield name="task.procStartPeriod.start" id="startTime" cssClass="calendar" size="10" /> -
 						<s:textfield name="task.procStartPeriod.end" cssClass="calendar"  size="10"/>
 					</td>
 					
-					<th><label for="startTime">任务到达时间</label></th>
+					<th><label for="arrivedTime">任务到达时间</label></th>
 					<td>
-						<s:textfield name="task.startPeriod.start" cssClass="calendar" size="10" /> -
+						<s:textfield name="task.startPeriod.start" id="arrivedTime" cssClass="calendar" size="10" /> -
 						<s:textfield name="task.startPeriod.end" cssClass="calendar" size="10"/>
 					</td>
 					
 					<th><label for="owner">流程创建者</label></th>
 					<td>
-						<s:textfield name="task.procInstStartUser" size="20" />
+						<s:textfield name="task.procInstStartUser" id="owner" size="20" />
+						<span class="popup user" onclick="popupLoginAccount('<s:url value="/security/account/popup.do"/>',{});">&nbsp;</span>
 					</td>
 				</tr>
 			</tbody>

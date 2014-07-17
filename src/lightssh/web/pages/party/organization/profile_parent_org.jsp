@@ -46,7 +46,7 @@
 						<tr>
 							<th><label for="role_type">类型</label></th>
 							<td>
-								<s:select list="@com.google.code.lightssh.project.party.entity.PartyRole$RoleType@internalOrg()"
+								<s:select id="role_type" list="@com.google.code.lightssh.project.party.entity.PartyRole$RoleType@internalOrg()"
 									listKey="name()" name="party_role_type" value="party_role_type.name()" headerKey="" headerValue=""/>
 							</td>
 						</tr>

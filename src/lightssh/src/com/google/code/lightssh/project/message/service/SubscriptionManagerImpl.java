@@ -77,6 +77,9 @@ public class SubscriptionManagerImpl extends BaseManagerImpl<Subscription> imple
 		if(t == null )
 			throw new ApplicationException("参数为空！");
 		
+		if( ReceiveType.ALL.equals(t.getRecType()) )
+			t.setRecValue( ReceiveType.ALL.name() );
+		
 		Subscription db = dao.read(t);
 		if( db == null ){
 			db = t;
