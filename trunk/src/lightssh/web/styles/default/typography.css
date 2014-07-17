@@ -85,7 +85,7 @@ h1, h2, h3, h4, h5, h6 {
 
 label{
 	cursor:pointer;
-	color: #4C7899;
+	color: #21759B;
 }
 
 input,textarea{
@@ -491,10 +491,14 @@ table.profile th,table.profile td{
 	vertical-align: middle;
 }
 
-
 table.profile th{
 	width:120px;
 	background-color: #F9F9F9;
+	
+	filter:alpha(opacity=60);
+	-moz-opacity:0.6;
+	-khtml-opacity: 0.6;
+	opacity: 0.6;
 }
 
 .popup-menu-layer {
