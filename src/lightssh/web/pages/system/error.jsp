@@ -7,8 +7,8 @@
 		<link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/styles/<mys:theme />/theme.css" />
 	</head>
 
-	<body>
-		<h3> Application Exception!</h3>
+	<body style="margin: 0;">
+		<h3> 应用程序出现异常!</h3>
 		
 		<s:property value="exception.message"/>
 		<div>
@@ -16,5 +16,6 @@
 			<s:property value="exception.cause"/>
 		</div>
 		
+		<div id="background" class="error"></div>
 	</body>
 </html>

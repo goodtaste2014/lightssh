@@ -37,6 +37,7 @@
 	<body <decorator:getProperty property="body.class" writeEntireProperty="true"/>>
 		<decorator:body/>
 		
+		<div id="background"></div>
 		<p id="back-top" style="display: none;">
 			<a href="#top"><span></span>TOP</a>
 		</p>
