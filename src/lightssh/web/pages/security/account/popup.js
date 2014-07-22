@@ -7,7 +7,7 @@ function popupLoginAccount( url ,param){
 	
 	var buttons = {};
 	buttons["关闭"] = function() {$(this).dialog('destroy');};
-	if( param.multi == 'true' )
+	if( param !=null && param.multi == 'true' )
 		buttons["确认"] = multiPopupConfirm;
 	
 	$( popup ).dialog({
