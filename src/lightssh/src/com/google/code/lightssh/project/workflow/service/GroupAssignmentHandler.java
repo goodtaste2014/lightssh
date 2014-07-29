@@ -77,9 +77,11 @@ public class GroupAssignmentHandler implements TaskListener{
 	public void notify(DelegateTask delegateTask) {
 		Set<String> users = new HashSet<String>();
 		Set<IdentityLink> idLinks = delegateTask.getCandidates(); 
+		StringBuffer msg = new StringBuffer();
 		
 		for(IdentityLink item: idLinks){
 			if(this.isMatched(item.getGroupId())){ //只考虑candidateGroups属性
+				msg.append( item.getGroupId() + " " );
 				Set<String> item_users = listCandidateUser(item.getGroupId());
 				if( item_users != null && !item_users.isEmpty() )
 					users.addAll(item_users);
@@ -90,6 +92,9 @@ public class GroupAssignmentHandler implements TaskListener{
 			delegateTask.addCandidateUsers(users);
 			if( users.size() == 1 ) //如果只有一个候选者，直接赋值
 				delegateTask.setAssignee((String)users.toArray()[0]);
+		}else{
+			log.warn("流程[{}]-任务[{}]无法获取到候选用户[{}]",new Object[]{
+					delegateTask.getProcessInstanceId(),delegateTask.getName(),msg.toString()} );
 		}
 	}
 	
