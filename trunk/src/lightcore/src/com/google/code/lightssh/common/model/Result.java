@@ -1,7 +1,3 @@
-/**
- * 版权所有(C) 2012 深圳市雁联计算系统有限公司
- */
-
 package com.google.code.lightssh.common.model;
 
 import java.io.Serializable;
