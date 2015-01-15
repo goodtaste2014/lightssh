@@ -202,11 +202,20 @@ public class JpaDao<T extends Persistence<?>> implements Dao<T>,Serializable{
 		return query( page,from_jqpl, null );
 	}
 	
-	
 	/**
 	 * order by 
 	 */
 	protected String addOrderBy( ListPage<?> page ){
+		return addOrderBy(page,"m");
+	}
+	
+	/**
+	 * order by 
+	 */
+	protected String addOrderBy( ListPage<?> page ,String symbol){
+		boolean flag = StringUtil.hasText(symbol);
+		symbol = StringUtil.hasText(symbol)?symbol.trim():symbol;
+		
 		//add order
 		StringBuffer orderby = new StringBuffer("");
 		List<OrderBy> orderByList = page.listAllOrderBy();
@@ -215,7 +224,7 @@ public class JpaDao<T extends Persistence<?>> implements Dao<T>,Serializable{
 				if( each == null )
 					continue;
 				orderby.append("".equals(orderby.toString())?" ORDER BY ":" ,");
-				orderby.append( " m." + each.getProperty() 
+				orderby.append( (flag?(" " + symbol + "."):"") + each.getProperty() 
 					+ (OrderType.ASCENDING.equals( each.getType() )?" ASC ":" DESC ") );
 			}
 		}
@@ -298,11 +307,35 @@ public class JpaDao<T extends Persistence<?>> implements Dao<T>,Serializable{
 		return page;
 	}
 	
+	/**
+	 * 取 AS 后面的符号
+	 */
+	protected String fetchAsSymbol(String hql ){
+		String symbol = ""; //符号
+		String as_matche = "(.*\\s+)(?i)AS(\\s+.*)"; 
+		String as_replace = "(\\s+)(?i)AS(\\s+)";
+		String as_symbol_replace = "(\\s+)(?i)AS(\\s+)\\w+(\\s*)";
+		if( hql.matches( as_matche ) ){ //存在AS
+			String[] array = hql.split(as_symbol_replace);
+			if( array.length == 1){
+				symbol = hql.substring(array[0].length() );
+				symbol = symbol.replaceFirst(as_replace,"").trim();
+			}else if( array.length == 2){
+				symbol = hql.substring(array[0].length(), 
+						hql.length() - array[1].length() );
+				symbol = symbol.replaceFirst(as_replace,"").trim();
+			}
+		}
+		
+		return symbol;
+	}
+	
 	@SuppressWarnings("unchecked")
 	protected ListPage<?> queryObject( final ListPage<?> page ,final String select_jpql, 
 			final String from_jqpl , final Object[] params ){
 		
-		String count_hql = " SELECT COUNT(m) ";
+		String symbol = fetchAsSymbol( from_jqpl );
+		String count_hql = " SELECT COUNT("+(!StringUtil.hasText(symbol)?"*":symbol)+") ";
 		if(StringUtil.clean(select_jpql)!=null){
 			String[] sels = select_jpql.trim().split("( )+");
 			if( sels.length == 2 ){
@@ -321,8 +354,14 @@ public class JpaDao<T extends Persistence<?>> implements Dao<T>,Serializable{
 			//聚合查询
 			queryAggregation(page,from_jqpl,params);
 			
-			String jpql = ((StringUtil.clean(select_jpql)==null)?" SELECT m ":select_jpql) + from_jqpl;
-			jpql += addOrderBy( page );//add order
+			String jpql = null;
+			if(StringUtil.hasText(select_jpql) )
+				jpql = select_jpql + from_jqpl;
+			else if ( StringUtil.hasText(symbol)  )
+				jpql = " SELECT "+symbol+" " + from_jqpl;
+			else
+				jpql = from_jqpl;
+			jpql += addOrderBy( page,symbol);//add order
 			
 			Query query = getEntityManager().createQuery( jpql )
 				.setFirstResult(page.getStart()-1)
