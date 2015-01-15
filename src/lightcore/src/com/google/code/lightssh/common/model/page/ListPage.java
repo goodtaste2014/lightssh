@@ -33,6 +33,11 @@ public class ListPage<T> extends AbstractPage{
 	 * 聚合列表
 	 */
 	private List<Aggregation> aggregationList;
+	
+	/**
+	 * 是否允许超出页数。为true，查询页大于总页，返回空记录
+	 */
+	private Boolean overNumber;
 				
 	public ListPage() {
 		super( DEFAULT_LIST_SIZE );
@@ -235,6 +240,14 @@ public class ListPage<T> extends AbstractPage{
 
 	public List<Aggregation> getAggregationList() {
 		return aggregationList;
+	}
+
+	public Boolean getOverNumber() {
+		return overNumber;
+	}
+
+	public void setOverNumber(Boolean overNumber) {
+		this.overNumber = overNumber;
 	}
 
 	/** 
