@@ -347,7 +347,8 @@ public class JpaDao<T extends Persistence<?>> implements Dao<T>,Serializable{
 		count_hql += from_jqpl;
 		page.setAllSize( rowCount(count_hql,params ) ); //all size
 		
-		if( page.getNumber() > page.getAllPage() )
+		if( !Boolean.TRUE.equals(page.getOverNumber())
+				&& (page.getNumber() > page.getAllPage()) )
 			page.setNumber(Math.min(page.getNumber(), page.getAllPage()));
 		
 		if( page.getAllSize() > 0 && page.getSize() > 0 ){
