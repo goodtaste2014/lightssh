@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.security.ProtectionDomain;
 import java.util.Properties;
 
@@ -114,16 +116,30 @@ public abstract class SystemConfig implements ServletContextAware,Serializable{
 	public String getProperty( String key ){
 		return p.getProperty( key );
 	}
+	
+	/**
+	 * 路径转码
+	 */
+	protected String decodePath( String path ){
+		try{
+			return URLDecoder.decode(path, "UTF-8");
+		}catch( UnsupportedEncodingException e ){
+			log.warn("转码路径[?]出现异常:?",path,e.getMessage());
+			return path;
+		}
+	}
     
     /**
      * 系统默认配置文件
      * @return
+     * @throws UnsupportedEncodingException 
      */
     protected File getDefaultConfigFile( ){
     	String path = null;
     	//weblogic 
 		path = Thread.currentThread().getContextClassLoader()
 			.getResource("").getPath();
+		path = decodePath( path );
 		File file = new File( path + "config/"+getProjectName()+".properties" );
 		if( file.exists() )
 			return file;
@@ -134,6 +150,7 @@ public abstract class SystemConfig implements ServletContextAware,Serializable{
 			path = pd.getCodeSource().getLocation().getFile();
 			String spliter = "/WEB-INF/";
 			path = path.substring(0, path.lastIndexOf(spliter) + spliter.length());
+			path = decodePath( path );
 			file = new File( path + "classes/config/"+getProjectName()+".properties" );
 			if( file.exists() )
 				return file;

@@ -1,10 +1,14 @@
 package com.google.code.lightssh.common.support.hessian;
 
+import java.util.Map;
+
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.remoting.caucho.HessianProxyFactoryBean;
 
 import com.google.code.lightssh.common.config.SystemConfig;
+import com.google.code.lightssh.common.util.DSAUtil;
 
 /**
  * 扩展HessianProxyFactoryBean
@@ -29,6 +33,11 @@ public class MyHessianProxyFactoryBean extends HessianProxyFactoryBean{
 	public static final String REMOTING_READ_TIMEOUT_KEY = "remoting.read.timout";
 	
 	/**
+	 * 密钥加密种子
+	 */
+	public static final String REMOTING_CRYPT_VALUE_KEY = "remoting.crypt.value";
+	
+	/**
 	 * 连接超时
 	 */
 	private int connectTimeout = 5000;
@@ -37,6 +46,19 @@ public class MyHessianProxyFactoryBean extends HessianProxyFactoryBean{
 	 * 读超时
 	 */
     private int readTimeout = 5000;
+	
+    /**
+     * 是否使用DES加密
+     */
+    private boolean isUsedDes = false;
+    /**
+     * 密钥缓存
+     */
+    private Map<String,Object> dsaKeyMap;
+	/**
+	 * 扩展DSA加密验证参数
+	 **/
+	private String crypt;//生成密钥加密种子
 	
 	/**
 	 * 子系统名称
@@ -68,6 +90,10 @@ public class MyHessianProxyFactoryBean extends HessianProxyFactoryBean{
 
 	public void setReadTimeout(int readTimeout) {
 		this.readTimeout = readTimeout;
+	}
+
+	public void setUsedDes(boolean isUsedDes) {
+		this.isUsedDes = isUsedDes;
 	}
 
 	/**
@@ -114,11 +140,21 @@ public class MyHessianProxyFactoryBean extends HessianProxyFactoryBean{
 			}catch( Exception e ){
 				//ignore
 			}
-			
+
 			try{
 				String readTimeoutTxt = systemConfig.getProperty(REMOTING_READ_TIMEOUT_KEY);
 				this.readTimeout = Integer.parseInt(readTimeoutTxt );
 			}catch( Exception e ){
+				//ignore
+			}
+			
+			try{
+				if(isUsedDes){
+					String cryptTxt = systemConfig.getProperty(REMOTING_CRYPT_VALUE_KEY);
+					this.crypt = cryptTxt;
+					dsaKeyMap = StringUtils.isEmpty(crypt) ? DSAUtil.initKey() : DSAUtil.initKey(crypt);
+				}
+			}catch (Exception e) {
 				//ignore
 			}
 		}
@@ -126,7 +162,9 @@ public class MyHessianProxyFactoryBean extends HessianProxyFactoryBean{
 	
     public void afterPropertiesSet() {
     	initConfig();
-    	
+    	if(isUsedDes){
+			proxyFactory.sendSignHeader(crypt, DSAUtil.getPrivateKey(dsaKeyMap));
+		}
         proxyFactory.setReadTimeout(readTimeout);
         proxyFactory.setConnectTimeout(connectTimeout);
         setProxyFactory(proxyFactory);
