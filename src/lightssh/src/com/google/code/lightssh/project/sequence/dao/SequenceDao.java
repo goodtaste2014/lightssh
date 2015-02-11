@@ -10,8 +10,4 @@ public interface SequenceDao extends Dao<Sequence>{
 	 */
 	public long nextDatabaseSequenceNumber( String seqName );
 	
-	/**
-	 * 带锁的查询
-	 */
-	public Sequence readWithLock( String key);
 }

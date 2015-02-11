@@ -32,7 +32,7 @@ public class SequenceManagerImpl implements SequenceManager{
 			throw new ApplicationException("获取序列的参数KEY为空！");
 		
 		boolean inserted = false;
-		Sequence seq = dao.read( key );
+		Sequence seq = dao.readWithLock( key );
 		if( seq == null ){
 			seq = new Sequence( key );
 			inserted =true;
