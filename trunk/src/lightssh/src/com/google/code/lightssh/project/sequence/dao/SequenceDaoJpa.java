@@ -3,15 +3,11 @@ package com.google.code.lightssh.project.sequence.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.List;
-
-import javax.persistence.Query;
 
 import org.hibernate.internal.SessionImpl;
 import org.springframework.stereotype.Repository;
 
 import com.google.code.lightssh.common.dao.jpa.JpaAnnotationDao;
-import com.google.code.lightssh.common.util.StringUtil;
 import com.google.code.lightssh.project.sequence.entity.Sequence;
 
 @Repository("sequenceDao")
@@ -62,28 +58,5 @@ public class SequenceDaoJpa extends JpaAnnotationDao<Sequence> implements Sequen
 		*/
 	}
 
-	@SuppressWarnings("unchecked")
-	public Sequence readWithLock(final String key){
-		if( StringUtil.clean( key ) == null )
-			return null;
-		
-		final String sql = "select t.* from T_SEQUENCE t where t.id = ? for update ";
-		
-		/*
-		List<Sequence> results = (List<Sequence>) getJpaTemplate().execute(
-				new JpaCallback() {
-					public Object doInJpa(EntityManager entityManager) {
-						return entityManager.createNativeQuery( sql, Sequence.class)
-							.setParameter(0, StringUtil.clean( key )).getResultList();
-		        	}// end doInHibernate
-	        	}); 
-		*/
-		
-		Query query = getEntityManager().createNativeQuery(sql, Sequence.class);
-		this.addQueryParams(query, StringUtil.clean( key ) );
-		List<Sequence> results = query.getResultList();
-		
-		return (results==null||results.isEmpty())?null:results.get(0);
-	}
 
 }
